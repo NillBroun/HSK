@@ -1338,7 +1338,7 @@ class StorageManagerScreen extends StatefulWidget {
 
 class _StorageManagerScreenState extends State<StorageManagerScreen> {
   bool loading = true;
-  List> downloadedItems = [];
+  List downloadedItems = [];
 
   @override
   void initState() {
@@ -1365,7 +1365,7 @@ class _StorageManagerScreenState extends State<StorageManagerScreen> {
   Future<void> _scanDownloads() async {
     setState(() => loading = true);
     final dir = await getApplicationDocumentsDirectory();
-    List> items = [];
+    List items = [];
 
     for (var m in allModules) {
       final audioDir = Directory('${dir.path}/audios/${m.id}');
