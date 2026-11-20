@@ -55,6 +55,25 @@ const List<HSKModule> allModules = [
   HSKModule(id: "hsk6B", levelTitle: "HSK 6 — Part B", subTitle: "Mastery (下)", chineseBadge: "六级下", audioZipName: "hsk6Btextbookaudios.zip", pdfFileName: "HSK-6B-Textbook.pdf"),
 ];
 
+Future>> scanModuleAudios(String moduleId) async {
+  final dir = await getApplicationDocumentsDirectory();
+  final audioDir = Directory('${dir.path}/audios/$moduleId');
+  Map<String, List<File>> scanned = {};
+  if (await audioDir.exists()) {
+    await for (var entity in audioDir.list(recursive: true)) {
+      if (entity is File && entity.path.toLowerCase().endsWith('.mp3')) {
+        final parentName = entity.parent.uri.pathSegments.where((s) => s.isNotEmpty).last;
+        scanned.putIfAbsent(parentName, () => []).add(entity);
+      }
+    }
+    for (var key in scanned.keys) {
+      scanned[key]!.sort((a, b) => a.path.compareTo(b.path));
+    }
+  }
+  final sortedKeys = scanned.keys.toList()..sort();
+  return {for (var k in sortedKeys) k: scanned[k]!};
+}
+
 class HSKApp extends StatefulWidget {
   final SharedPreferences prefs;
   const HSKApp({super.key, required this.prefs});
@@ -155,6 +174,69 @@ class _HomeScreenState extends State<HomeScreen> {
     });
   }
 
+  Future<void> _resumeLastStudied() async {
+    final savedModuleId = widget.prefs.getString('last_module_id') ?? "";
+    final savedFolder = widget.prefs.getString('last_folder_key') ?? "";
+
+    HSKModule? targetModule;
+    for (var m in allModules) {
+      if (m.id == savedModuleId) {
+        targetModule = m;
+        break;
+      }
+    }
+
+    if (targetModule == null && lastPlayed.isNotEmpty) {
+      for (var m in allModules) {
+        if (lastPlayed.startsWith(m.levelTitle)) {
+          targetModule = m;
+          break;
+        }
+      }
+    }
+
+    if (targetModule == null) return;
+
+    final folders = await scanModuleAudios(targetModule.id);
+    if (!mounted) return;
+
+    String? matchedFolderKey;
+    if (savedFolder.isNotEmpty && folders.containsKey(savedFolder)) {
+      matchedFolderKey = savedFolder;
+    } else if (lastPlayed.contains('•')) {
+      final part = lastPlayed.split('•').last.trim().toLowerCase();
+      for (var k in folders.keys) {
+        if (k.replaceAll('-', ' ').toLowerCase() == part) {
+          matchedFolderKey = k;
+          break;
+        }
+      }
+    }
+
+    if (folders.isNotEmpty && matchedFolderKey != null) {
+      final displayTitle = matchedFolderKey.replaceAll('-', ' ').toUpperCase();
+      await Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (_) => ChapterAudioPlayerScreen(
+            moduleTitle: targetModule!.levelTitle,
+            chapterTitle: displayTitle,
+            tracks: folders[matchedFolderKey]!,
+            prefs: widget.prefs,
+          ),
+        ),
+      );
+    } else {
+      await Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (_) => ModuleDashboardScreen(module: targetModule!, prefs: widget.prefs),
+        ),
+      );
+    }
+    _loadLastPlayed();
+  }
+
   @override
   Widget build(BuildContext context) {
     final primary = Theme.of(context).colorScheme.primary;
@@ -199,28 +281,35 @@ class _HomeScreenState extends State<HomeScreen> {
         padding: const EdgeInsets.all(16),
         children: [
           if (lastPlayed.isNotEmpty)
-            Container(
-              margin: const EdgeInsets.only(bottom: 16),
-              padding: const EdgeInsets.all(14),
-              decoration: BoxDecoration(
-                color: primary.withOpacity(0.1),
+            Padding(
+              padding: const EdgeInsets.only(bottom: 16),
+              child: InkWell(
                 borderRadius: BorderRadius.circular(14),
-                border: Border.all(color: primary.withOpacity(0.3)),
-              ),
-              child: Row(
-                children: [
-                  Icon(Icons.history_rounded, color: primary),
-                  const SizedBox(width: 12),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text("Last Studied", style: TextStyle(fontSize: 12, color: primary, fontWeight: FontWeight.w600)),
-                        Text(lastPlayed, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 14)),
-                      ],
-                    ),
+                onTap: _resumeLastStudied,
+                child: Container(
+                  padding: const EdgeInsets.all(14),
+                  decoration: BoxDecoration(
+                    color: primary.withOpacity(0.1),
+                    borderRadius: BorderRadius.circular(14),
+                    border: Border.all(color: primary.withOpacity(0.35)),
                   ),
-                ],
+                  child: Row(
+                    children: [
+                      Icon(Icons.history_rounded, color: primary),
+                      const SizedBox(width: 12),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text("Last Studied (Tap to Resume)", style: TextStyle(fontSize: 12, color: primary, fontWeight: FontWeight.w600)),
+                            Text(lastPlayed, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 14)),
+                          ],
+                        ),
+                      ),
+                      Icon(Icons.play_circle_fill_rounded, color: primary, size: 28),
+                    ],
+                  ),
+                ),
               ),
             ),
 
@@ -397,25 +486,10 @@ class _ModuleDashboardScreenState extends State<ModuleDashboardScreen> {
 
   Future<void> _checkLocalFiles() async {
     final dir = await getApplicationDocumentsDirectory();
-    final audioDir = Directory('${dir.path}/audios/${widget.module.id}');
     final pdfFile = File('${dir.path}/pdfs/${widget.module.pdfFileName}');
     pdfLocalPath = pdfFile.path;
 
-    Map<String, List<File>> scanned = {};
-    if (await audioDir.exists()) {
-      await for (var entity in audioDir.list(recursive: true)) {
-        if (entity is File && entity.path.toLowerCase().endsWith('.mp3')) {
-          final parentName = entity.parent.uri.pathSegments.where((s) => s.isNotEmpty).last;
-          scanned.putIfAbsent(parentName, () => []).add(entity);
-        }
-      }
-      for (var key in scanned.keys) {
-        scanned[key]!.sort((a, b) => a.path.compareTo(b.path));
-      }
-    }
-
-    final sortedKeys = scanned.keys.toList()..sort();
-    final sortedMap = {for (var k in sortedKeys) k: scanned[k]!};
+    final sortedMap = await scanModuleAudios(widget.module.id);
 
     setState(() {
       lessonFolders = sortedMap;
@@ -510,38 +584,11 @@ class _ModuleDashboardScreenState extends State<ModuleDashboardScreen> {
             ),
 
           _buildOptionCard(
-            icon: Icons.record_voice_over_rounded,
-            title: "Chapter Lessons & Audio",
-            subtitle: audioReady
-                ? "${lessonFolders.length} chapters ready offline"
-                : "Download audio pack from GitHub to start",
-            actionLabel: audioReady ? "Open" : "Download",
-            isReady: audioReady,
-            onTap: () {
-              if (!audioReady) {
-                _downloadAndExtractAudio();
-              } else {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (_) => ChapterListScreen(
-                      module: widget.module,
-                      lessonFolders: lessonFolders,
-                      isOnlyAudioContinuous: false,
-                      prefs: widget.prefs,
-                    ),
-                  ),
-                );
-              }
-            },
-          ),
-
-          const SizedBox(height: 12),
-
-          _buildOptionCard(
             icon: Icons.headphones_rounded,
             title: "Only Audio (Chapter Loop Mode)",
-            subtitle: "Play all tracks of a selected chapter continuously until paused",
+            subtitle: audioReady
+                ? "${lessonFolders.length} chapters ready • Loops continuously until paused"
+                : "Download audio pack from GitHub to listen offline",
             actionLabel: audioReady ? "Listen" : "Download",
             isReady: audioReady,
             onTap: () {
@@ -554,7 +601,6 @@ class _ModuleDashboardScreenState extends State<ModuleDashboardScreen> {
                     builder: (_) => ChapterListScreen(
                       module: widget.module,
                       lessonFolders: lessonFolders,
-                      isOnlyAudioContinuous: true,
                       prefs: widget.prefs,
                     ),
                   ),
@@ -563,12 +609,14 @@ class _ModuleDashboardScreenState extends State<ModuleDashboardScreen> {
             },
           ),
 
-          const SizedBox(height: 12),
+          const SizedBox(height: 14),
 
           _buildOptionCard(
             icon: Icons.picture_as_pdf_rounded,
             title: "Standard Textbook (PDF)",
-            subtitle: pdfReady ? "Available offline" : "Download textbook PDF from GitHub",
+            subtitle: pdfReady
+                ? (audioReady ? "Read PDF with built-in Lesson Audio Player" : "Available offline (Download audio pack to listen while reading)")
+                : "Download textbook PDF from GitHub",
             actionLabel: pdfReady ? "Read PDF" : "Download",
             isReady: pdfReady,
             onTap: () {
@@ -578,7 +626,12 @@ class _ModuleDashboardScreenState extends State<ModuleDashboardScreen> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (_) => PdfViewerScreen(title: widget.module.levelTitle, filePath: pdfLocalPath),
+                    builder: (_) => PdfViewerScreen(
+                      title: widget.module.levelTitle,
+                      filePath: pdfLocalPath,
+                      prefs: widget.prefs,
+                      lessonFolders: lessonFolders,
+                    ),
                   ),
                 );
               }
@@ -628,14 +681,12 @@ class _ModuleDashboardScreenState extends State<ModuleDashboardScreen> {
 class ChapterListScreen extends StatelessWidget {
   final HSKModule module;
   final Map<String, List<File>> lessonFolders;
-  final bool isOnlyAudioContinuous;
   final SharedPreferences prefs;
 
   const ChapterListScreen({
     super.key,
     required this.module,
     required this.lessonFolders,
-    required this.isOnlyAudioContinuous,
     required this.prefs,
   });
 
@@ -645,11 +696,7 @@ class ChapterListScreen extends StatelessWidget {
     final primary = Theme.of(context).colorScheme.primary;
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text(isOnlyAudioContinuous
-            ? "${module.levelTitle} • Only Audio"
-            : "${module.levelTitle} • Chapters"),
-      ),
+      appBar: AppBar(title: Text("${module.levelTitle} • Only Audio")),
       body: ListView.separated(
         padding: const EdgeInsets.all(16),
         itemCount: keys.length,
@@ -668,13 +715,12 @@ class ChapterListScreen extends StatelessWidget {
               ),
               title: Text(displayTitle, style: const TextStyle(fontWeight: FontWeight.bold)),
               subtitle: Text("${tracks.length} audio tracks"),
-              trailing: Icon(
-                isOnlyAudioContinuous ? Icons.play_circle_fill_rounded : Icons.arrow_forward_ios_rounded,
-                color: primary,
-                size: isOnlyAudioContinuous ? 32 : 18,
-              ),
+              trailing: Icon(Icons.play_circle_fill_rounded, color: primary, size: 32),
               onTap: () {
                 prefs.setString('last_played', "${module.levelTitle} • $displayTitle");
+                prefs.setString('last_module_id', module.id);
+                prefs.setString('last_folder_key', folderName);
+
                 Navigator.push(
                   context,
                   MaterialPageRoute(
@@ -682,7 +728,6 @@ class ChapterListScreen extends StatelessWidget {
                       moduleTitle: module.levelTitle,
                       chapterTitle: displayTitle,
                       tracks: tracks,
-                      autoLoopChapter: isOnlyAudioContinuous,
                       prefs: prefs,
                     ),
                   ),
@@ -700,7 +745,6 @@ class ChapterAudioPlayerScreen extends StatefulWidget {
   final String moduleTitle;
   final String chapterTitle;
   final List<File> tracks;
-  final bool autoLoopChapter;
   final SharedPreferences prefs;
 
   const ChapterAudioPlayerScreen({
@@ -708,7 +752,6 @@ class ChapterAudioPlayerScreen extends StatefulWidget {
     required this.moduleTitle,
     required this.chapterTitle,
     required this.tracks,
-    required this.autoLoopChapter,
     required this.prefs,
   });
 
@@ -746,13 +789,11 @@ class _ChapterAudioPlayerScreenState extends State<ChapterAudioPlayerScreen> {
       if (state.processingState == ProcessingState.completed) {
         if (singleTrackLoop) {
           await _playTrack(currentIndex);
-        } else if (widget.autoLoopChapter) {
+        } else {
           final gapSec = widget.prefs.getInt('pause_gap') ?? 0;
           if (gapSec > 0) await Future.delayed(Duration(seconds: gapSec));
           final nextIndex = (currentIndex + 1) % widget.tracks.length;
           await _playTrack(nextIndex);
-        } else if (currentIndex + 1 < widget.tracks.length) {
-          await _playTrack(currentIndex + 1);
         }
       }
     });
@@ -786,23 +827,22 @@ class _ChapterAudioPlayerScreenState extends State<ChapterAudioPlayerScreen> {
       appBar: AppBar(title: Text("${widget.moduleTitle} • ${widget.chapterTitle}")),
       body: Column(
         children: [
-          if (widget.autoLoopChapter)
-            Container(
-              width: double.infinity,
-              padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
-              color: primary.withOpacity(0.1),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Icon(Icons.repeat_rounded, size: 18, color: primary),
-                  const SizedBox(width: 8),
-                  Text(
-                    "Only Audio Mode: Looping this chapter continuously",
-                    style: TextStyle(color: primary, fontWeight: FontWeight.w600, fontSize: 13),
-                  ),
-                ],
-              ),
+          Container(
+            width: double.infinity,
+            padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+            color: primary.withOpacity(0.1),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(Icons.repeat_rounded, size: 18, color: primary),
+                const SizedBox(width: 8),
+                Text(
+                  "Chapter Loop Mode: Playing continuously until paused",
+                  style: TextStyle(color: primary, fontWeight: FontWeight.w600, fontSize: 13),
+                ),
+              ],
             ),
+          ),
 
           Expanded(
             child: ListView.builder(
@@ -913,17 +953,242 @@ class _ChapterAudioPlayerScreenState extends State<ChapterAudioPlayerScreen> {
   }
 }
 
-class PdfViewerScreen extends StatelessWidget {
+class PdfViewerScreen extends StatefulWidget {
   final String title;
   final String filePath;
+  final SharedPreferences prefs;
+  final Map<String, List<File>> lessonFolders;
 
-  const PdfViewerScreen({super.key, required this.title, required this.filePath});
+  const PdfViewerScreen({
+    super.key,
+    required this.title,
+    required this.filePath,
+    required this.prefs,
+    this.lessonFolders = const {},
+  });
+
+  @override
+  State<PdfViewerScreen> createState() => _PdfViewerScreenState();
+}
+
+class _PdfViewerScreenState extends State<PdfViewerScreen> {
+  final PdfViewerController _pdfController = PdfViewerController();
+  final AudioPlayer _miniPlayer = AudioPlayer();
+
+  late String pagePrefKey;
+  int savedPage = 1;
+  int currentPage = 1;
+
+  bool showAudioPanel = true;
+  String? selectedLesson;
+  int trackIndex = 0;
+  bool isPlaying = false;
+  late double speed;
+
+  @override
+  void initState() {
+    super.initState();
+    final fileName = File(widget.filePath).uri.pathSegments.last;
+    pagePrefKey = 'pdf_last_page_$fileName';
+    savedPage = widget.prefs.getInt(pagePrefKey) ?? 1;
+    currentPage = savedPage;
+    speed = widget.prefs.getDouble('default_speed') ?? 1.0;
+
+    if (widget.lessonFolders.isNotEmpty) {
+      selectedLesson = widget.lessonFolders.keys.first;
+    }
+
+    _miniPlayer.playerStateStream.listen((state) async {
+      if (!mounted) return;
+      setState(() => isPlaying = state.playing);
+      if (state.processingState == ProcessingState.completed && selectedLesson != null) {
+        final tracks = widget.lessonFolders[selectedLesson] ?? [];
+        if (trackIndex + 1 < tracks.length) {
+          await _playMiniTrack(trackIndex + 1);
+        }
+      }
+    });
+  }
+
+  Future<void> _playMiniTrack(int index) async {
+    if (selectedLesson == null) return;
+    final tracks = widget.lessonFolders[selectedLesson] ?? [];
+    if (index < 0 || index >= tracks.length) return;
+
+    setState(() => trackIndex = index);
+    await _miniPlayer.setFilePath(tracks[index].path);
+    await _miniPlayer.setSpeed(speed);
+    await _miniPlayer.play();
+  }
+
+  @override
+  void dispose() {
+    _miniPlayer.dispose();
+    _pdfController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
+    final primary = Theme.of(context).colorScheme.primary;
+    final hasLessons = widget.lessonFolders.isNotEmpty;
+    final currentTracks = (hasLessons && selectedLesson != null)
+        ? (widget.lessonFolders[selectedLesson] ?? [])
+        : [];
+    final currentTrackName = currentTracks.isNotEmpty
+        ? currentTracks[trackIndex].uri.pathSegments.last.replaceAll('.mp3', '')
+        : "";
+
     return Scaffold(
-      appBar: AppBar(title: Text(title)),
-      body: SfPdfViewer.file(File(filePath)),
+      appBar: AppBar(
+        title: Text("${widget.title} (Page $currentPage)"),
+        actions: [
+          if (hasLessons)
+            IconButton(
+              icon: Icon(showAudioPanel ? Icons.headphones_rounded : Icons.headset_off_rounded),
+              tooltip: showAudioPanel ? "Hide Audio Bar" : "Show Audio Bar",
+              onPressed: () => setState(() => showAudioPanel = !showAudioPanel),
+            ),
+        ],
+      ),
+      body: Column(
+        children: [
+          Expanded(
+            child: SfPdfViewer.file(
+              File(widget.filePath),
+              controller: _pdfController,
+              onDocumentLoaded: (details) {
+                if (savedPage > 1 && savedPage <= details.document.pages.count) {
+                  _pdfController.jumpToPage(savedPage);
+                }
+              },
+              onPageChanged: (details) {
+                setState(() => currentPage = details.newPageNumber);
+                widget.prefs.setInt(pagePrefKey, details.newPageNumber);
+              },
+            ),
+          ),
+
+          if (hasLessons && showAudioPanel)
+            Container(
+              padding: const EdgeInsets.fromLTRB(12, 8, 12, 12),
+              decoration: BoxDecoration(
+                color: Theme.of(context).cardColor,
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.12),
+                    blurRadius: 8,
+                    offset: const Offset(0, -2),
+                  )
+                ],
+                borderRadius: const BorderRadius.vertical(top: Radius.circular(18)),
+              ),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Row(
+                    children: [
+                      Icon(Icons.menu_book_rounded, size: 18, color: primary),
+                      const SizedBox(width: 8),
+                      Expanded(
+                        child: DropdownButtonHideUnderline(
+                          child: DropdownButton<String>(
+                            isExpanded: true,
+                            isDense: true,
+                            value: selectedLesson,
+                            items: widget.lessonFolders.keys.map((k) {
+                              return DropdownMenuItem(
+                                value: k,
+                                child: Text(
+                                  k.replaceAll('-', ' ').toUpperCase(),
+                                  style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 13),
+                                ),
+                              );
+                            }).toList(),
+                            onChanged: (val) async {
+                              if (val != null) {
+                                await _miniPlayer.stop();
+                                setState(() {
+                                  selectedLesson = val;
+                                  trackIndex = 0;
+                                  isPlaying = false;
+                                });
+                              }
+                            },
+                          ),
+                        ),
+                      ),
+                      const SizedBox(width: 8),
+                      Text(
+                        currentTracks.isNotEmpty
+                            ? "Track ${trackIndex + 1}/${currentTracks.length} ($currentTrackName)"
+                            : "",
+                        style: TextStyle(fontSize: 12, color: primary, fontWeight: FontWeight.w600),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 6),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      TextButton(
+                        style: TextButton.styleFrom(visualDensity: VisualDensity.compact),
+                        onPressed: () {
+                          const speeds = [0.75, 0.85, 1.0, 1.25];
+                          final next = speeds[(speeds.indexOf(speed) + 1) % speeds.length];
+                          setState(() => speed = next);
+                          _miniPlayer.setSpeed(speed);
+                        },
+                        child: Text("${speed}x", style: TextStyle(fontWeight: FontWeight.bold, color: primary)),
+                      ),
+                      IconButton(
+                        visualDensity: VisualDensity.compact,
+                        icon: const Icon(Icons.replay_5_rounded),
+                        tooltip: "Rewind 3s",
+                        onPressed: () {
+                          final target = _miniPlayer.position - const Duration(seconds: 3);
+                          _miniPlayer.seek(target < Duration.zero ? Duration.zero : target);
+                        },
+                      ),
+                      IconButton(
+                        visualDensity: VisualDensity.compact,
+                        icon: const Icon(Icons.skip_previous_rounded, size: 28),
+                        onPressed: trackIndex > 0 ? () => _playMiniTrack(trackIndex - 1) : null,
+                      ),
+                      CircleAvatar(
+                        radius: 22,
+                        backgroundColor: primary,
+                        child: IconButton(
+                          icon: Icon(
+                            isPlaying ? Icons.pause_rounded : Icons.play_arrow_rounded,
+                            color: Colors.white,
+                            size: 26,
+                          ),
+                          onPressed: () {
+                            if (isPlaying) {
+                              _miniPlayer.pause();
+                            } else if (_miniPlayer.processingState == ProcessingState.idle) {
+                              _playMiniTrack(trackIndex);
+                            } else {
+                              _miniPlayer.play();
+                            }
+                          },
+                        ),
+                      ),
+                      IconButton(
+                        visualDensity: VisualDensity.compact,
+                        icon: const Icon(Icons.skip_next_rounded, size: 28),
+                        onPressed: trackIndex + 1 < currentTracks.length
+                            ? () => _playMiniTrack(trackIndex + 1)
+                            : null,
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+        ],
+      ),
     );
   }
 }
@@ -977,6 +1242,35 @@ class _PersonalGrammarScreenState extends State<PersonalGrammarScreen> {
     }
   }
 
+  Future<void> _confirmAndDeleteNote(int idx) async {
+    final item = notes[idx];
+    final shouldDelete = await showDialog<bool>(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        title: const Text("Delete PDF?"),
+        content: Text("Are you sure you want to delete '${item['title']}'?"),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(ctx, false),
+            child: const Text("Cancel"),
+          ),
+          FilledButton(
+            style: FilledButton.styleFrom(backgroundColor: Colors.red),
+            onPressed: () => Navigator.pop(ctx, true),
+            child: const Text("Delete"),
+          ),
+        ],
+      ),
+    );
+
+    if (shouldDelete == true) {
+      final f = File(item['path']!);
+      if (await f.exists()) await f.delete();
+      setState(() => notes.removeAt(idx));
+      await _saveNotes();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final primary = Theme.of(context).colorScheme.primary;
@@ -1012,18 +1306,17 @@ class _PersonalGrammarScreenState extends State<PersonalGrammarScreen> {
                     title: Text(item['title']!, style: const TextStyle(fontWeight: FontWeight.bold)),
                     trailing: IconButton(
                       icon: const Icon(Icons.delete_outline_rounded, color: Colors.red),
-                      onPressed: () async {
-                        final f = File(item['path']!);
-                        if (await f.exists()) await f.delete();
-                        setState(() => notes.removeAt(idx));
-                        await _saveNotes();
-                      },
+                      onPressed: () => _confirmAndDeleteNote(idx),
                     ),
                     onTap: () {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (_) => PdfViewerScreen(title: item['title']!, filePath: item['path']!),
+                          builder: (_) => PdfViewerScreen(
+                            title: item['title']!,
+                            filePath: item['path']!,
+                            prefs: widget.prefs,
+                          ),
                         ),
                       );
                     },
@@ -1162,7 +1455,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
           const Divider(),
           const SizedBox(height: 8),
 
-          // About HSK Card
           Card(
             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
             child: Padding(
@@ -1199,7 +1491,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
           const SizedBox(height: 14),
 
-          // Mentors & Learning Community Card
           Card(
             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
             child: Padding(
