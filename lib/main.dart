@@ -937,7 +937,7 @@ class PersonalGrammarScreen extends StatefulWidget {
 }
 
 class _PersonalGrammarScreenState extends State<PersonalGrammarScreen> {
-  List> notes = [];
+  List notes = [];
 
   @override
   void initState() {
