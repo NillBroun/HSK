@@ -1328,6 +1328,222 @@ class _PersonalGrammarScreenState extends State<PersonalGrammarScreen> {
   }
 }
 
+class StorageManagerScreen extends StatefulWidget {
+  final SharedPreferences prefs;
+  const StorageManagerScreen({super.key, required this.prefs});
+
+  @override
+  State<StorageManagerScreen> createState() => _StorageManagerScreenState();
+}
+
+class _StorageManagerScreenState extends State<StorageManagerScreen> {
+  bool loading = true;
+  List> downloadedItems = [];
+
+  @override
+  void initState() {
+    super.initState();
+    _scanDownloads();
+  }
+
+  int _dirSize(Directory dir) {
+    int total = 0;
+    if (dir.existsSync()) {
+      for (var entity in dir.listSync(recursive: true)) {
+        if (entity is File) total += entity.lengthSync();
+      }
+    }
+    return total;
+  }
+
+  String _formatBytes(int bytes) {
+    if (bytes <= 0) return "0 MB";
+    final mb = bytes / (1024 * 1024);
+    return "${mb.toStringAsFixed(1)} MB";
+  }
+
+  Future<void> _scanDownloads() async {
+    setState(() => loading = true);
+    final dir = await getApplicationDocumentsDirectory();
+    List> items = [];
+
+    for (var m in allModules) {
+      final audioDir = Directory('${dir.path}/audios/${m.id}');
+      final pdfFile = File('${dir.path}/pdfs/${m.pdfFileName}');
+
+      final hasAudio = audioDir.existsSync() && audioDir.listSync(recursive: true).whereType<File>().isNotEmpty;
+      final hasPdf = pdfFile.existsSync();
+
+      if (hasAudio || hasPdf) {
+        final audioBytes = hasAudio ? _dirSize(audioDir) : 0;
+        final pdfBytes = hasPdf ? pdfFile.lengthSync() : 0;
+        items.add({
+          'module': m,
+          'hasAudio': hasAudio,
+          'hasPdf': hasPdf,
+          'audioBytes': audioBytes,
+          'pdfBytes': pdfBytes,
+          'audioDir': audioDir,
+          'pdfFile': pdfFile,
+        });
+      }
+    }
+
+    if (mounted) {
+      setState(() {
+        downloadedItems = items;
+        loading = false;
+      });
+    }
+  }
+
+  Future<void> _deleteTarget({
+    required String label,
+    Directory? audioDir,
+    File? pdfFile,
+    String? moduleIdToClearHistory,
+  }) async {
+    final confirm = await showDialog<bool>(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        title: const Text("Delete Offline Files?"),
+        content: Text("Are you sure you want to delete $label? You can re-download it anytime."),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(ctx, false),
+            child: const Text("Cancel"),
+          ),
+          FilledButton(
+            style: FilledButton.styleFrom(backgroundColor: Colors.red),
+            onPressed: () => Navigator.pop(ctx, true),
+            child: const Text("Delete"),
+          ),
+        ],
+      ),
+    );
+
+    if (confirm == true) {
+      if (audioDir != null && await audioDir.exists()) {
+        await audioDir.delete(recursive: true);
+        if (moduleIdToClearHistory != null &&
+            widget.prefs.getString('last_module_id') == moduleIdToClearHistory) {
+          await widget.prefs.remove('last_played');
+          await widget.prefs.remove('last_module_id');
+          await widget.prefs.remove('last_folder_key');
+        }
+      }
+      if (pdfFile != null && await pdfFile.exists()) {
+        await pdfFile.delete();
+      }
+      await _scanDownloads();
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final primary = Theme.of(context).colorScheme.primary;
+    return Scaffold(
+      appBar: AppBar(title: const Text("Manage Offline Storage")),
+      body: loading
+          ? const Center(child: CircularProgressIndicator())
+          : downloadedItems.isEmpty
+              ? const Center(
+                  child: Padding(
+                    padding: EdgeInsets.all(24),
+                    child: Text(
+                      "No downloaded HSK audio packs or textbooks found on your phone.",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(fontSize: 15, color: Colors.grey),
+                    ),
+                  ),
+                )
+              : ListView.builder(
+                  padding: const EdgeInsets.all(16),
+                  itemCount: downloadedItems.length,
+                  itemBuilder: (context, idx) {
+                    final item = downloadedItems[idx];
+                    final HSKModule m = item['module'];
+                    final bool hasAudio = item['hasAudio'];
+                    final bool hasPdf = item['hasPdf'];
+                    final int audioBytes = item['audioBytes'];
+                    final int pdfBytes = item['pdfBytes'];
+                    final int totalBytes = audioBytes + pdfBytes;
+
+                    return Card(
+                      margin: const EdgeInsets.only(bottom: 12),
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+                      child: Padding(
+                        padding: const EdgeInsets.all(14),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Row(
+                                  children: [
+                                    CircleAvatar(
+                                      backgroundColor: primary.withOpacity(0.12),
+                                      child: Text(m.chineseBadge, style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: primary)),
+                                    ),
+                                    const SizedBox(width: 12),
+                                    Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Text(m.levelTitle, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+                                        Text("Total: ${_formatBytes(totalBytes)}", style: TextStyle(fontSize: 12, color: Colors.grey[600])),
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                                IconButton(
+                                  icon: const Icon(Icons.delete_forever_rounded, color: Colors.red),
+                                  tooltip: "Delete All for ${m.levelTitle}",
+                                  onPressed: () => _deleteTarget(
+                                    label: "all files for ${m.levelTitle}",
+                                    audioDir: hasAudio ? item['audioDir'] : null,
+                                    pdfFile: hasPdf ? item['pdfFile'] : null,
+                                    moduleIdToClearHistory: m.id,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            const Divider(height: 18),
+                            Wrap(
+                              spacing: 8,
+                              runSpacing: 8,
+                              children: [
+                                if (hasAudio)
+                                  ActionChip(
+                                    avatar: const Icon(Icons.headphones_rounded, size: 16, color: Colors.red),
+                                    label: Text("Delete Audio (${_formatBytes(audioBytes)})", style: const TextStyle(fontSize: 12)),
+                                    onPressed: () => _deleteTarget(
+                                      label: "${m.levelTitle} Audio Pack",
+                                      audioDir: item['audioDir'],
+                                      moduleIdToClearHistory: m.id,
+                                    ),
+                                  ),
+                                if (hasPdf)
+                                  ActionChip(
+                                    avatar: const Icon(Icons.picture_as_pdf_rounded, size: 16, color: Colors.red),
+                                    label: Text("Delete PDF (${_formatBytes(pdfBytes)})", style: const TextStyle(fontSize: 12)),
+                                    onPressed: () => _deleteTarget(
+                                      label: "${m.levelTitle} Textbook PDF",
+                                      pdfFile: item['pdfFile'],
+                                    ),
+                                  ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+                    );
+                  },
+                ),
+    );
+  }
+}
+
 class SettingsScreen extends StatefulWidget {
   final SharedPreferences prefs;
   final bool isDarkMode;
@@ -1370,19 +1586,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
           const SnackBar(content: Text("Could not open link")),
         );
       }
-    }
-  }
-
-  Future<void> _clearAllDownloads() async {
-    final dir = await getApplicationDocumentsDirectory();
-    final audioDir = Directory('${dir.path}/audios');
-    final pdfDir = Directory('${dir.path}/pdfs');
-    if (await audioDir.exists()) await audioDir.delete(recursive: true);
-    if (await pdfDir.exists()) await pdfDir.delete(recursive: true);
-    if (mounted) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text("All downloaded audio and textbook files cleared.")),
-      );
     }
   }
 
@@ -1446,10 +1649,16 @@ class _SettingsScreenState extends State<SettingsScreen> {
           const Divider(),
           const Text("Offline Storage", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
           ListTile(
-            leading: const Icon(Icons.cleaning_services_rounded, color: Colors.red),
-            title: const Text("Clear Downloaded Audio & Textbooks"),
-            subtitle: const Text("Free up phone storage (you can re-download anytime)"),
-            onTap: _clearAllDownloads,
+            leading: Icon(Icons.folder_delete_rounded, color: primary),
+            title: const Text("Manage Offline Storage"),
+            subtitle: const Text("Select and delete individual HSK levels, audio packs, or PDFs"),
+            trailing: const Icon(Icons.arrow_forward_ios_rounded, size: 16),
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (_) => StorageManagerScreen(prefs: widget.prefs)),
+              );
+            },
           ),
 
           const Divider(),
