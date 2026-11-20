@@ -2,37 +2,102 @@ name: Build HSK Android APK
 
 on:
   push:
-    branches: [ main ]
+    branches: [ "main", "master" ]
   workflow_dispatch:
 
 jobs:
   build:
     runs-on: ubuntu-latest
+
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-java@v4
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Set up Java 17
+        uses: actions/setup-java@v4
         with:
-          distribution: 'temurin'
+          distribution: 'zulu'
           java-version: '17'
-      - uses: subosito/flutter-action@v2
+
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
         with:
           channel: 'stable'
-      - name: Create Android Platform Files
-        run: flutter create . --org com.ahm.hsk --project-name hsk
-      - name: Fix Gradle SDK Versions & Add Internet Permission
+
+      - name: Recreate Clean Android Project Structure Safely
         run: |
-          sed -i 's/<application/<uses-permission android:name="android.permission.INTERNET"\/>\n    <application/' android/app/src/main/AndroidManifest.xml
-          sed -i 's/compileSdk = flutter.compileSdkVersion/compileSdk = 36/g' android/app/build.gradle.kts || sed -i 's/compileSdkVersion flutter.compileSdkVersion/compileSdkVersion 36/g' android/app/build.gradle
-          sed -i 's/minSdk = flutter.minSdkVersion/minSdk = 24/g' android/app/build.gradle.kts || sed -i 's/minSdkVersion flutter.minSdkVersion/minSdkVersion 24/g' android/app/build.gradle
-          sed -i 's/targetSdk = flutter.targetSdkVersion/targetSdk = 34/g' android/app/build.gradle.kts || sed -i 's/targetSdkVersion flutter.targetSdkVersion/targetSdkVersion 34/g' android/app/build.gradle
-      - name: Get Dependencies, Patch Legacy Plugins & Generate App Icon
+          cp lib/main.dart /tmp/main.dart.bak
+          cp pubspec.yaml /tmp/pubspec.yaml.bak
+          rm -rf android
+          flutter create --platforms=android --org com.ahm.hsk --project-name hsk .
+          cp /tmp/main.dart.bak lib/main.dart
+          cp /tmp/pubspec.yaml.bak pubspec.yaml
+
+      - name: Get Dependencies, Patch Legacy Plugins & Setup Icons
         run: |
           flutter pub get
           find ~/.pub-cache/hosted/pub.dev -name "build.gradle" -exec sed -i 's/jcenter()/mavenCentral()/g' {} +
           dart run flutter_launcher_icons
-      - name: Build Release APK
+
+      - name: Configure Android Permissions and Gradle SDK (All Subprojects)
+        run: |
+          sed -i 's/android:label="[^"]*"/android:label="HSK"/g' android/app/src/main/AndroidManifest.xml
+
+          python3 -c '
+          # 1. AndroidManifest.xml এ INTERNET পারমিশন যোগ করা
+          m_path = "android/app/src/main/AndroidManifest.xml"
+          with open(m_path, "r") as f:
+              m = f.read()
+
+          perms = """
+              <uses-permission android:name="android.permission.INTERNET"/>
+              <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+          """
+
+          if "android.permission.INTERNET" not in m:
+              m = m.replace("<application", perms + "\n    <application")
+
+          with open(m_path, "w") as f:
+              f.write(m)
+
+          # 2. android/app/build.gradle.kts আপডেট করা
+          b_path = "android/app/build.gradle.kts"
+          with open(b_path, "r") as f:
+              c = f.read()
+
+          c = c.replace("compileSdk = flutter.compileSdkVersion", "compileSdk = 36")
+          c = c.replace("minSdk = flutter.minSdkVersion", "minSdk = 24")
+          c = c.replace("targetSdk = flutter.targetSdkVersion", "targetSdk = 34")
+          c = c.replace("buildTypes {", "buildTypes {\n        getByName(\"release\") {\n            signingConfig = signingConfigs.getByName(\"debug\")\n        }")
+
+          with open(b_path, "w") as f:
+              f.write(c)
+
+          # 3. সব প্লাগইনের (যেমন syncfusion_flutter_pdfviewer) compileSdk 36 করে দেওয়া
+          root_gradle = "android/build.gradle.kts"
+          with open(root_gradle, "r") as f:
+              rg = f.read()
+
+          patch = """
+          subprojects {
+              afterEvaluate {
+                  if (plugins.hasPlugin("com.android.library") || plugins.hasPlugin("com.android.application")) {
+                      extensions.configure<com.android.build.gradle.BaseExtension>("android") {
+                          compileSdkVersion(36)
+                      }
+                  }
+              }
+          }
+          """
+          rg += "\n" + patch
+          with open(root_gradle, "w") as f:
+              f.write(rg)
+          '
+
+      - name: Build Universal Release APK
         run: flutter build apk --release
-      - name: Upload APK Artifact
+
+      - name: Upload Release APK
         uses: actions/upload-artifact@v4
         with:
           name: HSK-Release-APK
