@@ -9,19 +9,19 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  dio: ^5.4.0
-  archive: ^3.4.10
-  path_provider: ^2.1.2
-  shared_preferences: ^2.2.2
-  just_audio: ^0.9.36
-  syncfusion_flutter_pdfviewer: ^24.2.9
-  file_picker: ^6.1.1
-  url_launcher: ^6.2.5
+  dio: ^5.7.0
+  archive: ^3.6.1
+  path_provider: ^2.1.5
+  shared_preferences: ^2.3.3
+  just_audio: ^0.9.42
+  syncfusion_flutter_pdfviewer: ^28.1.33
+  file_picker: ^8.1.4
+  url_launcher: ^6.3.1
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  flutter_launcher_icons: ^0.13.1
+  flutter_launcher_icons: ^0.14.1
 
 flutter_launcher_icons:
   android: true
