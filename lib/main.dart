@@ -55,7 +55,7 @@ const List<HSKModule> allModules = [
   HSKModule(id: "hsk6B", levelTitle: "HSK 6 — Part B", subTitle: "Mastery (下)", chineseBadge: "六级下", audioZipName: "hsk6Btextbookaudios.zip", pdfFileName: "HSK-6B-Textbook.pdf"),
 ];
 
-Future>> scanModuleAudios(String moduleId) async {
+Future scanModuleAudios(String moduleId) async {
   final dir = await getApplicationDocumentsDirectory();
   final audioDir = Directory('${dir.path}/audios/$moduleId');
   Map<String, List<File>> scanned = {};
