@@ -37,9 +37,11 @@ jobs:
         run: |
           flutter pub get
           find ~/.pub-cache/hosted/pub.dev -name "build.gradle" -exec sed -i 's/jcenter()/mavenCentral()/g' {} +
+          find ~/.pub-cache/hosted/pub.dev -name "build.gradle" -exec sed -i 's/compileSdkVersion 31/compileSdkVersion 36/g' {} +
+          find ~/.pub-cache/hosted/pub.dev -name "build.gradle" -exec sed -i 's/compileSdk 31/compileSdk 36/g' {} +
           dart run flutter_launcher_icons
 
-      - name: Configure Android Permissions and Gradle SDK (All Subprojects)
+      - name: Configure Android Permissions and Gradle SDK
         run: |
           sed -i 's/android:label="[^"]*"/android:label="HSK"/g' android/app/src/main/AndroidManifest.xml
 
@@ -72,26 +74,6 @@ jobs:
 
           with open(b_path, "w") as f:
               f.write(c)
-
-          # 3. সব প্লাগইনের (যেমন syncfusion_flutter_pdfviewer) compileSdk 36 করে দেওয়া
-          root_gradle = "android/build.gradle.kts"
-          with open(root_gradle, "r") as f:
-              rg = f.read()
-
-          patch = """
-          subprojects {
-              afterEvaluate {
-                  if (plugins.hasPlugin("com.android.library") || plugins.hasPlugin("com.android.application")) {
-                      extensions.configure<com.android.build.gradle.BaseExtension>("android") {
-                          compileSdkVersion(36)
-                      }
-                  }
-              }
-          }
-          """
-          rg += "\n" + patch
-          with open(root_gradle, "w") as f:
-              f.write(rg)
           '
 
       - name: Build Universal Release APK
