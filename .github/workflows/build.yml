@@ -25,9 +25,10 @@ jobs:
           sed -i 's/compileSdk = flutter.compileSdkVersion/compileSdk = 36/g' android/app/build.gradle.kts || sed -i 's/compileSdkVersion flutter.compileSdkVersion/compileSdkVersion 36/g' android/app/build.gradle
           sed -i 's/minSdk = flutter.minSdkVersion/minSdk = 24/g' android/app/build.gradle.kts || sed -i 's/minSdkVersion flutter.minSdkVersion/minSdkVersion 24/g' android/app/build.gradle
           sed -i 's/targetSdk = flutter.targetSdkVersion/targetSdk = 34/g' android/app/build.gradle.kts || sed -i 's/targetSdkVersion flutter.targetSdkVersion/targetSdkVersion 34/g' android/app/build.gradle
-      - name: Get Dependencies & Generate App Icon
+      - name: Get Dependencies, Patch Legacy Plugins & Generate App Icon
         run: |
           flutter pub get
+          find ~/.pub-cache/hosted/pub.dev -name "build.gradle" -exec sed -i 's/jcenter()/mavenCentral()/g' {} +
           dart run flutter_launcher_icons
       - name: Build Release APK
         run: flutter build apk --release
