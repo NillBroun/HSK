@@ -1,482 +1,1866 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
-import 'package:archive/archive_io.dart';
-import 'package:dio/dio.dart';
-import 'package:file_picker/file_picker.dart';
+import 'dart:math' as math;
+
+import 'package:archive/archive.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:http/http.dart' as http;
 import 'package:just_audio/just_audio.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:pdfrx/pdfrx.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-const String githubUser = "NillBroun";
-const String repoName = "HSK";
-const String releaseTag = "v1.0.0";
-const String developerFacebookUrl = "https://www.facebook.com/ahm.79316";
-const String academyFacebookUrl = "https://www.facebook.com/profile.php?id=61581738629512";
+/// TODO: তোমার v1.0.1-এর আসল GitHub Release Base URL এখানে বসাও
+const String kGithubReleaseBaseUrl =
+    'https://github.com/YOUR_USERNAME/YOUR_REPO/releases/download/v1.0.0/';
 
-String releaseUrl(String fileName) =>
-    "https://github.com/$githubUser/$repoName/releases/download/$releaseTag/$fileName";
+const Color kImperialRed = Color(0xFFB71C1C);
+const Color kPorcelainWhite = Color(0xFFF9F7F2);
+const Color kNightDark = Color(0xFF121212);
+const Color kNightCard = Color(0xFF1E1E1E);
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  final prefs = await SharedPreferences.getInstance();
-  runApp(HSKApp(prefs: prefs));
+  runApp(const HskApp());
 }
 
-class HSKModule {
-  final String id;
-  final String levelTitle;
-  final String subTitle;
-  final String chineseBadge;
-  final String audioZipName;
-  final String pdfFileName;
+// ============================================================================
+// 1. DATA MODELS
+// ============================================================================
 
-  const HSKModule({
-    required this.id,
-    required this.levelTitle,
-    required this.subTitle,
-    required this.chineseBadge,
-    required this.audioZipName,
-    required this.pdfFileName,
+class VocabWord {
+  final String hanzi;
+  final String pinyin;
+  final String en;
+  final String bn;
+  final String pron;
+  final String tag;
+  final String groupId;
+  final String groupTitle;
+
+  const VocabWord({
+    required this.hanzi,
+    required this.pinyin,
+    required this.en,
+    required this.bn,
+    required this.pron,
+    required this.tag,
+    required this.groupId,
+    required this.groupTitle,
   });
-}
 
-const List<HSKModule> allModules = [
-  HSKModule(id: "hsk1", levelTitle: "HSK 1", subTitle: "Beginner", chineseBadge: "一级", audioZipName: "hsk1textbookaudios.zip", pdfFileName: "HSK-1-Textbook.pdf"),
-  HSKModule(id: "hsk2", levelTitle: "HSK 2", subTitle: "Elementary", chineseBadge: "二级", audioZipName: "hsk2textbookaudios.zip", pdfFileName: "HSK-2-Textbook.pdf"),
-  HSKModule(id: "hsk3", levelTitle: "HSK 3", subTitle: "Intermediate", chineseBadge: "三级", audioZipName: "hsk3textbookaudios.zip", pdfFileName: "HSK-3-Textbook.pdf"),
-  HSKModule(id: "hsk4A", levelTitle: "HSK 4 — Part A", subTitle: "Upper-Intermediate (上)", chineseBadge: "四级上", audioZipName: "hsk4Atextbookaudios.zip", pdfFileName: "hSK-4A-textbook.pdf"),
-  HSKModule(id: "hsk4B", levelTitle: "HSK 4 — Part B", subTitle: "Upper-Intermediate (下)", chineseBadge: "四级下", audioZipName: "hsk4Btextbookaudios.zip", pdfFileName: "HSK-4B-Textbook.pdf"),
-  HSKModule(id: "hsk5A", levelTitle: "HSK 5 — Part A", subTitle: "Advanced (上)", chineseBadge: "五级上", audioZipName: "hsk5Atextbookaudios.zip", pdfFileName: "HSK-5A-Textbook.pdf"),
-  HSKModule(id: "hsk5B", levelTitle: "HSK 5 — Part B", subTitle: "Advanced (下)", chineseBadge: "五级下", audioZipName: "hsk5Btextbookaudios.zip", pdfFileName: "HSK-5B-Textbook.pdf"),
-  HSKModule(id: "hsk6A", levelTitle: "HSK 6 — Part A", subTitle: "Mastery (上)", chineseBadge: "六级上", audioZipName: "hsk6Atextbookaudios.zip", pdfFileName: "HSK-6A-Textbook.pdf"),
-  HSKModule(id: "hsk6B", levelTitle: "HSK 6 — Part B", subTitle: "Mastery (下)", chineseBadge: "六级下", audioZipName: "hsk6Btextbookaudios.zip", pdfFileName: "HSK-6B-Textbook.pdf"),
-];
+  String get uniqueKey => '$groupId::$hanzi::$pinyin';
 
-Future scanModuleAudios(String moduleId) async {
-  final dir = await getApplicationDocumentsDirectory();
-  final audioDir = Directory('${dir.path}/audios/$moduleId');
-  Map<String, List<File>> scanned = {};
-  if (await audioDir.exists()) {
-    await for (var entity in audioDir.list(recursive: true)) {
-      if (entity is File && entity.path.toLowerCase().endsWith('.mp3')) {
-        final parentName = entity.parent.uri.pathSegments.where((s) => s.isNotEmpty).last;
-        scanned.putIfAbsent(parentName, () => []).add(entity);
-      }
-    }
-    for (var key in scanned.keys) {
-      scanned[key]!.sort((a, b) => a.path.compareTo(b.path));
-    }
-  }
-  final sortedKeys = scanned.keys.toList()..sort();
-  return {for (var k in sortedKeys) k: scanned[k]!};
-}
-
-class HSKApp extends StatefulWidget {
-  final SharedPreferences prefs;
-  const HSKApp({super.key, required this.prefs});
-
-  @override
-  State<HSKApp> createState() => _HSKAppState();
-}
-
-class _HSKAppState extends State<HSKApp> {
-  late bool isDarkMode;
-
-  @override
-  void initState() {
-    super.initState();
-    isDarkMode = widget.prefs.getBool('dark_mode') ?? false;
-  }
-
-  void toggleTheme(bool val) {
-    setState(() => isDarkMode = val);
-    widget.prefs.setBool('dark_mode', val);
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    const imperialRed = Color(0xFFB71C1C);
-    const porcelainWhite = Color(0xFFFAF9F6);
-
-    return MaterialApp(
-      title: 'HSK',
-      debugShowCheckedModeBanner: false,
-      themeMode: isDarkMode ? ThemeMode.dark : ThemeMode.light,
-      theme: ThemeData(
-        useMaterial3: true,
-        scaffoldBackgroundColor: porcelainWhite,
-        colorScheme: ColorScheme.fromSeed(
-          seedColor: imperialRed,
-          primary: imperialRed,
-          surface: Colors.white,
-        ),
-        appBarTheme: const AppBarTheme(
-          backgroundColor: imperialRed,
-          foregroundColor: Colors.white,
-          elevation: 0,
-        ),
-      ),
-      darkTheme: ThemeData(
-        useMaterial3: true,
-        brightness: Brightness.dark,
-        scaffoldBackgroundColor: const Color(0xFF121212),
-        colorScheme: ColorScheme.fromSeed(
-          seedColor: imperialRed,
-          brightness: Brightness.dark,
-          primary: const Color(0xFFE53935),
-        ),
-        appBarTheme: const AppBarTheme(
-          backgroundColor: Color(0xFF1E1E1E),
-          foregroundColor: Colors.white,
-          elevation: 0,
-        ),
-      ),
-      home: HomeScreen(
-        prefs: widget.prefs,
-        isDarkMode: isDarkMode,
-        onThemeChanged: toggleTheme,
-      ),
+  factory VocabWord.fromJson(
+    Map<String, dynamic> json,
+    String groupId,
+    String groupTitle,
+  ) {
+    return VocabWord(
+      hanzi: (json['hanzi'] ?? '').toString(),
+      pinyin: (json['pinyin'] ?? '').toString(),
+      en: (json['en'] ?? '').toString(),
+      bn: (json['bn'] ?? '').toString(),
+      pron: (json['pron'] ?? '').toString(),
+      tag: (json['tag'] ?? 'All').toString(),
+      groupId: groupId,
+      groupTitle: groupTitle,
     );
   }
 }
 
-class HomeScreen extends StatefulWidget {
-  final SharedPreferences prefs;
-  final bool isDarkMode;
-  final ValueChanged<bool> onThemeChanged;
+class VocabGroup {
+  final String id;
+  final String section; // 'hsk', 'collins', 'department'
+  final String title;
+  final String subtitle;
+  final List<VocabWord> words;
 
-  const HomeScreen({
-    super.key,
-    required this.prefs,
-    required this.isDarkMode,
-    required this.onThemeChanged,
+  const VocabGroup({
+    required this.id,
+    required this.section,
+    required this.title,
+    required this.subtitle,
+    required this.words,
   });
+
+  List<String> get tags {
+    final set = <String>{};
+    for (final w in words) {
+      if (w.tag.isNotEmpty) set.add(w.tag);
+    }
+    return ['All', ...set];
+  }
+}
+
+class HskCourseItem {
+  final String id;
+  final String title;
+  final String subtitle;
+  final String pdfFileName;
+  final String audioZipName;
+
+  const HskCourseItem({
+    required this.id,
+    required this.title,
+    required this.subtitle,
+    required this.pdfFileName,
+    required this.audioZipName,
+  });
+}
+
+const List<HskCourseItem> kHskCourses = [
+  HskCourseItem(
+    id: 'hsk1',
+    title: 'HSK 1',
+    subtitle: 'Lessons 1–15 • 150+ Words',
+    pdfFileName: 'HSK-1-Textbook.pdf',
+    audioZipName: 'hsk1-audio.zip',
+  ),
+  HskCourseItem(
+    id: 'hsk2',
+    title: 'HSK 2',
+    subtitle: 'Lessons 1–15 • 300+ Words',
+    pdfFileName: 'HSK-2-Textbook.pdf',
+    audioZipName: 'hsk2-audio.zip',
+  ),
+  HskCourseItem(
+    id: 'hsk3',
+    title: 'HSK 3',
+    subtitle: 'Lessons 1–20 • 600+ Words',
+    pdfFileName: 'HSK-3-Textbook.pdf',
+    audioZipName: 'hsk3-audio.zip',
+  ),
+  HskCourseItem(
+    id: 'hsk4a',
+    title: 'HSK 4 (Part A)',
+    subtitle: 'Upper Textbook • 1–10',
+    pdfFileName: 'HSK-4A-Textbook.pdf',
+    audioZipName: 'hsk4a-audio.zip',
+  ),
+  HskCourseItem(
+    id: 'hsk4b',
+    title: 'HSK 4 (Part B)',
+    subtitle: 'Lower Textbook • 11–20',
+    pdfFileName: 'HSK-4B-Textbook.pdf',
+    audioZipName: 'hsk4b-audio.zip',
+  ),
+  HskCourseItem(
+    id: 'hsk5a',
+    title: 'HSK 5 (Part A)',
+    subtitle: 'Upper Textbook • 1–18',
+    pdfFileName: 'HSK-5A-Textbook.pdf',
+    audioZipName: 'hsk5a-audio.zip',
+  ),
+  HskCourseItem(
+    id: 'hsk5b',
+    title: 'HSK 5 (Part B)',
+    subtitle: 'Lower Textbook • 19–36',
+    pdfFileName: 'HSK-5B-Textbook.pdf',
+    audioZipName: 'hsk5b-audio.zip',
+  ),
+  HskCourseItem(
+    id: 'hsk6a',
+    title: 'HSK 6 (Part A)',
+    subtitle: 'Upper Textbook • 1–20',
+    pdfFileName: 'HSK-6A-Textbook.pdf',
+    audioZipName: 'hsk6a-audio.zip',
+  ),
+  HskCourseItem(
+    id: 'hsk6b',
+    title: 'HSK 6 (Part B)',
+    subtitle: 'Lower Textbook • 21–40',
+    pdfFileName: 'HSK-6B-Textbook.pdf',
+    audioZipName: 'hsk6b-audio.zip',
+  ),
+];
+
+// ============================================================================
+// 2. PINYIN NORMALIZER & VOCAB REPOSITORY (100% OFFLINE JSON)
+// ============================================================================
+
+String stripPinyinTones(String input) {
+  const map = {
+    'ā': 'a', 'á': 'a', 'ǎ': 'a', 'à': 'a',
+    'ē': 'e', 'é': 'e', 'ě': 'e', 'è': 'e',
+    'ī': 'i', 'í': 'i', 'ǐ': 'i', 'ì': 'i',
+    'ō': 'o', 'ó': 'o', 'ǒ': 'o', 'ò': 'o',
+    'ū': 'u', 'ú': 'u', 'ǔ': 'u', 'ù': 'u',
+    'ǖ': 'u', 'ǘ': 'u', 'ǚ': 'u', 'ǜ': 'u', 'ü': 'u',
+  };
+  final sb = StringBuffer();
+  for (final ch in input.toLowerCase().split('')) {
+    if (ch == ' ' || ch == "'" || ch == '-') continue;
+    sb.write(map[ch] ?? ch);
+  }
+  return sb.toString();
+}
+
+class VocabRepository {
+  static final VocabRepository instance = VocabRepository._();
+  VocabRepository._();
+
+  final List<VocabGroup> groups = [];
+  final List<VocabWord> allWords = [];
+  bool _loaded = false;
+
+  Future<void> ensureLoaded() async {
+    if (_loaded) return;
+    groups.clear();
+    allWords.clear();
+
+    const files = [
+      ('assets/vocab/hsk1.json', 'hsk'),
+      ('assets/vocab/hsk2.json', 'hsk'),
+      ('assets/vocab/hsk3.json', 'hsk'),
+      ('assets/vocab/collins_3000.json', 'collins'),
+      ('assets/vocab/departments.json', 'department'),
+    ];
+
+    for (final entry in files) {
+      try {
+        final raw = await rootBundle.loadString(entry.$1);
+        final decoded = jsonDecode(raw) as Map<String, dynamic>;
+        final rawGroups = (decoded['groups'] as List<dynamic>? ?? []);
+        for (final g in rawGroups) {
+          final gm = g as Map<String, dynamic>;
+          final gid = (gm['id'] ?? '').toString();
+          final gTitle = (gm['title'] ?? '').toString();
+          final gSub = (gm['subtitle'] ?? '').toString();
+          final rawWords = (gm['words'] as List<dynamic>? ?? []);
+          final parsedWords = rawWords
+              .map((w) => VocabWord.fromJson(
+                    w as Map<String, dynamic>,
+                    gid,
+                    gTitle,
+                  ))
+              .toList();
+          groups.add(VocabGroup(
+            id: gid,
+            section: entry.$2,
+            title: gTitle,
+            subtitle: gSub,
+            words: parsedWords,
+          ));
+          allWords.addAll(parsedWords);
+        }
+      } catch (_) {
+        // ফাইলটি এখনও যোগ না করা হয়ে থাকলে ক্র্যাশ এড়িয়ে যাবে
+      }
+    }
+    _loaded = true;
+  }
+
+  List<VocabGroup> bySection(String section) =>
+      groups.where((g) => g.section == section).toList();
+
+  VocabGroup? byId(String id) {
+    for (final g in groups) {
+      if (g.id == id) return g;
+    }
+    return null;
+  }
+
+  List<VocabWord> search(String query, {List<VocabWord>? pool}) {
+    final q = query.trim().toLowerCase();
+    if (q.isEmpty) return [];
+    final qClean = stripPinyinTones(q);
+    final source = pool ?? allWords;
+
+    return source.where((w) {
+      if (w.hanzi.contains(q)) return true;
+      if (w.bn.toLowerCase().contains(q)) return true;
+      if (w.pron.toLowerCase().contains(q)) return true;
+      if (w.en.toLowerCase().contains(q)) return true;
+      if (w.pinyin.toLowerCase().contains(q)) return true;
+      if (qClean.isNotEmpty && stripPinyinTones(w.pinyin).contains(qClean)) {
+        return true;
+      }
+      return false;
+    }).toList();
+  }
+}
+
+// ============================================================================
+// 3. APP STATE & PREFERENCES CONTROLLER
+// ============================================================================
+
+class AppState extends ChangeNotifier {
+  bool isDarkMode = false;
+  bool allLessonsContinuous = false; // false = Lesson Loop, true = All Lessons
+  int shadowingGapSeconds = 0; // 0, 2, 4 sec
+  Set<String> favoriteGroupIds = {};
+  Set<String> favoriteWordKeys = {};
+  String lastStudiedLabel = '';
+  String lastStudiedCourseId = '';
+
+  Future<void> load() async {
+    final prefs = await SharedPreferences.getInstance();
+    isDarkMode = prefs.getBool('dark_mode') ?? false;
+    allLessonsContinuous = prefs.getBool('all_lessons_continuous') ?? false;
+    shadowingGapSeconds = prefs.getInt('shadowing_gap') ?? 0;
+    favoriteGroupIds = (prefs.getStringList('fav_groups') ?? []).toSet();
+    favoriteWordKeys = (prefs.getStringList('fav_words') ?? []).toSet();
+    lastStudiedLabel = prefs.getString('last_studied_label') ?? '';
+    lastStudiedCourseId = prefs.getString('last_studied_course') ?? '';
+    await VocabRepository.instance.ensureLoaded();
+    notifyListeners();
+  }
+
+  Future<void> toggleDarkMode(bool val) async {
+    isDarkMode = val;
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setBool('dark_mode', val);
+    notifyListeners();
+  }
+
+  Future<void> setAllLessonsContinuous(bool val) async {
+    allLessonsContinuous = val;
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setBool('all_lessons_continuous', val);
+    notifyListeners();
+  }
+
+  Future<void> setShadowingGap(int sec) async {
+    shadowingGapSeconds = sec;
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setInt('shadowing_gap', sec);
+    notifyListeners();
+  }
+
+  Future<void> toggleFavoriteGroup(String groupId) async {
+    if (favoriteGroupIds.contains(groupId)) {
+      favoriteGroupIds.remove(groupId);
+    } else {
+      favoriteGroupIds.add(groupId);
+    }
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setStringList('fav_groups', favoriteGroupIds.toList());
+    notifyListeners();
+  }
+
+  Future<void> toggleFavoriteWord(String wordKey) async {
+    if (favoriteWordKeys.contains(wordKey)) {
+      favoriteWordKeys.remove(wordKey);
+    } else {
+      favoriteWordKeys.add(wordKey);
+    }
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setStringList('fav_words', favoriteWordKeys.toList());
+    notifyListeners();
+  }
+
+  Future<void> updateLastStudied(String courseId, String label) async {
+    lastStudiedCourseId = courseId;
+    lastStudiedLabel = label;
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString('last_studied_course', courseId);
+    await prefs.setString('last_studied_label', label);
+    notifyListeners();
+  }
+}
+
+// ============================================================================
+// 4. ROOT APPLICATION
+// ============================================================================
+
+class HskApp extends StatefulWidget {
+  const HskApp({super.key});
+
+  @override
+  State<HskApp> createState() => _HskAppState();
+}
+
+class _HskAppState extends State<HskApp> {
+  final AppState _state = AppState();
+
+  @override
+  void initState() {
+    super.initState();
+    _state.load();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return AnimatedBuilder(
+      animation: _state,
+      builder: (context, _) {
+        final lightTheme = ThemeData(
+          useMaterial3: true,
+          brightness: Brightness.light,
+          scaffoldBackgroundColor: kPorcelainWhite,
+          colorScheme: ColorScheme.fromSeed(
+            seedColor: kImperialRed,
+            primary: kImperialRed,
+            surface: Colors.white,
+          ),
+          appBarTheme: const AppBarTheme(
+            backgroundColor: kImperialRed,
+            foregroundColor: Colors.white,
+            elevation: 0,
+          ),
+        );
+
+        final darkTheme = ThemeData(
+          useMaterial3: true,
+          brightness: Brightness.dark,
+          scaffoldBackgroundColor: kNightDark,
+          colorScheme: ColorScheme.fromSeed(
+            seedColor: kImperialRed,
+            brightness: Brightness.dark,
+            primary: const Color(0xFFEF5350),
+            surface: kNightCard,
+          ),
+          appBarTheme: const AppBarTheme(
+            backgroundColor: Color(0xFF8E0000),
+            foregroundColor: Colors.white,
+            elevation: 0,
+          ),
+        );
+
+        return MaterialApp(
+          title: 'HSK Study • AHM',
+          debugShowCheckedModeBanner: false,
+          theme: lightTheme,
+          darkTheme: darkTheme,
+          themeMode: _state.isDarkMode ? ThemeMode.dark : ThemeMode.light,
+          home: HomeScreen(appState: _state),
+        );
+      },
+    );
+  }
+}
+
+// ============================================================================
+// 5. HOME SCREEN + GLOBAL SEARCH + DRAWER MENU (☰)
+// ============================================================================
+
+class HomeScreen extends StatefulWidget {
+  final AppState appState;
+  const HomeScreen({super.key, required this.appState});
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  String lastPlayed = "";
+  final TextEditingController _searchController = TextEditingController();
+  List<VocabWord> _searchResults = [];
 
-  @override
-  void initState() {
-    super.initState();
-    _loadLastPlayed();
-  }
-
-  void _loadLastPlayed() {
+  void _onSearchChanged(String q) {
     setState(() {
-      lastPlayed = widget.prefs.getString('last_played') ?? "";
+      _searchResults = VocabRepository.instance.search(q);
     });
   }
 
-  Future<void> _resumeLastStudied() async {
-    final savedModuleId = widget.prefs.getString('last_module_id') ?? "";
-    final savedFolder = widget.prefs.getString('last_folder_key') ?? "";
+  @override
+  void dispose() {
+    _searchController.dispose();
+    super.dispose();
+  }
 
-    HSKModule? targetModule;
-    for (var m in allModules) {
-      if (m.id == savedModuleId) {
-        targetModule = m;
-        break;
-      }
-    }
-
-    if (targetModule == null && lastPlayed.isNotEmpty) {
-      for (var m in allModules) {
-        if (lastPlayed.startsWith(m.levelTitle)) {
-          targetModule = m;
-          break;
-        }
-      }
-    }
-
-    if (targetModule == null) return;
-
-    final folders = await scanModuleAudios(targetModule.id);
-    if (!mounted) return;
-
-    String? matchedFolderKey;
-    if (savedFolder.isNotEmpty && folders.containsKey(savedFolder)) {
-      matchedFolderKey = savedFolder;
-    } else if (lastPlayed.contains('•')) {
-      final part = lastPlayed.split('•').last.trim().toLowerCase();
-      for (var k in folders.keys) {
-        if (k.replaceAll('-', ' ').toLowerCase() == part) {
-          matchedFolderKey = k;
-          break;
-        }
-      }
-    }
-
-    if (folders.isNotEmpty && matchedFolderKey != null) {
-      final displayTitle = matchedFolderKey.replaceAll('-', ' ').toUpperCase();
-      await Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (_) => ChapterAudioPlayerScreen(
-            moduleTitle: targetModule!.levelTitle,
-            chapterTitle: displayTitle,
-            tracks: folders[matchedFolderKey]!,
-            prefs: widget.prefs,
-          ),
+  void _openGroup(VocabGroup group) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (_) => VocabListScreen(
+          group: group,
+          appState: widget.appState,
         ),
-      );
-    } else {
-      await Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (_) => ModuleDashboardScreen(module: targetModule!, prefs: widget.prefs),
-        ),
-      );
-    }
-    _loadLastPlayed();
+      ),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
-    final primary = Theme.of(context).colorScheme.primary;
+    final isDark = widget.appState.isDarkMode;
+    final repo = VocabRepository.instance;
+    final pinnedGroups = widget.appState.favoriteGroupIds
+        .map((id) => repo.byId(id))
+        .whereType<VocabGroup>()
+        .toList();
 
     return Scaffold(
       appBar: AppBar(
-        title: Row(
-          children: [
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
-              decoration: BoxDecoration(
-                color: Colors.white.withOpacity(0.2),
-                borderRadius: BorderRadius.circular(6),
-              ),
-              child: const Text("汉语", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
-            ),
-            const SizedBox(width: 10),
-            const Text("HSK", style: TextStyle(fontWeight: FontWeight.bold, letterSpacing: 1.2)),
-          ],
+        title: const Text(
+          '汉语 HSK Study',
+          style: TextStyle(fontWeight: FontWeight.bold),
         ),
         actions: [
           IconButton(
-            icon: const Icon(Icons.settings_rounded),
-            tooltip: "Settings",
-            onPressed: () async {
-              await Navigator.push(
+            tooltip: 'My Favorites',
+            icon: const Icon(Icons.star_rounded),
+            onPressed: () {
+              Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (_) => SettingsScreen(
-                    prefs: widget.prefs,
-                    isDarkMode: widget.isDarkMode,
-                    onThemeChanged: widget.onThemeChanged,
-                  ),
+                  builder: (_) => FavoritesScreen(appState: widget.appState),
                 ),
               );
-              _loadLastPlayed();
+            },
+          ),
+          IconButton(
+            tooltip: 'Settings',
+            icon: const Icon(Icons.settings_rounded),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (_) => SettingsScreen(appState: widget.appState),
+                ),
+              );
             },
           ),
         ],
       ),
-      body: ListView(
-        padding: const EdgeInsets.all(16),
+      drawer: _buildDrawer(context),
+      body: Column(
         children: [
-          if (lastPlayed.isNotEmpty)
-            Padding(
-              padding: const EdgeInsets.only(bottom: 16),
-              child: InkWell(
-                borderRadius: BorderRadius.circular(14),
-                onTap: _resumeLastStudied,
-                child: Container(
-                  padding: const EdgeInsets.all(14),
-                  decoration: BoxDecoration(
-                    color: primary.withOpacity(0.1),
-                    borderRadius: BorderRadius.circular(14),
-                    border: Border.all(color: primary.withOpacity(0.35)),
-                  ),
-                  child: Row(
-                    children: [
-                      Icon(Icons.history_rounded, color: primary),
-                      const SizedBox(width: 12),
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text("Last Studied (Tap to Resume)", style: TextStyle(fontSize: 12, color: primary, fontWeight: FontWeight.w600)),
-                            Text(lastPlayed, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 14)),
-                          ],
-                        ),
-                      ),
-                      Icon(Icons.play_circle_fill_rounded, color: primary, size: 28),
-                    ],
-                  ),
+          // Global Multi-Language Search Bar
+          Container(
+            color: isDark ? const Color(0xFF8E0000) : kImperialRed,
+            padding: const EdgeInsets.fromLTRB(16, 4, 16, 14),
+            child: TextField(
+              controller: _searchController,
+              onChanged: _onSearchChanged,
+              style: TextStyle(color: isDark ? Colors.white : Colors.black87),
+              decoration: InputDecoration(
+                hintText: 'শব্দ খুঁজুন (বাংলা / Pinyin / 汉字 / English)...',
+                hintStyle: TextStyle(
+                  fontSize: 13.5,
+                  color: isDark ? Colors.white60 : Colors.black45,
+                ),
+                prefixIcon: const Icon(Icons.search_rounded),
+                suffixIcon: _searchController.text.isNotEmpty
+                    ? IconButton(
+                        icon: const Icon(Icons.close_rounded),
+                        onPressed: () {
+                          _searchController.clear();
+                          _onSearchChanged('');
+                        },
+                      )
+                    : null,
+                filled: true,
+                fillColor: isDark ? kNightCard : Colors.white,
+                contentPadding: const EdgeInsets.symmetric(vertical: 10),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(14),
+                  borderSide: BorderSide.none,
                 ),
               ),
             ),
-
-          const Text("Select HSK Level", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-          const SizedBox(height: 12),
-
-          GridView.count(
-            crossAxisCount: 2,
-            shrinkWrap: true,
-            physics: const NeverScrollableScrollPhysics(),
-            mainAxisSpacing: 12,
-            crossAxisSpacing: 12,
-            childAspectRatio: 1.35,
-            children: [
-              _buildLevelTile(context, "HSK 1", "Beginner", "一级", [allModules[0]]),
-              _buildLevelTile(context, "HSK 2", "Elementary", "二级", [allModules[1]]),
-              _buildLevelTile(context, "HSK 3", "Intermediate", "三级", [allModules[2]]),
-              _buildLevelTile(context, "HSK 4", "Part A & B", "四级", [allModules[3], allModules[4]]),
-              _buildLevelTile(context, "HSK 5", "Part A & B", "五级", [allModules[5], allModules[6]]),
-              _buildLevelTile(context, "HSK 6", "Part A & B", "六级", [allModules[7], allModules[8]]),
-            ],
           ),
 
-          const SizedBox(height: 20),
-          const Text("Personal Study Space", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-          const SizedBox(height: 10),
+          // Search Results OR Main Dashboard
+          Expanded(
+            child: _searchController.text.trim().isNotEmpty
+                ? _buildSearchResultsList()
+                : ListView(
+                    padding: const EdgeInsets.all(16),
+                    children: [
+                      // Last Studied Banner
+                      if (widget.appState.lastStudiedLabel.isNotEmpty)
+                        _buildResumeBanner(isDark),
 
-          Card(
-            elevation: 1,
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-            child: ListTile(
-              contentPadding: const EdgeInsets.symmetric(horizontal: 18, vertical: 10),
-              leading: CircleAvatar(
-                backgroundColor: primary.withOpacity(0.12),
-                child: Icon(Icons.menu_book_rounded, color: primary),
-              ),
-              title: const Text("My Grammar & Notes", style: TextStyle(fontWeight: FontWeight.bold)),
-              subtitle: const Text("Import & read your own PDF notes from phone/SD card"),
-              trailing: const Icon(Icons.arrow_forward_ios_rounded, size: 16),
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (_) => PersonalGrammarScreen(prefs: widget.prefs)),
-                );
-              },
-            ),
+                      // ⭐ Pinned Favorite Categories
+                      if (pinnedGroups.isNotEmpty) ...[
+                        const Padding(
+                          padding: EdgeInsets.only(bottom: 8, top: 4),
+                          child: Text(
+                            '⭐ My Favorites',
+                            style: TextStyle(
+                              fontSize: 15,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                        SizedBox(
+                          height: 44,
+                          child: ListView.separated(
+                            scrollDirection: Axis.horizontal,
+                            itemCount: pinnedGroups.length,
+                            separatorBuilder: (_, __) =>
+                                const SizedBox(width: 8),
+                            itemBuilder: (_, i) {
+                              final g = pinnedGroups[i];
+                              return ActionChip(
+                                avatar: const Icon(
+                                  Icons.star_rounded,
+                                  size: 18,
+                                  color: Colors.amber,
+                                ),
+                                label: Text(g.title),
+                                onPressed: () => _openGroup(g),
+                              );
+                            },
+                          ),
+                        ),
+                        const SizedBox(height: 16),
+                      ],
+
+                      // Quick Actions Row (My Grammar & Notes + Vocab Bank)
+                      Row(
+                        children: [
+                          Expanded(
+                            child: _quickCard(
+                              isDark: isDark,
+                              icon: Icons.edit_note_rounded,
+                              title: 'My Grammar & Notes',
+                              subtitle: 'নিজের নোট ও গ্রামার',
+                              onTap: () => Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (_) => const GrammarNotesScreen(),
+                                ),
+                              ),
+                            ),
+                          ),
+                          const SizedBox(width: 10),
+                          Expanded(
+                            child: _quickCard(
+                              isDark: isDark,
+                              icon: Icons.menu_book_rounded,
+                              title: 'Vocabulary Bank',
+                              subtitle: 'HSK • 3000 • কর্মক্ষেত্র',
+                              onTap: () => Scaffold.of(context).openDrawer(),
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 18),
+
+                      const Text(
+                        'HSK Standard Courses (1–6)',
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      const SizedBox(height: 10),
+
+                      GridView.builder(
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
+                        itemCount: kHskCourses.length,
+                        gridDelegate:
+                            const SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 2,
+                          mainAxisSpacing: 10,
+                          crossAxisSpacing: 10,
+                          childAspectRatio: 1.42,
+                        ),
+                        itemBuilder: (context, index) {
+                          final course = kHskCourses[index];
+                          return InkWell(
+                            borderRadius: BorderRadius.circular(14),
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (_) => CourseDetailScreen(
+                                    course: course,
+                                    appState: widget.appState,
+                                  ),
+                                ),
+                              );
+                            },
+                            child: Container(
+                              padding: const EdgeInsets.all(14),
+                              decoration: BoxDecoration(
+                                color: isDark ? kNightCard : Colors.white,
+                                borderRadius: BorderRadius.circular(14),
+                                border: Border.all(
+                                  color: isDark
+                                      ? Colors.white12
+                                      : const Color(0xFFE8DFD3),
+                                ),
+                              ),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Text(
+                                        course.title,
+                                        style: TextStyle(
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.bold,
+                                          color: isDark
+                                              ? const Color(0xFFEF5350)
+                                              : kImperialRed,
+                                        ),
+                                      ),
+                                      Icon(
+                                        Icons.arrow_forward_ios_rounded,
+                                        size: 14,
+                                        color: isDark
+                                            ? Colors.white38
+                                            : Colors.black38,
+                                      ),
+                                    ],
+                                  ),
+                                  Text(
+                                    course.subtitle,
+                                    maxLines: 2,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: TextStyle(
+                                      fontSize: 12,
+                                      color: isDark
+                                          ? Colors.white70
+                                          : Colors.black54,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+                    ],
+                  ),
           ),
         ],
       ),
     );
   }
 
-  Widget _buildLevelTile(BuildContext context, String title, String sub, String hanzi, List<HSKModule> modules) {
-    final primary = Theme.of(context).colorScheme.primary;
-    return InkWell(
-      borderRadius: BorderRadius.circular(16),
-      onTap: () async {
-        if (modules.length == 1) {
-          await Navigator.push(
-            context,
-            MaterialPageRoute(builder: (_) => ModuleDashboardScreen(module: modules.first, prefs: widget.prefs)),
-          );
-        } else {
-          await Navigator.push(
-            context,
-            MaterialPageRoute(builder: (_) => PartSelectorScreen(title: title, parts: modules, prefs: widget.prefs)),
-          );
-        }
-        _loadLastPlayed();
-      },
-      child: Card(
-        elevation: 1.5,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(16),
-          side: BorderSide(color: primary.withOpacity(0.2)),
+  Widget _buildResumeBanner(bool isDark) {
+    return Container(
+      margin: const EdgeInsets.only(bottom: 14),
+      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
+      decoration: BoxDecoration(
+        color: isDark ? const Color(0xFF2B1919) : const Color(0xFFFFEFEF),
+        borderRadius: BorderRadius.circular(14),
+        border: Border.all(
+          color: kImperialRed.withValues(alpha: 0.25),
         ),
-        child: Padding(
-          padding: const EdgeInsets.all(14),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      ),
+      child: Row(
+        children: [
+          const Icon(Icons.history_rounded, color: kImperialRed),
+          const SizedBox(width: 10),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Text(
+                  'Last Studied',
+                  style: TextStyle(fontSize: 11, fontWeight: FontWeight.w600),
+                ),
+                Text(
+                  widget.appState.lastStudiedLabel,
+                  style: const TextStyle(
+                    fontSize: 13.5,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          TextButton(
+            onPressed: () {
+              final course = kHskCourses.firstWhere(
+                (c) => c.id == widget.appState.lastStudiedCourseId,
+                orElse: () => kHskCourses.first,
+              );
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (_) => CourseDetailScreen(
+                    course: course,
+                    appState: widget.appState,
+                  ),
+                ),
+              );
+            },
+            child: const Text('Resume'),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _quickCard({
+    required bool isDark,
+    required IconData icon,
+    required String title,
+    required String subtitle,
+    required VoidCallback onTap,
+  }) {
+    return InkWell(
+      borderRadius: BorderRadius.circular(14),
+      onTap: onTap,
+      child: Container(
+        padding: const EdgeInsets.all(13),
+        decoration: BoxDecoration(
+          color: isDark ? kNightCard : Colors.white,
+          borderRadius: BorderRadius.circular(14),
+          border: Border.all(
+            color: isDark ? Colors.white12 : const Color(0xFFE8DFD3),
+          ),
+        ),
+        child: Row(
+          children: [
+            Icon(icon, color: kImperialRed, size: 26),
+            const SizedBox(width: 10),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(title, style: TextStyle(fontSize: 19, fontWeight: FontWeight.bold, color: primary)),
-                  Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
-                    decoration: BoxDecoration(
-                      color: primary.withOpacity(0.1),
-                      borderRadius: BorderRadius.circular(8),
+                  Text(
+                    title,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: const TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 13,
                     ),
-                    child: Text(hanzi, style: TextStyle(fontWeight: FontWeight.bold, color: primary)),
+                  ),
+                  Text(
+                    subtitle,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(
+                      fontSize: 11,
+                      color: isDark ? Colors.white60 : Colors.black54,
+                    ),
                   ),
                 ],
               ),
-              Text(sub, style: TextStyle(fontSize: 13, color: Colors.grey[600])),
-            ],
-          ),
+            ),
+          ],
         ),
+      ),
+    );
+  }
+
+  Widget _buildSearchResultsList() {
+    if (_searchResults.isEmpty) {
+      return const Center(
+        child: Text('কোনো শব্দ পাওয়া যায়নি। অন্যভাবে লিখে চেষ্টা করো।'),
+      );
+    }
+    return ListView.builder(
+      padding: const EdgeInsets.all(14),
+      itemCount: _searchResults.length,
+      itemBuilder: (context, index) {
+        final w = _searchResults[index];
+        return VocabCardWidget(
+          word: w,
+          showSourceBadge: true,
+          appState: widget.appState,
+        );
+      },
+    );
+  }
+
+  Widget _buildDrawer(BuildContext context) {
+    final repo = VocabRepository.instance;
+    final hskGroups = repo.bySection('hsk');
+    final collinsGroups = repo.bySection('collins');
+    final deptGroups = repo.bySection('department');
+
+    return Drawer(
+      child: ListView(
+        padding: EdgeInsets.zero,
+        children: [
+          DrawerHeader(
+            decoration: const BoxDecoration(color: kImperialRed),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: const [
+                Text(
+                  '汉语 HSK Study',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                SizedBox(height: 6),
+                Text(
+                  'HSK 1–6 • Collins 3000 • Workplace Chinese',
+                  style: TextStyle(color: Colors.white70, fontSize: 12.5),
+                ),
+                Text(
+                  'By AHM • v1.1.0',
+                  style: TextStyle(color: Colors.white60, fontSize: 11.5),
+                ),
+              ],
+            ),
+          ),
+
+          ListTile(
+            leading: const Icon(Icons.star_rounded, color: Colors.amber),
+            title: const Text('My Favorites (পিন করা তালিকা)'),
+            onTap: () {
+              Navigator.pop(context);
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (_) => FavoritesScreen(appState: widget.appState),
+                ),
+              );
+            },
+          ),
+          const Divider(),
+
+          // Section 1: HSK Vocabulary Bank
+          ExpansionTile(
+            initiallyExpanded: true,
+            leading: const Icon(Icons.school_rounded, color: kImperialRed),
+            title: const Text(
+              'HSK Vocabulary Bank (1–3)',
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
+            ),
+            children: hskGroups.isEmpty
+                ? [
+                    const ListTile(
+                      title: Text(
+                        'assets/vocab/hsk1–3.json যোগ হলে এখানে দেখাবে',
+                        style: TextStyle(fontSize: 12),
+                      ),
+                    )
+                  ]
+                : hskGroups
+                    .map((g) => ListTile(
+                          dense: true,
+                          title: Text(g.title),
+                          subtitle: Text('${g.words.length} শব্দ'),
+                          trailing: widget.appState.favoriteGroupIds
+                                  .contains(g.id)
+                              ? const Icon(Icons.star_rounded,
+                                  color: Colors.amber, size: 18)
+                              : null,
+                          onTap: () {
+                            Navigator.pop(context);
+                            _openGroup(g);
+                          },
+                        ))
+                    .toList(),
+          ),
+
+          // Section 2: Collins 3000 Words (10 Sequential Sections)
+          ExpansionTile(
+            leading: const Icon(Icons.auto_stories_rounded, color: kImperialRed),
+            title: const Text(
+              'Collins 3000 Words (১০ বিভাগ)',
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
+            ),
+            children: collinsGroups.isEmpty
+                ? [
+                    const ListTile(
+                      title: Text(
+                        'assets/vocab/collins_3000.json যোগ হলে এখানে দেখাবে',
+                        style: TextStyle(fontSize: 12),
+                      ),
+                    )
+                  ]
+                : collinsGroups
+                    .map((g) => ListTile(
+                          dense: true,
+                          title: Text(g.title),
+                          subtitle: Text(g.subtitle),
+                          trailing: widget.appState.favoriteGroupIds
+                                  .contains(g.id)
+                              ? const Icon(Icons.star_rounded,
+                                  color: Colors.amber, size: 18)
+                              : null,
+                          onTap: () {
+                            Navigator.pop(context);
+                            _openGroup(g);
+                          },
+                        ))
+                    .toList(),
+          ),
+
+          // Section 3: 13 Workplace Departments
+          ExpansionTile(
+            leading: const Icon(Icons.work_rounded, color: kImperialRed),
+            title: const Text(
+              'Workplace & Designations (১৩ বিভাগ)',
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
+            ),
+            children: deptGroups.isEmpty
+                ? [
+                    const ListTile(
+                      title: Text(
+                        'assets/vocab/departments.json যোগ হলে এখানে দেখাবে',
+                        style: TextStyle(fontSize: 12),
+                      ),
+                    )
+                  ]
+                : deptGroups
+                    .map((g) => ListTile(
+                          dense: true,
+                          title: Text(g.title),
+                          subtitle: Text(g.subtitle),
+                          trailing: widget.appState.favoriteGroupIds
+                                  .contains(g.id)
+                              ? const Icon(Icons.star_rounded,
+                                  color: Colors.amber, size: 18)
+                              : null,
+                          onTap: () {
+                            Navigator.pop(context);
+                            _openGroup(g);
+                          },
+                        ))
+                    .toList(),
+          ),
+
+          const Divider(),
+          ListTile(
+            leading: const Icon(Icons.sd_storage_rounded),
+            title: const Text('Manage Offline Storage'),
+            onTap: () {
+              Navigator.pop(context);
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (_) => const StorageManagerScreen()),
+              );
+            },
+          ),
+          ListTile(
+            leading: const Icon(Icons.settings_rounded),
+            title: const Text('Settings & About'),
+            onTap: () {
+              Navigator.pop(context);
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (_) => SettingsScreen(appState: widget.appState),
+                ),
+              );
+            },
+          ),
+        ],
       ),
     );
   }
 }
 
-class PartSelectorScreen extends StatelessWidget {
-  final String title;
-  final List<HSKModule> parts;
-  final SharedPreferences prefs;
+// ============================================================================
+// 6. VOCABULARY LIST SCREEN (CLEAN 4-LAYER CARD + FILTER + FLASHCARD BUTTON)
+// ============================================================================
 
-  const PartSelectorScreen({super.key, required this.title, required this.parts, required this.prefs});
+class VocabListScreen extends StatefulWidget {
+  final VocabGroup group;
+  final AppState appState;
+
+  const VocabListScreen({
+    super.key,
+    required this.group,
+    required this.appState,
+  });
+
+  @override
+  State<VocabListScreen> createState() => _VocabListScreenState();
+}
+
+class _VocabListScreenState extends State<VocabListScreen> {
+  String _selectedTag = 'All';
+  String _localQuery = '';
+
+  List<VocabWord> get _filteredWords {
+    Iterable<VocabWord> list = widget.group.words;
+    if (_selectedTag != 'All') {
+      list = list.where((w) => w.tag == _selectedTag);
+    }
+    if (_localQuery.trim().isNotEmpty) {
+      return VocabRepository.instance.search(_localQuery, pool: list.toList());
+    }
+    return list.toList();
+  }
 
   @override
   Widget build(BuildContext context) {
-    final primary = Theme.of(context).colorScheme.primary;
-    return Scaffold(
-      appBar: AppBar(title: Text(title)),
-      body: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          children: parts.map((m) {
-            return Card(
-              margin: const EdgeInsets.only(bottom: 14),
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-              child: ListTile(
-                contentPadding: const EdgeInsets.all(16),
-                leading: CircleAvatar(
-                  backgroundColor: primary,
-                  foregroundColor: Colors.white,
-                  child: Text(m.chineseBadge.substring(2), style: const TextStyle(fontWeight: FontWeight.bold)),
+    final words = _filteredWords;
+    final tags = widget.group.tags;
+
+    return AnimatedBuilder(
+      animation: widget.appState,
+      builder: (context, _) {
+        final isPinned =
+            widget.appState.favoriteGroupIds.contains(widget.group.id);
+        return Scaffold(
+          appBar: AppBar(
+            title: Text(widget.group.title),
+            actions: [
+              IconButton(
+                tooltip: 'Pin to Favorites',
+                icon: Icon(
+                  isPinned ? Icons.star_rounded : Icons.star_border_rounded,
+                  color: isPinned ? Colors.amber : Colors.white,
                 ),
-                title: Text(m.levelTitle, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 17)),
-                subtitle: Text(m.subTitle),
-                trailing: const Icon(Icons.arrow_forward_ios_rounded, size: 18),
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (_) => ModuleDashboardScreen(module: m, prefs: prefs)),
+                onPressed: () {
+                  widget.appState.toggleFavoriteGroup(widget.group.id);
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      duration: const Duration(seconds: 1),
+                      content: Text(
+                        isPinned
+                            ? 'Favorites থেকে সরানো হয়েছে'
+                            : '⭐ Favorites-এ পিন করা হয়েছে',
+                      ),
+                    ),
                   );
                 },
               ),
-            );
-          }).toList(),
+              if (words.isNotEmpty)
+                TextButton.icon(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (_) => FlashcardPracticeScreen(
+                          title: widget.group.title,
+                          words: words,
+                        ),
+                      ),
+                    );
+                  },
+                  icon: const Icon(Icons.style_rounded, color: Colors.white),
+                  label: const Text(
+                    'Practice',
+                    style: TextStyle(color: Colors.white),
+                  ),
+                ),
+            ],
+          ),
+          body: Column(
+            children: [
+              // Local Search Bar
+              Padding(
+                padding: const EdgeInsets.fromLTRB(14, 12, 14, 8),
+                child: TextField(
+                  onChanged: (v) => setState(() => _localQuery = v),
+                  decoration: InputDecoration(
+                    hintText: 'এই তালিকায় খুঁজুন (বাংলা / Pinyin / 汉字)...',
+                    prefixIcon: const Icon(Icons.search_rounded),
+                    isDense: true,
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                  ),
+                ),
+              ),
+
+              // Sub-category / Lesson Filter Chips
+              if (tags.length > 2)
+                SizedBox(
+                  height: 44,
+                  child: ListView.separated(
+                    padding: const EdgeInsets.symmetric(horizontal: 14),
+                    scrollDirection: Axis.horizontal,
+                    itemCount: tags.length,
+                    separatorBuilder: (_, __) => const SizedBox(width: 8),
+                    itemBuilder: (_, i) {
+                      final t = tags[i];
+                      final selected = t == _selectedTag;
+                      return ChoiceChip(
+                        label: Text(t),
+                        selected: selected,
+                        onSelected: (_) => setState(() => _selectedTag = t),
+                      );
+                    },
+                  ),
+                ),
+
+              // Word List
+              Expanded(
+                child: words.isEmpty
+                    ? const Center(child: Text('এই বিভাগে কোনো শব্দ পাওয়া যায়নি।'))
+                    : ListView.builder(
+                        padding: const EdgeInsets.all(14),
+                        itemCount: words.length,
+                        itemBuilder: (_, index) => VocabCardWidget(
+                          word: words[index],
+                          appState: widget.appState,
+                        ),
+                      ),
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+}
+
+class VocabCardWidget extends StatelessWidget {
+  final VocabWord word;
+  final AppState appState;
+  final bool showSourceBadge;
+
+  const VocabCardWidget({
+    super.key,
+    required this.word,
+    required this.appState,
+    this.showSourceBadge = false,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final isDark = appState.isDarkMode;
+    final isSaved = appState.favoriteWordKeys.contains(word.uniqueKey);
+
+    return Container(
+      margin: const EdgeInsets.only(bottom: 10),
+      padding: const EdgeInsets.all(14),
+      decoration: BoxDecoration(
+        color: isDark ? kNightCard : Colors.white,
+        borderRadius: BorderRadius.circular(14),
+        border: Border.all(
+          color: isDark ? Colors.white12 : const Color(0xFFE8DFD3),
         ),
+      ),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                if (showSourceBadge)
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 4),
+                    child: Text(
+                      '${word.groupTitle} • ${word.tag}',
+                      style: TextStyle(
+                        fontSize: 11,
+                        fontWeight: FontWeight.w600,
+                        color: isDark ? Colors.white54 : Colors.black45,
+                      ),
+                    ),
+                  ),
+                // Layer 1: Hanzi
+                Text(
+                  word.hanzi,
+                  style: const TextStyle(
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                const SizedBox(height: 2),
+                // Layer 2: Pinyin (Imperial Red)
+                Text(
+                  word.pinyin,
+                  style: TextStyle(
+                    fontSize: 15,
+                    fontWeight: FontWeight.w600,
+                    color: isDark ? const Color(0xFFEF5350) : kImperialRed,
+                  ),
+                ),
+                const SizedBox(height: 4),
+                // Layer 3: English
+                Text(
+                  word.en,
+                  style: TextStyle(
+                    fontSize: 13.5,
+                    color: isDark ? Colors.white70 : Colors.black87,
+                  ),
+                ),
+                const SizedBox(height: 3),
+                // Layer 4: Bengali Meaning & Pronunciation
+                Text(
+                  word.pron.isNotEmpty
+                      ? '${word.bn} (${word.pron})'
+                      : word.bn,
+                  style: TextStyle(
+                    fontSize: 14.5,
+                    fontWeight: FontWeight.w600,
+                    color: isDark ? Colors.white : Colors.black,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          IconButton(
+            tooltip: 'Save Word',
+            icon: Icon(
+              isSaved ? Icons.star_rounded : Icons.star_border_rounded,
+              color: isSaved ? Colors.amber : Colors.grey,
+            ),
+            onPressed: () => appState.toggleFavoriteWord(word.uniqueKey),
+          ),
+        ],
       ),
     );
   }
 }
 
-class ModuleDashboardScreen extends StatefulWidget {
-  final HSKModule module;
-  final SharedPreferences prefs;
+// ============================================================================
+// 7. FLASHCARD PRACTICE + HANZI WRITING PAD (田字格)
+// ============================================================================
 
-  const ModuleDashboardScreen({super.key, required this.module, required this.prefs});
+class FlashcardPracticeScreen extends StatefulWidget {
+  final String title;
+  final List<VocabWord> words;
+
+  const FlashcardPracticeScreen({
+    super.key,
+    required this.title,
+    required this.words,
+  });
 
   @override
-  State<ModuleDashboardScreen> createState() => _ModuleDashboardScreenState();
+  State<FlashcardPracticeScreen> createState() =>
+      _FlashcardPracticeScreenState();
 }
 
-class _ModuleDashboardScreenState extends State<ModuleDashboardScreen> {
-  bool audioReady = false;
-  bool pdfReady = false;
-  bool downloadingAudio = false;
-  bool downloadingPdf = false;
-  double progress = 0.0;
-  Map<String, List<File>> lessonFolders = {};
-  late String pdfLocalPath;
+class _FlashcardPracticeScreenState extends State<FlashcardPracticeScreen>
+    with SingleTickerProviderStateMixin {
+  late List<VocabWord> _queue;
+  int _masteredCount = 0;
+  bool _isWritingMode = false; // false = Reading (Hanzi->Meaning), true = Writing (Meaning+Pad->Hanzi)
+  bool _isFlipped = false;
+
+  // Drawing strokes for Hanzi Writing Pad
+  final List<List<Offset>> _strokes = [];
+  List<Offset> _currentStroke = [];
+
+  late AnimationController _flipCtrl;
+  late Animation<double> _flipAnim;
+
+  @override
+  void initState() {
+    super.initState();
+    _queue = List<VocabWord>.from(widget.words)..shuffle();
+    _flipCtrl = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 350),
+    );
+    _flipAnim = Tween<double>(begin: 0, end: math.pi).animate(
+      CurvedAnimation(parent: _flipCtrl, curve: Curves.easeInOut),
+    );
+  }
+
+  @override
+  void dispose() {
+    _flipCtrl.dispose();
+    super.dispose();
+  }
+
+  void _toggleFlip() {
+    if (_isFlipped) {
+      _flipCtrl.reverse();
+    } else {
+      _flipCtrl.forward();
+    }
+    setState(() => _isFlipped = !_isFlipped);
+  }
+
+  void _nextCard({required bool gotIt}) {
+    final current = _queue.removeAt(0);
+    if (gotIt) {
+      _masteredCount++;
+    } else {
+      _queue.add(current);
+    }
+    _flipCtrl.reset();
+    setState(() {
+      _isFlipped = false;
+      _strokes.clear();
+      _currentStroke = [];
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
+    if (_queue.isEmpty) {
+      return Scaffold(
+        appBar: AppBar(title: Text('Practice • ${widget.title}')),
+        body: Center(
+          child: Padding(
+            padding: const EdgeInsets.all(24),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const Icon(Icons.emoji_events_rounded,
+                    size: 72, color: Colors.amber),
+                const SizedBox(height: 14),
+                const Text(
+                  'অসাধারণ! সব শব্দ প্র্যাকটিস শেষ!',
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                ),
+                const SizedBox(height: 8),
+                Text('মোট $_masteredCount টি শব্দ সফলভাবে রিভিশন দিয়েছো।'),
+                const SizedBox(height: 20),
+                ElevatedButton(
+                  onPressed: () {
+                    setState(() {
+                      _queue = List<VocabWord>.from(widget.words)..shuffle();
+                      _masteredCount = 0;
+                    });
+                  },
+                  child: const Text('আবার প্র্যাকটিস করো'),
+                ),
+              ],
+            ),
+          ),
+        ),
+      );
+    }
+
+    final word = _queue.first;
+
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Practice (${_masteredCount}/${widget.words.length})'),
+      ),
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          children: [
+            // Mode Switcher
+            SegmentedButton<bool>(
+              segments: const [
+                ButtonSegment(
+                  value: false,
+                  icon: Icon(Icons.visibility_rounded),
+                  label: Text('Reading Mode'),
+                ),
+                ButtonSegment(
+                  value: true,
+                  icon: Icon(Icons.draw_rounded),
+                  label: Text('Hanzi Writing'),
+                ),
+              ],
+              selected: {_isWritingMode},
+              onSelectionChanged: (s) {
+                _flipCtrl.reset();
+                setState(() {
+                  _isWritingMode = s.first;
+                  _isFlipped = false;
+                  _strokes.clear();
+                });
+              },
+            ),
+            const SizedBox(height: 18),
+
+            // 3D Flip Card
+            GestureDetector(
+              onTap: _toggleFlip,
+              child: AnimatedBuilder(
+                animation: _flipAnim,
+                builder: (context, _) {
+                  final angle = _flipAnim.value;
+                  final showBack = angle > math.pi / 2;
+                  return Transform(
+                    alignment: Alignment.center,
+                    transform: Matrix4.identity()
+                      ..setEntry(3, 2, 0.001)
+                      ..rotateY(angle),
+                    child: Container(
+                      width: double.infinity,
+                      constraints: const BoxConstraints(minHeight: 200),
+                      padding: const EdgeInsets.all(24),
+                      decoration: BoxDecoration(
+                        color: isDark ? kNightCard : Colors.white,
+                        borderRadius: BorderRadius.circular(18),
+                        border: Border.all(
+                          color: kImperialRed.withValues(alpha: 0.35),
+                          width: 1.5,
+                        ),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withValues(alpha: 0.08),
+                            blurRadius: 12,
+                            offset: const Offset(0, 4),
+                          ),
+                        ],
+                      ),
+                      child: showBack
+                          ? Transform(
+                              alignment: Alignment.center,
+                              transform: Matrix4.identity()..rotateY(math.pi),
+                              child: _buildCardBack(word, isDark),
+                            )
+                          : _buildCardFront(word),
+                    ),
+                  );
+                },
+              ),
+            ),
+
+            // Hanzi Finger Writing Canvas (Only in Writing Mode)
+            if (_isWritingMode) ...[
+              const SizedBox(height: 16),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  const Text(
+                    'আঙুল দিয়ে হানজি লিখে প্র্যাকটিস করো:',
+                    style: TextStyle(fontWeight: FontWeight.w600),
+                  ),
+                  Row(
+                    children: [
+                      TextButton.icon(
+                        onPressed: _strokes.isEmpty
+                            ? null
+                            : () => setState(() => _strokes.removeLast()),
+                        icon: const Icon(Icons.undo_rounded, size: 18),
+                        label: const Text('Undo'),
+                      ),
+                      TextButton.icon(
+                        onPressed: _strokes.isEmpty
+                            ? null
+                            : () => setState(() => _strokes.clear()),
+                        icon: const Icon(Icons.delete_outline_rounded, size: 18),
+                        label: const Text('Clear'),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+              ClipRRect(
+                borderRadius: BorderRadius.circular(14),
+                child: Container(
+                  height: 220,
+                  width: double.infinity,
+                  decoration: BoxDecoration(
+                    color: isDark ? const Color(0xFF1A1A1A) : Colors.white,
+                    border: Border.all(color: Colors.grey.shade400),
+                    borderRadius: BorderRadius.circular(14),
+                  ),
+                  child: GestureDetector(
+                    onPanStart: (details) {
+                      setState(() {
+                        _currentStroke = [details.localPosition];
+                        _strokes.add(_currentStroke);
+                      });
+                    },
+                    onPanUpdate: (details) {
+                      setState(() {
+                        _currentStroke.add(details.localPosition);
+                      });
+                    },
+                    onPanEnd: (_) => _currentStroke = [],
+                    child: CustomPaint(
+                      painter: _HanziPadPainter(
+                        strokes: _strokes,
+                        strokeColor: isDark ? Colors.white : Colors.black87,
+                      ),
+                      size: Size.infinite,
+                    ),
+                  ),
+                ),
+              ),
+            ],
+
+            const SizedBox(height: 22),
+
+            // Got It / Review Again Buttons
+            Row(
+              children: [
+                Expanded(
+                  child: OutlinedButton.icon(
+                    style: OutlinedButton.styleFrom(
+                      padding: const EdgeInsets.symmetric(vertical: 14),
+                    ),
+                    onPressed: () => _nextCard(gotIt: false),
+                    icon: const Icon(Icons.refresh_rounded),
+                    label: const Text('আবার পড়ব'),
+                  ),
+                ),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: FilledButton.icon(
+                    style: FilledButton.styleFrom(
+                      backgroundColor: kImperialRed,
+                      padding: const EdgeInsets.symmetric(vertical: 14),
+                    ),
+                    onPressed: () => _nextCard(gotIt: true),
+                    icon: const Icon(Icons.check_circle_rounded),
+                    label: const Text('পারলাম'),
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildCardFront(VocabWord w) {
+    if (_isWritingMode) {
+      return Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text(
+            w.bn,
+            textAlign: TextAlign.center,
+            style: const TextStyle(fontSize: 26, fontWeight: FontWeight.bold),
+          ),
+          const SizedBox(height: 6),
+          Text(
+            w.en,
+            textAlign: TextAlign.center,
+            style: const TextStyle(fontSize: 16, color: Colors.grey),
+          ),
+          const SizedBox(height: 18),
+          const Text(
+            'হানজি লেখার পর উত্তর দেখতে কার্ডে ট্যাপ করো',
+            style: TextStyle(fontSize: 12, color: Colors.grey),
+          ),
+        ],
+      );
+    }
+
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Text(
+          w.hanzi,
+          textAlign: TextAlign.center,
+          style: const TextStyle(fontSize: 48, fontWeight: FontWeight.bold),
+        ),
+        const SizedBox(height: 18),
+        const Text(
+          'উত্তর দেখতে কার্ডে ট্যাপ করো (Tap to Flip)',
+          style: TextStyle(fontSize: 12, color: Colors.grey),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildCardBack(VocabWord w, bool isDark) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Text(
+          w.hanzi,
+          style: const TextStyle(fontSize: 38, fontWeight: FontWeight.bold),
+        ),
+        const SizedBox(height: 6),
+        Text(
+          w.pinyin,
+          style: TextStyle(
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
+            color: isDark ? const Color(0xFFEF5350) : kImperialRed,
+          ),
+        ),
+        const SizedBox(height: 8),
+        Text(
+          w.pron.isNotEmpty ? '${w.bn} (${w.pron})' : w.bn,
+          textAlign: TextAlign.center,
+          style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
+        ),
+        const SizedBox(height: 4),
+        Text(
+          w.en,
+          textAlign: TextAlign.center,
+          style: const TextStyle(fontSize: 14, color: Colors.grey),
+        ),
+      ],
+    );
+  }
+}
+
+class _HanziPadPainter extends CustomPainter {
+  final List<List<Offset>> strokes;
+  final Color strokeColor;
+
+  _HanziPadPainter({required this.strokes, required this.strokeColor});
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    // Subtle Tianzige (田字格) guide lines
+    final guidePaint = Paint()
+      ..color = Colors.red.withValues(alpha: 0.18)
+      ..strokeWidth = 1;
+    canvas.drawLine(
+      Offset(size.width / 2, 0),
+      Offset(size.width / 2, size.height),
+      guidePaint,
+    );
+    canvas.drawLine(
+      Offset(0, size.height / 2),
+      Offset(size.width, size.height / 2),
+      guidePaint,
+    );
+
+    final paint = Paint()
+      ..color = strokeColor
+      ..strokeWidth = 5.0
+      ..strokeCap = StrokeCap.round
+      ..strokeJoin = StrokeJoin.round
+      ..style = PaintingStyle.stroke;
+
+    for (final stroke in strokes) {
+      if (stroke.length < 2) continue;
+      final path = Path()..moveTo(stroke.first.dx, stroke.first.dy);
+      for (int i = 1; i < stroke.length; i++) {
+        path.lineTo(stroke[i].dx, stroke[i].dy);
+      }
+      canvas.drawPath(path, paint);
+    }
+  }
+
+  @override
+  bool shouldRepaint(covariant _HanziPadPainter oldDelegate) => true;
+}
+
+// ============================================================================
+// 8. FAVORITES SCREEN (PINNED CATEGORIES + SAVED WORDS)
+// ============================================================================
+
+class FavoritesScreen extends StatelessWidget {
+  final AppState appState;
+  const FavoritesScreen({super.key, required this.appState});
+
+  @override
+  Widget build(BuildContext context) {
+    return AnimatedBuilder(
+      animation: appState,
+      builder: (context, _) {
+        final repo = VocabRepository.instance;
+        final favGroups = appState.favoriteGroupIds
+            .map((id) => repo.byId(id))
+            .whereType<VocabGroup>()
+            .toList();
+        final favWords = repo.allWords
+            .where((w) => appState.favoriteWordKeys.contains(w.uniqueKey))
+            .toList();
+
+        return DefaultTabController(
+          length: 2,
+          child: Scaffold(
+            appBar: AppBar(
+              title: const Text('⭐ My Favorites'),
+              bottom: const TabBar(
+                labelColor: Colors.white,
+                unselectedLabelColor: Colors.white70,
+                indicatorColor: Colors.amber,
+                tabs: [
+                  Tab(text: 'Pinned Folders'),
+                  Tab(text: 'Saved Words'),
+                ],
+              ),
+            ),
+            body: TabBarView(
+              children: [
+                favGroups.isEmpty
+                    ? const Center(
+                        child: Text(
+                            'যেকোনো ডিপার্টমেন্ট বা লেভেল খুলে ⭐ আইকনে চাপলে এখানে সেভ হবে।'),
+                      )
+                    : ListView.builder(
+                        padding: const EdgeInsets.all(14),
+                        itemCount: favGroups.length,
+                        itemBuilder: (_, i) {
+                          final g = favGroups[i];
+                          return Card(
+                            child: ListTile(
+                              leading: const Icon(Icons.star_rounded,
+                                  color: Colors.amber),
+                              title: Text(g.title),
+                              subtitle: Text(g.subtitle),
+                              trailing: const Icon(Icons.chevron_right_rounded),
+                              onTap: () => Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (_) => VocabListScreen(
+                                    group: g,
+                                    appState: appState,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+                favWords.isEmpty
+                    ? const Center(
+                        child: Text(
+                            'যেকোনো শব্দের পাশে ⭐ আইকনে চাপলে এখানে জমে থাকবে।'),
+                      )
+                    : Column(
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.fromLTRB(14, 10, 14, 0),
+                            child: SizedBox(
+                              width: double.infinity,
+                              child: FilledButton.icon(
+                                style: FilledButton.styleFrom(
+                                  backgroundColor: kImperialRed,
+                                ),
+                                onPressed: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (_) => FlashcardPracticeScreen(
+                                        title: 'Saved Words',
+                                        words: favWords,
+                                      ),
+                                    ),
+                                  );
+                                },
+                                icon: const Icon(Icons.style_rounded),
+                                label: Text(
+                                    'Practice Saved Words (${favWords.length})'),
+                              ),
+                            ),
+                          ),
+                          Expanded(
+                            child: ListView.builder(
+                              padding: const EdgeInsets.all(14),
+                              itemCount: favWords.length,
+                              itemBuilder: (_, i) => VocabCardWidget(
+                                word: favWords[i],
+                                appState: appState,
+                                showSourceBadge: true,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+}
+
+// ============================================================================
+// 9. COURSE DETAIL SCREEN (OFFLINE PDF & AUDIO ZIP DOWNLOAD + LESSON LIST)
+// ============================================================================
+
+class CourseDetailScreen extends StatefulWidget {
+  final HskCourseItem course;
+  final AppState appState;
+
+  const CourseDetailScreen({
+    super.key,
+    required this.course,
+    required this.appState,
+  });
+
+  @override
+  State<CourseDetailScreen> createState() => _CourseDetailScreenState();
+}
+
+class _CourseDetailScreenState extends State<CourseDetailScreen> {
+  bool _pdfReady = false;
+  bool _audioReady = false;
+  bool _downloading = false;
+  double _progress = 0;
+  String _statusMsg = '';
+  Map<String, List<File>> _lessonTracks = {};
 
   @override
   void initState() {
@@ -484,725 +1868,743 @@ class _ModuleDashboardScreenState extends State<ModuleDashboardScreen> {
     _checkLocalFiles();
   }
 
+  Future<Directory> _courseDir() async {
+    final base = await getApplicationDocumentsDirectory();
+    final dir = Directory('${base.path}/hsk_offline/${widget.course.id}');
+    if (!await dir.exists()) await dir.create(recursive: true);
+    return dir;
+  }
+
   Future<void> _checkLocalFiles() async {
-    final dir = await getApplicationDocumentsDirectory();
-    final pdfFile = File('${dir.path}/pdfs/${widget.module.pdfFileName}');
-    pdfLocalPath = pdfFile.path;
+    final dir = await _courseDir();
+    final pdfFile = File('${dir.path}/${widget.course.pdfFileName}');
+    final audioDir = Directory('${dir.path}/audio');
 
-    final sortedMap = await scanModuleAudios(widget.module.id);
+    final grouped = <String, List<File>>{};
+    if (await audioDir.exists()) {
+      final files = audioDir
+          .listSync(recursive: true)
+          .whereType<File>()
+          .where((f) =>
+              f.path.toLowerCase().endsWith('.mp3') ||
+              f.path.toLowerCase().endsWith('.m4a'))
+          .toList()
+        ..sort((a, b) => a.path.compareTo(b.path));
 
-    setState(() {
-      lessonFolders = sortedMap;
-      audioReady = sortedMap.isNotEmpty;
-      pdfReady = pdfFile.existsSync();
-    });
-  }
-
-  Future<void> _downloadAndExtractAudio() async {
-    setState(() {
-      downloadingAudio = true;
-      progress = 0.0;
-    });
-    try {
-      final dir = await getApplicationDocumentsDirectory();
-      final zipFile = File('${dir.path}/${widget.module.audioZipName}');
-      final extractDir = Directory('${dir.path}/audios/${widget.module.id}');
-
-      await Dio().download(
-        releaseUrl(widget.module.audioZipName),
-        zipFile.path,
-        onReceiveProgress: (rec, total) {
-          if (total > 0) setState(() => progress = rec / total);
-        },
-      );
-
-      if (await extractDir.exists()) await extractDir.delete(recursive: true);
-      await extractDir.create(recursive: true);
-      await extractFileToDisk(zipFile.path, extractDir.path);
-      if (await zipFile.exists()) await zipFile.delete();
-
-      await _checkLocalFiles();
-    } catch (e) {
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text("Download failed. Check internet connection: $e")),
-        );
+      for (final f in files) {
+        final name = f.uri.pathSegments.last;
+        final match = RegExp(r'(\d{2})').firstMatch(name);
+        final lessonKey =
+            match != null ? 'LESSON ${match.group(1)}' : 'AUDIO TRACKS';
+        grouped.putIfAbsent(lessonKey, () => []).add(f);
       }
-    } finally {
-      if (mounted) setState(() => downloadingAudio = false);
     }
+
+    if (!mounted) return;
+    setState(() {
+      _pdfReady = pdfFile.existsSync();
+      _audioReady = grouped.isNotEmpty;
+      _lessonTracks = grouped;
+    });
   }
 
-  Future<void> _downloadPdf() async {
+  Future<void> _downloadFile(String fileName, {required bool isZip}) async {
     setState(() {
-      downloadingPdf = true;
-      progress = 0.0;
+      _downloading = true;
+      _progress = 0;
+      _statusMsg = 'ডাউনলোড হচ্ছে: $fileName...';
     });
-    try {
-      final dir = await getApplicationDocumentsDirectory();
-      final pdfDir = Directory('${dir.path}/pdfs');
-      if (!await pdfDir.exists()) await pdfDir.create(recursive: true);
-      final pdfFile = File('${pdfDir.path}/${widget.module.pdfFileName}');
 
-      await Dio().download(
-        releaseUrl(widget.module.pdfFileName),
-        pdfFile.path,
-        onReceiveProgress: (rec, total) {
-          if (total > 0) setState(() => progress = rec / total);
-        },
-      );
+    try {
+      final dir = await _courseDir();
+      final url = Uri.parse('$kGithubReleaseBaseUrl$fileName');
+      final req = http.Request('GET', url);
+      final resp = await http.Client().send(req);
+
+      if (resp.statusCode != 200) {
+        throw Exception('HTTP ${resp.statusCode}');
+      }
+
+      final total = resp.contentLength ?? 0;
+      final bytes = <int>[];
+      int received = 0;
+
+      await for (final chunk in resp.stream) {
+        bytes.addAll(chunk);
+        received += chunk.length;
+        if (total > 0 && mounted) {
+          setState(() => _progress = received / total);
+        }
+      }
+
+      if (isZip) {
+        setState(() => _statusMsg = 'অডিও ফাইল আনজিপ হচ্ছে...');
+        final archive = ZipDecoder().decodeBytes(bytes);
+        final audioDir = Directory('${dir.path}/audio');
+        if (!await audioDir.exists()) await audioDir.create(recursive: true);
+        for (final item in archive) {
+          if (item.isFile) {
+            final cleanName = item.name.split('/').last;
+            if (cleanName.isEmpty) continue;
+            final outFile = File('${audioDir.path}/$cleanName');
+            await outFile.writeAsBytes(item.content as List<int>);
+          }
+        }
+      } else {
+        final outFile = File('${dir.path}/$fileName');
+        await outFile.writeAsBytes(bytes);
+      }
+
       await _checkLocalFiles();
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('ডাউনলোড সম্পন্ন হয়েছে!')),
+        );
+      }
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text("PDF download failed: $e")),
+          SnackBar(content: Text('ডাউনলোড ব্যর্থ: $e')),
         );
       }
     } finally {
-      if (mounted) setState(() => downloadingPdf = false);
+      if (mounted) {
+        setState(() {
+          _downloading = false;
+          _statusMsg = '';
+        });
+      }
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    final primary = Theme.of(context).colorScheme.primary;
+    final lessonNames = _lessonTracks.keys.toList()..sort();
+
     return Scaffold(
-      appBar: AppBar(title: Text(widget.module.levelTitle)),
+      appBar: AppBar(title: Text(widget.course.title)),
       body: ListView(
         padding: const EdgeInsets.all(16),
         children: [
-          if (downloadingAudio || downloadingPdf)
-            Padding(
-              padding: const EdgeInsets.only(bottom: 16),
-              child: Column(
-                children: [
-                  LinearProgressIndicator(value: progress, color: primary),
-                  const SizedBox(height: 6),
-                  Text("Downloading... ${(progress * 100).toStringAsFixed(0)}%"),
-                ],
+          if (_downloading) ...[
+            LinearProgressIndicator(value: _progress > 0 ? _progress : null),
+            const SizedBox(height: 6),
+            Text(_statusMsg, style: const TextStyle(fontSize: 12.5)),
+            const SizedBox(height: 14),
+          ],
+
+          // PDF Book Card
+          Card(
+            child: ListTile(
+              leading: const Icon(Icons.picture_as_pdf_rounded,
+                  color: kImperialRed, size: 32),
+              title: Text('${widget.course.title} Textbook (PDF)'),
+              subtitle: Text(_pdfReady
+                  ? 'অফলাইনে প্রস্তুত • সুপার-ফাস্ট PDF রিডার'
+                  : 'অফলাইনে পড়ার জন্য ডাউনলোড করো'),
+              trailing: FilledButton(
+                style: FilledButton.styleFrom(backgroundColor: kImperialRed),
+                onPressed: _downloading
+                    ? null
+                    : () async {
+                        if (_pdfReady) {
+                          final dir = await _courseDir();
+                          if (!context.mounted) return;
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (_) => FastPdfReaderScreen(
+                                courseId: widget.course.id,
+                                title: widget.course.title,
+                                filePath:
+                                    '${dir.path}/${widget.course.pdfFileName}',
+                                appState: widget.appState,
+                              ),
+                            ),
+                          );
+                        } else {
+                          _downloadFile(widget.course.pdfFileName,
+                              isZip: false);
+                        }
+                      },
+                child: Text(_pdfReady ? 'Open PDF' : 'Download'),
               ),
             ),
-
-          _buildOptionCard(
-            icon: Icons.headphones_rounded,
-            title: "Only Audio (Chapter Loop Mode)",
-            subtitle: audioReady
-                ? "${lessonFolders.length} chapters ready • Loops continuously until paused"
-                : "Download audio pack from GitHub to listen offline",
-            actionLabel: audioReady ? "Listen" : "Download",
-            isReady: audioReady,
-            onTap: () {
-              if (!audioReady) {
-                _downloadAndExtractAudio();
-              } else {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (_) => ChapterListScreen(
-                      module: widget.module,
-                      lessonFolders: lessonFolders,
-                      prefs: widget.prefs,
-                    ),
-                  ),
-                );
-              }
-            },
           ),
 
-          const SizedBox(height: 14),
+          const SizedBox(height: 12),
 
-          _buildOptionCard(
-            icon: Icons.picture_as_pdf_rounded,
-            title: "Standard Textbook (PDF)",
-            subtitle: pdfReady
-                ? (audioReady ? "Read PDF with built-in Lesson Audio Player" : "Available offline (Download audio pack to listen while reading)")
-                : "Download textbook PDF from GitHub",
-            actionLabel: pdfReady ? "Read PDF" : "Download",
-            isReady: pdfReady,
-            onTap: () {
-              if (!pdfReady) {
-                _downloadPdf();
-              } else {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (_) => PdfViewerScreen(
-                      title: widget.module.levelTitle,
-                      filePath: pdfLocalPath,
-                      prefs: widget.prefs,
-                      lessonFolders: lessonFolders,
+          // Audio Pack Card
+          Card(
+            child: ListTile(
+              leading: const Icon(Icons.headphones_rounded,
+                  color: kImperialRed, size: 32),
+              title: Text('${widget.course.title} Audio Lessons'),
+              subtitle: Text(_audioReady
+                  ? '${lessonNames.length}টি লেসন অফলাইনে প্রস্তুত'
+                  : 'নেটিভ অডিও প্যাক (ZIP) ডাউনলোড করো'),
+              trailing: _audioReady
+                  ? const Icon(Icons.check_circle_rounded, color: Colors.green)
+                  : FilledButton(
+                      style:
+                          FilledButton.styleFrom(backgroundColor: kImperialRed),
+                      onPressed: _downloading
+                          ? null
+                          : () => _downloadFile(widget.course.audioZipName,
+                              isZip: true),
+                      child: const Text('Download'),
                     ),
+            ),
+          ),
+
+          if (_audioReady) ...[
+            const SizedBox(height: 18),
+            const Text(
+              'Listening Lessons',
+              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(height: 8),
+            ...List.generate(lessonNames.length, (idx) {
+              final lessonTitle = lessonNames[idx];
+              final count = _lessonTracks[lessonTitle]?.length ?? 0;
+              return Card(
+                child: ListTile(
+                  leading: CircleAvatar(
+                    backgroundColor: kImperialRed,
+                    foregroundColor: Colors.white,
+                    child: Text('${idx + 1}'),
                   ),
-                );
+                  title: Text('${widget.course.title} • $lessonTitle'),
+                  subtitle: Text('$count Tracks'),
+                  trailing: const Icon(Icons.play_arrow_rounded),
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (_) => LessonAudioPlayerScreen(
+                          courseId: widget.course.id,
+                          courseTitle: widget.course.title,
+                          allLessonNames: lessonNames,
+                          allLessonTracks: _lessonTracks,
+                          initialLessonIndex: idx,
+                          appState: widget.appState,
+                        ),
+                      ),
+                    );
+                  },
+                ),
+              );
+            }),
+          ],
+        ],
+      ),
+    );
+  }
+}
+
+// ============================================================================
+// 10. SUPER-FAST PDF READER (GOOGLE PDFIUM VIA PDFRX + PAGE MEMORY)
+// ============================================================================
+
+class FastPdfReaderScreen extends StatefulWidget {
+  final String courseId;
+  final String title;
+  final String filePath;
+  final AppState appState;
+
+  const FastPdfReaderScreen({
+    super.key,
+    required this.courseId,
+    required this.title,
+    required this.filePath,
+    required this.appState,
+  });
+
+  @override
+  State<FastPdfReaderScreen> createState() => _FastPdfReaderScreenState();
+}
+
+class _FastPdfReaderScreenState extends State<FastPdfReaderScreen> {
+  final PdfViewerController _pdfController = PdfViewerController();
+  int _initialPage = 1;
+  int _currentPage = 1;
+  int _totalPages = 0;
+  bool _ready = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadSavedPage();
+  }
+
+  Future<void> _loadSavedPage() async {
+    final prefs = await SharedPreferences.getInstance();
+    final saved = prefs.getInt('pdf_page_${widget.courseId}') ?? 1;
+    if (!mounted) return;
+    setState(() {
+      _initialPage = saved;
+      _currentPage = saved;
+      _ready = true;
+    });
+  }
+
+  Future<void> _savePage(int page) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setInt('pdf_page_${widget.courseId}', page);
+    widget.appState
+        .updateLastStudied(widget.courseId, '${widget.title} • Page $page');
+  }
+
+  void _showJumpDialog() {
+    final ctrl = TextEditingController(text: '$_currentPage');
+    showDialog(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        title: const Text('পেজে যান (Jump to Page)'),
+        content: TextField(
+          controller: ctrl,
+          keyboardType: TextInputType.number,
+          decoration: InputDecoration(
+            hintText: '1 - $_totalPages',
+          ),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(ctx),
+            child: const Text('Cancel'),
+          ),
+          FilledButton(
+            onPressed: () {
+              final p = int.tryParse(ctrl.text.trim());
+              if (p != null && p >= 1 && p <= _totalPages) {
+                _pdfController.goToPage(pageNumber: p);
               }
+              Navigator.pop(ctx);
             },
+            child: const Text('Go'),
           ),
         ],
       ),
     );
   }
 
-  Widget _buildOptionCard({
-    required IconData icon,
-    required String title,
-    required String subtitle,
-    required String actionLabel,
-    required bool isReady,
-    required VoidCallback onTap,
-  }) {
-    final primary = Theme.of(context).colorScheme.primary;
-    return Card(
-      elevation: 1.5,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-      child: ListTile(
-        contentPadding: const EdgeInsets.all(16),
-        leading: CircleAvatar(
-          radius: 24,
-          backgroundColor: primary.withOpacity(0.12),
-          child: Icon(icon, color: primary),
-        ),
-        title: Text(title, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
-        subtitle: Padding(
-          padding: const EdgeInsets.only(top: 4),
-          child: Text(subtitle, style: const TextStyle(fontSize: 13)),
-        ),
-        trailing: FilledButton(
-          style: FilledButton.styleFrom(
-            backgroundColor: isReady ? primary : Colors.grey[800],
-          ),
-          onPressed: onTap,
-          child: Text(actionLabel),
-        ),
-      ),
-    );
-  }
-}
-
-class ChapterListScreen extends StatelessWidget {
-  final HSKModule module;
-  final Map<String, List<File>> lessonFolders;
-  final SharedPreferences prefs;
-
-  const ChapterListScreen({
-    super.key,
-    required this.module,
-    required this.lessonFolders,
-    required this.prefs,
-  });
-
   @override
   Widget build(BuildContext context) {
-    final keys = lessonFolders.keys.toList();
-    final primary = Theme.of(context).colorScheme.primary;
-
+    final isDark = widget.appState.isDarkMode;
     return Scaffold(
-      appBar: AppBar(title: Text("${module.levelTitle} • Only Audio")),
-      body: ListView.separated(
-        padding: const EdgeInsets.all(16),
-        itemCount: keys.length,
-        separatorBuilder: (_, __) => const SizedBox(height: 10),
-        itemBuilder: (context, index) {
-          final folderName = keys[index];
-          final tracks = lessonFolders[folderName]!;
-          final displayTitle = folderName.replaceAll('-', ' ').toUpperCase();
-
-          return Card(
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
-            child: ListTile(
-              leading: CircleAvatar(
-                backgroundColor: primary.withOpacity(0.12),
-                child: Text("${index + 1}", style: TextStyle(fontWeight: FontWeight.bold, color: primary)),
-              ),
-              title: Text(displayTitle, style: const TextStyle(fontWeight: FontWeight.bold)),
-              subtitle: Text("${tracks.length} audio tracks"),
-              trailing: Icon(Icons.play_circle_fill_rounded, color: primary, size: 32),
-              onTap: () {
-                prefs.setString('last_played', "${module.levelTitle} • $displayTitle");
-                prefs.setString('last_module_id', module.id);
-                prefs.setString('last_folder_key', folderName);
-
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (_) => ChapterAudioPlayerScreen(
-                      moduleTitle: module.levelTitle,
-                      chapterTitle: displayTitle,
-                      tracks: tracks,
-                      prefs: prefs,
-                    ),
-                  ),
-                );
-              },
-            ),
-          );
-        },
+      appBar: AppBar(
+        title: Text('${widget.title} ($_currentPage/${_totalPages == 0 ? "..." : _totalPages})'),
+        actions: [
+          IconButton(
+            tooltip: 'Jump to Page',
+            icon: const Icon(Icons.find_in_page_rounded),
+            onPressed: _totalPages > 0 ? _showJumpDialog : null,
+          ),
+        ],
       ),
+      body: !_ready
+          ? const Center(child: CircularProgressIndicator())
+          : PdfViewer.file(
+              widget.filePath,
+              controller: _pdfController,
+              initialPageNumber: _initialPage,
+              params: PdfViewerParams(
+                backgroundColor: isDark ? kNightDark : const Color(0xFFEAE6DF),
+                onViewerReady: (document, controller) {
+                  if (mounted) {
+                    setState(() => _totalPages = document.pages.length);
+                  }
+                },
+                onPageChanged: (int? pageNumber) {
+                  if (pageNumber != null && pageNumber != _currentPage) {
+                    setState(() => _currentPage = pageNumber);
+                    _savePage(pageNumber);
+                  }
+                },
+              ),
+            ),
     );
   }
 }
 
-class ChapterAudioPlayerScreen extends StatefulWidget {
-  final String moduleTitle;
-  final String chapterTitle;
-  final List<File> tracks;
-  final SharedPreferences prefs;
+// ============================================================================
+// 11. AUDIO PLAYER (LESSON LOOP vs ALL LESSONS CONTINUOUS + SHADOWING GAP)
+// ============================================================================
 
-  const ChapterAudioPlayerScreen({
+class LessonAudioPlayerScreen extends StatefulWidget {
+  final String courseId;
+  final String courseTitle;
+  final List<String> allLessonNames;
+  final Map<String, List<File>> allLessonTracks;
+  final int initialLessonIndex;
+  final AppState appState;
+
+  const LessonAudioPlayerScreen({
     super.key,
-    required this.moduleTitle,
-    required this.chapterTitle,
-    required this.tracks,
-    required this.prefs,
+    required this.courseId,
+    required this.courseTitle,
+    required this.allLessonNames,
+    required this.allLessonTracks,
+    required this.initialLessonIndex,
+    required this.appState,
   });
 
   @override
-  State<ChapterAudioPlayerScreen> createState() => _ChapterAudioPlayerScreenState();
+  State<LessonAudioPlayerScreen> createState() =>
+      _LessonAudioPlayerScreenState();
 }
 
-class _ChapterAudioPlayerScreenState extends State<ChapterAudioPlayerScreen> {
+class _LessonAudioPlayerScreenState extends State<LessonAudioPlayerScreen> {
   final AudioPlayer _player = AudioPlayer();
-  int currentIndex = 0;
-  bool isPlaying = false;
-  bool singleTrackLoop = false;
-  late double speed;
-  Duration position = Duration.zero;
-  Duration duration = Duration.zero;
+  late int _lessonIndex;
+  int _trackIndex = 0;
+  double _speed = 1.0;
+  bool _singleTrackLoop = false;
+  bool _waitingGap = false;
+
+  Duration _position = Duration.zero;
+  Duration _duration = Duration.zero;
+  bool _isPlaying = false;
+
+  StreamSubscription<Duration>? _posSub;
+  StreamSubscription<Duration?>? _durSub;
+  StreamSubscription<bool>? _playSub;
+  StreamSubscription<PlayerState>? _stateSub;
+
+  List<File> get _currentTracks =>
+      widget.allLessonTracks[widget.allLessonNames[_lessonIndex]] ?? [];
+
+  String get _currentLessonName => widget.allLessonNames[_lessonIndex];
 
   @override
   void initState() {
     super.initState();
-    speed = widget.prefs.getDouble('default_speed') ?? 1.0;
-    _initPlayer();
-  }
+    _lessonIndex = widget.initialLessonIndex;
 
-  Future<void> _initPlayer() async {
-    _player.positionStream.listen((p) {
-      if (mounted) setState(() => position = p);
+    _posSub = _player.positionStream.listen((p) {
+      if (mounted) setState(() => _position = p);
     });
-    _player.durationStream.listen((d) {
-      if (mounted && d != null) setState(() => duration = d);
+    _durSub = _player.durationStream.listen((d) {
+      if (mounted && d != null) setState(() => _duration = d);
     });
-    _player.playerStateStream.listen((state) async {
-      if (!mounted) return;
-      setState(() => isPlaying = state.playing);
-
+    _playSub = _player.playingStream.listen((playing) {
+      if (mounted) setState(() => _isPlaying = playing);
+    });
+    _stateSub = _player.playerStateStream.listen((state) {
       if (state.processingState == ProcessingState.completed) {
-        if (singleTrackLoop) {
-          await _playTrack(currentIndex);
-        } else {
-          final gapSec = widget.prefs.getInt('pause_gap') ?? 0;
-          if (gapSec > 0) await Future.delayed(Duration(seconds: gapSec));
-          final nextIndex = (currentIndex + 1) % widget.tracks.length;
-          await _playTrack(nextIndex);
-        }
+        _handleTrackCompleted();
       }
     });
 
-    await _playTrack(0);
+    _playTrack(0);
   }
 
   Future<void> _playTrack(int index) async {
-    setState(() => currentIndex = index);
-    await _player.setFilePath(widget.tracks[index].path);
-    await _player.setSpeed(speed);
-    await _player.play();
+    if (_currentTracks.isEmpty) return;
+    _trackIndex = index.clamp(0, _currentTracks.length - 1);
+    final file = _currentTracks[_trackIndex];
+    try {
+      await _player.setFilePath(file.path);
+      await _player.setSpeed(_speed);
+      await _player.play();
+      widget.appState.updateLastStudied(
+        widget.courseId,
+        '${widget.courseTitle} • $_currentLessonName (Track ${_trackIndex + 1})',
+      );
+      if (mounted) setState(() {});
+    } catch (_) {}
+  }
+
+  Future<void> _handleTrackCompleted() async {
+    if (_waitingGap) return;
+    final gap = widget.appState.shadowingGapSeconds;
+    if (gap > 0) {
+      _waitingGap = true;
+      await Future.delayed(Duration(seconds: gap));
+      _waitingGap = false;
+      if (!mounted) return;
+    }
+
+    if (_singleTrackLoop) {
+      await _playTrack(_trackIndex);
+      return;
+    }
+
+    if (_trackIndex + 1 < _currentTracks.length) {
+      await _playTrack(_trackIndex + 1);
+    } else if (widget.appState.allLessonsContinuous) {
+      // Auto-advance to the next lesson continuously (Lesson 1 -> 15 -> 1)
+      setState(() {
+        _lessonIndex = (_lessonIndex + 1) % widget.allLessonNames.length;
+      });
+      await _playTrack(0);
+    } else {
+      // Loop inside the current lesson
+      await _playTrack(0);
+    }
+  }
+
+  void _cycleSpeed() {
+    const speeds = [0.75, 1.0, 1.25];
+    final nextIdx = (speeds.indexOf(_speed) + 1) % speeds.length;
+    _speed = speeds[nextIdx];
+    _player.setSpeed(_speed);
+    setState(() {});
+  }
+
+  void _rewind3s() {
+    final target = _position - const Duration(seconds: 3);
+    _player.seek(target < Duration.zero ? Duration.zero : target);
+  }
+
+  String _fmt(Duration d) {
+    final m = d.inMinutes.remainder(60).toString().padLeft(2, '0');
+    final s = d.inSeconds.remainder(60).toString().padLeft(2, '0');
+    return '$m:$s';
   }
 
   @override
   void dispose() {
+    _posSub?.cancel();
+    _durSub?.cancel();
+    _playSub?.cancel();
+    _stateSub?.cancel();
     _player.dispose();
     super.dispose();
   }
 
-  String _formatDuration(Duration d) {
-    final m = d.inMinutes.remainder(60).toString().padLeft(2, '0');
-    final s = d.inSeconds.remainder(60).toString().padLeft(2, '0');
-    return "$m:$s";
-  }
-
   @override
   Widget build(BuildContext context) {
-    final primary = Theme.of(context).colorScheme.primary;
-    return Scaffold(
-      appBar: AppBar(title: Text("${widget.moduleTitle} • ${widget.chapterTitle}")),
-      body: Column(
-        children: [
-          Container(
-            width: double.infinity,
-            padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
-            color: primary.withOpacity(0.1),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Icon(Icons.repeat_rounded, size: 18, color: primary),
-                const SizedBox(width: 8),
-                Text(
-                  "Chapter Loop Mode: Playing continuously until paused",
-                  style: TextStyle(color: primary, fontWeight: FontWeight.w600, fontSize: 13),
-                ),
-              ],
-            ),
-          ),
+    final isDark = widget.appState.isDarkMode;
 
-          Expanded(
-            child: ListView.builder(
-              padding: const EdgeInsets.all(14),
-              itemCount: widget.tracks.length,
-              itemBuilder: (context, idx) {
-                final fileName = widget.tracks[idx].uri.pathSegments.last.replaceAll('.mp3', '');
-                final active = idx == currentIndex;
-                return Card(
-                  color: active ? primary.withOpacity(0.12) : null,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
-                    side: active ? BorderSide(color: primary, width: 1.5) : BorderSide.none,
-                  ),
-                  child: ListTile(
-                    leading: Icon(
-                      active && isPlaying ? Icons.graphic_eq_rounded : Icons.audiotrack_rounded,
-                      color: active ? primary : Colors.grey,
-                    ),
-                    title: Text(
-                      "Track ${idx + 1}  ($fileName)",
-                      style: TextStyle(fontWeight: active ? FontWeight.bold : FontWeight.normal),
-                    ),
-                    onTap: () => _playTrack(idx),
-                  ),
-                );
-              },
-            ),
+    return AnimatedBuilder(
+      animation: widget.appState,
+      builder: (context, _) {
+        final isAllMode = widget.appState.allLessonsContinuous;
+        return Scaffold(
+          appBar: AppBar(
+            title: Text('${widget.courseTitle} • $_currentLessonName'),
           ),
-
-          Container(
-            padding: const EdgeInsets.fromLTRB(16, 10, 16, 20),
-            decoration: BoxDecoration(
-              color: Theme.of(context).cardColor,
-              boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.08), blurRadius: 10, offset: const Offset(0, -2))],
-              borderRadius: const BorderRadius.vertical(top: Radius.circular(22)),
-            ),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Slider(
-                  activeColor: primary,
-                  value: position.inMilliseconds.toDouble().clamp(0, duration.inMilliseconds.toDouble() + 1),
-                  max: (duration.inMilliseconds.toDouble() > 0) ? duration.inMilliseconds.toDouble() : 1.0,
-                  onChanged: (val) => _player.seek(Duration(milliseconds: val.toInt())),
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 12),
+          body: Column(
+            children: [
+              // Interactive Playback Mode Banner
+              InkWell(
+                onTap: () {
+                  widget.appState.setAllLessonsContinuous(!isAllMode);
+                },
+                child: Container(
+                  width: double.infinity,
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+                  color: isDark
+                      ? const Color(0xFF2B1919)
+                      : const Color(0xFFFFEFEF),
                   child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Text(_formatDuration(position), style: const TextStyle(fontSize: 12)),
-                      Text(_formatDuration(duration), style: const TextStyle(fontSize: 12)),
+                      Icon(
+                        isAllMode
+                            ? Icons.playlist_play_rounded
+                            : Icons.repeat_rounded,
+                        size: 18,
+                        color: kImperialRed,
+                      ),
+                      const SizedBox(width: 8),
+                      Flexible(
+                        child: Text(
+                          isAllMode
+                              ? 'All Lessons Continuous (Auto-next Lesson • Tap to switch)'
+                              : 'Lesson Loop Mode (Current Lesson • Tap to switch)',
+                          style: const TextStyle(
+                            fontSize: 12.5,
+                            fontWeight: FontWeight.w600,
+                            color: kImperialRed,
+                          ),
+                        ),
+                      ),
                     ],
                   ),
                 ),
-                const SizedBox(height: 8),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    TextButton(
-                      onPressed: () {
-                        const speeds = [0.75, 0.85, 1.0, 1.25];
-                        final next = speeds[(speeds.indexOf(speed) + 1) % speeds.length];
-                        setState(() => speed = next);
-                        _player.setSpeed(speed);
-                      },
-                      child: Text("${speed}x", style: TextStyle(fontWeight: FontWeight.bold, color: primary)),
-                    ),
-                    IconButton(
-                      icon: const Icon(Icons.replay_5_rounded),
-                      tooltip: "Rewind 3s",
-                      onPressed: () {
-                        final target = position - const Duration(seconds: 3);
-                        _player.seek(target < Duration.zero ? Duration.zero : target);
-                      },
-                    ),
-                    IconButton(
-                      icon: const Icon(Icons.skip_previous_rounded, size: 30),
-                      onPressed: currentIndex > 0 ? () => _playTrack(currentIndex - 1) : null,
-                    ),
-                    FloatingActionButton(
-                      backgroundColor: primary,
-                      foregroundColor: Colors.white,
-                      onPressed: () => isPlaying ? _player.pause() : _player.play(),
-                      child: Icon(isPlaying ? Icons.pause_rounded : Icons.play_arrow_rounded, size: 32),
-                    ),
-                    IconButton(
-                      icon: const Icon(Icons.skip_next_rounded, size: 30),
-                      onPressed: currentIndex + 1 < widget.tracks.length ? () => _playTrack(currentIndex + 1) : null,
-                    ),
-                    IconButton(
-                      icon: Icon(
-                        Icons.repeat_one_rounded,
-                        color: singleTrackLoop ? primary : Colors.grey,
+              ),
+
+              // Tracks List
+              Expanded(
+                child: ListView.builder(
+                  padding: const EdgeInsets.all(14),
+                  itemCount: _currentTracks.length,
+                  itemBuilder: (_, i) {
+                    final f = _currentTracks[i];
+                    final name = f.uri.pathSegments.last
+                        .replaceAll('.mp3', '')
+                        .replaceAll('.m4a', '');
+                    final active = i == _trackIndex;
+                    return Container(
+                      margin: const EdgeInsets.only(bottom: 8),
+                      decoration: BoxDecoration(
+                        color: active
+                            ? (isDark
+                                ? const Color(0xFF3E2723)
+                                : const Color(0xFFD7CCC8))
+                            : (isDark ? kNightCard : const Color(0xFFFFF5F5)),
+                        borderRadius: BorderRadius.circular(14),
+                        border: active
+                            ? Border.all(color: kImperialRed, width: 1.5)
+                            : null,
                       ),
-                      tooltip: "Repeat Current Track",
-                      onPressed: () => setState(() => singleTrackLoop = !singleTrackLoop),
+                      child: ListTile(
+                        leading: Icon(
+                          active
+                              ? Icons.graphic_eq_rounded
+                              : Icons.music_note_rounded,
+                          color: active ? kImperialRed : Colors.grey,
+                        ),
+                        title: Text(
+                          'Track ${i + 1} ($name)',
+                          style: TextStyle(
+                            fontWeight:
+                                active ? FontWeight.bold : FontWeight.normal,
+                          ),
+                        ),
+                        onTap: () => _playTrack(i),
+                      ),
+                    );
+                  },
+                ),
+              ),
+
+              // Bottom Audio Controls Panel
+              Container(
+                padding: const EdgeInsets.fromLTRB(16, 12, 16, 22),
+                decoration: BoxDecoration(
+                  color: isDark ? kNightCard : Colors.white,
+                  borderRadius:
+                      const BorderRadius.vertical(top: Radius.circular(24)),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withValues(alpha: 0.1),
+                      blurRadius: 12,
+                      offset: const Offset(0, -3),
                     ),
                   ],
                 ),
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class PdfViewerScreen extends StatefulWidget {
-  final String title;
-  final String filePath;
-  final SharedPreferences prefs;
-  final Map<String, List<File>> lessonFolders;
-
-  const PdfViewerScreen({
-    super.key,
-    required this.title,
-    required this.filePath,
-    required this.prefs,
-    this.lessonFolders = const {},
-  });
-
-  @override
-  State<PdfViewerScreen> createState() => _PdfViewerScreenState();
-}
-
-class _PdfViewerScreenState extends State<PdfViewerScreen> {
-  final PdfViewerController _pdfController = PdfViewerController();
-  final AudioPlayer _miniPlayer = AudioPlayer();
-
-  late String pagePrefKey;
-  int savedPage = 1;
-  int currentPage = 1;
-
-  bool showAudioPanel = true;
-  String? selectedLesson;
-  int trackIndex = 0;
-  bool isPlaying = false;
-  late double speed;
-
-  @override
-  void initState() {
-    super.initState();
-    final fileName = File(widget.filePath).uri.pathSegments.last;
-    pagePrefKey = 'pdf_last_page_$fileName';
-    savedPage = widget.prefs.getInt(pagePrefKey) ?? 1;
-    currentPage = savedPage;
-    speed = widget.prefs.getDouble('default_speed') ?? 1.0;
-
-    if (widget.lessonFolders.isNotEmpty) {
-      selectedLesson = widget.lessonFolders.keys.first;
-    }
-
-    _miniPlayer.playerStateStream.listen((state) async {
-      if (!mounted) return;
-      setState(() => isPlaying = state.playing);
-      if (state.processingState == ProcessingState.completed && selectedLesson != null) {
-        final tracks = widget.lessonFolders[selectedLesson] ?? [];
-        if (trackIndex + 1 < tracks.length) {
-          await _playMiniTrack(trackIndex + 1);
-        }
-      }
-    });
-  }
-
-  Future<void> _playMiniTrack(int index) async {
-    if (selectedLesson == null) return;
-    final tracks = widget.lessonFolders[selectedLesson] ?? [];
-    if (index < 0 || index >= tracks.length) return;
-
-    setState(() => trackIndex = index);
-    await _miniPlayer.setFilePath(tracks[index].path);
-    await _miniPlayer.setSpeed(speed);
-    await _miniPlayer.play();
-  }
-
-  @override
-  void dispose() {
-    _miniPlayer.dispose();
-    _pdfController.dispose();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final primary = Theme.of(context).colorScheme.primary;
-    final hasLessons = widget.lessonFolders.isNotEmpty;
-    final currentTracks = (hasLessons && selectedLesson != null)
-        ? (widget.lessonFolders[selectedLesson] ?? [])
-        : [];
-    final currentTrackName = currentTracks.isNotEmpty
-        ? currentTracks[trackIndex].uri.pathSegments.last.replaceAll('.mp3', '')
-        : "";
-
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("${widget.title} (Page $currentPage)"),
-        actions: [
-          if (hasLessons)
-            IconButton(
-              icon: Icon(showAudioPanel ? Icons.headphones_rounded : Icons.headset_off_rounded),
-              tooltip: showAudioPanel ? "Hide Audio Bar" : "Show Audio Bar",
-              onPressed: () => setState(() => showAudioPanel = !showAudioPanel),
-            ),
-        ],
-      ),
-      body: Column(
-        children: [
-          Expanded(
-            child: SfPdfViewer.file(
-              File(widget.filePath),
-              controller: _pdfController,
-              onDocumentLoaded: (details) {
-                if (savedPage > 1 && savedPage <= details.document.pages.count) {
-                  _pdfController.jumpToPage(savedPage);
-                }
-              },
-              onPageChanged: (details) {
-                setState(() => currentPage = details.newPageNumber);
-                widget.prefs.setInt(pagePrefKey, details.newPageNumber);
-              },
-            ),
-          ),
-
-          if (hasLessons && showAudioPanel)
-            Container(
-              padding: const EdgeInsets.fromLTRB(12, 8, 12, 12),
-              decoration: BoxDecoration(
-                color: Theme.of(context).cardColor,
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withOpacity(0.12),
-                    blurRadius: 8,
-                    offset: const Offset(0, -2),
-                  )
-                ],
-                borderRadius: const BorderRadius.vertical(top: Radius.circular(18)),
-              ),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Row(
-                    children: [
-                      Icon(Icons.menu_book_rounded, size: 18, color: primary),
-                      const SizedBox(width: 8),
-                      Expanded(
-                        child: DropdownButtonHideUnderline(
-                          child: DropdownButton<String>(
-                            isExpanded: true,
-                            isDense: true,
-                            value: selectedLesson,
-                            items: widget.lessonFolders.keys.map((k) {
-                              return DropdownMenuItem(
-                                value: k,
-                                child: Text(
-                                  k.replaceAll('-', ' ').toUpperCase(),
-                                  style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 13),
-                                ),
-                              );
-                            }).toList(),
-                            onChanged: (val) async {
-                              if (val != null) {
-                                await _miniPlayer.stop();
-                                setState(() {
-                                  selectedLesson = val;
-                                  trackIndex = 0;
-                                  isPlaying = false;
-                                });
-                              }
-                            },
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Slider(
+                      activeColor: kImperialRed,
+                      value: _position.inMilliseconds
+                          .toDouble()
+                          .clamp(0, _duration.inMilliseconds.toDouble() + 1),
+                      max: _duration.inMilliseconds.toDouble() + 1,
+                      onChanged: (v) =>
+                          _player.seek(Duration(milliseconds: v.toInt())),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 12),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(_fmt(_position),
+                              style: const TextStyle(fontSize: 12)),
+                          Text(_fmt(_duration),
+                              style: const TextStyle(fontSize: 12)),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(height: 6),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        TextButton(
+                          onPressed: _cycleSpeed,
+                          child: Text(
+                            '${_speed}x',
+                            style: const TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color: kImperialRed,
+                            ),
                           ),
                         ),
-                      ),
-                      const SizedBox(width: 8),
-                      Text(
-                        currentTracks.isNotEmpty
-                            ? "Track ${trackIndex + 1}/${currentTracks.length} ($currentTrackName)"
-                            : "",
-                        style: TextStyle(fontSize: 12, color: primary, fontWeight: FontWeight.w600),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 6),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      TextButton(
-                        style: TextButton.styleFrom(visualDensity: VisualDensity.compact),
-                        onPressed: () {
-                          const speeds = [0.75, 0.85, 1.0, 1.25];
-                          final next = speeds[(speeds.indexOf(speed) + 1) % speeds.length];
-                          setState(() => speed = next);
-                          _miniPlayer.setSpeed(speed);
-                        },
-                        child: Text("${speed}x", style: TextStyle(fontWeight: FontWeight.bold, color: primary)),
-                      ),
-                      IconButton(
-                        visualDensity: VisualDensity.compact,
-                        icon: const Icon(Icons.replay_5_rounded),
-                        tooltip: "Rewind 3s",
-                        onPressed: () {
-                          final target = _miniPlayer.position - const Duration(seconds: 3);
-                          _miniPlayer.seek(target < Duration.zero ? Duration.zero : target);
-                        },
-                      ),
-                      IconButton(
-                        visualDensity: VisualDensity.compact,
-                        icon: const Icon(Icons.skip_previous_rounded, size: 28),
-                        onPressed: trackIndex > 0 ? () => _playMiniTrack(trackIndex - 1) : null,
-                      ),
-                      CircleAvatar(
-                        radius: 22,
-                        backgroundColor: primary,
-                        child: IconButton(
-                          icon: Icon(
-                            isPlaying ? Icons.pause_rounded : Icons.play_arrow_rounded,
-                            color: Colors.white,
-                            size: 26,
-                          ),
+                        IconButton(
+                          tooltip: '-3s Rewind',
+                          icon: const Icon(Icons.replay_5_rounded),
+                          onPressed: _rewind3s,
+                        ),
+                        IconButton(
+                          icon: const Icon(Icons.skip_previous_rounded,
+                              size: 30),
                           onPressed: () {
-                            if (isPlaying) {
-                              _miniPlayer.pause();
-                            } else if (_miniPlayer.processingState == ProcessingState.idle) {
-                              _playMiniTrack(trackIndex);
-                            } else {
-                              _miniPlayer.play();
+                            if (_trackIndex > 0) {
+                              _playTrack(_trackIndex - 1);
                             }
                           },
                         ),
-                      ),
-                      IconButton(
-                        visualDensity: VisualDensity.compact,
-                        icon: const Icon(Icons.skip_next_rounded, size: 28),
-                        onPressed: trackIndex + 1 < currentTracks.length
-                            ? () => _playMiniTrack(trackIndex + 1)
-                            : null,
-                      ),
-                    ],
-                  ),
-                ],
+                        FilledButton(
+                          style: FilledButton.styleFrom(
+                            backgroundColor: kImperialRed,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(16),
+                            ),
+                            padding: const EdgeInsets.all(14),
+                          ),
+                          onPressed: () =>
+                              _isPlaying ? _player.pause() : _player.play(),
+                          child: Icon(
+                            _isPlaying
+                                ? Icons.pause_rounded
+                                : Icons.play_arrow_rounded,
+                            size: 30,
+                          ),
+                        ),
+                        IconButton(
+                          icon: const Icon(Icons.skip_next_rounded, size: 30),
+                          onPressed: () {
+                            if (_trackIndex + 1 < _currentTracks.length) {
+                              _playTrack(_trackIndex + 1);
+                            } else if (isAllMode) {
+                              setState(() {
+                                _lessonIndex = (_lessonIndex + 1) %
+                                    widget.allLessonNames.length;
+                              });
+                              _playTrack(0);
+                            }
+                          },
+                        ),
+                        IconButton(
+                          tooltip: 'Repeat Single Track',
+                          icon: Icon(
+                            Icons.repeat_one_rounded,
+                            color: _singleTrackLoop ? kImperialRed : Colors.grey,
+                          ),
+                          onPressed: () => setState(
+                              () => _singleTrackLoop = !_singleTrackLoop),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
               ),
-            ),
-        ],
-      ),
+            ],
+          ),
+        );
+      },
     );
   }
 }
 
-class PersonalGrammarScreen extends StatefulWidget {
-  final SharedPreferences prefs;
-  const PersonalGrammarScreen({super.key, required this.prefs});
+// ============================================================================
+// 12. MY GRAMMAR & NOTES SCREEN
+// ============================================================================
+
+class GrammarNotesScreen extends StatefulWidget {
+  const GrammarNotesScreen({super.key});
 
   @override
-  State<PersonalGrammarScreen> createState() => _PersonalGrammarScreenState();
+  State<GrammarNotesScreen> createState() => _GrammarNotesScreenState();
 }
 
-class _PersonalGrammarScreenState extends State<PersonalGrammarScreen> {
-  List notes = [];
+class _GrammarNotesScreenState extends State<GrammarNotesScreen> {
+  List> _notes = [];
 
   @override
   void initState() {
@@ -1210,116 +2612,115 @@ class _PersonalGrammarScreenState extends State<PersonalGrammarScreen> {
     _loadNotes();
   }
 
-  void _loadNotes() {
-    final raw = widget.prefs.getString('personal_pdfs');
+  Future<void> _loadNotes() async {
+    final prefs = await SharedPreferences.getInstance();
+    final raw = prefs.getString('user_notes_list');
     if (raw != null) {
-      final List decoded = jsonDecode(raw);
+      final list = jsonDecode(raw) as List<dynamic>;
       setState(() {
-        notes = decoded.map((e) => Map<String, String>.from(e)).toList();
+        _notes = list
+            .map((e) => Map<String, String>.from(e as Map<String, dynamic>))
+            .toList();
       });
     }
   }
 
   Future<void> _saveNotes() async {
-    await widget.prefs.setString('personal_pdfs', jsonEncode(notes));
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString('user_notes_list', jsonEncode(_notes));
   }
 
-  Future<void> _pickAndImportPdf() async {
-    final result = await FilePicker.platform.pickFiles(type: FileType.custom, allowedExtensions: ['pdf']);
-    if (result != null && result.files.single.path != null) {
-      final sourceFile = File(result.files.single.path!);
-      final dir = await getApplicationDocumentsDirectory();
-      final notesDir = Directory('${dir.path}/personal_notes');
-      if (!await notesDir.exists()) await notesDir.create(recursive: true);
+  void _openEditor({int? index}) {
+    final titleCtrl =
+        TextEditingController(text: index != null ? _notes[index]['title'] : '');
+    final bodyCtrl =
+        TextEditingController(text: index != null ? _notes[index]['body'] : '');
 
-      final fileName = result.files.single.name;
-      final savedFile = await sourceFile.copy('${notesDir.path}/${DateTime.now().millisecondsSinceEpoch}_$fileName');
-
-      setState(() {
-        notes.add({'title': fileName.replaceAll('.pdf', ''), 'path': savedFile.path});
-      });
-      await _saveNotes();
-    }
-  }
-
-  Future<void> _confirmAndDeleteNote(int idx) async {
-    final item = notes[idx];
-    final shouldDelete = await showDialog<bool>(
+    showDialog(
       context: context,
       builder: (ctx) => AlertDialog(
-        title: const Text("Delete PDF?"),
-        content: Text("Are you sure you want to delete '${item['title']}'?"),
+        title: Text(index == null ? 'নতুন নোট' : 'নোট এডিট করো'),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            TextField(
+              controller: titleCtrl,
+              decoration: const InputDecoration(labelText: 'শিরোনাম'),
+            ),
+            const SizedBox(height: 8),
+            TextField(
+              controller: bodyCtrl,
+              maxLines: 5,
+              decoration: const InputDecoration(labelText: 'বিস্তারিত নোট'),
+            ),
+          ],
+        ),
         actions: [
           TextButton(
-            onPressed: () => Navigator.pop(ctx, false),
-            child: const Text("Cancel"),
-          ),
+              onPressed: () => Navigator.pop(ctx), child: const Text('Cancel')),
           FilledButton(
-            style: FilledButton.styleFrom(backgroundColor: Colors.red),
-            onPressed: () => Navigator.pop(ctx, true),
-            child: const Text("Delete"),
+            onPressed: () {
+              final item = {
+                'title': titleCtrl.text.trim().isEmpty
+                    ? 'Untitled Note'
+                    : titleCtrl.text.trim(),
+                'body': bodyCtrl.text.trim(),
+              };
+              setState(() {
+                if (index == null) {
+                  _notes.insert(0, item);
+                } else {
+                  _notes[index] = item;
+                }
+              });
+              _saveNotes();
+              Navigator.pop(ctx);
+            },
+            child: const Text('Save'),
           ),
         ],
       ),
     );
-
-    if (shouldDelete == true) {
-      final f = File(item['path']!);
-      if (await f.exists()) await f.delete();
-      setState(() => notes.removeAt(idx));
-      await _saveNotes();
-    }
   }
 
   @override
   Widget build(BuildContext context) {
-    final primary = Theme.of(context).colorScheme.primary;
     return Scaffold(
-      appBar: AppBar(title: const Text("My Grammar & Notes")),
-      floatingActionButton: FloatingActionButton.extended(
-        backgroundColor: primary,
+      appBar: AppBar(title: const Text('My Grammar & Notes')),
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: kImperialRed,
         foregroundColor: Colors.white,
-        onPressed: _pickAndImportPdf,
-        icon: const Icon(Icons.upload_file_rounded),
-        label: const Text("Add PDF"),
+        onPressed: () => _openEditor(),
+        child: const Icon(Icons.add_rounded),
       ),
-      body: notes.isEmpty
+      body: _notes.isEmpty
           ? const Center(
-              child: Padding(
-                padding: EdgeInsets.all(24),
-                child: Text(
-                  "No personal grammar PDFs added yet.\nTap '+ Add PDF' to import notes from your phone or SD card.",
-                  textAlign: TextAlign.center,
-                  style: TextStyle(fontSize: 15, color: Colors.grey),
-                ),
-              ),
+              child: Text('নিচের + বাটনে চেপে তোমার গ্রামার ও পড়াশোনার নোট রাখো।'),
             )
           : ListView.builder(
-              padding: const EdgeInsets.all(16),
-              itemCount: notes.length,
-              itemBuilder: (context, idx) {
-                final item = notes[idx];
+              padding: const EdgeInsets.all(14),
+              itemCount: _notes.length,
+              itemBuilder: (_, i) {
+                final n = _notes[i];
                 return Card(
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
                   child: ListTile(
-                    leading: Icon(Icons.picture_as_pdf_rounded, color: primary),
-                    title: Text(item['title']!, style: const TextStyle(fontWeight: FontWeight.bold)),
-                    trailing: IconButton(
-                      icon: const Icon(Icons.delete_outline_rounded, color: Colors.red),
-                      onPressed: () => _confirmAndDeleteNote(idx),
+                    title: Text(
+                      n['title'] ?? '',
+                      style: const TextStyle(fontWeight: FontWeight.bold),
                     ),
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (_) => PdfViewerScreen(
-                            title: item['title']!,
-                            filePath: item['path']!,
-                            prefs: widget.prefs,
-                          ),
-                        ),
-                      );
-                    },
+                    subtitle: Text(
+                      n['body'] ?? '',
+                      maxLines: 3,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    onTap: () => _openEditor(index: i),
+                    trailing: IconButton(
+                      icon: const Icon(Icons.delete_outline_rounded),
+                      onPressed: () {
+                        setState(() => _notes.removeAt(i));
+                        _saveNotes();
+                      },
+                    ),
                   ),
                 );
               },
@@ -1328,456 +2729,180 @@ class _PersonalGrammarScreenState extends State<PersonalGrammarScreen> {
   }
 }
 
+// ============================================================================
+// 13. OFFLINE STORAGE MANAGER SCREEN
+// ============================================================================
+
 class StorageManagerScreen extends StatefulWidget {
-  final SharedPreferences prefs;
-  const StorageManagerScreen({super.key, required this.prefs});
+  const StorageManagerScreen({super.key});
 
   @override
   State<StorageManagerScreen> createState() => _StorageManagerScreenState();
 }
 
 class _StorageManagerScreenState extends State<StorageManagerScreen> {
-  bool loading = true;
-  List downloadedItems = [];
+  List<Directory> _folders = [];
 
   @override
   void initState() {
     super.initState();
-    _scanDownloads();
+    _scan();
   }
 
-  int _dirSize(Directory dir) {
-    int total = 0;
-    if (dir.existsSync()) {
-      for (var entity in dir.listSync(recursive: true)) {
-        if (entity is File) total += entity.lengthSync();
-      }
-    }
-    return total;
-  }
-
-  String _formatBytes(int bytes) {
-    if (bytes <= 0) return "0 MB";
-    final mb = bytes / (1024 * 1024);
-    return "${mb.toStringAsFixed(1)} MB";
-  }
-
-  Future<void> _scanDownloads() async {
-    setState(() => loading = true);
-    final dir = await getApplicationDocumentsDirectory();
-    List items = [];
-
-    for (var m in allModules) {
-      final audioDir = Directory('${dir.path}/audios/${m.id}');
-      final pdfFile = File('${dir.path}/pdfs/${m.pdfFileName}');
-
-      final hasAudio = audioDir.existsSync() && audioDir.listSync(recursive: true).whereType<File>().isNotEmpty;
-      final hasPdf = pdfFile.existsSync();
-
-      if (hasAudio || hasPdf) {
-        final audioBytes = hasAudio ? _dirSize(audioDir) : 0;
-        final pdfBytes = hasPdf ? pdfFile.lengthSync() : 0;
-        items.add({
-          'module': m,
-          'hasAudio': hasAudio,
-          'hasPdf': hasPdf,
-          'audioBytes': audioBytes,
-          'pdfBytes': pdfBytes,
-          'audioDir': audioDir,
-          'pdfFile': pdfFile,
-        });
-      }
-    }
-
-    if (mounted) {
+  Future<void> _scan() async {
+    final base = await getApplicationDocumentsDirectory();
+    final root = Directory('${base.path}/hsk_offline');
+    if (await root.exists()) {
       setState(() {
-        downloadedItems = items;
-        loading = false;
+        _folders = root.listSync().whereType<Directory>().toList();
       });
+    } else {
+      setState(() => _folders = []);
     }
   }
 
-  Future<void> _deleteTarget({
-    required String label,
-    Directory? audioDir,
-    File? pdfFile,
-    String? moduleIdToClearHistory,
-  }) async {
-    final confirm = await showDialog<bool>(
-      context: context,
-      builder: (ctx) => AlertDialog(
-        title: const Text("Delete Offline Files?"),
-        content: Text("Are you sure you want to delete $label? You can re-download it anytime."),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(ctx, false),
-            child: const Text("Cancel"),
-          ),
-          FilledButton(
-            style: FilledButton.styleFrom(backgroundColor: Colors.red),
-            onPressed: () => Navigator.pop(ctx, true),
-            child: const Text("Delete"),
-          ),
-        ],
-      ),
-    );
-
-    if (confirm == true) {
-      if (audioDir != null && await audioDir.exists()) {
-        await audioDir.delete(recursive: true);
-        if (moduleIdToClearHistory != null &&
-            widget.prefs.getString('last_module_id') == moduleIdToClearHistory) {
-          await widget.prefs.remove('last_played');
-          await widget.prefs.remove('last_module_id');
-          await widget.prefs.remove('last_folder_key');
-        }
-      }
-      if (pdfFile != null && await pdfFile.exists()) {
-        await pdfFile.delete();
-      }
-      await _scanDownloads();
+  double _dirSizeMb(Directory dir) {
+    int total = 0;
+    for (final entity in dir.listSync(recursive: true)) {
+      if (entity is File) total += entity.lengthSync();
     }
+    return total / (1024 * 1024);
   }
 
   @override
   Widget build(BuildContext context) {
-    final primary = Theme.of(context).colorScheme.primary;
     return Scaffold(
-      appBar: AppBar(title: const Text("Manage Offline Storage")),
-      body: loading
-          ? const Center(child: CircularProgressIndicator())
-          : downloadedItems.isEmpty
-              ? const Center(
-                  child: Padding(
-                    padding: EdgeInsets.all(24),
-                    child: Text(
-                      "No downloaded HSK audio packs or textbooks found on your phone.",
-                      textAlign: TextAlign.center,
-                      style: TextStyle(fontSize: 15, color: Colors.grey),
+      appBar: AppBar(title: const Text('Manage Offline Storage')),
+      body: _folders.isEmpty
+          ? const Center(child: Text('এখনও কোনো অফলাইন ফাইল ডাউনলোড করা হয়নি।'))
+          : ListView.builder(
+              padding: const EdgeInsets.all(14),
+              itemCount: _folders.length,
+              itemBuilder: (_, i) {
+                final d = _folders[i];
+                final name = d.uri.pathSegments
+                    .where((s) => s.isNotEmpty)
+                    .last
+                    .toUpperCase();
+                final mb = _dirSizeMb(d).toStringAsFixed(1);
+                return Card(
+                  child: ListTile(
+                    leading: const Icon(Icons.folder_rounded,
+                        color: kImperialRed),
+                    title: Text(name),
+                    subtitle: Text('$mb MB ব্যবহৃত'),
+                    trailing: IconButton(
+                      icon: const Icon(Icons.delete_forever_rounded,
+                          color: Colors.red),
+                      onPressed: () async {
+                        await d.delete(recursive: true);
+                        _scan();
+                      },
                     ),
                   ),
-                )
-              : ListView.builder(
-                  padding: const EdgeInsets.all(16),
-                  itemCount: downloadedItems.length,
-                  itemBuilder: (context, idx) {
-                    final item = downloadedItems[idx];
-                    final HSKModule m = item['module'];
-                    final bool hasAudio = item['hasAudio'];
-                    final bool hasPdf = item['hasPdf'];
-                    final int audioBytes = item['audioBytes'];
-                    final int pdfBytes = item['pdfBytes'];
-                    final int totalBytes = audioBytes + pdfBytes;
+                );
+              },
+            ),
+    );
+  }
+}
 
-                    return Card(
-                      margin: const EdgeInsets.only(bottom: 12),
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-                      child: Padding(
-                        padding: const EdgeInsets.all(14),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Row(
-                                  children: [
-                                    CircleAvatar(
-                                      backgroundColor: primary.withOpacity(0.12),
-                                      child: Text(m.chineseBadge, style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: primary)),
-                                    ),
-                                    const SizedBox(width: 12),
-                                    Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      children: [
-                                        Text(m.levelTitle, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
-                                        Text("Total: ${_formatBytes(totalBytes)}", style: TextStyle(fontSize: 12, color: Colors.grey[600])),
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                                IconButton(
-                                  icon: const Icon(Icons.delete_forever_rounded, color: Colors.red),
-                                  tooltip: "Delete All for ${m.levelTitle}",
-                                  onPressed: () => _deleteTarget(
-                                    label: "all files for ${m.levelTitle}",
-                                    audioDir: hasAudio ? item['audioDir'] : null,
-                                    pdfFile: hasPdf ? item['pdfFile'] : null,
-                                    moduleIdToClearHistory: m.id,
-                                  ),
-                                ),
-                              ],
-                            ),
-                            const Divider(height: 18),
-                            Wrap(
-                              spacing: 8,
-                              runSpacing: 8,
-                              children: [
-                                if (hasAudio)
-                                  ActionChip(
-                                    avatar: const Icon(Icons.headphones_rounded, size: 16, color: Colors.red),
-                                    label: Text("Delete Audio (${_formatBytes(audioBytes)})", style: const TextStyle(fontSize: 12)),
-                                    onPressed: () => _deleteTarget(
-                                      label: "${m.levelTitle} Audio Pack",
-                                      audioDir: item['audioDir'],
-                                      moduleIdToClearHistory: m.id,
-                                    ),
-                                  ),
-                                if (hasPdf)
-                                  ActionChip(
-                                    avatar: const Icon(Icons.picture_as_pdf_rounded, size: 16, color: Colors.red),
-                                    label: Text("Delete PDF (${_formatBytes(pdfBytes)})", style: const TextStyle(fontSize: 12)),
-                                    onPressed: () => _deleteTarget(
-                                      label: "${m.levelTitle} Textbook PDF",
-                                      pdfFile: item['pdfFile'],
-                                    ),
-                                  ),
-                              ],
-                            ),
-                          ],
-                        ),
-                      ),
-                    );
+// ============================================================================
+// 14. SETTINGS & ABOUT SCREEN
+// ============================================================================
+
+class SettingsScreen extends StatelessWidget {
+  final AppState appState;
+  const SettingsScreen({super.key, required this.appState});
+
+  @override
+  Widget build(BuildContext context) {
+    return AnimatedBuilder(
+      animation: appState,
+      builder: (context, _) {
+        return Scaffold(
+          appBar: AppBar(title: const Text('Settings & About')),
+          body: ListView(
+            padding: const EdgeInsets.all(16),
+            children: [
+              const Text(
+                'Display Theme',
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
+              ),
+              SwitchListTile(
+                title: const Text('Night Study Dark Mode'),
+                subtitle: const Text('রাতে পড়ার জন্য চোখের আরামদায়ক ডার্ক থিম'),
+                value: appState.isDarkMode,
+                onChanged: appState.toggleDarkMode,
+              ),
+              const Divider(),
+
+              const Text(
+                'Audio Study Preferences',
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
+              ),
+              SwitchListTile(
+                title: const Text('All Lessons Continuous Mode (1 → 15)'),
+                subtitle: Text(
+                  appState.allLessonsContinuous
+                      ? 'চালু: এক লেসন শেষে স্বয়ংক্রিয়ভাবে পরের লেসন বাজবে'
+                      : 'বন্ধ: শুধু বর্তমান লেসনের অডিও লুপ হয়ে বাজবে',
+                ),
+                value: appState.allLessonsContinuous,
+                onChanged: appState.setAllLessonsContinuous,
+              ),
+              ListTile(
+                title: const Text('Shadowing Pause Gap'),
+                subtitle: const Text('প্রতি ট্র্যাকের পর মুখে বলার জন্য বিরতি'),
+                trailing: DropdownButton<int>(
+                  value: appState.shadowingGapSeconds,
+                  items: const [
+                    DropdownMenuItem(value: 0, child: Text('Off (0s)')),
+                    DropdownMenuItem(value: 2, child: Text('2 sec')),
+                    DropdownMenuItem(value: 4, child: Text('4 sec')),
+                  ],
+                  onChanged: (v) {
+                    if (v != null) appState.setShadowingGap(v);
                   },
                 ),
-    );
-  }
-}
+              ),
+              const Divider(),
 
-class SettingsScreen extends StatefulWidget {
-  final SharedPreferences prefs;
-  final bool isDarkMode;
-  final ValueChanged<bool> onThemeChanged;
-
-  const SettingsScreen({
-    super.key,
-    required this.prefs,
-    required this.isDarkMode,
-    required this.onThemeChanged,
-  });
-
-  @override
-  State<SettingsScreen> createState() => _SettingsScreenState();
-}
-
-class _SettingsScreenState extends State<SettingsScreen> {
-  late double defaultSpeed;
-  late int pauseGap;
-  int _photoPage = 0;
-
-  final List<String> groupPhotos = const [
-    'assets/group1.jpg',
-    'assets/group2.jpg',
-    'assets/group3.jpg',
-  ];
-
-  @override
-  void initState() {
-    super.initState();
-    defaultSpeed = widget.prefs.getDouble('default_speed') ?? 1.0;
-    pauseGap = widget.prefs.getInt('pause_gap') ?? 0;
-  }
-
-  Future<void> _launchExternal(String url) async {
-    final uri = Uri.parse(url);
-    if (!await launchUrl(uri, mode: LaunchMode.externalApplication)) {
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text("Could not open link")),
+              const SizedBox(height: 8),
+              const Text(
+                'About HSK Study App (v1.1.0)',
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
+              ),
+              const SizedBox(height: 8),
+              const Card(
+                child: Padding(
+                  padding: EdgeInsets.all(14),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text('Created by: AHM',
+                          style: TextStyle(fontWeight: FontWeight.bold)),
+                      SizedBox(height: 4),
+                      Text('Mentors: Mr. Jaman & Mr. Mahabub'),
+                      SizedBox(height: 4),
+                      Text('Community: Chinese Hatekhari'),
+                    ],
+                  ),
+                ),
+              ),
+              const SizedBox(height: 8),
+              OutlinedButton.icon(
+                onPressed: () async {
+                  final uri = Uri.parse('https://www.facebook.com/ahm.79316');
+                  await launchUrl(uri, mode: LaunchMode.externalApplication);
+                },
+                icon: const Icon(Icons.facebook_rounded),
+                label: const Text('Connect with AHM on Facebook'),
+              ),
+            ],
+          ),
         );
-      }
-    }
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final primary = Theme.of(context).colorScheme.primary;
-    return Scaffold(
-      appBar: AppBar(title: const Text("Settings & About")),
-      body: ListView(
-        padding: const EdgeInsets.all(16),
-        children: [
-          const Text("Appearance", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
-          SwitchListTile(
-            title: const Text("Night Study Dark Mode"),
-            subtitle: const Text("Switch between Porcelain White and Dark Theme"),
-            value: widget.isDarkMode,
-            activeColor: primary,
-            onChanged: widget.onThemeChanged,
-          ),
-
-          const Divider(),
-          const Text("Audio Study Preferences", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
-          ListTile(
-            title: const Text("Default Playback Speed"),
-            trailing: DropdownButton<double>(
-              value: defaultSpeed,
-              items: const [
-                DropdownMenuItem(value: 0.75, child: Text("0.75x")),
-                DropdownMenuItem(value: 0.85, child: Text("0.85x")),
-                DropdownMenuItem(value: 1.0, child: Text("1.0x (Normal)")),
-                DropdownMenuItem(value: 1.25, child: Text("1.25x")),
-              ],
-              onChanged: (v) {
-                if (v != null) {
-                  setState(() => defaultSpeed = v);
-                  widget.prefs.setDouble('default_speed', v);
-                }
-              },
-            ),
-          ),
-          ListTile(
-            title: const Text("Pause Gap Between Tracks (Shadowing)"),
-            subtitle: const Text("Extra pause in Only Audio mode to repeat aloud"),
-            trailing: DropdownButton<int>(
-              value: pauseGap,
-              items: const [
-                DropdownMenuItem(value: 0, child: Text("0 sec")),
-                DropdownMenuItem(value: 1, child: Text("1 sec")),
-                DropdownMenuItem(value: 2, child: Text("2 sec")),
-                DropdownMenuItem(value: 3, child: Text("3 sec")),
-              ],
-              onChanged: (v) {
-                if (v != null) {
-                  setState(() => pauseGap = v);
-                  widget.prefs.setInt('pause_gap', v);
-                }
-              },
-            ),
-          ),
-
-          const Divider(),
-          const Text("Offline Storage", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
-          ListTile(
-            leading: Icon(Icons.folder_delete_rounded, color: primary),
-            title: const Text("Manage Offline Storage"),
-            subtitle: const Text("Select and delete individual HSK levels, audio packs, or PDFs"),
-            trailing: const Icon(Icons.arrow_forward_ios_rounded, size: 16),
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (_) => StorageManagerScreen(prefs: widget.prefs)),
-              );
-            },
-          ),
-
-          const Divider(),
-          const SizedBox(height: 8),
-
-          Card(
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-            child: Padding(
-              padding: const EdgeInsets.all(18),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text("About HSK", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: primary)),
-                  const SizedBox(height: 10),
-                  const Text(
-                    "The first step to mastering Mandarin Chinese is tuning your ear to authentic native pronunciation, tones, and natural speech rhythm. HSK is designed as a clean, distraction-free companion for learners around the world—bringing structured HSK 1–6 textbook lessons, continuous chapter-by-chapter audio playback, and the ability to add your own personal grammar PDFs in one place.\n\n"
-                    "Study at your own pace, repeat difficult dialogues effortlessly, and build real listening confidence.",
-                    style: TextStyle(height: 1.5, fontSize: 14),
-                  ),
-                  const SizedBox(height: 14),
-                  const Text("Curated & Initiated by: AHM", style: TextStyle(fontWeight: FontWeight.bold)),
-                  const SizedBox(height: 10),
-                  SizedBox(
-                    width: double.infinity,
-                    child: FilledButton.icon(
-                      style: FilledButton.styleFrom(
-                        backgroundColor: primary,
-                        padding: const EdgeInsets.symmetric(vertical: 12),
-                      ),
-                      onPressed: () => _launchExternal(developerFacebookUrl),
-                      icon: const Icon(Icons.facebook_rounded),
-                      label: const Text("Follow AHM on Facebook", style: TextStyle(fontWeight: FontWeight.bold)),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-
-          const SizedBox(height: 14),
-
-          Card(
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-            child: Padding(
-              padding: const EdgeInsets.all(18),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text("Mentors & Learning Community", style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold, color: primary)),
-                  const SizedBox(height: 12),
-                  ClipRRect(
-                    borderRadius: BorderRadius.circular(12),
-                    child: SizedBox(
-                      height: 200,
-                      width: double.infinity,
-                      child: PageView.builder(
-                        itemCount: groupPhotos.length,
-                        onPageChanged: (idx) => setState(() => _photoPage = idx),
-                        itemBuilder: (context, idx) {
-                          return Image.asset(groupPhotos[idx], fit: BoxFit.cover);
-                        },
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 8),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: List.generate(groupPhotos.length, (idx) {
-                      return Container(
-                        margin: const EdgeInsets.symmetric(horizontal: 4),
-                        width: _photoPage == idx ? 16 : 8,
-                        height: 8,
-                        decoration: BoxDecoration(
-                          color: _photoPage == idx ? primary : Colors.grey.withOpacity(0.4),
-                          borderRadius: BorderRadius.circular(4),
-                        ),
-                      );
-                    }),
-                  ),
-                  const SizedBox(height: 14),
-                  const Text(
-                    "Guided & Mentored by:",
-                    style: TextStyle(fontSize: 13, color: Colors.grey, fontWeight: FontWeight.w600),
-                  ),
-                  const SizedBox(height: 2),
-                  const Text(
-                    "Mr. Jaman & Mr. Mahabub",
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                  ),
-                  const SizedBox(height: 4),
-                  Text(
-                    "Chinese Hatekhari",
-                    style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold, color: primary),
-                  ),
-                  const SizedBox(height: 10),
-                  const Text(
-                    "Heartfelt gratitude to our respected teachers, Mr. Jaman and Mr. Mahabub, and the Chinese Hatekhari community, whose dedicated guidance, patience, and inspiration made our Mandarin learning journey possible.",
-                    style: TextStyle(height: 1.45, fontSize: 13.5),
-                  ),
-                  const SizedBox(height: 14),
-                  SizedBox(
-                    width: double.infinity,
-                    child: OutlinedButton.icon(
-                      style: OutlinedButton.styleFrom(
-                        foregroundColor: primary,
-                        side: BorderSide(color: primary, width: 1.5),
-                        padding: const EdgeInsets.symmetric(vertical: 12),
-                      ),
-                      onPressed: () => _launchExternal(academyFacebookUrl),
-                      icon: const Icon(Icons.facebook_rounded),
-                      label: const Text("Visit Chinese Hatekhari on Facebook", style: TextStyle(fontWeight: FontWeight.bold)),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ],
-      ),
+      },
     );
   }
 }
