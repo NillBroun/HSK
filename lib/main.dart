@@ -13,9 +13,9 @@ import 'package:pdfrx/pdfrx.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-/// TODO: তোমার v1.0.1-এর আসল GitHub Release Base URL এখানে বসাও
+/// তোমার GitHub Release-এর Base URL (ট্যাগ ভিন্ন হলে এখানে ঠিক করে নিও)
 const String kGithubReleaseBaseUrl =
-    'https://github.com/YOUR_USERNAME/YOUR_REPO/releases/download/v1.0.0/';
+    'https://github.com/NillBroun/HSK/releases/download/v1.0.0/';
 
 const Color kImperialRed = Color(0xFFB71C1C);
 const Color kPorcelainWhite = Color(0xFFF9F7F2);
@@ -247,9 +247,7 @@ class VocabRepository {
           ));
           allWords.addAll(parsedWords);
         }
-      } catch (_) {
-        // ফাইলটি এখনও যোগ না করা হয়ে থাকলে ক্র্যাশ এড়িয়ে যাবে
-      }
+      } catch (_) {}
     }
     _loaded = true;
   }
@@ -290,8 +288,8 @@ class VocabRepository {
 
 class AppState extends ChangeNotifier {
   bool isDarkMode = false;
-  bool allLessonsContinuous = false; // false = Lesson Loop, true = All Lessons
-  int shadowingGapSeconds = 0; // 0, 2, 4 sec
+  bool allLessonsContinuous = false;
+  int shadowingGapSeconds = 0;
   Set<String> favoriteGroupIds = {};
   Set<String> favoriteWordKeys = {};
   String lastStudiedLabel = '';
@@ -519,7 +517,6 @@ class _HomeScreenState extends State<HomeScreen> {
       drawer: _buildDrawer(context),
       body: Column(
         children: [
-          // Global Multi-Language Search Bar
           Container(
             color: isDark ? const Color(0xFF8E0000) : kImperialRed,
             padding: const EdgeInsets.fromLTRB(16, 4, 16, 14),
@@ -553,19 +550,14 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ),
           ),
-
-          // Search Results OR Main Dashboard
           Expanded(
             child: _searchController.text.trim().isNotEmpty
                 ? _buildSearchResultsList()
                 : ListView(
                     padding: const EdgeInsets.all(16),
                     children: [
-                      // Last Studied Banner
                       if (widget.appState.lastStudiedLabel.isNotEmpty)
                         _buildResumeBanner(isDark),
-
-                      // ⭐ Pinned Favorite Categories
                       if (pinnedGroups.isNotEmpty) ...[
                         const Padding(
                           padding: EdgeInsets.only(bottom: 8, top: 4),
@@ -600,8 +592,6 @@ class _HomeScreenState extends State<HomeScreen> {
                         ),
                         const SizedBox(height: 16),
                       ],
-
-                      // Quick Actions Row (My Grammar & Notes + Vocab Bank)
                       Row(
                         children: [
                           Expanded(
@@ -620,18 +610,19 @@ class _HomeScreenState extends State<HomeScreen> {
                           ),
                           const SizedBox(width: 10),
                           Expanded(
-                            child: _quickCard(
-                              isDark: isDark,
-                              icon: Icons.menu_book_rounded,
-                              title: 'Vocabulary Bank',
-                              subtitle: 'HSK • 3000 • কর্মক্ষেত্র',
-                              onTap: () => Scaffold.of(context).openDrawer(),
+                            child: Builder(
+                              builder: (ctx) => _quickCard(
+                                isDark: isDark,
+                                icon: Icons.menu_book_rounded,
+                                title: 'Vocabulary Bank',
+                                subtitle: 'HSK • 3000 • কর্মক্ষেত্র',
+                                onTap: () => Scaffold.of(ctx).openDrawer(),
+                              ),
                             ),
                           ),
                         ],
                       ),
                       const SizedBox(height: 18),
-
                       const Text(
                         'HSK Standard Courses (1–6)',
                         style: TextStyle(
@@ -640,7 +631,6 @@ class _HomeScreenState extends State<HomeScreen> {
                         ),
                       ),
                       const SizedBox(height: 10),
-
                       GridView.builder(
                         shrinkWrap: true,
                         physics: const NeverScrollableScrollPhysics(),
@@ -844,7 +834,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget _buildSearchResultsList() {
     if (_searchResults.isEmpty) {
       return const Center(
-        child: Text('কোনো শব্দ পাওয়া যায়নি। অন্যভাবে লিখে চেষ্টা করো।'),
+        child: Text('কোনো শব্দ পাওয়া যায়নি। অন্যভাবে লিখে চেষ্টা করো।'),
       );
     }
     return ListView.builder(
@@ -897,7 +887,6 @@ class _HomeScreenState extends State<HomeScreen> {
               ],
             ),
           ),
-
           ListTile(
             leading: const Icon(Icons.star_rounded, color: Colors.amber),
             title: const Text('My Favorites (পিন করা তালিকা)'),
@@ -912,8 +901,6 @@ class _HomeScreenState extends State<HomeScreen> {
             },
           ),
           const Divider(),
-
-          // Section 1: HSK Vocabulary Bank
           ExpansionTile(
             initiallyExpanded: true,
             leading: const Icon(Icons.school_rounded, color: kImperialRed),
@@ -947,8 +934,6 @@ class _HomeScreenState extends State<HomeScreen> {
                         ))
                     .toList(),
           ),
-
-          // Section 2: Collins 3000 Words (10 Sequential Sections)
           ExpansionTile(
             leading: const Icon(Icons.auto_stories_rounded, color: kImperialRed),
             title: const Text(
@@ -981,8 +966,6 @@ class _HomeScreenState extends State<HomeScreen> {
                         ))
                     .toList(),
           ),
-
-          // Section 3: 13 Workplace Departments
           ExpansionTile(
             leading: const Icon(Icons.work_rounded, color: kImperialRed),
             title: const Text(
@@ -1015,7 +998,6 @@ class _HomeScreenState extends State<HomeScreen> {
                         ))
                     .toList(),
           ),
-
           const Divider(),
           ListTile(
             leading: const Icon(Icons.sd_storage_rounded),
@@ -1107,8 +1089,8 @@ class _VocabListScreenState extends State<VocabListScreen> {
                       duration: const Duration(seconds: 1),
                       content: Text(
                         isPinned
-                            ? 'Favorites থেকে সরানো হয়েছে'
-                            : '⭐ Favorites-এ পিন করা হয়েছে',
+                            ? 'Favorites থেকে সরানো হয়েছে'
+                            : '⭐ Favorites-এ পিন করা হয়েছে',
                       ),
                     ),
                   );
@@ -1137,13 +1119,12 @@ class _VocabListScreenState extends State<VocabListScreen> {
           ),
           body: Column(
             children: [
-              // Local Search Bar
               Padding(
                 padding: const EdgeInsets.fromLTRB(14, 12, 14, 8),
                 child: TextField(
                   onChanged: (v) => setState(() => _localQuery = v),
                   decoration: InputDecoration(
-                    hintText: 'এই তালিকায় খুঁজুন (বাংলা / Pinyin / 汉字)...',
+                    hintText: 'এই তালিকায় খুঁজুন (বাংলা / Pinyin / 汉字)...',
                     prefixIcon: const Icon(Icons.search_rounded),
                     isDense: true,
                     border: OutlineInputBorder(
@@ -1152,8 +1133,6 @@ class _VocabListScreenState extends State<VocabListScreen> {
                   ),
                 ),
               ),
-
-              // Sub-category / Lesson Filter Chips
               if (tags.length > 2)
                 SizedBox(
                   height: 44,
@@ -1173,11 +1152,9 @@ class _VocabListScreenState extends State<VocabListScreen> {
                     },
                   ),
                 ),
-
-              // Word List
               Expanded(
                 child: words.isEmpty
-                    ? const Center(child: Text('এই বিভাগে কোনো শব্দ পাওয়া যায়নি।'))
+                    ? const Center(child: Text('এই বিভাগে কোনো শব্দ পাওয়া যায়নি।'))
                     : ListView.builder(
                         padding: const EdgeInsets.all(14),
                         itemCount: words.length,
@@ -1241,7 +1218,6 @@ class VocabCardWidget extends StatelessWidget {
                       ),
                     ),
                   ),
-                // Layer 1: Hanzi
                 Text(
                   word.hanzi,
                   style: const TextStyle(
@@ -1250,7 +1226,6 @@ class VocabCardWidget extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 2),
-                // Layer 2: Pinyin (Imperial Red)
                 Text(
                   word.pinyin,
                   style: TextStyle(
@@ -1260,7 +1235,6 @@ class VocabCardWidget extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 4),
-                // Layer 3: English
                 Text(
                   word.en,
                   style: TextStyle(
@@ -1269,7 +1243,6 @@ class VocabCardWidget extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 3),
-                // Layer 4: Bengali Meaning & Pronunciation
                 Text(
                   word.pron.isNotEmpty
                       ? '${word.bn} (${word.pron})'
@@ -1320,10 +1293,9 @@ class _FlashcardPracticeScreenState extends State<FlashcardPracticeScreen>
     with SingleTickerProviderStateMixin {
   late List<VocabWord> _queue;
   int _masteredCount = 0;
-  bool _isWritingMode = false; // false = Reading (Hanzi->Meaning), true = Writing (Meaning+Pad->Hanzi)
+  bool _isWritingMode = false;
   bool _isFlipped = false;
 
-  // Drawing strokes for Hanzi Writing Pad
   final List<List<Offset>> _strokes = [];
   List<Offset> _currentStroke = [];
 
@@ -1394,7 +1366,7 @@ class _FlashcardPracticeScreenState extends State<FlashcardPracticeScreen>
                   style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                 ),
                 const SizedBox(height: 8),
-                Text('মোট $_masteredCount টি শব্দ সফলভাবে রিভিশন দিয়েছো।'),
+                Text('মোট $_masteredCount টি শব্দ সফলভাবে রিভিশন দিয়েছো।'),
                 const SizedBox(height: 20),
                 ElevatedButton(
                   onPressed: () {
@@ -1416,13 +1388,12 @@ class _FlashcardPracticeScreenState extends State<FlashcardPracticeScreen>
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Practice (${_masteredCount}/${widget.words.length})'),
+        title: Text('Practice ($_masteredCount/${widget.words.length})'),
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
         child: Column(
           children: [
-            // Mode Switcher
             SegmentedButton<bool>(
               segments: const [
                 ButtonSegment(
@@ -1447,8 +1418,6 @@ class _FlashcardPracticeScreenState extends State<FlashcardPracticeScreen>
               },
             ),
             const SizedBox(height: 18),
-
-            // 3D Flip Card
             GestureDetector(
               onTap: _toggleFlip,
               child: AnimatedBuilder(
@@ -1492,15 +1461,13 @@ class _FlashcardPracticeScreenState extends State<FlashcardPracticeScreen>
                 },
               ),
             ),
-
-            // Hanzi Finger Writing Canvas (Only in Writing Mode)
             if (_isWritingMode) ...[
               const SizedBox(height: 16),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   const Text(
-                    'আঙুল দিয়ে হানজি লিখে প্র্যাকটিস করো:',
+                    'আঙুল দিয়ে হানজি লিখে প্র্যাকটিস করো:',
                     style: TextStyle(fontWeight: FontWeight.w600),
                   ),
                   Row(
@@ -1557,10 +1524,7 @@ class _FlashcardPracticeScreenState extends State<FlashcardPracticeScreen>
                 ),
               ),
             ],
-
             const SizedBox(height: 22),
-
-            // Got It / Review Again Buttons
             Row(
               children: [
                 Expanded(
@@ -1570,7 +1534,7 @@ class _FlashcardPracticeScreenState extends State<FlashcardPracticeScreen>
                     ),
                     onPressed: () => _nextCard(gotIt: false),
                     icon: const Icon(Icons.refresh_rounded),
-                    label: const Text('আবার পড়ব'),
+                    label: const Text('আবার পড়ব'),
                   ),
                 ),
                 const SizedBox(width: 12),
@@ -1677,7 +1641,6 @@ class _HanziPadPainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    // Subtle Tianzige (田字格) guide lines
     final guidePaint = Paint()
       ..color = Colors.red.withValues(alpha: 0.18)
       ..strokeWidth = 1;
@@ -1958,7 +1921,7 @@ class _CourseDetailScreenState extends State<CourseDetailScreen> {
       await _checkLocalFiles();
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('ডাউনলোড সম্পন্ন হয়েছে!')),
+          const SnackBar(content: Text('ডাউনলোড সম্পন্ন হয়েছে!')),
         );
       }
     } catch (e) {
@@ -1992,8 +1955,6 @@ class _CourseDetailScreenState extends State<CourseDetailScreen> {
             Text(_statusMsg, style: const TextStyle(fontSize: 12.5)),
             const SizedBox(height: 14),
           ],
-
-          // PDF Book Card
           Card(
             child: ListTile(
               leading: const Icon(Icons.picture_as_pdf_rounded,
@@ -2001,7 +1962,7 @@ class _CourseDetailScreenState extends State<CourseDetailScreen> {
               title: Text('${widget.course.title} Textbook (PDF)'),
               subtitle: Text(_pdfReady
                   ? 'অফলাইনে প্রস্তুত • সুপার-ফাস্ট PDF রিডার'
-                  : 'অফলাইনে পড়ার জন্য ডাউনলোড করো'),
+                  : 'অফলাইনে পড়ার জন্য ডাউনলোড করো'),
               trailing: FilledButton(
                 style: FilledButton.styleFrom(backgroundColor: kImperialRed),
                 onPressed: _downloading
@@ -2031,10 +1992,7 @@ class _CourseDetailScreenState extends State<CourseDetailScreen> {
               ),
             ),
           ),
-
           const SizedBox(height: 12),
-
-          // Audio Pack Card
           Card(
             child: ListTile(
               leading: const Icon(Icons.headphones_rounded,
@@ -2056,7 +2014,6 @@ class _CourseDetailScreenState extends State<CourseDetailScreen> {
                     ),
             ),
           ),
-
           if (_audioReady) ...[
             const SizedBox(height: 18),
             const Text(
@@ -2193,7 +2150,8 @@ class _FastPdfReaderScreenState extends State<FastPdfReaderScreen> {
     final isDark = widget.appState.isDarkMode;
     return Scaffold(
       appBar: AppBar(
-        title: Text('${widget.title} ($_currentPage/${_totalPages == 0 ? "..." : _totalPages})'),
+        title: Text(
+            '${widget.title} ($_currentPage/${_totalPages == 0 ? "..." : _totalPages})'),
         actions: [
           IconButton(
             tooltip: 'Jump to Page',
@@ -2333,13 +2291,11 @@ class _LessonAudioPlayerScreenState extends State<LessonAudioPlayerScreen> {
     if (_trackIndex + 1 < _currentTracks.length) {
       await _playTrack(_trackIndex + 1);
     } else if (widget.appState.allLessonsContinuous) {
-      // Auto-advance to the next lesson continuously (Lesson 1 -> 15 -> 1)
       setState(() {
         _lessonIndex = (_lessonIndex + 1) % widget.allLessonNames.length;
       });
       await _playTrack(0);
     } else {
-      // Loop inside the current lesson
       await _playTrack(0);
     }
   }
@@ -2387,7 +2343,6 @@ class _LessonAudioPlayerScreenState extends State<LessonAudioPlayerScreen> {
           ),
           body: Column(
             children: [
-              // Interactive Playback Mode Banner
               InkWell(
                 onTap: () {
                   widget.appState.setAllLessonsContinuous(!isAllMode);
@@ -2426,8 +2381,6 @@ class _LessonAudioPlayerScreenState extends State<LessonAudioPlayerScreen> {
                   ),
                 ),
               ),
-
-              // Tracks List
               Expanded(
                 child: ListView.builder(
                   padding: const EdgeInsets.all(14),
@@ -2471,8 +2424,6 @@ class _LessonAudioPlayerScreenState extends State<LessonAudioPlayerScreen> {
                   },
                 ),
               ),
-
-              // Bottom Audio Controls Panel
               Container(
                 padding: const EdgeInsets.fromLTRB(16, 12, 16, 22),
                 decoration: BoxDecoration(
@@ -2604,7 +2555,7 @@ class GrammarNotesScreen extends StatefulWidget {
 }
 
 class _GrammarNotesScreenState extends State<GrammarNotesScreen> {
-  List> _notes = [];
+  final List> _notes = [];
 
   @override
   void initState() {
@@ -2618,9 +2569,10 @@ class _GrammarNotesScreenState extends State<GrammarNotesScreen> {
     if (raw != null) {
       final list = jsonDecode(raw) as List<dynamic>;
       setState(() {
-        _notes = list
-            .map((e) => Map<String, String>.from(e as Map<String, dynamic>))
-            .toList();
+        _notes
+          ..clear()
+          ..addAll(list.map(
+              (e) => Map<String, dynamic>.from(e as Map<String, dynamic>)));
       });
     }
   }
@@ -2631,10 +2583,10 @@ class _GrammarNotesScreenState extends State<GrammarNotesScreen> {
   }
 
   void _openEditor({int? index}) {
-    final titleCtrl =
-        TextEditingController(text: index != null ? _notes[index]['title'] : '');
-    final bodyCtrl =
-        TextEditingController(text: index != null ? _notes[index]['body'] : '');
+    final titleCtrl = TextEditingController(
+        text: index != null ? (_notes[index]['title'] ?? '').toString() : '');
+    final bodyCtrl = TextEditingController(
+        text: index != null ? (_notes[index]['body'] ?? '').toString() : '');
 
     showDialog(
       context: context,
@@ -2660,7 +2612,7 @@ class _GrammarNotesScreenState extends State<GrammarNotesScreen> {
               onPressed: () => Navigator.pop(ctx), child: const Text('Cancel')),
           FilledButton(
             onPressed: () {
-              final item = {
+              final item = <String, dynamic>{
                 'title': titleCtrl.text.trim().isEmpty
                     ? 'Untitled Note'
                     : titleCtrl.text.trim(),
@@ -2695,7 +2647,7 @@ class _GrammarNotesScreenState extends State<GrammarNotesScreen> {
       ),
       body: _notes.isEmpty
           ? const Center(
-              child: Text('নিচের + বাটনে চেপে তোমার গ্রামার ও পড়াশোনার নোট রাখো।'),
+              child: Text('নিচের + বাটনে চেপে তোমার গ্রামার ও পড়াশোনার নোট রাখো।'),
             )
           : ListView.builder(
               padding: const EdgeInsets.all(14),
@@ -2705,11 +2657,11 @@ class _GrammarNotesScreenState extends State<GrammarNotesScreen> {
                 return Card(
                   child: ListTile(
                     title: Text(
-                      n['title'] ?? '',
+                      (n['title'] ?? '').toString(),
                       style: const TextStyle(fontWeight: FontWeight.bold),
                     ),
                     subtitle: Text(
-                      n['body'] ?? '',
+                      (n['body'] ?? '').toString(),
                       maxLines: 3,
                       overflow: TextOverflow.ellipsis,
                     ),
@@ -2774,7 +2726,7 @@ class _StorageManagerScreenState extends State<StorageManagerScreen> {
     return Scaffold(
       appBar: AppBar(title: const Text('Manage Offline Storage')),
       body: _folders.isEmpty
-          ? const Center(child: Text('এখনও কোনো অফলাইন ফাইল ডাউনলোড করা হয়নি।'))
+          ? const Center(child: Text('এখনও কোনো অফলাইন ফাইল ডাউনলোড করা হয়নি।'))
           : ListView.builder(
               padding: const EdgeInsets.all(14),
               itemCount: _folders.length,
@@ -2831,12 +2783,11 @@ class SettingsScreen extends StatelessWidget {
               ),
               SwitchListTile(
                 title: const Text('Night Study Dark Mode'),
-                subtitle: const Text('রাতে পড়ার জন্য চোখের আরামদায়ক ডার্ক থিম'),
+                subtitle: const Text('রাতে পড়ার জন্য চোখের আরামদায়ক ডার্ক থিম'),
                 value: appState.isDarkMode,
                 onChanged: appState.toggleDarkMode,
               ),
               const Divider(),
-
               const Text(
                 'Audio Study Preferences',
                 style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
@@ -2845,8 +2796,8 @@ class SettingsScreen extends StatelessWidget {
                 title: const Text('All Lessons Continuous Mode (1 → 15)'),
                 subtitle: Text(
                   appState.allLessonsContinuous
-                      ? 'চালু: এক লেসন শেষে স্বয়ংক্রিয়ভাবে পরের লেসন বাজবে'
-                      : 'বন্ধ: শুধু বর্তমান লেসনের অডিও লুপ হয়ে বাজবে',
+                      ? 'চালু: এক লেসন শেষে স্বয়ংক্রিয়ভাবে পরের লেসন বাজবে'
+                      : 'বন্ধ: শুধু বর্তমান লেসনের অডিও লুপ হয়ে বাজবে',
                 ),
                 value: appState.allLessonsContinuous,
                 onChanged: appState.setAllLessonsContinuous,
@@ -2867,7 +2818,6 @@ class SettingsScreen extends StatelessWidget {
                 ),
               ),
               const Divider(),
-
               const SizedBox(height: 8),
               const Text(
                 'About HSK Study App (v1.1.0)',
