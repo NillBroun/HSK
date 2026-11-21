@@ -1,1 +1,14 @@
-
+{
+  "groups": [
+    {
+      "id": "hsk1_vocab",
+      "title": "HSK 1 Vocabulary",
+      "subtitle": "Lessons 1–15 & Extra Words",
+      "words": [
+        {"hanzi": "你", "pinyin": "nǐ", "en": "you", "bn": "তুমি / আপনি", "pron": "নি", "tag": "Lesson 01"},
+        {"hanzi": "好", "pinyin": "hǎo", "en": "good, fine", "bn": "ভালো", "pron": "হাও", "tag": "Lesson 01"},
+        {"hanzi": "我", "pinyin": "wǒ", "en": "I, me", "bn": "আমি", "pron": "ও", "tag": "Lesson 03"}
+      ]
+    }
+  ]
+}
