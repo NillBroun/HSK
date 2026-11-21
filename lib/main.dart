@@ -1894,11 +1894,12 @@ class _CourseDetailScreenState extends State<CourseDetailScreen> {
       _statusMsg = 'ডাউনলোড হচ্ছে: $fileName...';
     });
 
+    final client = http.Client();
     try {
       final dir = await _courseDir();
       final url = Uri.parse('$kGithubReleaseBaseUrl$fileName');
       final req = http.Request('GET', url);
-      final resp = await http.Client().send(req);
+      final resp = await client.send(req);
 
       if (resp.statusCode != 200) {
         throw Exception('HTTP ${resp.statusCode}');
@@ -1947,6 +1948,7 @@ class _CourseDetailScreenState extends State<CourseDetailScreen> {
         );
       }
     } finally {
+      client.close();
       if (mounted) {
         setState(() {
           _downloading = false;
@@ -2494,7 +2496,7 @@ class _LessonAudioPlayerScreenState extends State<LessonAudioPlayerScreen> {
                         ),
                         IconButton(
                           tooltip: '-3s Rewind',
-                          icon: const Icon(Icons.replay_5_rounded),
+                          icon: const Icon(Icons.fast_rewind_rounded),
                           onPressed: _rewind3s,
                         ),
                         IconButton(
