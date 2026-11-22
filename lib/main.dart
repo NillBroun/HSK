@@ -19,6 +19,7 @@ const String kGithubReleaseBaseUrl =
 
 const Color kImperialRed = Color(0xFFB71C1C);
 const Color kPorcelainWhite = Color(0xFFF9F7F2);
+const Color kWarmCream = Color(0xFFF7F2E9);
 const Color kNightDark = Color(0xFF121212);
 const Color kNightCard = Color(0xFF1E1E1E);
 
@@ -175,7 +176,7 @@ const List<HskLevelCard> kHskLevelCards = [
         partLabel: 'Standard Course (1–15)',
         subtitle: 'Beginner • Lessons 1–15',
         pdfCandidates: ['HSK-1-Textbook.pdf', 'hsk1.pdf'],
-        audioZipCandidates: ['HSK-1-Audio.zip', 'hsk1-audio.zip', 'HSK1-Audio.zip'],
+        audioZipCandidates: ['hsk1textbookaudios.zip', 'HSK-1-Audio.zip'],
       ),
     ],
   ),
@@ -190,7 +191,7 @@ const List<HskLevelCard> kHskLevelCards = [
         partLabel: 'Standard Course (1–15)',
         subtitle: 'Elementary • Lessons 1–15',
         pdfCandidates: ['HSK-2-Textbook.pdf', 'hsk2.pdf'],
-        audioZipCandidates: ['HSK-2-Audio.zip', 'hsk2-audio.zip', 'HSK2-Audio.zip'],
+        audioZipCandidates: ['hsk2textbookaudios.zip', 'HSK-2-Audio.zip'],
       ),
     ],
   ),
@@ -205,7 +206,7 @@ const List<HskLevelCard> kHskLevelCards = [
         partLabel: 'Standard Course (1–20)',
         subtitle: 'Intermediate • Lessons 1–20',
         pdfCandidates: ['HSK-3-Textbook.pdf', 'hsk3.pdf'],
-        audioZipCandidates: ['HSK-3-Audio.zip', 'hsk3-audio.zip', 'HSK3-Audio.zip'],
+        audioZipCandidates: ['hsk3textbookaudios.zip', 'HSK-3-Audio.zip'],
       ),
     ],
   ),
@@ -220,7 +221,7 @@ const List<HskLevelCard> kHskLevelCards = [
         partLabel: '上',
         subtitle: 'Upper-Intermediate (上) • Lessons 1–10',
         pdfCandidates: ['HSK-4A-Textbook.pdf', 'HSK-4-Part-A.pdf'],
-        audioZipCandidates: ['HSK-4A-Audio.zip', 'hsk4a-audio.zip', 'HSK-4-Part-A-Audio.zip'],
+        audioZipCandidates: ['hsk4Atextbookaudios.zip', 'HSK-4A-Audio.zip'],
       ),
       HskCourseItem(
         id: 'hsk4b',
@@ -228,7 +229,7 @@ const List<HskLevelCard> kHskLevelCards = [
         partLabel: '下',
         subtitle: 'Upper-Intermediate (下) • Lessons 11–20',
         pdfCandidates: ['HSK-4B-Textbook.pdf', 'HSK-4-Part-B.pdf'],
-        audioZipCandidates: ['HSK-4B-Audio.zip', 'hsk4b-audio.zip', 'HSK-4-Part-B-Audio.zip'],
+        audioZipCandidates: ['hsk4Btextbookaudios.zip', 'HSK-4B-Audio.zip'],
       ),
     ],
   ),
@@ -243,7 +244,7 @@ const List<HskLevelCard> kHskLevelCards = [
         partLabel: '上',
         subtitle: 'Advanced (上) • Lessons 1–18',
         pdfCandidates: ['HSK-5A-Textbook.pdf', 'HSK-5-Part-A.pdf'],
-        audioZipCandidates: ['HSK-5A-Audio.zip', 'hsk5a-audio.zip', 'HSK-5-Part-A-Audio.zip'],
+        audioZipCandidates: ['hsk5Atextbookaudios.zip', 'HSK-5A-Audio.zip'],
       ),
       HskCourseItem(
         id: 'hsk5b',
@@ -251,7 +252,7 @@ const List<HskLevelCard> kHskLevelCards = [
         partLabel: '下',
         subtitle: 'Advanced (下) • Lessons 19–36',
         pdfCandidates: ['HSK-5B-Textbook.pdf', 'HSK-5-Part-B.pdf'],
-        audioZipCandidates: ['HSK-5B-Audio.zip', 'hsk5b-audio.zip', 'HSK-5-Part-B-Audio.zip'],
+        audioZipCandidates: ['hsk5Btextbookaudios.zip', 'HSK-5B-Audio.zip'],
       ),
     ],
   ),
@@ -266,7 +267,7 @@ const List<HskLevelCard> kHskLevelCards = [
         partLabel: '上',
         subtitle: 'Mastery (上) • Lessons 1–20',
         pdfCandidates: ['HSK-6A-Textbook.pdf', 'HSK-6-Part-A.pdf'],
-        audioZipCandidates: ['HSK-6A-Audio.zip', 'hsk6a-audio.zip', 'HSK-6-Part-A-Audio.zip'],
+        audioZipCandidates: ['hsk6Atextbookaudios.zip', 'HSK-6A-Audio.zip'],
       ),
       HskCourseItem(
         id: 'hsk6b',
@@ -274,7 +275,7 @@ const List<HskLevelCard> kHskLevelCards = [
         partLabel: '下',
         subtitle: 'Mastery (下) • Lessons 21–40',
         pdfCandidates: ['HSK-6B-Textbook.pdf', 'HSK-6-Part-B.pdf'],
-        audioZipCandidates: ['HSK-6B-Audio.zip', 'hsk6b-audio.zip', 'HSK-6-Part-B-Audio.zip'],
+        audioZipCandidates: ['hsk6Btextbookaudios.zip', 'HSK-6B-Audio.zip'],
       ),
     ],
   ),
@@ -284,7 +285,7 @@ List<HskCourseItem> get kAllCourses =>
     kHskLevelCards.expand((level) => level.courses).toList();
 
 // ============================================================================
-// 2. PINYIN NORMALIZER & VOCAB REPOSITORY (100% OFFLINE JSON)
+// 2. PINYIN NORMALIZER & VOCAB REPOSITORY (100% OFFLINE JSON - HSK 1-6 READY)
 // ============================================================================
 
 String stripPinyinTones(String input) {
@@ -321,6 +322,9 @@ class VocabRepository {
       ('assets/vocab/hsk1.json', 'hsk'),
       ('assets/vocab/hsk2.json', 'hsk'),
       ('assets/vocab/hsk3.json', 'hsk'),
+      ('assets/vocab/hsk4.json', 'hsk'),
+      ('assets/vocab/hsk5.json', 'hsk'),
+      ('assets/vocab/hsk6.json', 'hsk'),
       ('assets/vocab/collins_3000.json', 'collins'),
       ('assets/vocab/departments.json', 'department'),
     ];
@@ -388,7 +392,63 @@ class VocabRepository {
 }
 
 // ============================================================================
-// 3. APP STATE & PREFERENCES CONTROLLER
+// 3. SHARED AUDIO GROUPING HELPER & CONFIRM DELETE DIALOG
+// ============================================================================
+
+Future>> scanCourseAudioTracks(String courseId) async {
+  final base = await getApplicationDocumentsDirectory();
+  final audioDir = Directory('${base.path}/hsk_offline/$courseId/audio');
+  final grouped = <String, List<File>>{};
+  if (await audioDir.exists()) {
+    final files = audioDir
+        .listSync(recursive: true)
+        .whereType<File>()
+        .where((f) =>
+            f.path.toLowerCase().endsWith('.mp3') ||
+            f.path.toLowerCase().endsWith('.m4a') ||
+            f.path.toLowerCase().endsWith('.wav'))
+        .toList()
+      ..sort((a, b) => a.path.compareTo(b.path));
+
+    for (final f in files) {
+      final name = f.uri.pathSegments.last;
+      final match = RegExp(r'(\d{2})').firstMatch(name);
+      final lessonKey =
+          match != null ? 'LESSON ${match.group(1)}' : 'AUDIO TRACKS';
+      grouped.putIfAbsent(lessonKey, () => []).add(f);
+    }
+  }
+  return grouped;
+}
+
+Future<bool> showConfirmDeleteDialog(
+  BuildContext context, {
+  required String title,
+  required String message,
+}) async {
+  final result = await showDialog<bool>(
+    context: context,
+    builder: (ctx) => AlertDialog(
+      title: Text(title),
+      content: Text(message),
+      actions: [
+        TextButton(
+          onPressed: () => Navigator.pop(ctx, false),
+          child: const Text('Cancel'),
+        ),
+        FilledButton(
+          style: FilledButton.styleFrom(backgroundColor: Colors.red.shade700),
+          onPressed: () => Navigator.pop(ctx, true),
+          child: const Text('Delete'),
+        ),
+      ],
+    ),
+  );
+  return result ?? false;
+}
+
+// ============================================================================
+// 4. APP STATE & PREFERENCES CONTROLLER
 // ============================================================================
 
 class AppState extends ChangeNotifier {
@@ -398,8 +458,12 @@ class AppState extends ChangeNotifier {
   int shadowingGapSeconds = 0;
   Set<String> favoriteGroupIds = {};
   Set<String> favoriteWordKeys = {};
+
+  // Smart Direct Resume State
   String lastStudiedLabel = '';
   String lastStudiedCourseId = '';
+  String lastStudiedType = ''; // 'pdf' or 'audio'
+  int lastLessonIndex = 0;
 
   Future<void> load() async {
     final prefs = await SharedPreferences.getInstance();
@@ -411,6 +475,8 @@ class AppState extends ChangeNotifier {
     favoriteWordKeys = (prefs.getStringList('fav_words') ?? []).toSet();
     lastStudiedLabel = prefs.getString('last_studied_label') ?? '';
     lastStudiedCourseId = prefs.getString('last_studied_course') ?? '';
+    lastStudiedType = prefs.getString('last_studied_type') ?? 'pdf';
+    lastLessonIndex = prefs.getInt('last_lesson_index') ?? 0;
     await VocabRepository.instance.ensureLoaded();
     notifyListeners();
   }
@@ -465,18 +531,27 @@ class AppState extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> updateLastStudied(String courseId, String label) async {
+  Future<void> updateLastStudied({
+    required String courseId,
+    required String label,
+    required String type,
+    int lessonIndex = 0,
+  }) async {
     lastStudiedCourseId = courseId;
     lastStudiedLabel = label;
+    lastStudiedType = type;
+    lastLessonIndex = lessonIndex;
     final prefs = await SharedPreferences.getInstance();
     await prefs.setString('last_studied_course', courseId);
     await prefs.setString('last_studied_label', label);
+    await prefs.setString('last_studied_type', type);
+    await prefs.setInt('last_lesson_index', lessonIndex);
     notifyListeners();
   }
 }
 
 // ============================================================================
-// 4. ROOT APPLICATION
+// 5. ROOT APPLICATION
 // ============================================================================
 
 class HskApp extends StatefulWidget {
@@ -547,7 +622,7 @@ class _HskAppState extends State<HskApp> {
 }
 
 // ============================================================================
-// 5. HOME SCREEN (v1.0.0 6-LEVEL GRID + GLOBAL SEARCH + DRAWER + PERSONAL SPACE)
+// 6. HOME SCREEN (SMART DIRECT RESUME + 6-LEVEL GRID + CLEAN DRAWER)
 // ============================================================================
 
 class HomeScreen extends StatefulWidget {
@@ -608,6 +683,99 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
       );
     }
+  }
+
+  Future<void> _handleSmartDirectResume() async {
+    final courseId = widget.appState.lastStudiedCourseId;
+    final type = widget.appState.lastStudiedType;
+
+    // 1. Personal PDF Resume
+    if (courseId.startsWith('personal_')) {
+      final prefs = await SharedPreferences.getInstance();
+      final raw = prefs.getString('imported_pdf_notes');
+      if (raw != null) {
+        final list = (jsonDecode(raw) as List<dynamic>)
+            .map((e) => ImportedPdfItem.fromJson(e as Map<String, dynamic>))
+            .toList();
+        for (final item in list) {
+          if ('personal_${item.name.hashCode}' == courseId &&
+              File(item.path).existsSync()) {
+            if (!mounted) return;
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (_) => FastPdfReaderScreen(
+                  courseId: courseId,
+                  title: item.name,
+                  filePath: item.path,
+                  appState: widget.appState,
+                ),
+              ),
+            );
+            return;
+          }
+        }
+      }
+    }
+
+    // 2. Standard HSK Course Resume (Direct PDF Page or Direct Audio Lesson)
+    final course = kAllCourses.firstWhere(
+      (c) => c.id == courseId,
+      orElse: () => kAllCourses.first,
+    );
+    final base = await getApplicationDocumentsDirectory();
+    final dir = Directory('${base.path}/hsk_offline/${course.id}');
+    final pdfFile = File('${dir.path}/${course.primaryPdfName}');
+    final tracks = await scanCourseAudioTracks(course.id);
+    final lessonNames = tracks.keys.toList()..sort();
+
+    if (!mounted) return;
+
+    if (type == 'audio' && lessonNames.isNotEmpty) {
+      final safeIdx =
+          widget.appState.lastLessonIndex.clamp(0, lessonNames.length - 1);
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (_) => LessonAudioPlayerScreen(
+            courseId: course.id,
+            courseTitle: course.title,
+            allLessonNames: lessonNames,
+            allLessonTracks: tracks,
+            initialLessonIndex: safeIdx,
+            appState: widget.appState,
+          ),
+        ),
+      );
+      return;
+    }
+
+    if (type == 'pdf' && pdfFile.existsSync()) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (_) => FastPdfReaderScreen(
+            courseId: course.id,
+            title: course.title,
+            filePath: pdfFile.path,
+            lessonNames: lessonNames,
+            lessonTracks: tracks,
+            appState: widget.appState,
+          ),
+        ),
+      );
+      return;
+    }
+
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (_) => CourseDetailScreen(
+          course: course,
+          appState: widget.appState,
+        ),
+      ),
+    );
   }
 
   @override
@@ -695,7 +863,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     padding: const EdgeInsets.all(16),
                     children: [
                       if (widget.appState.lastStudiedLabel.isNotEmpty)
-                        _buildResumeBanner(isDark),
+                        _buildSmartResumeBanner(isDark),
                       if (pinnedGroups.isNotEmpty) ...[
                         const Padding(
                           padding: EdgeInsets.only(bottom: 8, top: 2),
@@ -907,50 +1075,60 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  Widget _buildResumeBanner(bool isDark) {
-    return Container(
-      margin: const EdgeInsets.only(bottom: 14),
-      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
-      decoration: BoxDecoration(
-        color: isDark ? const Color(0xFF2B1919) : const Color(0xFFFFEFEF),
+  Widget _buildSmartResumeBanner(bool isDark) {
+    final isAudio = widget.appState.lastStudiedType == 'audio';
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 14),
+      child: InkWell(
         borderRadius: BorderRadius.circular(14),
-        border: Border.all(
-          color: kImperialRed.withValues(alpha: 0.25),
-        ),
-      ),
-      child: Row(
-        children: [
-          const Icon(Icons.history_rounded, color: kImperialRed),
-          const SizedBox(width: 10),
-          Expanded(
-            child: Text(
-              widget.appState.lastStudiedLabel,
-              style: const TextStyle(
-                fontSize: 13.5,
-                fontWeight: FontWeight.bold,
-              ),
+        onTap: _handleSmartDirectResume,
+        child: Container(
+          padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
+          decoration: BoxDecoration(
+            color: isDark ? const Color(0xFF2B1919) : const Color(0xFFFFEFEF),
+            borderRadius: BorderRadius.circular(14),
+            border: Border.all(
+              color: kImperialRed.withValues(alpha: 0.25),
             ),
           ),
-          IconButton(
-            icon: const Icon(Icons.play_circle_fill_rounded,
-                color: kImperialRed, size: 30),
-            onPressed: () {
-              final course = kAllCourses.firstWhere(
-                (c) => c.id == widget.appState.lastStudiedCourseId,
-                orElse: () => kAllCourses.first,
-              );
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (_) => CourseDetailScreen(
-                    course: course,
-                    appState: widget.appState,
-                  ),
+          child: Row(
+            children: [
+              Icon(
+                isAudio ? Icons.headphones_rounded : Icons.history_rounded,
+                color: kImperialRed,
+              ),
+              const SizedBox(width: 10),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      isAudio ? 'Continue Listening' : 'Continue Reading',
+                      style: TextStyle(
+                        fontSize: 11,
+                        fontWeight: FontWeight.w600,
+                        color: isDark ? Colors.white60 : Colors.black54,
+                      ),
+                    ),
+                    const SizedBox(height: 2),
+                    Text(
+                      widget.appState.lastStudiedLabel,
+                      style: const TextStyle(
+                        fontSize: 13.5,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ],
                 ),
-              );
-            },
+              ),
+              const Icon(
+                Icons.play_circle_fill_rounded,
+                color: kImperialRed,
+                size: 32,
+              ),
+            ],
           ),
-        ],
+        ),
       ),
     );
   }
@@ -1038,18 +1216,19 @@ class _HomeScreenState extends State<HomeScreen> {
             },
           ),
           const Divider(),
+          // 1. HSK 1-6 Vocabulary Bank at the very top
           ExpansionTile(
             initiallyExpanded: true,
             leading: const Icon(Icons.school_rounded, color: kImperialRed),
             title: const Text(
-              'HSK Vocabulary Bank (1–3)',
+              'HSK Vocabulary Bank (1–6)',
               style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
             ),
             children: hskGroups.isEmpty
                 ? [
                     const ListTile(
                       title: Text(
-                        'Add hsk1–3.json to assets/vocab/',
+                        'Add hsk1–6.json to assets/vocab/',
                         style: TextStyle(fontSize: 12),
                       ),
                     )
@@ -1071,6 +1250,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         ))
                     .toList(),
           ),
+          // 2. Collins 3000 Words below HSK Vocabulary
           ExpansionTile(
             leading: const Icon(Icons.auto_stories_rounded, color: kImperialRed),
             title: const Text(
@@ -1103,6 +1283,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         ))
                     .toList(),
           ),
+          // 3. Workplace & Designations
           ExpansionTile(
             leading: const Icon(Icons.work_rounded, color: kImperialRed),
             title: const Text(
@@ -1137,17 +1318,6 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
           const Divider(),
           ListTile(
-            leading: const Icon(Icons.sd_storage_rounded),
-            title: const Text('Manage Offline Storage'),
-            onTap: () {
-              Navigator.pop(context);
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (_) => const StorageManagerScreen()),
-              );
-            },
-          ),
-          ListTile(
             leading: const Icon(Icons.settings_rounded),
             title: const Text('Settings & About'),
             onTap: () {
@@ -1167,7 +1337,7 @@ class _HomeScreenState extends State<HomeScreen> {
 }
 
 // ============================================================================
-// 5B. PART A & PART B SELECTION SCREEN (FOR HSK 4, 5, 6)
+// 6B. PART A & PART B SELECTION SCREEN (FOR HSK 4, 5, 6)
 // ============================================================================
 
 class PartSelectionScreen extends StatelessWidget {
@@ -1262,7 +1432,7 @@ class PartSelectionScreen extends StatelessWidget {
 }
 
 // ============================================================================
-// 6. VOCABULARY LIST SCREEN (4-LAYER CARD + FILTER + FLASHCARD BUTTON)
+// 7. VOCABULARY LIST SCREEN (4-LAYER CARD + FILTER + FLASHCARD BUTTON)
 // ============================================================================
 
 class VocabListScreen extends StatefulWidget {
@@ -1503,7 +1673,7 @@ class VocabCardWidget extends StatelessWidget {
 }
 
 // ============================================================================
-// 7. FLASHCARD PRACTICE + HANZI WRITING PAD (田字格)
+// 8. FLASHCARD PRACTICE + HANZI WRITING PAD (田字格)
 // ============================================================================
 
 class FlashcardPracticeScreen extends StatefulWidget {
@@ -1909,7 +2079,7 @@ class _HanziPadPainter extends CustomPainter {
 }
 
 // ============================================================================
-// 8. FAVORITES SCREEN (PINNED FOLDERS + SAVED WORDS)
+// 9. FAVORITES SCREEN (PINNED FOLDERS + SAVED WORDS)
 // ============================================================================
 
 class FavoritesScreen extends StatelessWidget {
@@ -2032,7 +2202,7 @@ class FavoritesScreen extends StatelessWidget {
 }
 
 // ============================================================================
-// 9. COURSE DETAIL SCREEN (OFFLINE PDF & AUDIO ZIP + LESSON LIST)
+// 10. COURSE DETAIL SCREEN (OFFLINE PDF & AUDIO ZIP + LESSON LIST)
 // ============================================================================
 
 class CourseDetailScreen extends StatefulWidget {
@@ -2073,28 +2243,7 @@ class _CourseDetailScreenState extends State<CourseDetailScreen> {
   Future<void> _checkLocalFiles() async {
     final dir = await _courseDir();
     final pdfFile = File('${dir.path}/${widget.course.primaryPdfName}');
-    final audioDir = Directory('${dir.path}/audio');
-
-    final grouped = <String, List<File>>{};
-    if (await audioDir.exists()) {
-      final files = audioDir
-          .listSync(recursive: true)
-          .whereType<File>()
-          .where((f) =>
-              f.path.toLowerCase().endsWith('.mp3') ||
-              f.path.toLowerCase().endsWith('.m4a') ||
-              f.path.toLowerCase().endsWith('.wav'))
-          .toList()
-        ..sort((a, b) => a.path.compareTo(b.path));
-
-      for (final f in files) {
-        final name = f.uri.pathSegments.last;
-        final match = RegExp(r'(\d{2})').firstMatch(name);
-        final lessonKey =
-            match != null ? 'LESSON ${match.group(1)}' : 'AUDIO TRACKS';
-        grouped.putIfAbsent(lessonKey, () => []).add(f);
-      }
-    }
+    final grouped = await scanCourseAudioTracks(widget.course.id);
 
     if (!mounted) return;
     setState(() {
@@ -2132,7 +2281,7 @@ class _CourseDetailScreenState extends State<CourseDetailScreen> {
       }
 
       if (validResp == null) {
-        throw Exception('File not found on GitHub Release (${fileNames.join(" / ")})');
+        throw Exception('File not found on GitHub Release ($matchedName)');
       }
 
       setState(() => _statusMsg = 'Downloading $matchedName...');
@@ -2315,7 +2464,7 @@ class _CourseDetailScreenState extends State<CourseDetailScreen> {
 }
 
 // ============================================================================
-// 10. PDF READER WITH HEADPHONE TOGGLE, MINI AUDIO BAR & RIGHT PAGE PILL
+// 11. EDGE-TO-EDGE FULL-WIDTH PDF READER + HEADPHONE TOGGLE + MINI AUDIO BAR
 // ============================================================================
 
 class FastPdfReaderScreen extends StatefulWidget {
@@ -2388,6 +2537,7 @@ class _FastPdfReaderScreenState extends State<FastPdfReaderScreen> {
       );
       _ready = true;
     });
+    _savePage(_currentPage);
   }
 
   void _initMiniAudio() {
@@ -2437,8 +2587,11 @@ class _FastPdfReaderScreenState extends State<FastPdfReaderScreen> {
   Future<void> _savePage(int page) async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setInt('pdf_page_${widget.courseId}', page);
-    widget.appState
-        .updateLastStudied(widget.courseId, '${widget.title} • Page $page');
+    widget.appState.updateLastStudied(
+      courseId: widget.courseId,
+      label: '${widget.title} • Page $page',
+      type: 'pdf',
+    );
   }
 
   void _showJumpDialog() {
@@ -2517,10 +2670,12 @@ class _FastPdfReaderScreenState extends State<FastPdfReaderScreen> {
                 Expanded(
                   child: Stack(
                     children: [
+                      // Edge-to-Edge Full-Width PDF View (Zero side margins)
                       Container(
-                        color: isDark ? kNightDark : const Color(0xFFEAE6DF),
+                        color: isDark ? kNightDark : Colors.white,
                         child: PdfViewPinch(
                           controller: _pdfController!,
+                          padding: 0,
                           onPageChanged: (page) {
                             if (page != _currentPage) {
                               setState(() => _currentPage = page);
@@ -2529,7 +2684,7 @@ class _FastPdfReaderScreenState extends State<FastPdfReaderScreen> {
                           },
                         ),
                       ),
-                      // Right-side Page Indicator Pill (v1.0.0 style - tap to jump)
+                      // Right-side Page Indicator Pill (tap to jump)
                       Positioned(
                         right: 12,
                         top: 16,
@@ -2543,9 +2698,7 @@ class _FastPdfReaderScreenState extends State<FastPdfReaderScreen> {
                                   ? Colors.black87
                                   : Colors.white.withValues(alpha: 0.92),
                               borderRadius: BorderRadius.circular(14),
-                              border: Border.all(
-                                color: Colors.black12,
-                              ),
+                              border: Border.all(color: Colors.black12),
                               boxShadow: [
                                 BoxShadow(
                                   color: Colors.black.withValues(alpha: 0.12),
@@ -2573,7 +2726,7 @@ class _FastPdfReaderScreenState extends State<FastPdfReaderScreen> {
                     ],
                   ),
                 ),
-                // Bottom Mini Audio Player Bar inside PDF Reader (v1.0.0 style)
+                // Bottom Mini Audio Player Bar inside PDF Reader
                 if (_hasAudio && _showAudioBar)
                   Container(
                     padding: const EdgeInsets.fromLTRB(12, 6, 12, 10),
@@ -2674,7 +2827,7 @@ class _FastPdfReaderScreenState extends State<FastPdfReaderScreen> {
 }
 
 // ============================================================================
-// 11. FULL AUDIO PLAYER SCREEN (LESSON LOOP vs ALL LESSONS CONTINUOUS)
+// 12. FULL AUDIO PLAYER SCREEN (LESSON LOOP vs ALL LESSONS CONTINUOUS)
 // ============================================================================
 
 class LessonAudioPlayerScreen extends StatefulWidget {
@@ -2755,8 +2908,10 @@ class _LessonAudioPlayerScreenState extends State<LessonAudioPlayerScreen> {
       await _player.setSpeed(_speed);
       await _player.play();
       widget.appState.updateLastStudied(
-        widget.courseId,
-        '${widget.courseTitle} • $_currentLessonName',
+        courseId: widget.courseId,
+        label: '${widget.courseTitle} • $_currentLessonName',
+        type: 'audio',
+        lessonIndex: _lessonIndex,
       );
       if (mounted) setState(() {});
     } catch (_) {}
@@ -3033,7 +3188,7 @@ class _LessonAudioPlayerScreenState extends State<LessonAudioPlayerScreen> {
 }
 
 // ============================================================================
-// 12A. PERSONAL PDF GRAMMAR & NOTES (IMPORT FROM PHONE / SD CARD - v1.0.0)
+// 13A. PERSONAL PDF GRAMMAR & NOTES (WITH CONFIRM DELETE)
 // ============================================================================
 
 class PersonalPdfNotesScreen extends StatefulWidget {
@@ -3086,7 +3241,8 @@ class _PersonalPdfNotesScreenState extends State<PersonalPdfNotesScreen> {
       final base = await getApplicationDocumentsDirectory();
       final folder = Directory('${base.path}/personal_pdfs');
       if (!await folder.exists()) await folder.create(recursive: true);
-      final dest = File('${folder.path}/${DateTime.now().millisecondsSinceEpoch}_$name');
+      final dest =
+          File('${folder.path}/${DateTime.now().millisecondsSinceEpoch}_$name');
       await src.copy(dest.path);
       setState(() {
         _pdfs.insert(0, ImportedPdfItem(name: name, path: dest.path));
@@ -3141,8 +3297,17 @@ class _PersonalPdfNotesScreenState extends State<PersonalPdfNotesScreen> {
                       );
                     },
                     trailing: IconButton(
-                      icon: const Icon(Icons.delete_outline_rounded),
+                      tooltip: 'Delete PDF',
+                      icon: const Icon(Icons.delete_outline_rounded,
+                          color: Colors.red),
                       onPressed: () async {
+                        final ok = await showConfirmDeleteDialog(
+                          context,
+                          title: 'Delete Grammar PDF?',
+                          message:
+                              'Are you sure you want to delete "${item.name}"?',
+                        );
+                        if (!ok) return;
                         final f = File(item.path);
                         if (await f.exists()) await f.delete();
                         setState(() => _pdfs.removeAt(i));
@@ -3158,7 +3323,7 @@ class _PersonalPdfNotesScreenState extends State<PersonalPdfNotesScreen> {
 }
 
 // ============================================================================
-// 12B. QUICK TEXT STUDY NOTES SCREEN
+// 13B. QUICK TEXT STUDY NOTES SCREEN (WITH CONFIRM DELETE)
 // ============================================================================
 
 class QuickNotesScreen extends StatefulWidget {
@@ -3283,10 +3448,19 @@ class _QuickNotesScreenState extends State<QuickNotesScreen> {
                     ),
                     onTap: () => _openEditor(index: i),
                     trailing: IconButton(
-                      icon: const Icon(Icons.delete_outline_rounded),
-                      onPressed: () {
+                      tooltip: 'Delete Note',
+                      icon: const Icon(Icons.delete_outline_rounded,
+                          color: Colors.red),
+                      onPressed: () async {
+                        final ok = await showConfirmDeleteDialog(
+                          context,
+                          title: 'Delete Study Note?',
+                          message:
+                              'Are you sure you want to delete "${n.title}"?',
+                        );
+                        if (!ok) return;
                         setState(() => _notes.removeAt(i));
-                        _saveNotes();
+                        await _saveNotes();
                       },
                     ),
                   ),
@@ -3298,8 +3472,24 @@ class _QuickNotesScreenState extends State<QuickNotesScreen> {
 }
 
 // ============================================================================
-// 13. OFFLINE STORAGE MANAGER SCREEN
+// 14. OFFLINE STORAGE MANAGER (SEPARATE PDF & AUDIO DELETE + CONFIRM DIALOG)
 // ============================================================================
+
+class _CourseStorageEntry {
+  final HskCourseItem course;
+  final File? pdfFile;
+  final double pdfMb;
+  final Directory? audioDir;
+  final double audioMb;
+
+  const _CourseStorageEntry({
+    required this.course,
+    required this.pdfFile,
+    required this.pdfMb,
+    required this.audioDir,
+    required this.audioMb,
+  });
+}
 
 class StorageManagerScreen extends StatefulWidget {
   const StorageManagerScreen({super.key});
@@ -3309,24 +3499,13 @@ class StorageManagerScreen extends StatefulWidget {
 }
 
 class _StorageManagerScreenState extends State<StorageManagerScreen> {
-  List<Directory> _folders = [];
+  List<_CourseStorageEntry> _entries = [];
+  bool _loading = true;
 
   @override
   void initState() {
     super.initState();
     _scan();
-  }
-
-  Future<void> _scan() async {
-    final base = await getApplicationDocumentsDirectory();
-    final root = Directory('${base.path}/hsk_offline');
-    if (await root.exists()) {
-      setState(() {
-        _folders = root.listSync().whereType<Directory>().toList();
-      });
-    } else {
-      setState(() => _folders = []);
-    }
   }
 
   double _dirSizeMb(Directory dir) {
@@ -3337,46 +3516,136 @@ class _StorageManagerScreenState extends State<StorageManagerScreen> {
     return total / (1024 * 1024);
   }
 
+  Future<void> _scan() async {
+    final base = await getApplicationDocumentsDirectory();
+    final found = <_CourseStorageEntry>[];
+
+    for (final course in kAllCourses) {
+      final courseDir = Directory('${base.path}/hsk_offline/${course.id}');
+      if (!await courseDir.exists()) continue;
+
+      final pdf = File('${courseDir.path}/${course.primaryPdfName}');
+      final hasPdf = pdf.existsSync();
+      final pdfMb = hasPdf ? pdf.lengthSync() / (1024 * 1024) : 0.0;
+
+      final audioDir = Directory('${courseDir.path}/audio');
+      final hasAudio =
+          audioDir.existsSync() && audioDir.listSync().isNotEmpty;
+      final audioMb = hasAudio ? _dirSizeMb(audioDir) : 0.0;
+
+      if (hasPdf || hasAudio) {
+        found.add(_CourseStorageEntry(
+          course: course,
+          pdfFile: hasPdf ? pdf : null,
+          pdfMb: pdfMb,
+          audioDir: hasAudio ? audioDir : null,
+          audioMb: audioMb,
+        ));
+      }
+    }
+
+    if (!mounted) return;
+    setState(() {
+      _entries = found;
+      _loading = false;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text('Manage Offline Storage')),
-      body: _folders.isEmpty
-          ? const Center(child: Text('No offline files downloaded yet.'))
-          : ListView.builder(
-              padding: const EdgeInsets.all(14),
-              itemCount: _folders.length,
-              itemBuilder: (_, i) {
-                final d = _folders[i];
-                final name = d.uri.pathSegments
-                    .where((s) => s.isNotEmpty)
-                    .last
-                    .toUpperCase();
-                final mb = _dirSizeMb(d).toStringAsFixed(1);
-                return Card(
-                  child: ListTile(
-                    leading: const Icon(Icons.folder_rounded,
-                        color: kImperialRed),
-                    title: Text(name),
-                    subtitle: Text('$mb MB used'),
-                    trailing: IconButton(
-                      icon: const Icon(Icons.delete_forever_rounded,
-                          color: Colors.red),
-                      onPressed: () async {
-                        await d.delete(recursive: true);
-                        _scan();
-                      },
-                    ),
-                  ),
-                );
-              },
-            ),
+      body: _loading
+          ? const Center(child: CircularProgressIndicator())
+          : _entries.isEmpty
+              ? const Center(child: Text('No offline files downloaded yet.'))
+              : ListView.builder(
+                  padding: const EdgeInsets.all(14),
+                  itemCount: _entries.length,
+                  itemBuilder: (_, i) {
+                    final item = _entries[i];
+                    return Card(
+                      margin: const EdgeInsets.only(bottom: 12),
+                      child: Padding(
+                        padding: const EdgeInsets.all(14),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              item.course.title,
+                              style: const TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                                color: kImperialRed,
+                              ),
+                            ),
+                            const Divider(),
+                            if (item.pdfFile != null)
+                              ListTile(
+                                contentPadding: EdgeInsets.zero,
+                                dense: true,
+                                leading: const Icon(
+                                    Icons.picture_as_pdf_rounded,
+                                    color: kImperialRed),
+                                title: const Text('Textbook PDF'),
+                                subtitle: Text(
+                                    '${item.pdfMb.toStringAsFixed(1)} MB'),
+                                trailing: IconButton(
+                                  tooltip: 'Delete PDF',
+                                  icon: const Icon(Icons.delete_outline_rounded,
+                                      color: Colors.red),
+                                  onPressed: () async {
+                                    final ok = await showConfirmDeleteDialog(
+                                      context,
+                                      title: 'Delete Textbook PDF?',
+                                      message:
+                                          'Delete ${item.course.title} PDF (${item.pdfMb.toStringAsFixed(1)} MB)?',
+                                    );
+                                    if (!ok) return;
+                                    await item.pdfFile!.delete();
+                                    _scan();
+                                  },
+                                ),
+                              ),
+                            if (item.audioDir != null)
+                              ListTile(
+                                contentPadding: EdgeInsets.zero,
+                                dense: true,
+                                leading: const Icon(Icons.headphones_rounded,
+                                    color: kImperialRed),
+                                title: const Text('Audio Lessons Pack'),
+                                subtitle: Text(
+                                    '${item.audioMb.toStringAsFixed(1)} MB'),
+                                trailing: IconButton(
+                                  tooltip: 'Delete Audio',
+                                  icon: const Icon(Icons.delete_outline_rounded,
+                                      color: Colors.red),
+                                  onPressed: () async {
+                                    final ok = await showConfirmDeleteDialog(
+                                      context,
+                                      title: 'Delete Audio Pack?',
+                                      message:
+                                          'Delete ${item.course.title} Audio (${item.audioMb.toStringAsFixed(1)} MB)?',
+                                    );
+                                    if (!ok) return;
+                                    await item.audioDir!
+                                        .delete(recursive: true);
+                                    _scan();
+                                  },
+                                ),
+                              ),
+                          ],
+                        ),
+                      ),
+                    );
+                  },
+                ),
     );
   }
 }
 
 // ============================================================================
-// 14. SETTINGS & ABOUT SCREEN (v1.0.0 FULL DESIGN + GROUP PHOTO SLIDER)
+// 15. SETTINGS & ABOUT SCREEN (WARM CREAM CARDS + FULL RED FACEBOOK BUTTONS)
 // ============================================================================
 
 class SettingsScreen extends StatefulWidget {
@@ -3523,14 +3792,14 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 },
               ),
               const SizedBox(height: 12),
-              // About HSK Card (v1.0.0 exact design)
+              // About HSK Card (Warm Cream Background)
               Container(
                 padding: const EdgeInsets.all(16),
                 decoration: BoxDecoration(
-                  color: isDark ? kNightCard : const Color(0xFFFFF7F7),
+                  color: isDark ? kNightCard : kWarmCream,
                   borderRadius: BorderRadius.circular(18),
                   border: Border.all(
-                    color: isDark ? Colors.white12 : const Color(0xFFEEDDDD),
+                    color: isDark ? Colors.white12 : const Color(0xFFE5DCCB),
                   ),
                 ),
                 child: Column(
@@ -3573,6 +3842,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       child: FilledButton.icon(
                         style: FilledButton.styleFrom(
                           backgroundColor: kImperialRed,
+                          foregroundColor: Colors.white,
                           padding: const EdgeInsets.symmetric(vertical: 12),
                         ),
                         onPressed: () async {
@@ -3589,14 +3859,14 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 ),
               ),
               const SizedBox(height: 16),
-              // Mentors & Learning Community Card with Group Photo Carousel (v1.0.0)
+              // Mentors & Learning Community Card (Warm Cream + Full Red Button)
               Container(
                 padding: const EdgeInsets.all(16),
                 decoration: BoxDecoration(
-                  color: isDark ? kNightCard : const Color(0xFFFFF7F7),
+                  color: isDark ? kNightCard : kWarmCream,
                   borderRadius: BorderRadius.circular(18),
                   border: Border.all(
-                    color: isDark ? Colors.white12 : const Color(0xFFEEDDDD),
+                    color: isDark ? Colors.white12 : const Color(0xFFE5DCCB),
                   ),
                 ),
                 child: Column(
@@ -3686,10 +3956,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     const SizedBox(height: 14),
                     SizedBox(
                       width: double.infinity,
-                      child: OutlinedButton.icon(
-                        style: OutlinedButton.styleFrom(
-                          foregroundColor: kImperialRed,
-                          side: const BorderSide(color: kImperialRed),
+                      child: FilledButton.icon(
+                        style: FilledButton.styleFrom(
+                          backgroundColor: kImperialRed,
+                          foregroundColor: Colors.white,
                           padding: const EdgeInsets.symmetric(vertical: 12),
                         ),
                         onPressed: () async {
