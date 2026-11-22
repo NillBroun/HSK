@@ -9,7 +9,7 @@ import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
 import 'package:just_audio/just_audio.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:pdfrx/pdfrx.dart';
+import 'package:pdfx/pdfx.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -2078,7 +2078,7 @@ class _CourseDetailScreenState extends State<CourseDetailScreen> {
 }
 
 // ============================================================================
-// 10. SUPER-FAST PDF READER (GOOGLE PDFIUM VIA PDFRX + PAGE MEMORY)
+// 10. FAST PDF READER (PDFX + PAGE MEMORY + JUMP TO PAGE)
 // ============================================================================
 
 class FastPdfReaderScreen extends StatefulWidget {
@@ -2100,8 +2100,7 @@ class FastPdfReaderScreen extends StatefulWidget {
 }
 
 class _FastPdfReaderScreenState extends State<FastPdfReaderScreen> {
-  final PdfViewerController _pdfController = PdfViewerController();
-  int _initialPage = 1;
+  PdfControllerPinch? _pdfController;
   int _currentPage = 1;
   int _totalPages = 0;
   bool _ready = false;
@@ -2109,16 +2108,23 @@ class _FastPdfReaderScreenState extends State<FastPdfReaderScreen> {
   @override
   void initState() {
     super.initState();
-    _loadSavedPage();
+    _initPdf();
   }
 
-  Future<void> _loadSavedPage() async {
+  Future<void> _initPdf() async {
     final prefs = await SharedPreferences.getInstance();
     final saved = prefs.getInt('pdf_page_${widget.courseId}') ?? 1;
+    final docFuture = PdfDocument.openFile(widget.filePath);
+    final doc = await docFuture;
     if (!mounted) return;
     setState(() {
-      _initialPage = saved;
-      _currentPage = saved;
+      _totalPages = doc.pagesCount;
+      final safePage = saved.clamp(1, _totalPages > 0 ? _totalPages : 1);
+      _currentPage = safePage;
+      _pdfController = PdfControllerPinch(
+        document: docFuture,
+        initialPage: safePage,
+      );
       _ready = true;
     });
   }
@@ -2152,7 +2158,7 @@ class _FastPdfReaderScreenState extends State<FastPdfReaderScreen> {
             onPressed: () {
               final p = int.tryParse(ctrl.text.trim());
               if (p != null && p >= 1 && p <= _totalPages) {
-                _pdfController.goToPage(pageNumber: p);
+                _pdfController?.jumpToPage(p);
               }
               Navigator.pop(ctx);
             },
@@ -2161,6 +2167,12 @@ class _FastPdfReaderScreenState extends State<FastPdfReaderScreen> {
         ],
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    _pdfController?.dispose();
+    super.dispose();
   }
 
   @override
@@ -2178,23 +2190,16 @@ class _FastPdfReaderScreenState extends State<FastPdfReaderScreen> {
           ),
         ],
       ),
-      body: !_ready
+      body: !_ready || _pdfController == null
           ? const Center(child: CircularProgressIndicator())
-          : PdfViewer.file(
-              widget.filePath,
-              controller: _pdfController,
-              initialPageNumber: _initialPage,
-              params: PdfViewerParams(
-                backgroundColor: isDark ? kNightDark : const Color(0xFFEAE6DF),
-                onViewerReady: (document, controller) {
-                  if (mounted) {
-                    setState(() => _totalPages = document.pages.length);
-                  }
-                },
-                onPageChanged: (int? pageNumber) {
-                  if (pageNumber != null && pageNumber != _currentPage) {
-                    setState(() => _currentPage = pageNumber);
-                    _savePage(pageNumber);
+          : Container(
+              color: isDark ? kNightDark : const Color(0xFFEAE6DF),
+              child: PdfViewPinch(
+                controller: _pdfController!,
+                onPageChanged: (page) {
+                  if (page != _currentPage) {
+                    setState(() => _currentPage = page);
+                    _savePage(page);
                   }
                 },
               ),
