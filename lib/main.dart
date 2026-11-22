@@ -75,7 +75,7 @@ class VocabWord {
 
 class VocabGroup {
   final String id;
-  final String section; // 'hsk', 'collins', 'department'
+  final String section; // 'hsk', 'department', 'daily_nature'
   final String title;
   final String subtitle;
   final List<VocabWord> words;
@@ -89,13 +89,284 @@ class VocabGroup {
   });
 
   List<String> get tags {
-    final set = <String>{};
+    final ordered = <String>[];
+    final extra = <String>[];
     for (final w in words) {
-      if (w.tag.isNotEmpty) set.add(w.tag);
+      if (w.tag.isEmpty) continue;
+      if (w.tag.toLowerCase().contains('extra')) {
+        if (!extra.contains(w.tag)) extra.add(w.tag);
+      } else {
+        if (!ordered.contains(w.tag)) ordered.add(w.tag);
+      }
     }
-    return ['All', ...set];
+    return ['All', ...ordered, ...extra];
   }
 }
+
+class HanziCourseChar {
+  final String char;
+  final String pinyin;
+  final String bn;
+  final int strokes;
+  final String ruleTip;
+  final List<String> steps;
+
+  const HanziCourseChar({
+    required this.char,
+    required this.pinyin,
+    required this.bn,
+    required this.strokes,
+    required this.ruleTip,
+    required this.steps,
+  });
+}
+
+class HanziCourseChapter {
+  final String title;
+  final String subtitle;
+  final List<HanziCourseChar> characters;
+
+  const HanziCourseChapter({
+    required this.title,
+    required this.subtitle,
+    required this.characters,
+  });
+}
+
+const List<HanziCourseChapter> kHanziCourseChapters = [
+  HanziCourseChapter(
+    title: 'Chapter 1: ১–২ স্ট্রোক (মৌলিক রেখা)',
+    subtitle: 'একদম সহজ হানজি দিয়ে বাম থেকে ডানে ও ওপর থেকে নিচে শুরু',
+    characters: [
+      HanziCourseChar(
+        char: '一',
+        pinyin: 'yī',
+        bn: 'এক (১)',
+        strokes: 1,
+        ruleTip: 'বাম থেকে ডানে একটি সরল আড়াআড়ি দাগ টানুন।',
+        steps: ['১. বাম থেকে ডানে আড়াআড়ি দাগ'],
+      ),
+      HanziCourseChar(
+        char: '二',
+        pinyin: 'èr',
+        bn: 'দুই (২)',
+        strokes: 2,
+        ruleTip: 'ওপর থেকে নিচে: প্রথমে ওপরের ছোট দাগ, পরে নিচের বড় দাগ।',
+        steps: ['১. ওপরের আড়াআড়ি দাগ (বাম ➔ ডান)', '২. নিচের দীর্ঘ দাগ (বাম ➔ ডান)'],
+      ),
+      HanziCourseChar(
+        char: '十',
+        pinyin: 'shí',
+        bn: 'দশ (১০)',
+        strokes: 2,
+        ruleTip: 'আড়াআড়ি আগে, খাড়া পরে: প্রথমে আড়াআড়ি, তারপর ওপর থেকে নিচে খাড়া।',
+        steps: ['১. আড়াআড়ি দাগ (বাম ➔ ডান)', '২. খাড়া দাগ (ওপর ➔ নিচ)'],
+      ),
+      HanziCourseChar(
+        char: '人',
+        pinyin: 'rén',
+        bn: 'মানুষ',
+        strokes: 2,
+        ruleTip: 'বাম-নিচের বাঁকা দাগ আগে, ডান-নিচের দাগ পরে।',
+        steps: ['১. বামের বাঁকা দাগ (ওপর ➔ নিচ-বাম)', '২. ডানের দাগ (ওপর ➔ নিচ-ডান)'],
+      ),
+      HanziCourseChar(
+        char: '八',
+        pinyin: 'bā',
+        bn: 'আট (৮)',
+        strokes: 2,
+        ruleTip: 'আগে বামের ছোট বাঁকা দাগ, পরে ডানের দাগ।',
+        steps: ['১. বামের দাগ (ওপর ➔ নিচ-বাম)', '২. ডানের দাগ (ওপর ➔ নিচ-ডান)'],
+      ),
+      HanziCourseChar(
+        char: '儿',
+        pinyin: 'ér',
+        bn: 'ছেলে / শিশু',
+        strokes: 2,
+        ruleTip: 'আগে বামের খাড়া-বাঁক, পরে ডানের হুকের মতো দাগ।',
+        steps: ['১. বামের দাগ', '২. ডানের বাঁকানো হুক'],
+      ),
+    ],
+  ),
+  HanziCourseChapter(
+    title: 'Chapter 2: ৩ স্ট্রোকের হানজি',
+    subtitle: 'ধাপ অনুযায়ী তিন দাগের পরিচিত অক্ষর',
+    characters: [
+      HanziCourseChar(
+        char: '三',
+        pinyin: 'sān',
+        bn: 'তিন (৩)',
+        strokes: 3,
+        ruleTip: 'ওপর থেকে নিচে তিনটি আড়াআড়ি দাগ (বাম থেকে ডানে)।',
+        steps: ['১. ওপরের দাগ', '২. মাঝের ছোট দাগ', '৩. নিচের বড় দাগ'],
+      ),
+      HanziCourseChar(
+        char: '口',
+        pinyin: 'kǒu',
+        bn: 'মুখ / প্রবেশপথ',
+        strokes: 3,
+        ruleTip: 'বাইরের অংশ আগে, নিচে বন্ধ পরে: বাম দেয়াল ➔ ওপর-ডান ➔ নিচে বন্ধ।',
+        steps: ['১. বামের খাড়া দাগ', '২. ওপর ও ডানের কোণ', '৩. নিচের বন্ধ দাগ'],
+      ),
+      HanziCourseChar(
+        char: '上',
+        pinyin: 'shàng',
+        bn: 'ওপর / উঠা',
+        strokes: 3,
+        ruleTip: 'মাঝের খাড়া আগে, বামের ছোট দাগ পরে, নিচের দাগ শেষে।',
+        steps: ['১. মাঝের খাড়া দাগ', '২. বামের ছোট দাগ', '৩. নিচের আড়াআড়ি দাগ'],
+      ),
+      HanziCourseChar(
+        char: '下',
+        pinyin: 'xià',
+        bn: 'নিচ / নামা',
+        strokes: 3,
+        ruleTip: 'ওপরের দাগ আগে, মাঝের খাড়া দাগ, শেষে ডানের ফোঁটা।',
+        steps: ['১. ওপরের আড়াআড়ি দাগ', '২. মাঝের খাড়া দাগ', '৩. ডানের ছোট দাগ'],
+      ),
+      HanziCourseChar(
+        char: '大',
+        pinyin: 'dà',
+        bn: 'বড়',
+        strokes: 3,
+        ruleTip: 'আগে আড়াআড়ি দাগ, পরে বামের বাঁকা দাগ, শেষে ডানের দাগ।',
+        steps: ['১. ওপরের আড়াআড়ি দাগ', '২. বামের বাঁকা দাগ', '৩. ডানের বাঁকা দাগ'],
+      ),
+      HanziCourseChar(
+        char: '小',
+        pinyin: 'xiǎo',
+        bn: 'ছোট',
+        strokes: 3,
+        ruleTip: 'মাঝখান আগে, দুই পাশ পরে: মাঝের হুক আগে, বাম ও ডান পরে।',
+        steps: ['১. মাঝের খাড়া হুক', '২. বামের ফোঁটা', '৩. ডানের ফোঁটা'],
+      ),
+      HanziCourseChar(
+        char: '山',
+        pinyin: 'shān',
+        bn: 'পাহাড়',
+        strokes: 3,
+        ruleTip: 'মাঝের উঁচু খাড়া দাগ আগে, বাম-নিচের বাঁক, শেষে নিচের দাগ।',
+        steps: ['১. মাঝের খাড়া দাগ', '২. বাম-নিচের বাঁকা দাগ', '৩. নিচের আড়াআড়ি দাগ'],
+      ),
+      HanziCourseChar(
+        char: '女',
+        pinyin: 'nǚ',
+        bn: 'নারী / মেয়ে',
+        strokes: 3,
+        ruleTip: 'আগে কোণাকোনি ভাঙা দাগ, পরে বাঁকা দাগ, শেষে আড়াআড়ি দাগ।',
+        steps: ['১. বাম থেকে নিচে ও ডানে দাগ', '২. ওপর থেকে নিচে বাঁকা দাগ', '৩. আড়াআড়ি দাগ'],
+      ),
+    ],
+  ),
+  HanziCourseChapter(
+    title: 'Chapter 3: ৪ স্ট্রোকের হানজি',
+    subtitle: 'প্রকৃতি ও দৈনন্দিন চার দাগের অক্ষর',
+    characters: [
+      HanziCourseChar(
+        char: '水',
+        pinyin: 'shuǐ',
+        bn: 'পানি / জল',
+        strokes: 4,
+        ruleTip: 'মাঝখান আগে, দুই পাশ পরে: মাঝের খাড়া হুক আগে, বাম ও ডান পরে।',
+        steps: ['১. মাঝের খাড়া হুক', '২. বামের ওপরের দাগ', '৩. বামের নিচের দাগ', '৪. ডানের দাগ'],
+      ),
+      HanziCourseChar(
+        char: '火',
+        pinyin: 'huǒ',
+        bn: 'আগুন',
+        strokes: 4,
+        ruleTip: 'বাম ও ডানের ছোট দাগ আগে, মাঝের অংশ পরে, শেষে ডানের দাগ।',
+        steps: ['১. বামের ছোট দাগ', '২. ডান-ওপরের দাগ', '৩. মাঝের বাঁকা দাগ', '৪. ডান-নিচের দাগ'],
+      ),
+      HanziCourseChar(
+        char: '木',
+        pinyin: 'mù',
+        bn: 'কাঠ / গাছ',
+        strokes: 4,
+        ruleTip: 'আগে আড়াআড়ি, পরে খাড়া, তারপর বাম ও ডানের দাগ।',
+        steps: ['১. আড়াআড়ি দাগ', '২. খাড়া দাগ', '৩. বামের দাগ', '৪. ডানের দাগ'],
+      ),
+      HanziCourseChar(
+        char: '天',
+        pinyin: 'tiān',
+        bn: 'আকাশ / দিন',
+        strokes: 4,
+        ruleTip: 'ওপর থেকে নিচে: দুটি আড়াআড়ি দাগ, বামের বাঁকা, ডানের দাগ।',
+        steps: ['১. প্রথম আড়াআড়ি দাগ', '২. দ্বিতীয় আড়াআড়ি দাগ', '৩. বামের বাঁকা দাগ', '৪. ডানের দাগ'],
+      ),
+      HanziCourseChar(
+        char: '月',
+        pinyin: 'yuè',
+        bn: 'চাঁদ / মাস',
+        strokes: 4,
+        ruleTip: 'বামের দাগ, ওপর-ডানের বাঁক, ভেতরের দুটি ছোট আড়াআড়ি দাগ।',
+        steps: ['১. বামের বাঁকা/খাড়া দাগ', '২. ওপর ও ডানের ফ্রেম', '৩. ভেতরের ওপরের দাগ', '৪. ভেতরের নিচের দাগ'],
+      ),
+      HanziCourseChar(
+        char: '日',
+        pinyin: 'rì',
+        bn: 'সূর্য / দিন',
+        strokes: 4,
+        ruleTip: 'বাম দেয়াল, ওপর-ডান ফ্রেম, মাঝের দাগ, শেষে নিচে বন্ধ।',
+        steps: ['১. বামের খাড়া দাগ', '২. ওপর ও ডানের ফ্রেম', '৩. মাঝের আড়াআড়ি দাগ', '৪. নিচের বন্ধ দাগ'],
+      ),
+    ],
+  ),
+  HanziCourseChapter(
+    title: 'Chapter 4: ৫–৮ স্ট্রোকের যৌগিক হানজি',
+    subtitle: 'HSK 1-এর বহুল ব্যবহৃত শব্দ গঠনের অক্ষর',
+    characters: [
+      HanziCourseChar(
+        char: '中',
+        pinyin: 'zhōng',
+        bn: 'মধ্য / চীন',
+        strokes: 4,
+        ruleTip: 'আগে ছোট বক্স, শেষে মাঝ দিয়ে দীর্ঘ খাড়া দাগ।',
+        steps: ['১. বামের দাগ', '২. ওপর-ডানের ফ্রেম', '৩. নিচের বন্ধ দাগ', '৪. মাঝের দীর্ঘ খাড়া দাগ'],
+      ),
+      HanziCourseChar(
+        char: '国',
+        pinyin: 'guó',
+        bn: 'দেশ / রাষ্ট্র',
+        strokes: 8,
+        ruleTip: 'বাইরের ফ্রেম আগে, ভেতরের 玉 পরে, নিচের দাগ সবার শেষে।',
+        steps: ['১. বাম ও ওপর-ডান ফ্রেম', '২. ভেতরের 玉 অংশ', '৩. সবার নিচে ফ্রেম বন্ধ'],
+      ),
+      HanziCourseChar(
+        char: '我',
+        pinyin: 'wǒ',
+        bn: 'আমি',
+        strokes: 7,
+        ruleTip: 'বাম থেকে ডানে ধাপ মেনে টানুন, ছোট ফোঁটা সবার শেষে।',
+        steps: ['১. বামের দাগ ও আড়াআড়ি', '২. মাঝের খাড়া হুক', '৩. ডানের তির্যক ও ফোঁটা'],
+      ),
+      HanziCourseChar(
+        char: '你',
+        pinyin: 'nǐ',
+        bn: 'তুমি / আপনি',
+        strokes: 7,
+        ruleTip: 'বামের 亻 আগে, ডানের 尔 পরে।',
+        steps: ['১. বামের 亻 (২ স্ট্রোক)', '২. ডানের ওপরের অংশ', '৩. নিচের বাম ও ডানের দাগ'],
+      ),
+      HanziCourseChar(
+        char: '好',
+        pinyin: 'hǎo',
+        bn: 'ভালো',
+        strokes: 6,
+        ruleTip: 'বামের 女 আগে, ডানের 子 পরে।',
+        steps: ['১. বামের 女 (৩ স্ট্রোক)', '২. ডানের 子 (৩ স্ট্রোক)'],
+      ),
+      HanziCourseChar(
+        char: '学',
+        pinyin: 'xué',
+        bn: 'পড়া / শেখা',
+        strokes: 8,
+        ruleTip: 'ওপরের অংশ আগে, নিচের 子 পরে।',
+        steps: ['১. ওপরের ফোঁটা ও বক্স', '২. নিচের 子 অংশ'],
+      ),
+    ],
+  ),
+];
 
 class UserNote {
   final String title;
@@ -285,7 +556,7 @@ List<HskCourseItem> get kAllCourses =>
     kHskLevelCards.expand((level) => level.courses).toList();
 
 // ============================================================================
-// 2. PINYIN NORMALIZER & VOCAB REPOSITORY (100% OFFLINE JSON - HSK 1-6 READY)
+// 2. PINYIN NORMALIZER & VOCAB REPOSITORY (12 JSON FILES)
 // ============================================================================
 
 String stripPinyinTones(String input) {
@@ -322,11 +593,15 @@ class VocabRepository {
       ('assets/vocab/hsk1.json', 'hsk'),
       ('assets/vocab/hsk2.json', 'hsk'),
       ('assets/vocab/hsk3.json', 'hsk'),
-      ('assets/vocab/hsk4.json', 'hsk'),
-      ('assets/vocab/hsk5.json', 'hsk'),
-      ('assets/vocab/hsk6.json', 'hsk'),
-      ('assets/vocab/collins_3000.json', 'collins'),
+      ('assets/vocab/hsk4_a.json', 'hsk'),
+      ('assets/vocab/hsk4_b.json', 'hsk'),
+      ('assets/vocab/hsk5_a.json', 'hsk'),
+      ('assets/vocab/hsk5_b.json', 'hsk'),
+      ('assets/vocab/hsk6_a.json', 'hsk'),
+      ('assets/vocab/hsk6_b.json', 'hsk'),
       ('assets/vocab/departments.json', 'department'),
+      ('assets/vocab/daily_nature_a.json', 'daily_nature'),
+      ('assets/vocab/daily_nature_b.json', 'daily_nature'),
     ];
 
     for (final entry in files) {
@@ -395,7 +670,7 @@ class VocabRepository {
 // 3. SHARED AUDIO GROUPING HELPER & CONFIRM DELETE DIALOG
 // ============================================================================
 
-scanCourseAudioTracks(String courseId) async {
+Future>> scanCourseAudioTracks(String courseId) async {
   final base = await getApplicationDocumentsDirectory();
   final audioDir = Directory('${base.path}/hsk_offline/$courseId/audio');
   final grouped = <String, List<File>>{};
@@ -454,6 +729,7 @@ Future<bool> showConfirmDeleteDialog(
 class AppState extends ChangeNotifier {
   bool isDarkMode = false;
   bool allLessonsContinuous = false;
+  bool blurStudyHints = false;
   double defaultSpeed = 1.0;
   int shadowingGapSeconds = 0;
   Set<String> favoriteGroupIds = {};
@@ -469,6 +745,7 @@ class AppState extends ChangeNotifier {
     final prefs = await SharedPreferences.getInstance();
     isDarkMode = prefs.getBool('dark_mode') ?? false;
     allLessonsContinuous = prefs.getBool('all_lessons_continuous') ?? false;
+    blurStudyHints = prefs.getBool('blur_study_hints') ?? false;
     defaultSpeed = prefs.getDouble('default_speed') ?? 1.0;
     shadowingGapSeconds = prefs.getInt('shadowing_gap') ?? 0;
     favoriteGroupIds = (prefs.getStringList('fav_groups') ?? []).toSet();
@@ -492,6 +769,13 @@ class AppState extends ChangeNotifier {
     allLessonsContinuous = val;
     final prefs = await SharedPreferences.getInstance();
     await prefs.setBool('all_lessons_continuous', val);
+    notifyListeners();
+  }
+
+  Future<void> setBlurStudyHints(bool val) async {
+    blurStudyHints = val;
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setBool('blur_study_hints', val);
     notifyListeners();
   }
 
@@ -622,7 +906,7 @@ class _HskAppState extends State<HskApp> {
 }
 
 // ============================================================================
-// 6. HOME SCREEN (SMART DIRECT RESUME + 6-LEVEL GRID + CLEAN DRAWER)
+// 6. HOME SCREEN (SMART DIRECT RESUME + 6-LEVEL GRID + DRAWER)
 // ============================================================================
 
 class HomeScreen extends StatefulWidget {
@@ -689,7 +973,6 @@ class _HomeScreenState extends State<HomeScreen> {
     final courseId = widget.appState.lastStudiedCourseId;
     final type = widget.appState.lastStudiedType;
 
-    // 1. Personal PDF Resume
     if (courseId.startsWith('personal_')) {
       final prefs = await SharedPreferences.getInstance();
       final raw = prefs.getString('imported_pdf_notes');
@@ -718,7 +1001,6 @@ class _HomeScreenState extends State<HomeScreen> {
       }
     }
 
-    // 2. Standard HSK Course Resume (Direct PDF Page or Direct Audio Lesson)
     final course = kAllCourses.firstWhere(
       (c) => c.id == courseId,
       orElse: () => kAllCourses.first,
@@ -1156,8 +1438,8 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget _buildDrawer(BuildContext context) {
     final repo = VocabRepository.instance;
     final hskGroups = repo.bySection('hsk');
-    final collinsGroups = repo.bySection('collins');
     final deptGroups = repo.bySection('department');
+    final dailyGroups = repo.bySection('daily_nature');
 
     return Drawer(
       child: ListView(
@@ -1179,11 +1461,11 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
                 SizedBox(height: 6),
                 Text(
-                  'HSK 1–6 • Collins 3000 • Workplace Chinese',
+                  'HSK 1–6 • Professions • Daily Life & Nature',
                   style: TextStyle(color: Colors.white70, fontSize: 12.5),
                 ),
                 Text(
-                  'Curated by AHM • v1.1.0',
+                  'Curated by AHM • v1.2.0',
                   style: TextStyle(color: Colors.white60, fontSize: 11.5),
                 ),
               ],
@@ -1203,6 +1485,21 @@ class _HomeScreenState extends State<HomeScreen> {
             },
           ),
           ListTile(
+            leading: const Icon(Icons.brush_rounded, color: kImperialRed),
+            title: const Text('Hanzi Writing Course'),
+            subtitle: const Text('Step-by-step strokes & Tianzige grid'),
+            onTap: () {
+              Navigator.pop(context);
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (_) =>
+                      HanziWritingCourseScreen(appState: widget.appState),
+                ),
+              );
+            },
+          ),
+          ListTile(
             leading: const Icon(Icons.edit_note_rounded, color: kImperialRed),
             title: const Text('Quick Study Notes'),
             onTap: () {
@@ -1216,7 +1513,7 @@ class _HomeScreenState extends State<HomeScreen> {
             },
           ),
           const Divider(),
-          // 1. HSK 1-6 Vocabulary Bank at the very top
+          // 1. HSK 1-6 Vocabulary Bank
           ExpansionTile(
             initiallyExpanded: true,
             leading: const Icon(Icons.school_rounded, color: kImperialRed),
@@ -1228,7 +1525,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 ? [
                     const ListTile(
                       title: Text(
-                        'Add hsk1–6.json to assets/vocab/',
+                        'Add hsk1.json – hsk6_b.json to assets/vocab/',
                         style: TextStyle(fontSize: 12),
                       ),
                     )
@@ -1250,23 +1547,23 @@ class _HomeScreenState extends State<HomeScreen> {
                         ))
                     .toList(),
           ),
-          // 2. Collins 3000 Words below HSK Vocabulary
+          // 2. Professions & Designations
           ExpansionTile(
-            leading: const Icon(Icons.auto_stories_rounded, color: kImperialRed),
+            leading: const Icon(Icons.work_rounded, color: kImperialRed),
             title: const Text(
-              'Collins 3000 Words (10 Topics)',
+              'Professions & Designations',
               style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
             ),
-            children: collinsGroups.isEmpty
+            children: deptGroups.isEmpty
                 ? [
                     const ListTile(
                       title: Text(
-                        'Add collins_3000.json to assets/vocab/',
+                        'Add departments.json to assets/vocab/',
                         style: TextStyle(fontSize: 12),
                       ),
                     )
                   ]
-                : collinsGroups
+                : deptGroups
                     .map((g) => ListTile(
                           dense: true,
                           title: Text(g.title),
@@ -1283,23 +1580,23 @@ class _HomeScreenState extends State<HomeScreen> {
                         ))
                     .toList(),
           ),
-          // 3. Workplace & Designations
+          // 3. Daily Life & Nature (Part A & Part B)
           ExpansionTile(
-            leading: const Icon(Icons.work_rounded, color: kImperialRed),
+            leading: const Icon(Icons.eco_rounded, color: kImperialRed),
             title: const Text(
-              'Workplace & Designations (13 Depts)',
+              'Daily Life & Nature',
               style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
             ),
-            children: deptGroups.isEmpty
+            children: dailyGroups.isEmpty
                 ? [
                     const ListTile(
                       title: Text(
-                        'Add departments.json to assets/vocab/',
+                        'Add daily_nature_a.json & b.json to assets/vocab/',
                         style: TextStyle(fontSize: 12),
                       ),
                     )
                   ]
-                : deptGroups
+                : dailyGroups
                     .map((g) => ListTile(
                           dense: true,
                           title: Text(g.title),
@@ -1578,12 +1875,14 @@ class VocabCardWidget extends StatelessWidget {
   final VocabWord word;
   final AppState appState;
   final bool showSourceBadge;
+  final bool showWriteButton;
 
   const VocabCardWidget({
     super.key,
     required this.word,
     required this.appState,
     this.showSourceBadge = false,
+    this.showWriteButton = false,
   });
 
   @override
@@ -1658,13 +1957,33 @@ class VocabCardWidget extends StatelessWidget {
               ],
             ),
           ),
-          IconButton(
-            tooltip: 'Save Word',
-            icon: Icon(
-              isSaved ? Icons.star_rounded : Icons.star_border_rounded,
-              color: isSaved ? Colors.amber : Colors.grey,
-            ),
-            onPressed: () => appState.toggleFavoriteWord(word.uniqueKey),
+          Column(
+            children: [
+              IconButton(
+                tooltip: 'Save Word',
+                icon: Icon(
+                  isSaved ? Icons.star_rounded : Icons.star_border_rounded,
+                  color: isSaved ? Colors.amber : Colors.grey,
+                ),
+                onPressed: () => appState.toggleFavoriteWord(word.uniqueKey),
+              ),
+              if (showWriteButton)
+                IconButton(
+                  tooltip: 'Write Hanzi Full-Screen',
+                  icon: const Icon(Icons.brush_rounded, color: kImperialRed),
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (_) => FullScreenFavoriteWritingScreen(
+                          word: word,
+                          isDark: isDark,
+                        ),
+                      ),
+                    );
+                  },
+                ),
+            ],
           ),
         ],
       ),
@@ -1673,7 +1992,7 @@ class VocabCardWidget extends StatelessWidget {
 }
 
 // ============================================================================
-// 8. FLASHCARD PRACTICE + HANZI WRITING PAD (田字格)
+// 8A. FLASHCARD PRACTICE + HANZI WRITING PAD (田字格)
 // ============================================================================
 
 class FlashcardPracticeScreen extends StatefulWidget {
@@ -1919,6 +2238,7 @@ class _FlashcardPracticeScreenState extends State<FlashcardPracticeScreen>
                       painter: _HanziPadPainter(
                         strokes: _strokes,
                         strokeColor: isDark ? Colors.white : Colors.black87,
+                        showDiagonalGuides: false,
                       ),
                       size: Size.infinite,
                     ),
@@ -2035,31 +2355,733 @@ class _FlashcardPracticeScreenState extends State<FlashcardPracticeScreen>
   }
 }
 
+// ============================================================================
+// 8B. FAVORITES FULL-SCREEN HANZI WRITING + SMART ERROR CORRECTION
+// ============================================================================
+
+class FullScreenFavoriteWritingScreen extends StatefulWidget {
+  final VocabWord word;
+  final bool isDark;
+
+  const FullScreenFavoriteWritingScreen({
+    super.key,
+    required this.word,
+    required this.isDark,
+  });
+
+  @override
+  State<FullScreenFavoriteWritingScreen> createState() =>
+      _FullScreenFavoriteWritingScreenState();
+}
+
+class _FullScreenFavoriteWritingScreenState
+    extends State<FullScreenFavoriteWritingScreen> {
+  int _charIdx = 0;
+  bool _showHintChar = true;
+  final List<List<Offset>> _strokes = [];
+  List<Offset> _currentStroke = [];
+  String? _feedbackText;
+  bool _feedbackIsError = false;
+
+  List<String> get _chars {
+    final chars = widget.word.hanzi
+        .runes
+        .map((r) => String.fromCharCode(r).trim())
+        .where((c) => c.isNotEmpty)
+        .toList();
+    return chars.isEmpty ? ['一'] : chars;
+  }
+
+  String get _targetChar => _chars[_charIdx.clamp(0, _chars.length - 1)];
+
+  void _validateWriting() {
+    if (_strokes.isEmpty) {
+      HapticFeedback.vibrate();
+      setState(() {
+        _feedbackIsError = true;
+        _feedbackText = 'ভুল হয়েছে! আগে বর্গাকার ঘরে হানজি লিখুন, তারপর আবার চেষ্টা করো।';
+      });
+      return;
+    }
+
+    double minX = double.infinity,
+        minY = double.infinity,
+        maxX = -double.infinity,
+        maxY = -double.infinity;
+    int totalPoints = 0;
+
+    for (final s in _strokes) {
+      for (final p in s) {
+        totalPoints++;
+        if (p.dx < minX) minX = p.dx;
+        if (p.dy < minY) minY = p.dy;
+        if (p.dx > maxX) maxX = p.dx;
+        if (p.dy > maxY) maxY = p.dy;
+      }
+    }
+
+    final spanW = maxX - minX;
+    final spanH = maxY - minY;
+    final looksValid = totalPoints >= 10 && spanW >= 24 && spanH >= 24;
+
+    if (!looksValid) {
+      HapticFeedback.vibrate();
+      setState(() {
+        _feedbackIsError = true;
+        _feedbackText =
+            'ভুল হয়েছে! অক্ষরের আকৃতি বা দাগ ঠিক হয়নি — আবার চেষ্টা করো।';
+        _strokes.clear();
+        _currentStroke = [];
+      });
+    } else {
+      HapticFeedback.lightImpact();
+      setState(() {
+        _feedbackIsError = false;
+        _feedbackText =
+            'সঠিক হয়েছে! "$_targetChar" সুন্দরভাবে লেখা হয়েছে।';
+      });
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final isDark = widget.isDark;
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Favorite Hanzi Writing'),
+        actions: [
+          IconButton(
+            tooltip: _showHintChar ? 'Hide Guide' : 'Show Guide',
+            icon: Icon(
+              _showHintChar ? Icons.visibility_rounded : Icons.visibility_off_rounded,
+            ),
+            onPressed: () => setState(() => _showHintChar = !_showHintChar),
+          ),
+        ],
+      ),
+      body: Column(
+        children: [
+          // Compact Word Header at Top
+          Container(
+            width: double.infinity,
+            padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+            color: isDark ? kNightCard : const Color(0xFFFFF5F5),
+            child: Row(
+              children: [
+                Text(
+                  widget.word.hanzi,
+                  style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+                ),
+                const SizedBox(width: 10),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        '${widget.word.pinyin} • ${widget.word.bn}',
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: const TextStyle(
+                          fontSize: 13.5,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                      Text(
+                        widget.word.en,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: const TextStyle(fontSize: 12, color: Colors.grey),
+                      ),
+                    ],
+                  ),
+                ),
+                if (_chars.length > 1)
+                  Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      IconButton(
+                        visualDensity: VisualDensity.compact,
+                        icon: const Icon(Icons.chevron_left_rounded),
+                        onPressed: _charIdx > 0
+                            ? () => setState(() {
+                                  _charIdx--;
+                                  _strokes.clear();
+                                  _feedbackText = null;
+                                })
+                            : null,
+                      ),
+                      Text('${_charIdx + 1}/${_chars.length}'),
+                      IconButton(
+                        visualDensity: VisualDensity.compact,
+                        icon: const Icon(Icons.chevron_right_rounded),
+                        onPressed: _charIdx < _chars.length - 1
+                            ? () => setState(() {
+                                  _charIdx++;
+                                  _strokes.clear();
+                                  _feedbackText = null;
+                                })
+                            : null,
+                      ),
+                    ],
+                  ),
+              ],
+            ),
+          ),
+          if (_feedbackText != null)
+            Container(
+              width: double.infinity,
+              padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
+              color: _feedbackIsError
+                  ? Colors.red.shade700
+                  : Colors.green.shade700,
+              child: Text(
+                _feedbackText!,
+                style: const TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.w600,
+                  fontSize: 13,
+                ),
+              ),
+            ),
+          // Full-Screen Tianzige Grid Area
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.all(14),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(16),
+                child: Container(
+                  width: double.infinity,
+                  height: double.infinity,
+                  decoration: BoxDecoration(
+                    color: isDark ? const Color(0xFF191919) : Colors.white,
+                    border: Border.all(color: kImperialRed, width: 1.5),
+                    borderRadius: BorderRadius.circular(16),
+                  ),
+                  child: GestureDetector(
+                    onPanStart: (details) {
+                      setState(() {
+                        _feedbackText = null;
+                        _currentStroke = [details.localPosition];
+                        _strokes.add(_currentStroke);
+                      });
+                    },
+                    onPanUpdate: (details) {
+                      setState(() {
+                        _currentStroke.add(details.localPosition);
+                      });
+                    },
+                    onPanEnd: (_) => _currentStroke = [],
+                    child: CustomPaint(
+                      painter: _HanziPadPainter(
+                        strokes: _strokes,
+                        strokeColor: isDark ? Colors.white : Colors.black87,
+                        watermarkChar: _showHintChar ? _targetChar : null,
+                        showDiagonalGuides: true,
+                      ),
+                      size: Size.infinite,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ),
+          // Bottom Action Bar
+          Padding(
+            padding: const EdgeInsets.fromLTRB(14, 0, 14, 16),
+            child: Row(
+              children: [
+                OutlinedButton.icon(
+                  onPressed: _strokes.isEmpty
+                      ? null
+                      : () => setState(() {
+                            _strokes.removeLast();
+                            _feedbackText = null;
+                          }),
+                  icon: const Icon(Icons.undo_rounded),
+                  label: const Text('Undo'),
+                ),
+                const SizedBox(width: 8),
+                OutlinedButton.icon(
+                  onPressed: _strokes.isEmpty && _feedbackText == null
+                      ? null
+                      : () => setState(() {
+                            _strokes.clear();
+                            _currentStroke = [];
+                            _feedbackText = null;
+                          }),
+                  icon: const Icon(Icons.delete_outline_rounded),
+                  label: const Text('Clear'),
+                ),
+                const SizedBox(width: 8),
+                Expanded(
+                  child: FilledButton.icon(
+                    style: FilledButton.styleFrom(
+                      backgroundColor: kImperialRed,
+                      padding: const EdgeInsets.symmetric(vertical: 12),
+                    ),
+                    onPressed: _validateWriting,
+                    icon: const Icon(Icons.fact_check_rounded),
+                    label: const Text('Check Writing'),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+// ============================================================================
+// 8C. HANZI WRITING COURSE SCREEN (TOP STEPS + DIAGONAL DOTTED GRID BELOW)
+// ============================================================================
+
+class HanziWritingCourseScreen extends StatefulWidget {
+  final AppState appState;
+  const HanziWritingCourseScreen({super.key, required this.appState});
+
+  @override
+  State<HanziWritingCourseScreen> createState() =>
+      _HanziWritingCourseScreenState();
+}
+
+class _HanziWritingCourseScreenState extends State<HanziWritingCourseScreen> {
+  int _chapterIdx = 0;
+  int _charIdx = 0;
+  int _activeStep = 0;
+  final List<List<Offset>> _strokes = [];
+  List<Offset> _currentStroke = [];
+  String? _statusMsg;
+  bool _isError = false;
+
+  HanziCourseChapter get _chapter => kHanziCourseChapters[_chapterIdx];
+  HanziCourseChar get _char => _chapter.characters[_charIdx];
+
+  void _selectChar(int idx) {
+    setState(() {
+      _charIdx = idx;
+      _activeStep = 0;
+      _strokes.clear();
+      _currentStroke = [];
+      _statusMsg = null;
+    });
+  }
+
+  void _checkPractice() {
+    if (_strokes.isEmpty || _strokes.first.length < 8) {
+      HapticFeedback.vibrate();
+      setState(() {
+        _isError = true;
+        _statusMsg =
+            'ভুল হয়েছে! বর্গাকার ঘরে দাগ টেনে প্র্যাকটিস করুন, তারপর আবার চেষ্টা করো।';
+        _strokes.clear();
+      });
+      return;
+    }
+    HapticFeedback.lightImpact();
+    setState(() {
+      _isError = false;
+      _statusMsg =
+          'চমৎকার! "${_char.char}" (${_char.pinyin}) অনুশীলন সম্পন্ন হয়েছে।';
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final isDark = widget.appState.isDarkMode;
+    final currentChar = _char;
+
+    return Scaffold(
+      appBar: AppBar(title: const Text('Hanzi Writing Course')),
+      body: Column(
+        children: [
+          // Chapter Selector Chips
+          SizedBox(
+            height: 46,
+            child: ListView.separated(
+              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+              scrollDirection: Axis.horizontal,
+              itemCount: kHanziCourseChapters.length,
+              separatorBuilder: (_, __) => const SizedBox(width: 8),
+              itemBuilder: (_, i) {
+                final selected = i == _chapterIdx;
+                return ChoiceChip(
+                  label: Text(kHanziCourseChapters[i].title.split(':').first),
+                  selected: selected,
+                  onSelected: (_) => setState(() {
+                    _chapterIdx = i;
+                    _charIdx = 0;
+                    _activeStep = 0;
+                    _strokes.clear();
+                    _statusMsg = null;
+                  }),
+                );
+              },
+            ),
+          ),
+          // Character Selector Strip (Easy -> Harder)
+          SizedBox(
+            height: 52,
+            child: ListView.separated(
+              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+              scrollDirection: Axis.horizontal,
+              itemCount: _chapter.characters.length,
+              separatorBuilder: (_, __) => const SizedBox(width: 8),
+              itemBuilder: (_, i) {
+                final c = _chapter.characters[i];
+                final selected = i == _charIdx;
+                return InkWell(
+                  borderRadius: BorderRadius.circular(10),
+                  onTap: () => _selectChar(i),
+                  child: Container(
+                    width: 44,
+                    alignment: Alignment.center,
+                    decoration: BoxDecoration(
+                      color: selected
+                          ? kImperialRed
+                          : (isDark ? kNightCard : Colors.white),
+                      borderRadius: BorderRadius.circular(10),
+                      border: Border.all(
+                        color: selected ? kImperialRed : Colors.black12,
+                      ),
+                    ),
+                    child: Text(
+                      c.char,
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                        color: selected
+                            ? Colors.white
+                            : (isDark ? Colors.white : Colors.black87),
+                      ),
+                    ),
+                  ),
+                );
+              },
+            ),
+          ),
+          // Top Section: Character Info + Step-by-Step Stroke Sequence
+          Container(
+            width: double.infinity,
+            margin: const EdgeInsets.fromLTRB(12, 6, 12, 6),
+            padding: const EdgeInsets.all(12),
+            decoration: BoxDecoration(
+              color: isDark ? kNightCard : kWarmCream,
+              borderRadius: BorderRadius.circular(14),
+              border: Border.all(
+                color: isDark ? Colors.white12 : const Color(0xFFE5DCCB),
+              ),
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  children: [
+                    Container(
+                      width: 50,
+                      height: 50,
+                      alignment: Alignment.center,
+                      decoration: BoxDecoration(
+                        color: kImperialRed.withValues(alpha: 0.12),
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: Text(
+                        currentChar.char,
+                        style: const TextStyle(
+                          fontSize: 28,
+                          fontWeight: FontWeight.bold,
+                          color: kImperialRed,
+                        ),
+                      ),
+                    ),
+                    const SizedBox(width: 12),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            '${currentChar.pinyin} • ${currentChar.bn}',
+                            style: const TextStyle(
+                              fontSize: 15,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          Text(
+                            '${currentChar.strokes} Strokes • ${currentChar.ruleTip}',
+                            style: TextStyle(
+                              fontSize: 12,
+                              color: isDark ? Colors.white70 : Colors.black87,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 8),
+                SizedBox(
+                  height: 34,
+                  child: ListView.separated(
+                    scrollDirection: Axis.horizontal,
+                    itemCount: currentChar.steps.length,
+                    separatorBuilder: (_, __) => const SizedBox(width: 6),
+                    itemBuilder: (_, sIdx) {
+                      final active = sIdx == _activeStep;
+                      return InkWell(
+                        onTap: () => setState(() => _activeStep = sIdx),
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 10, vertical: 6),
+                          decoration: BoxDecoration(
+                            color: active
+                                ? kImperialRed
+                                : (isDark
+                                    ? Colors.black26
+                                    : Colors.white),
+                            borderRadius: BorderRadius.circular(8),
+                            border: Border.all(
+                              color: active ? kImperialRed : Colors.black26,
+                            ),
+                          ),
+                          child: Text(
+                            currentChar.steps[sIdx],
+                            style: TextStyle(
+                              fontSize: 11.5,
+                              fontWeight: FontWeight.w600,
+                              color: active
+                                  ? Colors.white
+                                  : (isDark ? Colors.white70 : Colors.black87),
+                            ),
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+                ),
+              ],
+            ),
+          ),
+          if (_statusMsg != null)
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 2),
+              child: Container(
+                width: double.infinity,
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 12, vertical: 7),
+                decoration: BoxDecoration(
+                  color: _isError ? Colors.red.shade700 : Colors.green.shade700,
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: Text(
+                  _statusMsg!,
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontSize: 12.5,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ),
+            ),
+          // Bottom Square Tianzige Grid with Diagonal Dotted Lines
+          Expanded(
+            child: Center(
+              child: AspectRatio(
+                aspectRatio: 1.0,
+                child: Container(
+                  margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 6),
+                  decoration: BoxDecoration(
+                    color: isDark ? const Color(0xFF191919) : Colors.white,
+                    border: Border.all(color: kImperialRed, width: 2),
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(10),
+                    child: GestureDetector(
+                      onPanStart: (details) {
+                        setState(() {
+                          _statusMsg = null;
+                          _currentStroke = [details.localPosition];
+                          _strokes.add(_currentStroke);
+                        });
+                      },
+                      onPanUpdate: (details) {
+                        setState(() {
+                          _currentStroke.add(details.localPosition);
+                        });
+                      },
+                      onPanEnd: (_) => _currentStroke = [],
+                      child: CustomPaint(
+                        painter: _HanziPadPainter(
+                          strokes: _strokes,
+                          strokeColor: isDark ? Colors.white : Colors.black87,
+                          watermarkChar: currentChar.char,
+                          showDiagonalGuides: true,
+                        ),
+                        size: Size.infinite,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ),
+          // Bottom Controls
+          Padding(
+            padding: const EdgeInsets.fromLTRB(12, 4, 12, 14),
+            child: Row(
+              children: [
+                IconButton(
+                  tooltip: 'Undo',
+                  icon: const Icon(Icons.undo_rounded),
+                  onPressed: _strokes.isEmpty
+                      ? null
+                      : () => setState(() {
+                            _strokes.removeLast();
+                            _statusMsg = null;
+                          }),
+                ),
+                IconButton(
+                  tooltip: 'Clear',
+                  icon: const Icon(Icons.delete_outline_rounded),
+                  onPressed: _strokes.isEmpty
+                      ? null
+                      : () => setState(() {
+                            _strokes.clear();
+                            _currentStroke = [];
+                            _statusMsg = null;
+                          }),
+                ),
+                const SizedBox(width: 6),
+                Expanded(
+                  child: FilledButton.icon(
+                    style: FilledButton.styleFrom(
+                      backgroundColor: kImperialRed,
+                      padding: const EdgeInsets.symmetric(vertical: 11),
+                    ),
+                    onPressed: _checkPractice,
+                    icon: const Icon(Icons.check_rounded),
+                    label: const Text('Check'),
+                  ),
+                ),
+                const SizedBox(width: 8),
+                OutlinedButton(
+                  onPressed: _charIdx < _chapter.characters.length - 1
+                      ? () => _selectChar(_charIdx + 1)
+                      : null,
+                  child: const Text('Next'),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
 class _HanziPadPainter extends CustomPainter {
   final List<List<Offset>> strokes;
   final Color strokeColor;
+  final String? watermarkChar;
+  final bool showDiagonalGuides;
 
-  _HanziPadPainter({required this.strokes, required this.strokeColor});
+  _HanziPadPainter({
+    required this.strokes,
+    required this.strokeColor,
+    this.watermarkChar,
+    this.showDiagonalGuides = true,
+  });
+
+  void _drawDashedLine(
+    Canvas canvas,
+    Offset p1,
+    Offset p2,
+    Paint paint, {
+    double dashLen = 6,
+    double gapLen = 5,
+  }) {
+    final dx = p2.dx - p1.dx;
+    final dy = p2.dy - p1.dy;
+    final totalLen = math.sqrt(dx * dx + dy * dy);
+    if (totalLen == 0) return;
+    final ux = dx / totalLen;
+    final uy = dy / totalLen;
+    double dist = 0;
+    while (dist < totalLen) {
+      final start = Offset(p1.dx + ux * dist, p1.dy + uy * dist);
+      final endDist = math.min(dist + dashLen, totalLen);
+      final end = Offset(p1.dx + ux * endDist, p1.dy + uy * endDist);
+      canvas.drawLine(start, end, paint);
+      dist += dashLen + gapLen;
+    }
+  }
 
   @override
   void paint(Canvas canvas, Size size) {
     final guidePaint = Paint()
-      ..color = Colors.red.withValues(alpha: 0.18)
-      ..strokeWidth = 1;
-    canvas.drawLine(
-      Offset(size.width / 2, 0),
-      Offset(size.width / 2, size.height),
-      guidePaint,
-    );
-    canvas.drawLine(
+      ..color = Colors.red.withValues(alpha: 0.28)
+      ..strokeWidth = 1.2;
+
+    // Cross lines (horizontal & vertical)
+    _drawDashedLine(
+      canvas,
       Offset(0, size.height / 2),
       Offset(size.width, size.height / 2),
       guidePaint,
     );
+    _drawDashedLine(
+      canvas,
+      Offset(size.width / 2, 0),
+      Offset(size.width / 2, size.height),
+      guidePaint,
+    );
+
+    // Diagonal dotted lines (কোনাকোনি ডট-ডট লাইন)
+    if (showDiagonalGuides) {
+      final diagPaint = Paint()
+        ..color = Colors.red.withValues(alpha: 0.20)
+        ..strokeWidth = 1.1;
+      _drawDashedLine(
+        canvas,
+        Offset.zero,
+        Offset(size.width, size.height),
+        diagPaint,
+      );
+      _drawDashedLine(
+        canvas,
+        Offset(size.width, 0),
+        Offset(0, size.height),
+        diagPaint,
+      );
+    }
+
+    // Watermark Hanzi in center
+    if (watermarkChar != null && watermarkChar!.isNotEmpty) {
+      final fontSize = math.min(size.width, size.height) * 0.58;
+      final tp = TextPainter(
+        text: TextSpan(
+          text: watermarkChar,
+          style: TextStyle(
+            fontSize: fontSize,
+            fontWeight: FontWeight.w500,
+            color: strokeColor.withValues(alpha: 0.14),
+          ),
+        ),
+        textDirection: TextDirection.ltr,
+      )..layout();
+      tp.paint(
+        canvas,
+        Offset(
+          (size.width - tp.width) / 2,
+          (size.height - tp.height) / 2,
+        ),
+      );
+    }
 
     final paint = Paint()
       ..color = strokeColor
-      ..strokeWidth = 5.0
+      ..strokeWidth = 5.5
       ..strokeCap = StrokeCap.round
       ..strokeJoin = StrokeJoin.round
       ..style = PaintingStyle.stroke;
@@ -2079,7 +3101,7 @@ class _HanziPadPainter extends CustomPainter {
 }
 
 // ============================================================================
-// 9. FAVORITES SCREEN (PINNED FOLDERS + SAVED WORDS)
+// 9. FAVORITES SCREEN (PINNED FOLDERS + SAVED WORDS WITH FULL-SCREEN WRITE)
 // ============================================================================
 
 class FavoritesScreen extends StatelessWidget {
@@ -2175,7 +3197,7 @@ class FavoritesScreen extends StatelessWidget {
                                 },
                                 icon: const Icon(Icons.style_rounded),
                                 label: Text(
-                                    'Practice Saved Words (${favWords.length})'),
+                                    'Flashcard Practice (${favWords.length})'),
                               ),
                             ),
                           ),
@@ -2187,6 +3209,7 @@ class FavoritesScreen extends StatelessWidget {
                                 word: favWords[i],
                                 appState: appState,
                                 showSourceBadge: true,
+                                showWriteButton: true,
                               ),
                             ),
                           ),
@@ -2670,7 +3693,6 @@ class _FastPdfReaderScreenState extends State<FastPdfReaderScreen> {
                 Expanded(
                   child: Stack(
                     children: [
-                      // Edge-to-Edge Full-Width PDF View (Zero side margins)
                       Container(
                         color: isDark ? kNightDark : Colors.white,
                         child: PdfViewPinch(
@@ -2684,7 +3706,6 @@ class _FastPdfReaderScreenState extends State<FastPdfReaderScreen> {
                           },
                         ),
                       ),
-                      // Right-side Page Indicator Pill (tap to jump)
                       Positioned(
                         right: 12,
                         top: 16,
@@ -2726,7 +3747,6 @@ class _FastPdfReaderScreenState extends State<FastPdfReaderScreen> {
                     ],
                   ),
                 ),
-                // Bottom Mini Audio Player Bar inside PDF Reader
                 if (_hasAudio && _showAudioBar)
                   Container(
                     padding: const EdgeInsets.fromLTRB(12, 6, 12, 10),
@@ -2827,7 +3847,7 @@ class _FastPdfReaderScreenState extends State<FastPdfReaderScreen> {
 }
 
 // ============================================================================
-// 12. FULL AUDIO PLAYER SCREEN (LESSON LOOP vs ALL LESSONS CONTINUOUS)
+// 12. FULL AUDIO PLAYER SCREEN (LOOP + CONTINUOUS + BLUR/HIDE MODE)
 // ============================================================================
 
 class LessonAudioPlayerScreen extends StatefulWidget {
@@ -2981,9 +4001,20 @@ class _LessonAudioPlayerScreenState extends State<LessonAudioPlayerScreen> {
       animation: widget.appState,
       builder: (context, _) {
         final isAllMode = widget.appState.allLessonsContinuous;
+        final isBlurred = widget.appState.blurStudyHints;
         return Scaffold(
           appBar: AppBar(
             title: Text('${widget.courseTitle} • $_currentLessonName'),
+            actions: [
+              IconButton(
+                tooltip: isBlurred ? 'Show Track Info' : 'Blur Track Info',
+                icon: Icon(
+                  isBlurred ? Icons.blur_on_rounded : Icons.blur_off_rounded,
+                ),
+                onPressed: () =>
+                    widget.appState.setBlurStudyHints(!isBlurred),
+              ),
+            ],
           ),
           body: Column(
             children: [
@@ -3031,9 +4062,11 @@ class _LessonAudioPlayerScreenState extends State<LessonAudioPlayerScreen> {
                   itemCount: _currentTracks.length,
                   itemBuilder: (_, i) {
                     final f = _currentTracks[i];
-                    final name = f.uri.pathSegments.last
+                    final rawName = f.uri.pathSegments.last
                         .replaceAll('.mp3', '')
                         .replaceAll('.m4a', '');
+                    final displayName =
+                        isBlurred ? 'Hidden Track (Listening Test)' : rawName;
                     final active = i == _trackIndex;
                     return Container(
                       margin: const EdgeInsets.only(bottom: 8),
@@ -3056,7 +4089,7 @@ class _LessonAudioPlayerScreenState extends State<LessonAudioPlayerScreen> {
                           color: active ? kImperialRed : Colors.grey,
                         ),
                         title: Text(
-                          'Track ${i + 1} ($name)',
+                          'Track ${i + 1} ($displayName)',
                           style: TextStyle(
                             fontWeight:
                                 active ? FontWeight.bold : FontWeight.normal,
@@ -3101,7 +4134,7 @@ class _LessonAudioPlayerScreenState extends State<LessonAudioPlayerScreen> {
                         children: [
                           Text(_fmt(_position),
                               style: const TextStyle(fontSize: 12)),
-                          Text(_fmt(_duration),
+                          Text(isBlurred ? '--:--' : _fmt(_duration),
                               style: const TextStyle(fontSize: 12)),
                         ],
                       ),
@@ -3700,6 +4733,14 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 value: widget.appState.isDarkMode,
                 onChanged: widget.appState.toggleDarkMode,
               ),
+              SwitchListTile(
+                contentPadding: EdgeInsets.zero,
+                title: const Text('Blur Study Hints'),
+                subtitle: const Text(
+                    'Hide/blur audio track names & duration for listening test'),
+                value: widget.appState.blurStudyHints,
+                onChanged: widget.appState.setBlurStudyHints,
+              ),
               const Divider(),
               const SizedBox(height: 4),
               Text(
@@ -3792,7 +4833,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 },
               ),
               const SizedBox(height: 12),
-              // About HSK Card (Warm Cream Background)
               Container(
                 padding: const EdgeInsets.all(16),
                 decoration: BoxDecoration(
@@ -3859,7 +4899,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 ),
               ),
               const SizedBox(height: 16),
-              // Mentors & Learning Community Card (Warm Cream + Full Red Button)
               Container(
                 padding: const EdgeInsets.all(16),
                 decoration: BoxDecoration(
