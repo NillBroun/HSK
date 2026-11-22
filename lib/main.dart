@@ -670,7 +670,7 @@ class VocabRepository {
 // 3. SHARED AUDIO GROUPING HELPER & CONFIRM DELETE DIALOG
 // ============================================================================
 
-Future>> scanCourseAudioTracks(String courseId) async {
+scanCourseAudioTracks(String courseId) async {
   final base = await getApplicationDocumentsDirectory();
   final audioDir = Directory('${base.path}/hsk_offline/$courseId/audio');
   final grouped = <String, List<File>>{};
