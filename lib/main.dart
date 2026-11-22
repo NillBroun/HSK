@@ -742,7 +742,7 @@ class _HomeScreenState extends State<HomeScreen> {
             courseTitle: course.title,
             allLessonNames: lessonNames,
             allLessonTracks: tracks,
-            initialLessonIndex: safeIdx,
+            initialLessonIndex: safeIdx.toInt(),
             appState: widget.appState,
           ),
         ),
