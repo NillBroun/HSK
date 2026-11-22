@@ -4,6 +4,7 @@ import 'dart:io';
 import 'dart:math' as math;
 
 import 'package:archive/archive.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
@@ -13,7 +14,6 @@ import 'package:pdfx/pdfx.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-/// তোমার GitHub Release-এর Base URL
 const String kGithubReleaseBaseUrl =
     'https://github.com/NillBroun/HSK/releases/download/v1.0.0/';
 
@@ -112,87 +112,176 @@ class UserNote {
   }
 }
 
+class ImportedPdfItem {
+  final String name;
+  final String path;
+
+  const ImportedPdfItem({required this.name, required this.path});
+
+  Map<String, String> toJson() => {'name': name, 'path': path};
+
+  factory ImportedPdfItem.fromJson(Map<String, dynamic> json) {
+    return ImportedPdfItem(
+      name: (json['name'] ?? 'Document.pdf').toString(),
+      path: (json['path'] ?? '').toString(),
+    );
+  }
+}
+
 class HskCourseItem {
   final String id;
   final String title;
+  final String partLabel;
   final String subtitle;
-  final String pdfFileName;
-  final String audioZipName;
+  final List<String> pdfCandidates;
+  final List<String> audioZipCandidates;
 
   const HskCourseItem({
     required this.id,
     required this.title,
+    required this.partLabel,
     required this.subtitle,
-    required this.pdfFileName,
-    required this.audioZipName,
+    required this.pdfCandidates,
+    required this.audioZipCandidates,
+  });
+
+  String get primaryPdfName => pdfCandidates.first;
+  String get primaryZipName => audioZipCandidates.first;
+}
+
+class HskLevelCard {
+  final String title;
+  final String chineseBadge;
+  final String subtitle;
+  final List<HskCourseItem> courses;
+
+  const HskLevelCard({
+    required this.title,
+    required this.chineseBadge,
+    required this.subtitle,
+    required this.courses,
   });
 }
 
-const List<HskCourseItem> kHskCourses = [
-  HskCourseItem(
-    id: 'hsk1',
+const List<HskLevelCard> kHskLevelCards = [
+  HskLevelCard(
     title: 'HSK 1',
-    subtitle: 'Lessons 1–15 • 150+ Words',
-    pdfFileName: 'HSK-1-Textbook.pdf',
-    audioZipName: 'hsk1-audio.zip',
+    chineseBadge: '一级',
+    subtitle: 'Beginner',
+    courses: [
+      HskCourseItem(
+        id: 'hsk1',
+        title: 'HSK 1',
+        partLabel: 'Standard Course (1–15)',
+        subtitle: 'Beginner • Lessons 1–15',
+        pdfCandidates: ['HSK-1-Textbook.pdf', 'hsk1.pdf'],
+        audioZipCandidates: ['HSK-1-Audio.zip', 'hsk1-audio.zip', 'HSK1-Audio.zip'],
+      ),
+    ],
   ),
-  HskCourseItem(
-    id: 'hsk2',
+  HskLevelCard(
     title: 'HSK 2',
-    subtitle: 'Lessons 1–15 • 300+ Words',
-    pdfFileName: 'HSK-2-Textbook.pdf',
-    audioZipName: 'hsk2-audio.zip',
+    chineseBadge: '二级',
+    subtitle: 'Elementary',
+    courses: [
+      HskCourseItem(
+        id: 'hsk2',
+        title: 'HSK 2',
+        partLabel: 'Standard Course (1–15)',
+        subtitle: 'Elementary • Lessons 1–15',
+        pdfCandidates: ['HSK-2-Textbook.pdf', 'hsk2.pdf'],
+        audioZipCandidates: ['HSK-2-Audio.zip', 'hsk2-audio.zip', 'HSK2-Audio.zip'],
+      ),
+    ],
   ),
-  HskCourseItem(
-    id: 'hsk3',
+  HskLevelCard(
     title: 'HSK 3',
-    subtitle: 'Lessons 1–20 • 600+ Words',
-    pdfFileName: 'HSK-3-Textbook.pdf',
-    audioZipName: 'hsk3-audio.zip',
+    chineseBadge: '三级',
+    subtitle: 'Intermediate',
+    courses: [
+      HskCourseItem(
+        id: 'hsk3',
+        title: 'HSK 3',
+        partLabel: 'Standard Course (1–20)',
+        subtitle: 'Intermediate • Lessons 1–20',
+        pdfCandidates: ['HSK-3-Textbook.pdf', 'hsk3.pdf'],
+        audioZipCandidates: ['HSK-3-Audio.zip', 'hsk3-audio.zip', 'HSK3-Audio.zip'],
+      ),
+    ],
   ),
-  HskCourseItem(
-    id: 'hsk4a',
-    title: 'HSK 4 (Part A)',
-    subtitle: 'Upper Textbook • 1–10',
-    pdfFileName: 'HSK-4A-Textbook.pdf',
-    audioZipName: 'hsk4a-audio.zip',
+  HskLevelCard(
+    title: 'HSK 4',
+    chineseBadge: '四级',
+    subtitle: 'Part A & B',
+    courses: [
+      HskCourseItem(
+        id: 'hsk4a',
+        title: 'HSK 4 — Part A',
+        partLabel: '上',
+        subtitle: 'Upper-Intermediate (上) • Lessons 1–10',
+        pdfCandidates: ['HSK-4A-Textbook.pdf', 'HSK-4-Part-A.pdf'],
+        audioZipCandidates: ['HSK-4A-Audio.zip', 'hsk4a-audio.zip', 'HSK-4-Part-A-Audio.zip'],
+      ),
+      HskCourseItem(
+        id: 'hsk4b',
+        title: 'HSK 4 — Part B',
+        partLabel: '下',
+        subtitle: 'Upper-Intermediate (下) • Lessons 11–20',
+        pdfCandidates: ['HSK-4B-Textbook.pdf', 'HSK-4-Part-B.pdf'],
+        audioZipCandidates: ['HSK-4B-Audio.zip', 'hsk4b-audio.zip', 'HSK-4-Part-B-Audio.zip'],
+      ),
+    ],
   ),
-  HskCourseItem(
-    id: 'hsk4b',
-    title: 'HSK 4 (Part B)',
-    subtitle: 'Lower Textbook • 11–20',
-    pdfFileName: 'HSK-4B-Textbook.pdf',
-    audioZipName: 'hsk4b-audio.zip',
+  HskLevelCard(
+    title: 'HSK 5',
+    chineseBadge: '五级',
+    subtitle: 'Part A & B',
+    courses: [
+      HskCourseItem(
+        id: 'hsk5a',
+        title: 'HSK 5 — Part A',
+        partLabel: '上',
+        subtitle: 'Advanced (上) • Lessons 1–18',
+        pdfCandidates: ['HSK-5A-Textbook.pdf', 'HSK-5-Part-A.pdf'],
+        audioZipCandidates: ['HSK-5A-Audio.zip', 'hsk5a-audio.zip', 'HSK-5-Part-A-Audio.zip'],
+      ),
+      HskCourseItem(
+        id: 'hsk5b',
+        title: 'HSK 5 — Part B',
+        partLabel: '下',
+        subtitle: 'Advanced (下) • Lessons 19–36',
+        pdfCandidates: ['HSK-5B-Textbook.pdf', 'HSK-5-Part-B.pdf'],
+        audioZipCandidates: ['HSK-5B-Audio.zip', 'hsk5b-audio.zip', 'HSK-5-Part-B-Audio.zip'],
+      ),
+    ],
   ),
-  HskCourseItem(
-    id: 'hsk5a',
-    title: 'HSK 5 (Part A)',
-    subtitle: 'Upper Textbook • 1–18',
-    pdfFileName: 'HSK-5A-Textbook.pdf',
-    audioZipName: 'hsk5a-audio.zip',
-  ),
-  HskCourseItem(
-    id: 'hsk5b',
-    title: 'HSK 5 (Part B)',
-    subtitle: 'Lower Textbook • 19–36',
-    pdfFileName: 'HSK-5B-Textbook.pdf',
-    audioZipName: 'hsk5b-audio.zip',
-  ),
-  HskCourseItem(
-    id: 'hsk6a',
-    title: 'HSK 6 (Part A)',
-    subtitle: 'Upper Textbook • 1–20',
-    pdfFileName: 'HSK-6A-Textbook.pdf',
-    audioZipName: 'hsk6a-audio.zip',
-  ),
-  HskCourseItem(
-    id: 'hsk6b',
-    title: 'HSK 6 (Part B)',
-    subtitle: 'Lower Textbook • 21–40',
-    pdfFileName: 'HSK-6B-Textbook.pdf',
-    audioZipName: 'hsk6b-audio.zip',
+  HskLevelCard(
+    title: 'HSK 6',
+    chineseBadge: '六级',
+    subtitle: 'Part A & B',
+    courses: [
+      HskCourseItem(
+        id: 'hsk6a',
+        title: 'HSK 6 — Part A',
+        partLabel: '上',
+        subtitle: 'Mastery (上) • Lessons 1–20',
+        pdfCandidates: ['HSK-6A-Textbook.pdf', 'HSK-6-Part-A.pdf'],
+        audioZipCandidates: ['HSK-6A-Audio.zip', 'hsk6a-audio.zip', 'HSK-6-Part-A-Audio.zip'],
+      ),
+      HskCourseItem(
+        id: 'hsk6b',
+        title: 'HSK 6 — Part B',
+        partLabel: '下',
+        subtitle: 'Mastery (下) • Lessons 21–40',
+        pdfCandidates: ['HSK-6B-Textbook.pdf', 'HSK-6-Part-B.pdf'],
+        audioZipCandidates: ['HSK-6B-Audio.zip', 'hsk6b-audio.zip', 'HSK-6-Part-B-Audio.zip'],
+      ),
+    ],
   ),
 ];
+
+List<HskCourseItem> get kAllCourses =>
+    kHskLevelCards.expand((level) => level.courses).toList();
 
 // ============================================================================
 // 2. PINYIN NORMALIZER & VOCAB REPOSITORY (100% OFFLINE JSON)
@@ -305,6 +394,7 @@ class VocabRepository {
 class AppState extends ChangeNotifier {
   bool isDarkMode = false;
   bool allLessonsContinuous = false;
+  double defaultSpeed = 1.0;
   int shadowingGapSeconds = 0;
   Set<String> favoriteGroupIds = {};
   Set<String> favoriteWordKeys = {};
@@ -315,6 +405,7 @@ class AppState extends ChangeNotifier {
     final prefs = await SharedPreferences.getInstance();
     isDarkMode = prefs.getBool('dark_mode') ?? false;
     allLessonsContinuous = prefs.getBool('all_lessons_continuous') ?? false;
+    defaultSpeed = prefs.getDouble('default_speed') ?? 1.0;
     shadowingGapSeconds = prefs.getInt('shadowing_gap') ?? 0;
     favoriteGroupIds = (prefs.getStringList('fav_groups') ?? []).toSet();
     favoriteWordKeys = (prefs.getStringList('fav_words') ?? []).toSet();
@@ -335,6 +426,13 @@ class AppState extends ChangeNotifier {
     allLessonsContinuous = val;
     final prefs = await SharedPreferences.getInstance();
     await prefs.setBool('all_lessons_continuous', val);
+    notifyListeners();
+  }
+
+  Future<void> setDefaultSpeed(double spd) async {
+    defaultSpeed = spd;
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setDouble('default_speed', spd);
     notifyListeners();
   }
 
@@ -449,7 +547,7 @@ class _HskAppState extends State<HskApp> {
 }
 
 // ============================================================================
-// 5. HOME SCREEN + GLOBAL SEARCH + DRAWER MENU (☰)
+// 5. HOME SCREEN (v1.0.0 6-LEVEL GRID + GLOBAL SEARCH + DRAWER + PERSONAL SPACE)
 // ============================================================================
 
 class HomeScreen extends StatefulWidget {
@@ -488,6 +586,30 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
+  void _onLevelTap(HskLevelCard level) {
+    if (level.courses.length == 1) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (_) => CourseDetailScreen(
+            course: level.courses.first,
+            appState: widget.appState,
+          ),
+        ),
+      );
+    } else {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (_) => PartSelectionScreen(
+            level: level,
+            appState: widget.appState,
+          ),
+        ),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final isDark = widget.appState.isDarkMode;
@@ -500,8 +622,8 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text(
-          '汉语 HSK Study',
-          style: TextStyle(fontWeight: FontWeight.bold),
+          '汉语 HSK',
+          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
         ),
         actions: [
           IconButton(
@@ -517,7 +639,7 @@ class _HomeScreenState extends State<HomeScreen> {
             },
           ),
           IconButton(
-            tooltip: 'Settings',
+            tooltip: 'Settings & About',
             icon: const Icon(Icons.settings_rounded),
             onPressed: () {
               Navigator.push(
@@ -541,7 +663,7 @@ class _HomeScreenState extends State<HomeScreen> {
               onChanged: _onSearchChanged,
               style: TextStyle(color: isDark ? Colors.white : Colors.black87),
               decoration: InputDecoration(
-                hintText: 'শব্দ খুঁজুন (বাংলা / Pinyin / 汉字 / English)...',
+                hintText: 'Search words (English / Pinyin / Hanzi / Bangla)...',
                 hintStyle: TextStyle(
                   fontSize: 13.5,
                   color: isDark ? Colors.white60 : Colors.black45,
@@ -576,9 +698,9 @@ class _HomeScreenState extends State<HomeScreen> {
                         _buildResumeBanner(isDark),
                       if (pinnedGroups.isNotEmpty) ...[
                         const Padding(
-                          padding: EdgeInsets.only(bottom: 8, top: 4),
+                          padding: EdgeInsets.only(bottom: 8, top: 2),
                           child: Text(
-                            '⭐ My Favorites',
+                            'Pinned Vocabulary',
                             style: TextStyle(
                               fontSize: 15,
                               fontWeight: FontWeight.bold,
@@ -586,7 +708,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           ),
                         ),
                         SizedBox(
-                          height: 44,
+                          height: 42,
                           child: ListView.separated(
                             scrollDirection: Axis.horizontal,
                             itemCount: pinnedGroups.length,
@@ -606,41 +728,10 @@ class _HomeScreenState extends State<HomeScreen> {
                             },
                           ),
                         ),
-                        const SizedBox(height: 16),
+                        const SizedBox(height: 14),
                       ],
-                      Row(
-                        children: [
-                          Expanded(
-                            child: _quickCard(
-                              isDark: isDark,
-                              icon: Icons.edit_note_rounded,
-                              title: 'My Grammar & Notes',
-                              subtitle: 'নিজের নোট ও গ্রামার',
-                              onTap: () => Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (_) => const GrammarNotesScreen(),
-                                ),
-                              ),
-                            ),
-                          ),
-                          const SizedBox(width: 10),
-                          Expanded(
-                            child: Builder(
-                              builder: (ctx) => _quickCard(
-                                isDark: isDark,
-                                icon: Icons.menu_book_rounded,
-                                title: 'Vocabulary Bank',
-                                subtitle: 'HSK • 3000 • কর্মক্ষেত্র',
-                                onTap: () => Scaffold.of(ctx).openDrawer(),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 18),
                       const Text(
-                        'HSK Standard Courses (1–6)',
+                        'Select HSK Level',
                         style: TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.bold,
@@ -650,38 +741,30 @@ class _HomeScreenState extends State<HomeScreen> {
                       GridView.builder(
                         shrinkWrap: true,
                         physics: const NeverScrollableScrollPhysics(),
-                        itemCount: kHskCourses.length,
+                        itemCount: kHskLevelCards.length,
                         gridDelegate:
                             const SliverGridDelegateWithFixedCrossAxisCount(
                           crossAxisCount: 2,
-                          mainAxisSpacing: 10,
-                          crossAxisSpacing: 10,
-                          childAspectRatio: 1.42,
+                          mainAxisSpacing: 12,
+                          crossAxisSpacing: 12,
+                          childAspectRatio: 1.38,
                         ),
                         itemBuilder: (context, index) {
-                          final course = kHskCourses[index];
+                          final level = kHskLevelCards[index];
                           return InkWell(
-                            borderRadius: BorderRadius.circular(14),
-                            onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (_) => CourseDetailScreen(
-                                    course: course,
-                                    appState: widget.appState,
-                                  ),
-                                ),
-                              );
-                            },
+                            borderRadius: BorderRadius.circular(16),
+                            onTap: () => _onLevelTap(level),
                             child: Container(
-                              padding: const EdgeInsets.all(14),
+                              padding: const EdgeInsets.all(15),
                               decoration: BoxDecoration(
-                                color: isDark ? kNightCard : Colors.white,
-                                borderRadius: BorderRadius.circular(14),
+                                color: isDark
+                                    ? kNightCard
+                                    : const Color(0xFFFFF7F7),
+                                borderRadius: BorderRadius.circular(16),
                                 border: Border.all(
                                   color: isDark
                                       ? Colors.white12
-                                      : const Color(0xFFE8DFD3),
+                                      : const Color(0xFFEEDDDD),
                                 ),
                               ),
                               child: Column(
@@ -694,30 +777,41 @@ class _HomeScreenState extends State<HomeScreen> {
                                         MainAxisAlignment.spaceBetween,
                                     children: [
                                       Text(
-                                        course.title,
+                                        level.title,
                                         style: TextStyle(
-                                          fontSize: 16,
+                                          fontSize: 17,
                                           fontWeight: FontWeight.bold,
                                           color: isDark
                                               ? const Color(0xFFEF5350)
                                               : kImperialRed,
                                         ),
                                       ),
-                                      Icon(
-                                        Icons.arrow_forward_ios_rounded,
-                                        size: 14,
-                                        color: isDark
-                                            ? Colors.white38
-                                            : Colors.black38,
+                                      Container(
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 8, vertical: 3),
+                                        decoration: BoxDecoration(
+                                          color: kImperialRed
+                                              .withValues(alpha: 0.1),
+                                          borderRadius:
+                                              BorderRadius.circular(8),
+                                        ),
+                                        child: Text(
+                                          level.chineseBadge,
+                                          style: TextStyle(
+                                            fontSize: 12,
+                                            fontWeight: FontWeight.bold,
+                                            color: isDark
+                                                ? const Color(0xFFEF5350)
+                                                : kImperialRed,
+                                          ),
+                                        ),
                                       ),
                                     ],
                                   ),
                                   Text(
-                                    course.subtitle,
-                                    maxLines: 2,
-                                    overflow: TextOverflow.ellipsis,
+                                    level.subtitle,
                                     style: TextStyle(
-                                      fontSize: 12,
+                                      fontSize: 13,
                                       color: isDark
                                           ? Colors.white70
                                           : Colors.black54,
@@ -728,6 +822,82 @@ class _HomeScreenState extends State<HomeScreen> {
                             ),
                           );
                         },
+                      ),
+                      const SizedBox(height: 22),
+                      const Text(
+                        'Personal Study Space',
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      const SizedBox(height: 10),
+                      InkWell(
+                        borderRadius: BorderRadius.circular(16),
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (_) => PersonalPdfNotesScreen(
+                                  appState: widget.appState),
+                            ),
+                          );
+                        },
+                        child: Container(
+                          padding: const EdgeInsets.all(16),
+                          decoration: BoxDecoration(
+                            color: isDark
+                                ? kNightCard
+                                : const Color(0xFFFFF7F7),
+                            borderRadius: BorderRadius.circular(16),
+                            border: Border.all(
+                              color: isDark
+                                  ? Colors.white12
+                                  : const Color(0xFFEEDDDD),
+                            ),
+                          ),
+                          child: Row(
+                            children: [
+                              Container(
+                                padding: const EdgeInsets.all(10),
+                                decoration: BoxDecoration(
+                                  color: kImperialRed.withValues(alpha: 0.1),
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                                child: const Icon(
+                                  Icons.picture_as_pdf_rounded,
+                                  color: kImperialRed,
+                                ),
+                              ),
+                              const SizedBox(width: 14),
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    const Text(
+                                      'My Grammar & Notes',
+                                      style: TextStyle(
+                                        fontSize: 15,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                    const SizedBox(height: 3),
+                                    Text(
+                                      'Import & read your own PDF notes from phone/SD card',
+                                      style: TextStyle(
+                                        fontSize: 12.5,
+                                        color: isDark
+                                            ? Colors.white60
+                                            : Colors.black54,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              const Icon(Icons.chevron_right_rounded),
+                            ],
+                          ),
+                        ),
                       ),
                     ],
                   ),
@@ -740,7 +910,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget _buildResumeBanner(bool isDark) {
     return Container(
       margin: const EdgeInsets.only(bottom: 14),
-      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
+      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
       decoration: BoxDecoration(
         color: isDark ? const Color(0xFF2B1919) : const Color(0xFFFFEFEF),
         borderRadius: BorderRadius.circular(14),
@@ -753,28 +923,21 @@ class _HomeScreenState extends State<HomeScreen> {
           const Icon(Icons.history_rounded, color: kImperialRed),
           const SizedBox(width: 10),
           Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const Text(
-                  'Last Studied',
-                  style: TextStyle(fontSize: 11, fontWeight: FontWeight.w600),
-                ),
-                Text(
-                  widget.appState.lastStudiedLabel,
-                  style: const TextStyle(
-                    fontSize: 13.5,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ],
+            child: Text(
+              widget.appState.lastStudiedLabel,
+              style: const TextStyle(
+                fontSize: 13.5,
+                fontWeight: FontWeight.bold,
+              ),
             ),
           ),
-          TextButton(
+          IconButton(
+            icon: const Icon(Icons.play_circle_fill_rounded,
+                color: kImperialRed, size: 30),
             onPressed: () {
-              final course = kHskCourses.firstWhere(
+              final course = kAllCourses.firstWhere(
                 (c) => c.id == widget.appState.lastStudiedCourseId,
-                orElse: () => kHskCourses.first,
+                orElse: () => kAllCourses.first,
               );
               Navigator.push(
                 context,
@@ -786,63 +949,8 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               );
             },
-            child: const Text('Resume'),
           ),
         ],
-      ),
-    );
-  }
-
-  Widget _quickCard({
-    required bool isDark,
-    required IconData icon,
-    required String title,
-    required String subtitle,
-    required VoidCallback onTap,
-  }) {
-    return InkWell(
-      borderRadius: BorderRadius.circular(14),
-      onTap: onTap,
-      child: Container(
-        padding: const EdgeInsets.all(13),
-        decoration: BoxDecoration(
-          color: isDark ? kNightCard : Colors.white,
-          borderRadius: BorderRadius.circular(14),
-          border: Border.all(
-            color: isDark ? Colors.white12 : const Color(0xFFE8DFD3),
-          ),
-        ),
-        child: Row(
-          children: [
-            Icon(icon, color: kImperialRed, size: 26),
-            const SizedBox(width: 10),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    title,
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                    style: const TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 13,
-                    ),
-                  ),
-                  Text(
-                    subtitle,
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                    style: TextStyle(
-                      fontSize: 11,
-                      color: isDark ? Colors.white60 : Colors.black54,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
       ),
     );
   }
@@ -850,7 +958,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget _buildSearchResultsList() {
     if (_searchResults.isEmpty) {
       return const Center(
-        child: Text('কোনো শব্দ পাওয়া যায়নি। অন্যভাবে লিখে চেষ্টা করো।'),
+        child: Text('No matching words found. Try another keyword.'),
       );
     }
     return ListView.builder(
@@ -877,12 +985,12 @@ class _HomeScreenState extends State<HomeScreen> {
       child: ListView(
         padding: EdgeInsets.zero,
         children: [
-          DrawerHeader(
-            decoration: const BoxDecoration(color: kImperialRed),
+          const DrawerHeader(
+            decoration: BoxDecoration(color: kImperialRed),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.end,
-              children: const [
+              children: [
                 Text(
                   '汉语 HSK Study',
                   style: TextStyle(
@@ -897,7 +1005,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   style: TextStyle(color: Colors.white70, fontSize: 12.5),
                 ),
                 Text(
-                  'By AHM • v1.1.0',
+                  'Curated by AHM • v1.1.0',
                   style: TextStyle(color: Colors.white60, fontSize: 11.5),
                 ),
               ],
@@ -905,13 +1013,26 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
           ListTile(
             leading: const Icon(Icons.star_rounded, color: Colors.amber),
-            title: const Text('My Favorites (পিন করা তালিকা)'),
+            title: const Text('My Favorites'),
             onTap: () {
               Navigator.pop(context);
               Navigator.push(
                 context,
                 MaterialPageRoute(
                   builder: (_) => FavoritesScreen(appState: widget.appState),
+                ),
+              );
+            },
+          ),
+          ListTile(
+            leading: const Icon(Icons.edit_note_rounded, color: kImperialRed),
+            title: const Text('Quick Study Notes'),
+            onTap: () {
+              Navigator.pop(context);
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (_) => const QuickNotesScreen(),
                 ),
               );
             },
@@ -928,7 +1049,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 ? [
                     const ListTile(
                       title: Text(
-                        'assets/vocab/hsk1–3.json যোগ হলে এখানে দেখাবে',
+                        'Add hsk1–3.json to assets/vocab/',
                         style: TextStyle(fontSize: 12),
                       ),
                     )
@@ -937,7 +1058,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     .map((g) => ListTile(
                           dense: true,
                           title: Text(g.title),
-                          subtitle: Text('${g.words.length} শব্দ'),
+                          subtitle: Text('${g.words.length} Words'),
                           trailing: widget.appState.favoriteGroupIds
                                   .contains(g.id)
                               ? const Icon(Icons.star_rounded,
@@ -953,14 +1074,14 @@ class _HomeScreenState extends State<HomeScreen> {
           ExpansionTile(
             leading: const Icon(Icons.auto_stories_rounded, color: kImperialRed),
             title: const Text(
-              'Collins 3000 Words (১০ বিভাগ)',
+              'Collins 3000 Words (10 Topics)',
               style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
             ),
             children: collinsGroups.isEmpty
                 ? [
                     const ListTile(
                       title: Text(
-                        'assets/vocab/collins_3000.json যোগ হলে এখানে দেখাবে',
+                        'Add collins_3000.json to assets/vocab/',
                         style: TextStyle(fontSize: 12),
                       ),
                     )
@@ -985,14 +1106,14 @@ class _HomeScreenState extends State<HomeScreen> {
           ExpansionTile(
             leading: const Icon(Icons.work_rounded, color: kImperialRed),
             title: const Text(
-              'Workplace & Designations (১৩ বিভাগ)',
+              'Workplace & Designations (13 Depts)',
               style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
             ),
             children: deptGroups.isEmpty
                 ? [
                     const ListTile(
                       title: Text(
-                        'assets/vocab/departments.json যোগ হলে এখানে দেখাবে',
+                        'Add departments.json to assets/vocab/',
                         style: TextStyle(fontSize: 12),
                       ),
                     )
@@ -1046,7 +1167,102 @@ class _HomeScreenState extends State<HomeScreen> {
 }
 
 // ============================================================================
-// 6. VOCABULARY LIST SCREEN (CLEAN 4-LAYER CARD + FILTER + FLASHCARD BUTTON)
+// 5B. PART A & PART B SELECTION SCREEN (FOR HSK 4, 5, 6)
+// ============================================================================
+
+class PartSelectionScreen extends StatelessWidget {
+  final HskLevelCard level;
+  final AppState appState;
+
+  const PartSelectionScreen({
+    super.key,
+    required this.level,
+    required this.appState,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final isDark = appState.isDarkMode;
+    return Scaffold(
+      appBar: AppBar(title: Text(level.title)),
+      body: ListView.separated(
+        padding: const EdgeInsets.all(16),
+        itemCount: level.courses.length,
+        separatorBuilder: (_, __) => const SizedBox(height: 12),
+        itemBuilder: (context, index) {
+          final course = level.courses[index];
+          return InkWell(
+            borderRadius: BorderRadius.circular(16),
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (_) => CourseDetailScreen(
+                    course: course,
+                    appState: appState,
+                  ),
+                ),
+              );
+            },
+            child: Container(
+              padding: const EdgeInsets.all(18),
+              decoration: BoxDecoration(
+                color: isDark ? kNightCard : const Color(0xFFFFF7F7),
+                borderRadius: BorderRadius.circular(16),
+                border: Border.all(
+                  color: isDark ? Colors.white12 : const Color(0xFFEEDDDD),
+                ),
+              ),
+              child: Row(
+                children: [
+                  CircleAvatar(
+                    radius: 22,
+                    backgroundColor: kImperialRed,
+                    foregroundColor: Colors.white,
+                    child: Text(
+                      course.partLabel,
+                      style: const TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16,
+                      ),
+                    ),
+                  ),
+                  const SizedBox(width: 16),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          course.title,
+                          style: const TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        const SizedBox(height: 4),
+                        Text(
+                          course.subtitle,
+                          style: TextStyle(
+                            fontSize: 13,
+                            color: isDark ? Colors.white60 : Colors.black54,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  const Icon(Icons.chevron_right_rounded),
+                ],
+              ),
+            ),
+          );
+        },
+      ),
+    );
+  }
+}
+
+// ============================================================================
+// 6. VOCABULARY LIST SCREEN (4-LAYER CARD + FILTER + FLASHCARD BUTTON)
 // ============================================================================
 
 class VocabListScreen extends StatefulWidget {
@@ -1105,8 +1321,8 @@ class _VocabListScreenState extends State<VocabListScreen> {
                       duration: const Duration(seconds: 1),
                       content: Text(
                         isPinned
-                            ? 'Favorites থেকে সরানো হয়েছে'
-                            : '⭐ Favorites-এ পিন করা হয়েছে',
+                            ? 'Removed from Favorites'
+                            : 'Pinned to Favorites',
                       ),
                     ),
                   );
@@ -1140,7 +1356,7 @@ class _VocabListScreenState extends State<VocabListScreen> {
                 child: TextField(
                   onChanged: (v) => setState(() => _localQuery = v),
                   decoration: InputDecoration(
-                    hintText: 'এই তালিকায় খুঁজুন (বাংলা / Pinyin / 汉字)...',
+                    hintText: 'Filter in this list (English / Pinyin / Hanzi)...',
                     prefixIcon: const Icon(Icons.search_rounded),
                     isDense: true,
                     border: OutlineInputBorder(
@@ -1170,7 +1386,7 @@ class _VocabListScreenState extends State<VocabListScreen> {
                 ),
               Expanded(
                 child: words.isEmpty
-                    ? const Center(child: Text('এই বিভাগে কোনো শব্দ পাওয়া যায়নি।'))
+                    ? const Center(child: Text('No words found in this category.'))
                     : ListView.builder(
                         padding: const EdgeInsets.all(14),
                         itemCount: words.length,
@@ -1378,11 +1594,11 @@ class _FlashcardPracticeScreenState extends State<FlashcardPracticeScreen>
                     size: 72, color: Colors.amber),
                 const SizedBox(height: 14),
                 const Text(
-                  'অসাধারণ! সব শব্দ প্র্যাকটিস শেষ!',
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                  'Session Complete!',
+                  style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
                 ),
                 const SizedBox(height: 8),
-                Text('মোট $_masteredCount টি শব্দ সফলভাবে রিভিশন দিয়েছো।'),
+                Text('You reviewed all $_masteredCount words.'),
                 const SizedBox(height: 20),
                 ElevatedButton(
                   onPressed: () {
@@ -1391,7 +1607,7 @@ class _FlashcardPracticeScreenState extends State<FlashcardPracticeScreen>
                       _masteredCount = 0;
                     });
                   },
-                  child: const Text('আবার প্র্যাকটিস করো'),
+                  child: const Text('Practice Again'),
                 ),
               ],
             ),
@@ -1483,7 +1699,7 @@ class _FlashcardPracticeScreenState extends State<FlashcardPracticeScreen>
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   const Text(
-                    'আঙুল দিয়ে হানজি লিখে প্র্যাকটিস করো:',
+                    'Draw Hanzi character below:',
                     style: TextStyle(fontWeight: FontWeight.w600),
                   ),
                   Row(
@@ -1550,7 +1766,7 @@ class _FlashcardPracticeScreenState extends State<FlashcardPracticeScreen>
                     ),
                     onPressed: () => _nextCard(gotIt: false),
                     icon: const Icon(Icons.refresh_rounded),
-                    label: const Text('আবার পড়ব'),
+                    label: const Text('Study Again'),
                   ),
                 ),
                 const SizedBox(width: 12),
@@ -1562,7 +1778,7 @@ class _FlashcardPracticeScreenState extends State<FlashcardPracticeScreen>
                     ),
                     onPressed: () => _nextCard(gotIt: true),
                     icon: const Icon(Icons.check_circle_rounded),
-                    label: const Text('পারলাম'),
+                    label: const Text('Got It'),
                   ),
                 ),
               ],
@@ -1591,7 +1807,7 @@ class _FlashcardPracticeScreenState extends State<FlashcardPracticeScreen>
           ),
           const SizedBox(height: 18),
           const Text(
-            'হানজি লেখার পর উত্তর দেখতে কার্ডে ট্যাপ করো',
+            'Write the Hanzi, then tap card to check',
             style: TextStyle(fontSize: 12, color: Colors.grey),
           ),
         ],
@@ -1608,7 +1824,7 @@ class _FlashcardPracticeScreenState extends State<FlashcardPracticeScreen>
         ),
         const SizedBox(height: 18),
         const Text(
-          'উত্তর দেখতে কার্ডে ট্যাপ করো (Tap to Flip)',
+          'Tap card to reveal meaning',
           style: TextStyle(fontSize: 12, color: Colors.grey),
         ),
       ],
@@ -1693,7 +1909,7 @@ class _HanziPadPainter extends CustomPainter {
 }
 
 // ============================================================================
-// 8. FAVORITES SCREEN (PINNED CATEGORIES + SAVED WORDS)
+// 8. FAVORITES SCREEN (PINNED FOLDERS + SAVED WORDS)
 // ============================================================================
 
 class FavoritesScreen extends StatelessWidget {
@@ -1718,7 +1934,7 @@ class FavoritesScreen extends StatelessWidget {
           length: 2,
           child: Scaffold(
             appBar: AppBar(
-              title: const Text('⭐ My Favorites'),
+              title: const Text('My Favorites'),
               bottom: const TabBar(
                 labelColor: Colors.white,
                 unselectedLabelColor: Colors.white70,
@@ -1734,7 +1950,7 @@ class FavoritesScreen extends StatelessWidget {
                 favGroups.isEmpty
                     ? const Center(
                         child: Text(
-                            'যেকোনো ডিপার্টমেন্ট বা লেভেল খুলে ⭐ আইকনে চাপলে এখানে সেভ হবে।'),
+                            'Tap the star icon in any category to pin it here.'),
                       )
                     : ListView.builder(
                         padding: const EdgeInsets.all(14),
@@ -1763,8 +1979,8 @@ class FavoritesScreen extends StatelessWidget {
                       ),
                 favWords.isEmpty
                     ? const Center(
-                        child: Text(
-                            'যেকোনো শব্দের পাশে ⭐ আইকনে চাপলে এখানে জমে থাকবে।'),
+                        child:
+                            Text('Tap the star icon on any word to save it here.'),
                       )
                     : Column(
                         children: [
@@ -1816,7 +2032,7 @@ class FavoritesScreen extends StatelessWidget {
 }
 
 // ============================================================================
-// 9. COURSE DETAIL SCREEN (OFFLINE PDF & AUDIO ZIP DOWNLOAD + LESSON LIST)
+// 9. COURSE DETAIL SCREEN (OFFLINE PDF & AUDIO ZIP + LESSON LIST)
 // ============================================================================
 
 class CourseDetailScreen extends StatefulWidget {
@@ -1856,7 +2072,7 @@ class _CourseDetailScreenState extends State<CourseDetailScreen> {
 
   Future<void> _checkLocalFiles() async {
     final dir = await _courseDir();
-    final pdfFile = File('${dir.path}/${widget.course.pdfFileName}');
+    final pdfFile = File('${dir.path}/${widget.course.primaryPdfName}');
     final audioDir = Directory('${dir.path}/audio');
 
     final grouped = <String, List<File>>{};
@@ -1866,7 +2082,8 @@ class _CourseDetailScreenState extends State<CourseDetailScreen> {
           .whereType<File>()
           .where((f) =>
               f.path.toLowerCase().endsWith('.mp3') ||
-              f.path.toLowerCase().endsWith('.m4a'))
+              f.path.toLowerCase().endsWith('.m4a') ||
+              f.path.toLowerCase().endsWith('.wav'))
           .toList()
         ..sort((a, b) => a.path.compareTo(b.path));
 
@@ -1887,29 +2104,43 @@ class _CourseDetailScreenState extends State<CourseDetailScreen> {
     });
   }
 
-  Future<void> _downloadFile(String fileName, {required bool isZip}) async {
+  Future<void> _downloadFromCandidates(
+    List<String> fileNames, {
+    required bool isZip,
+  }) async {
     setState(() {
       _downloading = true;
       _progress = 0;
-      _statusMsg = 'ডাউনলোড হচ্ছে: $fileName...';
+      _statusMsg = 'Connecting to server...';
     });
 
     final client = http.Client();
     try {
       final dir = await _courseDir();
-      final url = Uri.parse('$kGithubReleaseBaseUrl$fileName');
-      final req = http.Request('GET', url);
-      final resp = await client.send(req);
+      http.StreamedResponse? validResp;
+      String matchedName = fileNames.first;
 
-      if (resp.statusCode != 200) {
-        throw Exception('HTTP ${resp.statusCode}');
+      for (final candidate in fileNames) {
+        final url = Uri.parse('$kGithubReleaseBaseUrl$candidate');
+        final req = http.Request('GET', url);
+        final resp = await client.send(req);
+        if (resp.statusCode == 200) {
+          validResp = resp;
+          matchedName = candidate;
+          break;
+        }
       }
 
-      final total = resp.contentLength ?? 0;
+      if (validResp == null) {
+        throw Exception('File not found on GitHub Release (${fileNames.join(" / ")})');
+      }
+
+      setState(() => _statusMsg = 'Downloading $matchedName...');
+      final total = validResp.contentLength ?? 0;
       final bytes = <int>[];
       int received = 0;
 
-      await for (final chunk in resp.stream) {
+      await for (final chunk in validResp.stream) {
         bytes.addAll(chunk);
         received += chunk.length;
         if (total > 0 && mounted) {
@@ -1918,33 +2149,33 @@ class _CourseDetailScreenState extends State<CourseDetailScreen> {
       }
 
       if (isZip) {
-        setState(() => _statusMsg = 'অডিও ফাইল আনজিপ হচ্ছে...');
+        setState(() => _statusMsg = 'Extracting audio lessons...');
         final archive = ZipDecoder().decodeBytes(bytes);
         final audioDir = Directory('${dir.path}/audio');
         if (!await audioDir.exists()) await audioDir.create(recursive: true);
         for (final item in archive) {
           if (item.isFile) {
             final cleanName = item.name.split('/').last;
-            if (cleanName.isEmpty) continue;
+            if (cleanName.isEmpty || cleanName.startsWith('.')) continue;
             final outFile = File('${audioDir.path}/$cleanName');
             await outFile.writeAsBytes(item.content as List<int>);
           }
         }
       } else {
-        final outFile = File('${dir.path}/$fileName');
+        final outFile = File('${dir.path}/${widget.course.primaryPdfName}');
         await outFile.writeAsBytes(bytes);
       }
 
       await _checkLocalFiles();
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('ডাউনলোড সম্পন্ন হয়েছে!')),
+          const SnackBar(content: Text('Download completed!')),
         );
       }
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('ডাউনলোড ব্যর্থ: $e')),
+          SnackBar(content: Text('Download failed: $e')),
         );
       }
     } finally {
@@ -1979,8 +2210,8 @@ class _CourseDetailScreenState extends State<CourseDetailScreen> {
                   color: kImperialRed, size: 32),
               title: Text('${widget.course.title} Textbook (PDF)'),
               subtitle: Text(_pdfReady
-                  ? 'অফলাইনে প্রস্তুত • সুপার-ফাস্ট PDF রিডার'
-                  : 'অফলাইনে পড়ার জন্য ডাউনলোড করো'),
+                  ? 'Ready offline • Tap to open reader'
+                  : 'Download textbook for offline reading'),
               trailing: FilledButton(
                 style: FilledButton.styleFrom(backgroundColor: kImperialRed),
                 onPressed: _downloading
@@ -1996,14 +2227,18 @@ class _CourseDetailScreenState extends State<CourseDetailScreen> {
                                 courseId: widget.course.id,
                                 title: widget.course.title,
                                 filePath:
-                                    '${dir.path}/${widget.course.pdfFileName}',
+                                    '${dir.path}/${widget.course.primaryPdfName}',
+                                lessonNames: lessonNames,
+                                lessonTracks: _lessonTracks,
                                 appState: widget.appState,
                               ),
                             ),
                           );
                         } else {
-                          _downloadFile(widget.course.pdfFileName,
-                              isZip: false);
+                          _downloadFromCandidates(
+                            widget.course.pdfCandidates,
+                            isZip: false,
+                          );
                         }
                       },
                 child: Text(_pdfReady ? 'Open PDF' : 'Download'),
@@ -2017,8 +2252,8 @@ class _CourseDetailScreenState extends State<CourseDetailScreen> {
                   color: kImperialRed, size: 32),
               title: Text('${widget.course.title} Audio Lessons'),
               subtitle: Text(_audioReady
-                  ? '${lessonNames.length}টি লেসন অফলাইনে প্রস্তুত'
-                  : 'নেটিভ অডিও প্যাক (ZIP) ডাউনলোড করো'),
+                  ? '${lessonNames.length} Lessons ready offline'
+                  : 'Download native audio pack (ZIP)'),
               trailing: _audioReady
                   ? const Icon(Icons.check_circle_rounded, color: Colors.green)
                   : FilledButton(
@@ -2026,8 +2261,10 @@ class _CourseDetailScreenState extends State<CourseDetailScreen> {
                           FilledButton.styleFrom(backgroundColor: kImperialRed),
                       onPressed: _downloading
                           ? null
-                          : () => _downloadFile(widget.course.audioZipName,
-                              isZip: true),
+                          : () => _downloadFromCandidates(
+                                widget.course.audioZipCandidates,
+                                isZip: true,
+                              ),
                       child: const Text('Download'),
                     ),
             ),
@@ -2078,13 +2315,15 @@ class _CourseDetailScreenState extends State<CourseDetailScreen> {
 }
 
 // ============================================================================
-// 10. FAST PDF READER (PDFX + PAGE MEMORY + JUMP TO PAGE)
+// 10. PDF READER WITH HEADPHONE TOGGLE, MINI AUDIO BAR & RIGHT PAGE PILL
 // ============================================================================
 
 class FastPdfReaderScreen extends StatefulWidget {
   final String courseId;
   final String title;
   final String filePath;
+  final List<String> lessonNames;
+  final Map<String, List<File>> lessonTracks;
   final AppState appState;
 
   const FastPdfReaderScreen({
@@ -2093,6 +2332,8 @@ class FastPdfReaderScreen extends StatefulWidget {
     required this.title,
     required this.filePath,
     required this.appState,
+    this.lessonNames = const [],
+    this.lessonTracks = const {},
   });
 
   @override
@@ -2101,14 +2342,34 @@ class FastPdfReaderScreen extends StatefulWidget {
 
 class _FastPdfReaderScreenState extends State<FastPdfReaderScreen> {
   PdfControllerPinch? _pdfController;
+  final AudioPlayer _miniPlayer = AudioPlayer();
+
   int _currentPage = 1;
   int _totalPages = 0;
   bool _ready = false;
+
+  bool _showAudioBar = true;
+  int _lessonIdx = 0;
+  int _trackIdx = 0;
+  bool _isPlaying = false;
+  Duration _pos = Duration.zero;
+  Duration _dur = Duration.zero;
+
+  StreamSubscription<Duration>? _posSub;
+  StreamSubscription<Duration?>? _durSub;
+  StreamSubscription<bool>? _playSub;
+  StreamSubscription<PlayerState>? _stateSub;
+
+  bool get _hasAudio => widget.lessonNames.isNotEmpty;
+
+  List<File> get _tracks =>
+      _hasAudio ? (widget.lessonTracks[widget.lessonNames[_lessonIdx]] ?? []) : [];
 
   @override
   void initState() {
     super.initState();
     _initPdf();
+    _initMiniAudio();
   }
 
   Future<void> _initPdf() async {
@@ -2129,6 +2390,50 @@ class _FastPdfReaderScreenState extends State<FastPdfReaderScreen> {
     });
   }
 
+  void _initMiniAudio() {
+    if (!_hasAudio) return;
+    _posSub = _miniPlayer.positionStream.listen((p) {
+      if (mounted) setState(() => _pos = p);
+    });
+    _durSub = _miniPlayer.durationStream.listen((d) {
+      if (mounted && d != null) setState(() => _dur = d);
+    });
+    _playSub = _miniPlayer.playingStream.listen((pl) {
+      if (mounted) setState(() => _isPlaying = pl);
+    });
+    _stateSub = _miniPlayer.playerStateStream.listen((state) {
+      if (state.processingState == ProcessingState.completed) {
+        _nextMiniTrack();
+      }
+    });
+    _loadMiniTrack(0, autoPlay: false);
+  }
+
+  Future<void> _loadMiniTrack(int idx, {bool autoPlay = true}) async {
+    if (_tracks.isEmpty) return;
+    _trackIdx = idx.clamp(0, _tracks.length - 1);
+    try {
+      await _miniPlayer.setFilePath(_tracks[_trackIdx].path);
+      await _miniPlayer.setSpeed(widget.appState.defaultSpeed);
+      if (autoPlay) await _miniPlayer.play();
+      if (mounted) setState(() {});
+    } catch (_) {}
+  }
+
+  void _nextMiniTrack() {
+    if (_trackIdx + 1 < _tracks.length) {
+      _loadMiniTrack(_trackIdx + 1);
+    } else if (widget.appState.allLessonsContinuous &&
+        widget.lessonNames.length > 1) {
+      setState(() {
+        _lessonIdx = (_lessonIdx + 1) % widget.lessonNames.length;
+      });
+      _loadMiniTrack(0);
+    } else {
+      _loadMiniTrack(0, autoPlay: false);
+    }
+  }
+
   Future<void> _savePage(int page) async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setInt('pdf_page_${widget.courseId}', page);
@@ -2141,12 +2446,12 @@ class _FastPdfReaderScreenState extends State<FastPdfReaderScreen> {
     showDialog(
       context: context,
       builder: (ctx) => AlertDialog(
-        title: const Text('পেজে যান (Jump to Page)'),
+        title: const Text('Jump to Page'),
         content: TextField(
           controller: ctrl,
           keyboardType: TextInputType.number,
           decoration: InputDecoration(
-            hintText: '1 - $_totalPages',
+            hintText: 'Enter page (1 - $_totalPages)',
           ),
         ),
         actions: [
@@ -2155,6 +2460,7 @@ class _FastPdfReaderScreenState extends State<FastPdfReaderScreen> {
             child: const Text('Cancel'),
           ),
           FilledButton(
+            style: FilledButton.styleFrom(backgroundColor: kImperialRed),
             onPressed: () {
               final p = int.tryParse(ctrl.text.trim());
               if (p != null && p >= 1 && p <= _totalPages) {
@@ -2171,6 +2477,11 @@ class _FastPdfReaderScreenState extends State<FastPdfReaderScreen> {
 
   @override
   void dispose() {
+    _posSub?.cancel();
+    _durSub?.cancel();
+    _playSub?.cancel();
+    _stateSub?.cancel();
+    _miniPlayer.dispose();
     _pdfController?.dispose();
     super.dispose();
   }
@@ -2180,36 +2491,190 @@ class _FastPdfReaderScreenState extends State<FastPdfReaderScreen> {
     final isDark = widget.appState.isDarkMode;
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-            '${widget.title} ($_currentPage/${_totalPages == 0 ? "..." : _totalPages})'),
+        title: Text('${widget.title} (Page $_currentPage)'),
         actions: [
-          IconButton(
-            tooltip: 'Jump to Page',
-            icon: const Icon(Icons.find_in_page_rounded),
-            onPressed: _totalPages > 0 ? _showJumpDialog : null,
-          ),
+          if (_hasAudio)
+            IconButton(
+              tooltip: _showAudioBar ? 'Hide Audio Bar' : 'Show Audio Bar',
+              icon: Icon(
+                _showAudioBar
+                    ? Icons.headset_rounded
+                    : Icons.headset_off_rounded,
+              ),
+              onPressed: () {
+                setState(() => _showAudioBar = !_showAudioBar);
+                if (!_showAudioBar && _isPlaying) {
+                  _miniPlayer.pause();
+                }
+              },
+            ),
         ],
       ),
       body: !_ready || _pdfController == null
           ? const Center(child: CircularProgressIndicator())
-          : Container(
-              color: isDark ? kNightDark : const Color(0xFFEAE6DF),
-              child: PdfViewPinch(
-                controller: _pdfController!,
-                onPageChanged: (page) {
-                  if (page != _currentPage) {
-                    setState(() => _currentPage = page);
-                    _savePage(page);
-                  }
-                },
-              ),
+          : Column(
+              children: [
+                Expanded(
+                  child: Stack(
+                    children: [
+                      Container(
+                        color: isDark ? kNightDark : const Color(0xFFEAE6DF),
+                        child: PdfViewPinch(
+                          controller: _pdfController!,
+                          onPageChanged: (page) {
+                            if (page != _currentPage) {
+                              setState(() => _currentPage = page);
+                              _savePage(page);
+                            }
+                          },
+                        ),
+                      ),
+                      // Right-side Page Indicator Pill (v1.0.0 style - tap to jump)
+                      Positioned(
+                        right: 12,
+                        top: 16,
+                        child: GestureDetector(
+                          onTap: _totalPages > 0 ? _showJumpDialog : null,
+                          child: Container(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 11, vertical: 7),
+                            decoration: BoxDecoration(
+                              color: isDark
+                                  ? Colors.black87
+                                  : Colors.white.withValues(alpha: 0.92),
+                              borderRadius: BorderRadius.circular(14),
+                              border: Border.all(
+                                color: Colors.black12,
+                              ),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.black.withValues(alpha: 0.12),
+                                  blurRadius: 6,
+                                ),
+                              ],
+                            ),
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                const Icon(Icons.unfold_more_rounded,
+                                    size: 14, color: kImperialRed),
+                                Text(
+                                  '$_currentPage',
+                                  style: const TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 13,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                // Bottom Mini Audio Player Bar inside PDF Reader (v1.0.0 style)
+                if (_hasAudio && _showAudioBar)
+                  Container(
+                    padding: const EdgeInsets.fromLTRB(12, 6, 12, 10),
+                    decoration: BoxDecoration(
+                      color: isDark ? kNightCard : const Color(0xFFFFF5F5),
+                      border: Border(
+                        top: BorderSide(
+                          color: kImperialRed.withValues(alpha: 0.2),
+                        ),
+                      ),
+                    ),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Row(
+                          children: [
+                            const Icon(Icons.headphones_rounded,
+                                size: 16, color: kImperialRed),
+                            const SizedBox(width: 6),
+                            DropdownButton<int>(
+                              value: _lessonIdx,
+                              isDense: true,
+                              underline: const SizedBox(),
+                              style: TextStyle(
+                                fontSize: 12.5,
+                                fontWeight: FontWeight.bold,
+                                color: isDark ? Colors.white : kImperialRed,
+                              ),
+                              items: List.generate(
+                                widget.lessonNames.length,
+                                (i) => DropdownMenuItem(
+                                  value: i,
+                                  child: Text(widget.lessonNames[i]),
+                                ),
+                              ),
+                              onChanged: (v) {
+                                if (v != null) {
+                                  setState(() => _lessonIdx = v);
+                                  _loadMiniTrack(0);
+                                }
+                              },
+                            ),
+                            const Spacer(),
+                            Text(
+                              'Track ${_trackIdx + 1}/${_tracks.length}',
+                              style: const TextStyle(fontSize: 12),
+                            ),
+                          ],
+                        ),
+                        Row(
+                          children: [
+                            IconButton(
+                              visualDensity: VisualDensity.compact,
+                              icon: const Icon(Icons.skip_previous_rounded),
+                              onPressed: _trackIdx > 0
+                                  ? () => _loadMiniTrack(_trackIdx - 1)
+                                  : null,
+                            ),
+                            IconButton(
+                              visualDensity: VisualDensity.compact,
+                              icon: Icon(
+                                _isPlaying
+                                    ? Icons.pause_circle_filled_rounded
+                                    : Icons.play_circle_fill_rounded,
+                                color: kImperialRed,
+                                size: 32,
+                              ),
+                              onPressed: () => _isPlaying
+                                  ? _miniPlayer.pause()
+                                  : _miniPlayer.play(),
+                            ),
+                            IconButton(
+                              visualDensity: VisualDensity.compact,
+                              icon: const Icon(Icons.skip_next_rounded),
+                              onPressed: _trackIdx + 1 < _tracks.length
+                                  ? () => _loadMiniTrack(_trackIdx + 1)
+                                  : null,
+                            ),
+                            Expanded(
+                              child: Slider(
+                                activeColor: kImperialRed,
+                                value: _pos.inMilliseconds.toDouble().clamp(
+                                    0, _dur.inMilliseconds.toDouble() + 1),
+                                max: _dur.inMilliseconds.toDouble() + 1,
+                                onChanged: (v) => _miniPlayer
+                                    .seek(Duration(milliseconds: v.toInt())),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+              ],
             ),
     );
   }
 }
 
 // ============================================================================
-// 11. AUDIO PLAYER (LESSON LOOP vs ALL LESSONS CONTINUOUS + SHADOWING GAP)
+// 11. FULL AUDIO PLAYER SCREEN (LESSON LOOP vs ALL LESSONS CONTINUOUS)
 // ============================================================================
 
 class LessonAudioPlayerScreen extends StatefulWidget {
@@ -2239,7 +2704,7 @@ class _LessonAudioPlayerScreenState extends State<LessonAudioPlayerScreen> {
   final AudioPlayer _player = AudioPlayer();
   late int _lessonIndex;
   int _trackIndex = 0;
-  double _speed = 1.0;
+  late double _speed;
   bool _singleTrackLoop = false;
   bool _waitingGap = false;
 
@@ -2261,6 +2726,7 @@ class _LessonAudioPlayerScreenState extends State<LessonAudioPlayerScreen> {
   void initState() {
     super.initState();
     _lessonIndex = widget.initialLessonIndex;
+    _speed = widget.appState.defaultSpeed;
 
     _posSub = _player.positionStream.listen((p) {
       if (mounted) setState(() => _position = p);
@@ -2290,7 +2756,7 @@ class _LessonAudioPlayerScreenState extends State<LessonAudioPlayerScreen> {
       await _player.play();
       widget.appState.updateLastStudied(
         widget.courseId,
-        '${widget.courseTitle} • $_currentLessonName (Track ${_trackIndex + 1})',
+        '${widget.courseTitle} • $_currentLessonName',
       );
       if (mounted) setState(() {});
     } catch (_) {}
@@ -2391,8 +2857,8 @@ class _LessonAudioPlayerScreenState extends State<LessonAudioPlayerScreen> {
                       Flexible(
                         child: Text(
                           isAllMode
-                              ? 'All Lessons Continuous (Auto-next Lesson • Tap to switch)'
-                              : 'Lesson Loop Mode (Current Lesson • Tap to switch)',
+                              ? 'All Lessons Continuous (1 → End • Tap to switch)'
+                              : 'Lesson-by-Lesson Loop (Current Lesson • Tap to switch)',
                           style: const TextStyle(
                             fontSize: 12.5,
                             fontWeight: FontWeight.w600,
@@ -2567,17 +3033,142 @@ class _LessonAudioPlayerScreenState extends State<LessonAudioPlayerScreen> {
 }
 
 // ============================================================================
-// 12. MY GRAMMAR & NOTES SCREEN
+// 12A. PERSONAL PDF GRAMMAR & NOTES (IMPORT FROM PHONE / SD CARD - v1.0.0)
 // ============================================================================
 
-class GrammarNotesScreen extends StatefulWidget {
-  const GrammarNotesScreen({super.key});
+class PersonalPdfNotesScreen extends StatefulWidget {
+  final AppState appState;
+  const PersonalPdfNotesScreen({super.key, required this.appState});
 
   @override
-  State<GrammarNotesScreen> createState() => _GrammarNotesScreenState();
+  State<PersonalPdfNotesScreen> createState() => _PersonalPdfNotesScreenState();
 }
 
-class _GrammarNotesScreenState extends State<GrammarNotesScreen> {
+class _PersonalPdfNotesScreenState extends State<PersonalPdfNotesScreen> {
+  final List<ImportedPdfItem> _pdfs = [];
+
+  @override
+  void initState() {
+    super.initState();
+    _loadPdfs();
+  }
+
+  Future<void> _loadPdfs() async {
+    final prefs = await SharedPreferences.getInstance();
+    final raw = prefs.getString('imported_pdf_notes');
+    if (raw != null) {
+      final list = jsonDecode(raw) as List<dynamic>;
+      setState(() {
+        _pdfs
+          ..clear()
+          ..addAll(list.map(
+              (e) => ImportedPdfItem.fromJson(e as Map<String, dynamic>)));
+      });
+    }
+  }
+
+  Future<void> _savePdfs() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString(
+      'imported_pdf_notes',
+      jsonEncode(_pdfs.map((e) => e.toJson()).toList()),
+    );
+  }
+
+  Future<void> _pickPdf() async {
+    final result = await FilePicker.platform.pickFiles(
+      type: FileType.custom,
+      allowedExtensions: ['pdf'],
+    );
+    if (result != null && result.files.single.path != null) {
+      final src = File(result.files.single.path!);
+      final name = result.files.single.name;
+      final base = await getApplicationDocumentsDirectory();
+      final folder = Directory('${base.path}/personal_pdfs');
+      if (!await folder.exists()) await folder.create(recursive: true);
+      final dest = File('${folder.path}/${DateTime.now().millisecondsSinceEpoch}_$name');
+      await src.copy(dest.path);
+      setState(() {
+        _pdfs.insert(0, ImportedPdfItem(name: name, path: dest.path));
+      });
+      await _savePdfs();
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: const Text('My Grammar & Notes')),
+      floatingActionButton: FloatingActionButton.extended(
+        backgroundColor: kImperialRed,
+        foregroundColor: Colors.white,
+        onPressed: _pickPdf,
+        icon: const Icon(Icons.upload_file_rounded),
+        label: const Text('Import PDF'),
+      ),
+      body: _pdfs.isEmpty
+          ? const Center(
+              child: Padding(
+                padding: EdgeInsets.all(24),
+                child: Text(
+                  'Tap "Import PDF" below to add your own grammar books or study notes from your phone/SD card.',
+                  textAlign: TextAlign.center,
+                ),
+              ),
+            )
+          : ListView.builder(
+              padding: const EdgeInsets.all(14),
+              itemCount: _pdfs.length,
+              itemBuilder: (_, i) {
+                final item = _pdfs[i];
+                return Card(
+                  child: ListTile(
+                    leading: const Icon(Icons.picture_as_pdf_rounded,
+                        color: kImperialRed),
+                    title: Text(item.name),
+                    subtitle: const Text('Tap to open in PDF reader'),
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) => FastPdfReaderScreen(
+                            courseId: 'personal_${item.name.hashCode}',
+                            title: item.name,
+                            filePath: item.path,
+                            appState: widget.appState,
+                          ),
+                        ),
+                      );
+                    },
+                    trailing: IconButton(
+                      icon: const Icon(Icons.delete_outline_rounded),
+                      onPressed: () async {
+                        final f = File(item.path);
+                        if (await f.exists()) await f.delete();
+                        setState(() => _pdfs.removeAt(i));
+                        await _savePdfs();
+                      },
+                    ),
+                  ),
+                );
+              },
+            ),
+    );
+  }
+}
+
+// ============================================================================
+// 12B. QUICK TEXT STUDY NOTES SCREEN
+// ============================================================================
+
+class QuickNotesScreen extends StatefulWidget {
+  const QuickNotesScreen({super.key});
+
+  @override
+  State<QuickNotesScreen> createState() => _QuickNotesScreenState();
+}
+
+class _QuickNotesScreenState extends State<QuickNotesScreen> {
   final List<UserNote> _notes = [];
 
   @override
@@ -2615,19 +3206,19 @@ class _GrammarNotesScreenState extends State<GrammarNotesScreen> {
     showDialog(
       context: context,
       builder: (ctx) => AlertDialog(
-        title: Text(index == null ? 'নতুন নোট' : 'নোট এডিট করো'),
+        title: Text(index == null ? 'New Study Note' : 'Edit Note'),
         content: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
             TextField(
               controller: titleCtrl,
-              decoration: const InputDecoration(labelText: 'শিরোনাম'),
+              decoration: const InputDecoration(labelText: 'Title'),
             ),
             const SizedBox(height: 8),
             TextField(
               controller: bodyCtrl,
               maxLines: 5,
-              decoration: const InputDecoration(labelText: 'বিস্তারিত নোট'),
+              decoration: const InputDecoration(labelText: 'Details'),
             ),
           ],
         ),
@@ -2635,6 +3226,7 @@ class _GrammarNotesScreenState extends State<GrammarNotesScreen> {
           TextButton(
               onPressed: () => Navigator.pop(ctx), child: const Text('Cancel')),
           FilledButton(
+            style: FilledButton.styleFrom(backgroundColor: kImperialRed),
             onPressed: () {
               final item = UserNote(
                 title: titleCtrl.text.trim().isEmpty
@@ -2662,7 +3254,7 @@ class _GrammarNotesScreenState extends State<GrammarNotesScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('My Grammar & Notes')),
+      appBar: AppBar(title: const Text('Quick Study Notes')),
       floatingActionButton: FloatingActionButton(
         backgroundColor: kImperialRed,
         foregroundColor: Colors.white,
@@ -2671,7 +3263,7 @@ class _GrammarNotesScreenState extends State<GrammarNotesScreen> {
       ),
       body: _notes.isEmpty
           ? const Center(
-              child: Text('নিচের + বাটনে চেপে তোমার গ্রামার ও পড়াশোনার নোট রাখো।'),
+              child: Text('Tap + to write quick Mandarin grammar notes.'),
             )
           : ListView.builder(
               padding: const EdgeInsets.all(14),
@@ -2750,7 +3342,7 @@ class _StorageManagerScreenState extends State<StorageManagerScreen> {
     return Scaffold(
       appBar: AppBar(title: const Text('Manage Offline Storage')),
       body: _folders.isEmpty
-          ? const Center(child: Text('এখনও কোনো অফলাইন ফাইল ডাউনলোড করা হয়নি।'))
+          ? const Center(child: Text('No offline files downloaded yet.'))
           : ListView.builder(
               padding: const EdgeInsets.all(14),
               itemCount: _folders.length,
@@ -2766,7 +3358,7 @@ class _StorageManagerScreenState extends State<StorageManagerScreen> {
                     leading: const Icon(Icons.folder_rounded,
                         color: kImperialRed),
                     title: Text(name),
-                    subtitle: Text('$mb MB ব্যবহৃত'),
+                    subtitle: Text('$mb MB used'),
                     trailing: IconButton(
                       icon: const Icon(Icons.delete_forever_rounded,
                           color: Colors.red),
@@ -2784,94 +3376,334 @@ class _StorageManagerScreenState extends State<StorageManagerScreen> {
 }
 
 // ============================================================================
-// 14. SETTINGS & ABOUT SCREEN
+// 14. SETTINGS & ABOUT SCREEN (v1.0.0 FULL DESIGN + GROUP PHOTO SLIDER)
 // ============================================================================
 
-class SettingsScreen extends StatelessWidget {
+class SettingsScreen extends StatefulWidget {
   final AppState appState;
   const SettingsScreen({super.key, required this.appState});
 
   @override
+  State<SettingsScreen> createState() => _SettingsScreenState();
+}
+
+class _SettingsScreenState extends State<SettingsScreen> {
+  final PageController _photoController = PageController();
+  int _photoIndex = 0;
+
+  static const List<String> _groupPhotos = [
+    'assets/group1.jpg',
+    'assets/group2.jpg',
+    'assets/group3.jpg',
+  ];
+
+  @override
+  void dispose() {
+    _photoController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    final isDark = widget.appState.isDarkMode;
+
     return AnimatedBuilder(
-      animation: appState,
+      animation: widget.appState,
       builder: (context, _) {
         return Scaffold(
           appBar: AppBar(title: const Text('Settings & About')),
           body: ListView(
             padding: const EdgeInsets.all(16),
             children: [
-              const Text(
-                'Display Theme',
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
+              Text(
+                'Appearance',
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 14,
+                  color: isDark ? const Color(0xFFEF5350) : kImperialRed,
+                ),
               ),
               SwitchListTile(
+                contentPadding: EdgeInsets.zero,
                 title: const Text('Night Study Dark Mode'),
-                subtitle: const Text('রাতে পড়ার জন্য চোখের আরামদায়ক ডার্ক থিম'),
-                value: appState.isDarkMode,
-                onChanged: appState.toggleDarkMode,
+                subtitle: const Text(
+                    'Switch between Porcelain White and Dark Theme'),
+                value: widget.appState.isDarkMode,
+                onChanged: widget.appState.toggleDarkMode,
               ),
               const Divider(),
-              const Text(
+              const SizedBox(height: 4),
+              Text(
                 'Audio Study Preferences',
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
-              ),
-              SwitchListTile(
-                title: const Text('All Lessons Continuous Mode (1 → 15)'),
-                subtitle: Text(
-                  appState.allLessonsContinuous
-                      ? 'চালু: এক লেসন শেষে স্বয়ংক্রিয়ভাবে পরের লেসন বাজবে'
-                      : 'বন্ধ: শুধু বর্তমান লেসনের অডিও লুপ হয়ে বাজবে',
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 14,
+                  color: isDark ? const Color(0xFFEF5350) : kImperialRed,
                 ),
-                value: appState.allLessonsContinuous,
-                onChanged: appState.setAllLessonsContinuous,
+              ),
+              const SizedBox(height: 8),
+              ListTile(
+                contentPadding: EdgeInsets.zero,
+                title: const Text('Audio Playback Mode'),
+                subtitle: Text(
+                  widget.appState.allLessonsContinuous
+                      ? 'All Lessons Continuous (1 → End)'
+                      : 'Lesson-by-Lesson Loop (Current Lesson)',
+                ),
+                trailing: DropdownButton<bool>(
+                  value: widget.appState.allLessonsContinuous,
+                  items: const [
+                    DropdownMenuItem(
+                        value: false, child: Text('Lesson Loop')),
+                    DropdownMenuItem(
+                        value: true, child: Text('All Lessons')),
+                  ],
+                  onChanged: (v) {
+                    if (v != null) widget.appState.setAllLessonsContinuous(v);
+                  },
+                ),
               ),
               ListTile(
-                title: const Text('Shadowing Pause Gap'),
-                subtitle: const Text('প্রতি ট্র্যাকের পর মুখে বলার জন্য বিরতি'),
-                trailing: DropdownButton<int>(
-                  value: appState.shadowingGapSeconds,
+                contentPadding: EdgeInsets.zero,
+                title: const Text('Default Playback Speed'),
+                trailing: DropdownButton<double>(
+                  value: widget.appState.defaultSpeed,
                   items: const [
-                    DropdownMenuItem(value: 0, child: Text('Off (0s)')),
+                    DropdownMenuItem(value: 0.75, child: Text('0.75x')),
+                    DropdownMenuItem(
+                        value: 1.0, child: Text('1.0x (Normal)')),
+                    DropdownMenuItem(value: 1.25, child: Text('1.25x')),
+                  ],
+                  onChanged: (v) {
+                    if (v != null) widget.appState.setDefaultSpeed(v);
+                  },
+                ),
+              ),
+              ListTile(
+                contentPadding: EdgeInsets.zero,
+                title: const Text('Pause Gap Between Tracks (Shadowing)'),
+                subtitle: const Text(
+                    'Extra pause in audio mode to repeat aloud'),
+                trailing: DropdownButton<int>(
+                  value: widget.appState.shadowingGapSeconds,
+                  items: const [
+                    DropdownMenuItem(value: 0, child: Text('0 sec')),
                     DropdownMenuItem(value: 2, child: Text('2 sec')),
                     DropdownMenuItem(value: 4, child: Text('4 sec')),
                   ],
                   onChanged: (v) {
-                    if (v != null) appState.setShadowingGap(v);
+                    if (v != null) widget.appState.setShadowingGap(v);
                   },
                 ),
               ),
               const Divider(),
-              const SizedBox(height: 8),
-              const Text(
-                'About HSK Study App (v1.1.0)',
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
-              ),
-              const SizedBox(height: 8),
-              const Card(
-                child: Padding(
-                  padding: EdgeInsets.all(14),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text('Created by: AHM',
-                          style: TextStyle(fontWeight: FontWeight.bold)),
-                      SizedBox(height: 4),
-                      Text('Mentors: Mr. Jaman & Mr. Mahabub'),
-                      SizedBox(height: 4),
-                      Text('Community: Chinese Hatekhari'),
-                    ],
-                  ),
+              const SizedBox(height: 4),
+              Text(
+                'Offline Storage',
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 14,
+                  color: isDark ? const Color(0xFFEF5350) : kImperialRed,
                 ),
               ),
-              const SizedBox(height: 8),
-              OutlinedButton.icon(
-                onPressed: () async {
-                  final uri = Uri.parse('https://www.facebook.com/ahm.79316');
-                  await launchUrl(uri, mode: LaunchMode.externalApplication);
+              ListTile(
+                contentPadding: EdgeInsets.zero,
+                leading: const Icon(Icons.sd_storage_rounded,
+                    color: kImperialRed),
+                title: const Text('Manage Offline Storage'),
+                subtitle: const Text(
+                    'Select and delete individual HSK levels, audio packs, or PDFs'),
+                trailing: const Icon(Icons.chevron_right_rounded),
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (_) => const StorageManagerScreen()),
+                  );
                 },
-                icon: const Icon(Icons.facebook_rounded),
-                label: const Text('Connect with AHM on Facebook'),
+              ),
+              const SizedBox(height: 12),
+              // About HSK Card (v1.0.0 exact design)
+              Container(
+                padding: const EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  color: isDark ? kNightCard : const Color(0xFFFFF7F7),
+                  borderRadius: BorderRadius.circular(18),
+                  border: Border.all(
+                    color: isDark ? Colors.white12 : const Color(0xFFEEDDDD),
+                  ),
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'About HSK',
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                        color: isDark ? const Color(0xFFEF5350) : kImperialRed,
+                      ),
+                    ),
+                    const SizedBox(height: 10),
+                    Text(
+                      'The first step to mastering Mandarin Chinese is tuning your ear to authentic native pronunciation, tones, and natural speech rhythm. HSK is designed as a clean, distraction-free companion for learners around the world—bringing structured HSK 1–6 textbook lessons, continuous chapter-by-chapter audio playback, and the ability to add your own personal grammar PDFs in one place.',
+                      style: TextStyle(
+                        fontSize: 13.5,
+                        height: 1.45,
+                        color: isDark ? Colors.white70 : Colors.black87,
+                      ),
+                    ),
+                    const SizedBox(height: 10),
+                    Text(
+                      'Study at your own pace, repeat difficult dialogues effortlessly, and build real listening confidence.',
+                      style: TextStyle(
+                        fontSize: 13.5,
+                        height: 1.45,
+                        color: isDark ? Colors.white70 : Colors.black87,
+                      ),
+                    ),
+                    const SizedBox(height: 12),
+                    const Text(
+                      'Curated & Initiated by: AHM',
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                    const SizedBox(height: 14),
+                    SizedBox(
+                      width: double.infinity,
+                      child: FilledButton.icon(
+                        style: FilledButton.styleFrom(
+                          backgroundColor: kImperialRed,
+                          padding: const EdgeInsets.symmetric(vertical: 12),
+                        ),
+                        onPressed: () async {
+                          final uri =
+                              Uri.parse('https://www.facebook.com/ahm.79316');
+                          await launchUrl(uri,
+                              mode: LaunchMode.externalApplication);
+                        },
+                        icon: const Icon(Icons.facebook_rounded),
+                        label: const Text('Follow AHM on Facebook'),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 16),
+              // Mentors & Learning Community Card with Group Photo Carousel (v1.0.0)
+              Container(
+                padding: const EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  color: isDark ? kNightCard : const Color(0xFFFFF7F7),
+                  borderRadius: BorderRadius.circular(18),
+                  border: Border.all(
+                    color: isDark ? Colors.white12 : const Color(0xFFEEDDDD),
+                  ),
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Mentors & Learning Community',
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                        color: isDark ? const Color(0xFFEF5350) : kImperialRed,
+                      ),
+                    ),
+                    const SizedBox(height: 12),
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(14),
+                      child: SizedBox(
+                        height: 185,
+                        width: double.infinity,
+                        child: PageView.builder(
+                          controller: _photoController,
+                          itemCount: _groupPhotos.length,
+                          onPageChanged: (i) => setState(() => _photoIndex = i),
+                          itemBuilder: (_, i) {
+                            return Image.asset(
+                              _groupPhotos[i],
+                              fit: BoxFit.cover,
+                              errorBuilder: (_, __, ___) => Container(
+                                color: Colors.black12,
+                                alignment: Alignment.center,
+                                child: const Text('Chinese Hatekhari Class'),
+                              ),
+                            );
+                          },
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 8),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: List.generate(
+                        _groupPhotos.length,
+                        (i) => Container(
+                          margin: const EdgeInsets.symmetric(horizontal: 3),
+                          width: _photoIndex == i ? 16 : 6,
+                          height: 6,
+                          decoration: BoxDecoration(
+                            color: _photoIndex == i
+                                ? kImperialRed
+                                : Colors.grey.shade400,
+                            borderRadius: BorderRadius.circular(4),
+                          ),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 12),
+                    Text(
+                      'Guided & Mentored by:',
+                      style: TextStyle(
+                        fontSize: 12,
+                        color: isDark ? Colors.white60 : Colors.black54,
+                      ),
+                    ),
+                    const SizedBox(height: 2),
+                    const Text(
+                      'Mr. Jaman & Mr. Mahabub',
+                      style:
+                          TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+                    ),
+                    Text(
+                      'Chinese Hatekhari',
+                      style: TextStyle(
+                        fontSize: 13.5,
+                        fontWeight: FontWeight.w600,
+                        color: isDark ? const Color(0xFFEF5350) : kImperialRed,
+                      ),
+                    ),
+                    const SizedBox(height: 10),
+                    Text(
+                      'Heartfelt gratitude to our respected teachers, Mr. Jaman and Mr. Mahabub, and the Chinese Hatekhari community, whose dedicated guidance, patience, and inspiration made our Mandarin learning journey possible.',
+                      style: TextStyle(
+                        fontSize: 13,
+                        height: 1.45,
+                        color: isDark ? Colors.white70 : Colors.black87,
+                      ),
+                    ),
+                    const SizedBox(height: 14),
+                    SizedBox(
+                      width: double.infinity,
+                      child: OutlinedButton.icon(
+                        style: OutlinedButton.styleFrom(
+                          foregroundColor: kImperialRed,
+                          side: const BorderSide(color: kImperialRed),
+                          padding: const EdgeInsets.symmetric(vertical: 12),
+                        ),
+                        onPressed: () async {
+                          final uri = Uri.parse(
+                              'https://www.facebook.com/chinesehatekhari');
+                          await launchUrl(uri,
+                              mode: LaunchMode.externalApplication);
+                        },
+                        icon: const Icon(Icons.facebook_rounded),
+                        label: const Text('Visit Chinese Hatekhari on Facebook'),
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ],
           ),
