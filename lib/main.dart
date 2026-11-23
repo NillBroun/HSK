@@ -103,6 +103,24 @@ class VocabGroup {
   }
 }
 
+class PinnedVocabSlice {
+  final String pinKey; // format: groupId::tag
+  final String groupId;
+  final String tag;
+  final String displayTitle;
+  final VocabGroup group;
+  final List<VocabWord> words;
+
+  const PinnedVocabSlice({
+    required this.pinKey,
+    required this.groupId,
+    required this.tag,
+    required this.displayTitle,
+    required this.group,
+    required this.words,
+  });
+}
+
 class HanziCourseChar {
   final String char;
   final String pinyin;
@@ -119,6 +137,21 @@ class HanziCourseChar {
     required this.ruleTip,
     required this.steps,
   });
+
+  factory HanziCourseChar.fromJson(Map<String, dynamic> json) {
+    return HanziCourseChar(
+      char: (json['char'] ?? '一').toString(),
+      pinyin: (json['pinyin'] ?? '').toString(),
+      bn: (json['bn'] ?? '').toString(),
+      strokes: (json['strokes'] is int)
+          ? json['strokes'] as int
+          : int.tryParse((json['strokes'] ?? '1').toString()) ?? 1,
+      ruleTip: (json['ruleTip'] ?? '').toString(),
+      steps: (json['steps'] as List<dynamic>? ?? [])
+          .map((e) => e.toString())
+          .toList(),
+    );
+  }
 }
 
 class HanziCourseChapter {
@@ -131,242 +164,18 @@ class HanziCourseChapter {
     required this.subtitle,
     required this.characters,
   });
-}
 
-const List<HanziCourseChapter> kHanziCourseChapters = [
-  HanziCourseChapter(
-    title: 'Chapter 1: ১–২ স্ট্রোক (মৌলিক রেখা)',
-    subtitle: 'একদম সহজ হানজি দিয়ে বাম থেকে ডানে ও ওপর থেকে নিচে শুরু',
-    characters: [
-      HanziCourseChar(
-        char: '一',
-        pinyin: 'yī',
-        bn: 'এক (১)',
-        strokes: 1,
-        ruleTip: 'বাম থেকে ডানে একটি সরল আড়াআড়ি দাগ টানুন।',
-        steps: ['১. বাম থেকে ডানে আড়াআড়ি দাগ'],
-      ),
-      HanziCourseChar(
-        char: '二',
-        pinyin: 'èr',
-        bn: 'দুই (২)',
-        strokes: 2,
-        ruleTip: 'ওপর থেকে নিচে: প্রথমে ওপরের ছোট দাগ, পরে নিচের বড় দাগ।',
-        steps: ['১. ওপরের আড়াআড়ি দাগ (বাম ➔ ডান)', '২. নিচের দীর্ঘ দাগ (বাম ➔ ডান)'],
-      ),
-      HanziCourseChar(
-        char: '十',
-        pinyin: 'shí',
-        bn: 'দশ (১০)',
-        strokes: 2,
-        ruleTip: 'আড়াআড়ি আগে, খাড়া পরে: প্রথমে আড়াআড়ি, তারপর ওপর থেকে নিচে খাড়া।',
-        steps: ['১. আড়াআড়ি দাগ (বাম ➔ ডান)', '২. খাড়া দাগ (ওপর ➔ নিচ)'],
-      ),
-      HanziCourseChar(
-        char: '人',
-        pinyin: 'rén',
-        bn: 'মানুষ',
-        strokes: 2,
-        ruleTip: 'বাম-নিচের বাঁকা দাগ আগে, ডান-নিচের দাগ পরে।',
-        steps: ['১. বামের বাঁকা দাগ (ওপর ➔ নিচ-বাম)', '২. ডানের দাগ (ওপর ➔ নিচ-ডান)'],
-      ),
-      HanziCourseChar(
-        char: '八',
-        pinyin: 'bā',
-        bn: 'আট (৮)',
-        strokes: 2,
-        ruleTip: 'আগে বামের ছোট বাঁকা দাগ, পরে ডানের দাগ।',
-        steps: ['১. বামের দাগ (ওপর ➔ নিচ-বাম)', '২. ডানের দাগ (ওপর ➔ নিচ-ডান)'],
-      ),
-      HanziCourseChar(
-        char: '儿',
-        pinyin: 'ér',
-        bn: 'ছেলে / শিশু',
-        strokes: 2,
-        ruleTip: 'আগে বামের খাড়া-বাঁক, পরে ডানের হুকের মতো দাগ।',
-        steps: ['১. বামের দাগ', '২. ডানের বাঁকানো হুক'],
-      ),
-    ],
-  ),
-  HanziCourseChapter(
-    title: 'Chapter 2: ৩ স্ট্রোকের হানজি',
-    subtitle: 'ধাপ অনুযায়ী তিন দাগের পরিচিত অক্ষর',
-    characters: [
-      HanziCourseChar(
-        char: '三',
-        pinyin: 'sān',
-        bn: 'তিন (৩)',
-        strokes: 3,
-        ruleTip: 'ওপর থেকে নিচে তিনটি আড়াআড়ি দাগ (বাম থেকে ডানে)।',
-        steps: ['১. ওপরের দাগ', '২. মাঝের ছোট দাগ', '৩. নিচের বড় দাগ'],
-      ),
-      HanziCourseChar(
-        char: '口',
-        pinyin: 'kǒu',
-        bn: 'মুখ / প্রবেশপথ',
-        strokes: 3,
-        ruleTip: 'বাইরের অংশ আগে, নিচে বন্ধ পরে: বাম দেয়াল ➔ ওপর-ডান ➔ নিচে বন্ধ।',
-        steps: ['১. বামের খাড়া দাগ', '২. ওপর ও ডানের কোণ', '৩. নিচের বন্ধ দাগ'],
-      ),
-      HanziCourseChar(
-        char: '上',
-        pinyin: 'shàng',
-        bn: 'ওপর / উঠা',
-        strokes: 3,
-        ruleTip: 'মাঝের খাড়া আগে, বামের ছোট দাগ পরে, নিচের দাগ শেষে।',
-        steps: ['১. মাঝের খাড়া দাগ', '২. বামের ছোট দাগ', '৩. নিচের আড়াআড়ি দাগ'],
-      ),
-      HanziCourseChar(
-        char: '下',
-        pinyin: 'xià',
-        bn: 'নিচ / নামা',
-        strokes: 3,
-        ruleTip: 'ওপরের দাগ আগে, মাঝের খাড়া দাগ, শেষে ডানের ফোঁটা।',
-        steps: ['১. ওপরের আড়াআড়ি দাগ', '২. মাঝের খাড়া দাগ', '৩. ডানের ছোট দাগ'],
-      ),
-      HanziCourseChar(
-        char: '大',
-        pinyin: 'dà',
-        bn: 'বড়',
-        strokes: 3,
-        ruleTip: 'আগে আড়াআড়ি দাগ, পরে বামের বাঁকা দাগ, শেষে ডানের দাগ।',
-        steps: ['১. ওপরের আড়াআড়ি দাগ', '২. বামের বাঁকা দাগ', '৩. ডানের বাঁকা দাগ'],
-      ),
-      HanziCourseChar(
-        char: '小',
-        pinyin: 'xiǎo',
-        bn: 'ছোট',
-        strokes: 3,
-        ruleTip: 'মাঝখান আগে, দুই পাশ পরে: মাঝের হুক আগে, বাম ও ডান পরে।',
-        steps: ['১. মাঝের খাড়া হুক', '২. বামের ফোঁটা', '৩. ডানের ফোঁটা'],
-      ),
-      HanziCourseChar(
-        char: '山',
-        pinyin: 'shān',
-        bn: 'পাহাড়',
-        strokes: 3,
-        ruleTip: 'মাঝের উঁচু খাড়া দাগ আগে, বাম-নিচের বাঁক, শেষে নিচের দাগ।',
-        steps: ['১. মাঝের খাড়া দাগ', '২. বাম-নিচের বাঁকা দাগ', '৩. নিচের আড়াআড়ি দাগ'],
-      ),
-      HanziCourseChar(
-        char: '女',
-        pinyin: 'nǚ',
-        bn: 'নারী / মেয়ে',
-        strokes: 3,
-        ruleTip: 'আগে কোণাকোনি ভাঙা দাগ, পরে বাঁকা দাগ, শেষে আড়াআড়ি দাগ।',
-        steps: ['১. বাম থেকে নিচে ও ডানে দাগ', '২. ওপর থেকে নিচে বাঁকা দাগ', '৩. আড়াআড়ি দাগ'],
-      ),
-    ],
-  ),
-  HanziCourseChapter(
-    title: 'Chapter 3: ৪ স্ট্রোকের হানজি',
-    subtitle: 'প্রকৃতি ও দৈনন্দিন চার দাগের অক্ষর',
-    characters: [
-      HanziCourseChar(
-        char: '水',
-        pinyin: 'shuǐ',
-        bn: 'পানি / জল',
-        strokes: 4,
-        ruleTip: 'মাঝখান আগে, দুই পাশ পরে: মাঝের খাড়া হুক আগে, বাম ও ডান পরে।',
-        steps: ['১. মাঝের খাড়া হুক', '২. বামের ওপরের দাগ', '৩. বামের নিচের দাগ', '৪. ডানের দাগ'],
-      ),
-      HanziCourseChar(
-        char: '火',
-        pinyin: 'huǒ',
-        bn: 'আগুন',
-        strokes: 4,
-        ruleTip: 'বাম ও ডানের ছোট দাগ আগে, মাঝের অংশ পরে, শেষে ডানের দাগ।',
-        steps: ['১. বামের ছোট দাগ', '২. ডান-ওপরের দাগ', '৩. মাঝের বাঁকা দাগ', '৪. ডান-নিচের দাগ'],
-      ),
-      HanziCourseChar(
-        char: '木',
-        pinyin: 'mù',
-        bn: 'কাঠ / গাছ',
-        strokes: 4,
-        ruleTip: 'আগে আড়াআড়ি, পরে খাড়া, তারপর বাম ও ডানের দাগ।',
-        steps: ['১. আড়াআড়ি দাগ', '২. খাড়া দাগ', '৩. বামের দাগ', '৪. ডানের দাগ'],
-      ),
-      HanziCourseChar(
-        char: '天',
-        pinyin: 'tiān',
-        bn: 'আকাশ / দিন',
-        strokes: 4,
-        ruleTip: 'ওপর থেকে নিচে: দুটি আড়াআড়ি দাগ, বামের বাঁকা, ডানের দাগ।',
-        steps: ['১. প্রথম আড়াআড়ি দাগ', '২. দ্বিতীয় আড়াআড়ি দাগ', '৩. বামের বাঁকা দাগ', '৪. ডানের দাগ'],
-      ),
-      HanziCourseChar(
-        char: '月',
-        pinyin: 'yuè',
-        bn: 'চাঁদ / মাস',
-        strokes: 4,
-        ruleTip: 'বামের দাগ, ওপর-ডানের বাঁক, ভেতরের দুটি ছোট আড়াআড়ি দাগ।',
-        steps: ['১. বামের বাঁকা/খাড়া দাগ', '২. ওপর ও ডানের ফ্রেম', '৩. ভেতরের ওপরের দাগ', '৪. ভেতরের নিচের দাগ'],
-      ),
-      HanziCourseChar(
-        char: '日',
-        pinyin: 'rì',
-        bn: 'সূর্য / দিন',
-        strokes: 4,
-        ruleTip: 'বাম দেয়াল, ওপর-ডান ফ্রেম, মাঝের দাগ, শেষে নিচে বন্ধ।',
-        steps: ['১. বামের খাড়া দাগ', '২. ওপর ও ডানের ফ্রেম', '৩. মাঝের আড়াআড়ি দাগ', '৪. নিচের বন্ধ দাগ'],
-      ),
-    ],
-  ),
-  HanziCourseChapter(
-    title: 'Chapter 4: ৫–৮ স্ট্রোকের যৌগিক হানজি',
-    subtitle: 'HSK 1-এর বহুল ব্যবহৃত শব্দ গঠনের অক্ষর',
-    characters: [
-      HanziCourseChar(
-        char: '中',
-        pinyin: 'zhōng',
-        bn: 'মধ্য / চীন',
-        strokes: 4,
-        ruleTip: 'আগে ছোট বক্স, শেষে মাঝ দিয়ে দীর্ঘ খাড়া দাগ।',
-        steps: ['১. বামের দাগ', '২. ওপর-ডানের ফ্রেম', '৩. নিচের বন্ধ দাগ', '৪. মাঝের দীর্ঘ খাড়া দাগ'],
-      ),
-      HanziCourseChar(
-        char: '国',
-        pinyin: 'guó',
-        bn: 'দেশ / রাষ্ট্র',
-        strokes: 8,
-        ruleTip: 'বাইরের ফ্রেম আগে, ভেতরের 玉 পরে, নিচের দাগ সবার শেষে।',
-        steps: ['১. বাম ও ওপর-ডান ফ্রেম', '২. ভেতরের 玉 অংশ', '৩. সবার নিচে ফ্রেম বন্ধ'],
-      ),
-      HanziCourseChar(
-        char: '我',
-        pinyin: 'wǒ',
-        bn: 'আমি',
-        strokes: 7,
-        ruleTip: 'বাম থেকে ডানে ধাপ মেনে টানুন, ছোট ফোঁটা সবার শেষে।',
-        steps: ['১. বামের দাগ ও আড়াআড়ি', '২. মাঝের খাড়া হুক', '৩. ডানের তির্যক ও ফোঁটা'],
-      ),
-      HanziCourseChar(
-        char: '你',
-        pinyin: 'nǐ',
-        bn: 'তুমি / আপনি',
-        strokes: 7,
-        ruleTip: 'বামের 亻 আগে, ডানের 尔 পরে।',
-        steps: ['১. বামের 亻 (২ স্ট্রোক)', '২. ডানের ওপরের অংশ', '৩. নিচের বাম ও ডানের দাগ'],
-      ),
-      HanziCourseChar(
-        char: '好',
-        pinyin: 'hǎo',
-        bn: 'ভালো',
-        strokes: 6,
-        ruleTip: 'বামের 女 আগে, ডানের 子 পরে।',
-        steps: ['১. বামের 女 (৩ স্ট্রোক)', '২. ডানের 子 (৩ স্ট্রোক)'],
-      ),
-      HanziCourseChar(
-        char: '学',
-        pinyin: 'xué',
-        bn: 'পড়া / শেখা',
-        strokes: 8,
-        ruleTip: 'ওপরের অংশ আগে, নিচের 子 পরে।',
-        steps: ['১. ওপরের ফোঁটা ও বক্স', '২. নিচের 子 অংশ'],
-      ),
-    ],
-  ),
-];
+  factory HanziCourseChapter.fromJson(Map<String, dynamic> json) {
+    final rawChars = (json['characters'] as List<dynamic>? ?? []);
+    return HanziCourseChapter(
+      title: (json['title'] ?? '').toString(),
+      subtitle: (json['subtitle'] ?? '').toString(),
+      characters: rawChars
+          .map((e) => HanziCourseChar.fromJson(e as Map<String, dynamic>))
+          .toList(),
+    );
+  }
+}
 
 class UserNote {
   final String title;
@@ -556,7 +365,7 @@ List<HskCourseItem> get kAllCourses =>
     kHskLevelCards.expand((level) => level.courses).toList();
 
 // ============================================================================
-// 2. PINYIN NORMALIZER & VOCAB REPOSITORY (12 JSON FILES)
+// 2. PINYIN NORMALIZER & VOCAB + HANZI COURSE REPOSITORY
 // ============================================================================
 
 String stripPinyinTones(String input) {
@@ -582,12 +391,14 @@ class VocabRepository {
 
   final List<VocabGroup> groups = [];
   final List<VocabWord> allWords = [];
+  final List<HanziCourseChapter> hanziChapters = [];
   bool _loaded = false;
 
   Future<void> ensureLoaded() async {
     if (_loaded) return;
     groups.clear();
     allWords.clear();
+    hanziChapters.clear();
 
     const files = [
       ('assets/vocab/hsk1.json', 'hsk'),
@@ -633,6 +444,19 @@ class VocabRepository {
         }
       } catch (_) {}
     }
+
+    // Load 300+ HSK 1-2 Hanzi Writing Course from external JSON
+    try {
+      final hanziRaw =
+          await rootBundle.loadString('assets/vocab/hanzi_course_300.json');
+      final decoded = jsonDecode(hanziRaw) as Map<String, dynamic>;
+      final rawChapters = (decoded['chapters'] as List<dynamic>? ?? []);
+      for (final ch in rawChapters) {
+        hanziChapters
+            .add(HanziCourseChapter.fromJson(ch as Map<String, dynamic>));
+      }
+    } catch (_) {}
+
     _loaded = true;
   }
 
@@ -644,6 +468,25 @@ class VocabRepository {
       if (g.id == id) return g;
     }
     return null;
+  }
+
+  PinnedVocabSlice? resolvePinnedSlice(String pinKey) {
+    final parts = pinKey.split('::');
+    final groupId = parts.first;
+    final tag = parts.length > 1 ? parts[1] : 'All';
+    final g = byId(groupId);
+    if (g == null) return null;
+    final words =
+        tag == 'All' ? g.words : g.words.where((w) => w.tag == tag).toList();
+    final title = tag == 'All' ? g.title : '${g.title} • $tag';
+    return PinnedVocabSlice(
+      pinKey: pinKey,
+      groupId: groupId,
+      tag: tag,
+      displayTitle: title,
+      group: g,
+      words: words,
+    );
   }
 
   List<VocabWord> search(String query, {List<VocabWord>? pool}) {
@@ -670,7 +513,7 @@ class VocabRepository {
 // 3. SHARED AUDIO GROUPING HELPER & CONFIRM DELETE DIALOG
 // ============================================================================
 
-scanCourseAudioTracks(String courseId) async {
+Future>> scanCourseAudioTracks(String courseId) async {
   final base = await getApplicationDocumentsDirectory();
   final audioDir = Directory('${base.path}/hsk_offline/$courseId/audio');
   final grouped = <String, List<File>>{};
@@ -729,10 +572,9 @@ Future<bool> showConfirmDeleteDialog(
 class AppState extends ChangeNotifier {
   bool isDarkMode = false;
   bool allLessonsContinuous = false;
-  bool blurStudyHints = false;
   double defaultSpeed = 1.0;
   int shadowingGapSeconds = 0;
-  Set<String> favoriteGroupIds = {};
+  Set<String> favoriteSliceKeys = {}; // stores "groupId::tag"
   Set<String> favoriteWordKeys = {};
 
   // Smart Direct Resume State
@@ -745,11 +587,15 @@ class AppState extends ChangeNotifier {
     final prefs = await SharedPreferences.getInstance();
     isDarkMode = prefs.getBool('dark_mode') ?? false;
     allLessonsContinuous = prefs.getBool('all_lessons_continuous') ?? false;
-    blurStudyHints = prefs.getBool('blur_study_hints') ?? false;
     defaultSpeed = prefs.getDouble('default_speed') ?? 1.0;
     shadowingGapSeconds = prefs.getInt('shadowing_gap') ?? 0;
-    favoriteGroupIds = (prefs.getStringList('fav_groups') ?? []).toSet();
+
+    final rawSlices = prefs.getStringList('fav_groups') ?? [];
+    favoriteSliceKeys = rawSlices
+        .map((e) => e.contains('::') ? e : '$e::All')
+        .toSet();
     favoriteWordKeys = (prefs.getStringList('fav_words') ?? []).toSet();
+
     lastStudiedLabel = prefs.getString('last_studied_label') ?? '';
     lastStudiedCourseId = prefs.getString('last_studied_course') ?? '';
     lastStudiedType = prefs.getString('last_studied_type') ?? 'pdf';
@@ -772,13 +618,6 @@ class AppState extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> setBlurStudyHints(bool val) async {
-    blurStudyHints = val;
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.setBool('blur_study_hints', val);
-    notifyListeners();
-  }
-
   Future<void> setDefaultSpeed(double spd) async {
     defaultSpeed = spd;
     final prefs = await SharedPreferences.getInstance();
@@ -793,14 +632,23 @@ class AppState extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> toggleFavoriteGroup(String groupId) async {
-    if (favoriteGroupIds.contains(groupId)) {
-      favoriteGroupIds.remove(groupId);
+  String makeSliceKey(String groupId, String tag) => '$groupId::$tag';
+
+  bool isSlicePinned(String groupId, String tag) =>
+      favoriteSliceKeys.contains(makeSliceKey(groupId, tag));
+
+  bool isAnySlicePinnedForGroup(String groupId) =>
+      favoriteSliceKeys.any((k) => k.startsWith('$groupId::'));
+
+  Future<void> toggleFavoriteSlice(String groupId, String tag) async {
+    final key = makeSliceKey(groupId, tag);
+    if (favoriteSliceKeys.contains(key)) {
+      favoriteSliceKeys.remove(key);
     } else {
-      favoriteGroupIds.add(groupId);
+      favoriteSliceKeys.add(key);
     }
     final prefs = await SharedPreferences.getInstance();
-    await prefs.setStringList('fav_groups', favoriteGroupIds.toList());
+    await prefs.setStringList('fav_groups', favoriteSliceKeys.toList());
     notifyListeners();
   }
 
@@ -906,7 +754,7 @@ class _HskAppState extends State<HskApp> {
 }
 
 // ============================================================================
-// 6. HOME SCREEN (SMART DIRECT RESUME + 6-LEVEL GRID + DRAWER)
+// 6. HOME SCREEN (ONLY STAR IN APPBAR + SMART RESUME + 6-LEVEL GRID + DRAWER)
 // ============================================================================
 
 class HomeScreen extends StatefulWidget {
@@ -933,13 +781,14 @@ class _HomeScreenState extends State<HomeScreen> {
     super.dispose();
   }
 
-  void _openGroup(VocabGroup group) {
+  void _openGroup(VocabGroup group, {String initialTag = 'All'}) {
     Navigator.push(
       context,
       MaterialPageRoute(
         builder: (_) => VocabListScreen(
           group: group,
           appState: widget.appState,
+          initialTag: initialTag,
         ),
       ),
     );
@@ -1064,9 +913,9 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     final isDark = widget.appState.isDarkMode;
     final repo = VocabRepository.instance;
-    final pinnedGroups = widget.appState.favoriteGroupIds
-        .map((id) => repo.byId(id))
-        .whereType<VocabGroup>()
+    final pinnedSlices = widget.appState.favoriteSliceKeys
+        .map((k) => repo.resolvePinnedSlice(k))
+        .whereType<PinnedVocabSlice>()
         .toList();
 
     return Scaffold(
@@ -1084,18 +933,6 @@ class _HomeScreenState extends State<HomeScreen> {
                 context,
                 MaterialPageRoute(
                   builder: (_) => FavoritesScreen(appState: widget.appState),
-                ),
-              );
-            },
-          ),
-          IconButton(
-            tooltip: 'Settings & About',
-            icon: const Icon(Icons.settings_rounded),
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (_) => SettingsScreen(appState: widget.appState),
                 ),
               );
             },
@@ -1146,11 +983,11 @@ class _HomeScreenState extends State<HomeScreen> {
                     children: [
                       if (widget.appState.lastStudiedLabel.isNotEmpty)
                         _buildSmartResumeBanner(isDark),
-                      if (pinnedGroups.isNotEmpty) ...[
+                      if (pinnedSlices.isNotEmpty) ...[
                         const Padding(
                           padding: EdgeInsets.only(bottom: 8, top: 2),
                           child: Text(
-                            'Pinned Vocabulary',
+                            'Pinned Lessons & Topics',
                             style: TextStyle(
                               fontSize: 15,
                               fontWeight: FontWeight.bold,
@@ -1161,19 +998,20 @@ class _HomeScreenState extends State<HomeScreen> {
                           height: 42,
                           child: ListView.separated(
                             scrollDirection: Axis.horizontal,
-                            itemCount: pinnedGroups.length,
+                            itemCount: pinnedSlices.length,
                             separatorBuilder: (_, __) =>
                                 const SizedBox(width: 8),
                             itemBuilder: (_, i) {
-                              final g = pinnedGroups[i];
+                              final s = pinnedSlices[i];
                               return ActionChip(
                                 avatar: const Icon(
                                   Icons.star_rounded,
                                   size: 18,
                                   color: Colors.amber,
                                 ),
-                                label: Text(g.title),
-                                onPressed: () => _openGroup(g),
+                                label: Text(s.displayTitle),
+                                onPressed: () =>
+                                    _openGroup(s.group, initialTag: s.tag),
                               );
                             },
                           ),
@@ -1461,12 +1299,8 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
                 SizedBox(height: 6),
                 Text(
-                  'HSK 1–6 • Professions • Daily Life & Nature',
-                  style: TextStyle(color: Colors.white70, fontSize: 12.5),
-                ),
-                Text(
                   'Curated by AHM • v1.2.0',
-                  style: TextStyle(color: Colors.white60, fontSize: 11.5),
+                  style: TextStyle(color: Colors.white70, fontSize: 12),
                 ),
               ],
             ),
@@ -1480,21 +1314,6 @@ class _HomeScreenState extends State<HomeScreen> {
                 context,
                 MaterialPageRoute(
                   builder: (_) => FavoritesScreen(appState: widget.appState),
-                ),
-              );
-            },
-          ),
-          ListTile(
-            leading: const Icon(Icons.brush_rounded, color: kImperialRed),
-            title: const Text('Hanzi Writing Course'),
-            subtitle: const Text('Step-by-step strokes & Tianzige grid'),
-            onTap: () {
-              Navigator.pop(context);
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (_) =>
-                      HanziWritingCourseScreen(appState: widget.appState),
                 ),
               );
             },
@@ -1535,8 +1354,8 @@ class _HomeScreenState extends State<HomeScreen> {
                           dense: true,
                           title: Text(g.title),
                           subtitle: Text('${g.words.length} Words'),
-                          trailing: widget.appState.favoriteGroupIds
-                                  .contains(g.id)
+                          trailing: widget.appState
+                                  .isAnySlicePinnedForGroup(g.id)
                               ? const Icon(Icons.star_rounded,
                                   color: Colors.amber, size: 18)
                               : null,
@@ -1568,8 +1387,8 @@ class _HomeScreenState extends State<HomeScreen> {
                           dense: true,
                           title: Text(g.title),
                           subtitle: Text(g.subtitle),
-                          trailing: widget.appState.favoriteGroupIds
-                                  .contains(g.id)
+                          trailing: widget.appState
+                                  .isAnySlicePinnedForGroup(g.id)
                               ? const Icon(Icons.star_rounded,
                                   color: Colors.amber, size: 18)
                               : null,
@@ -1601,8 +1420,8 @@ class _HomeScreenState extends State<HomeScreen> {
                           dense: true,
                           title: Text(g.title),
                           subtitle: Text(g.subtitle),
-                          trailing: widget.appState.favoriteGroupIds
-                                  .contains(g.id)
+                          trailing: widget.appState
+                                  .isAnySlicePinnedForGroup(g.id)
                               ? const Icon(Icons.star_rounded,
                                   color: Colors.amber, size: 18)
                               : null,
@@ -1614,6 +1433,22 @@ class _HomeScreenState extends State<HomeScreen> {
                     .toList(),
           ),
           const Divider(),
+          // Hanzi Writing Course placed right above Settings & About as the final step
+          ListTile(
+            leading: const Icon(Icons.brush_rounded, color: kImperialRed),
+            title: const Text('Hanzi Writing Course'),
+            subtitle: const Text('HSK 1–2 (300 Hanzi) • Tianzige grid'),
+            onTap: () {
+              Navigator.pop(context);
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (_) =>
+                      HanziWritingCourseScreen(appState: widget.appState),
+                ),
+              );
+            },
+          ),
           ListTile(
             leading: const Icon(Icons.settings_rounded),
             title: const Text('Settings & About'),
@@ -1729,17 +1564,19 @@ class PartSelectionScreen extends StatelessWidget {
 }
 
 // ============================================================================
-// 7. VOCABULARY LIST SCREEN (4-LAYER CARD + FILTER + FLASHCARD BUTTON)
+// 7. VOCABULARY LIST SCREEN (SMART LESSON/CATEGORY FAVORITE + FILTER)
 // ============================================================================
 
 class VocabListScreen extends StatefulWidget {
   final VocabGroup group;
   final AppState appState;
+  final String initialTag;
 
   const VocabListScreen({
     super.key,
     required this.group,
     required this.appState,
+    this.initialTag = 'All',
   });
 
   @override
@@ -1747,8 +1584,16 @@ class VocabListScreen extends StatefulWidget {
 }
 
 class _VocabListScreenState extends State<VocabListScreen> {
-  String _selectedTag = 'All';
+  late String _selectedTag;
   String _localQuery = '';
+
+  @override
+  void initState() {
+    super.initState();
+    _selectedTag = widget.group.tags.contains(widget.initialTag)
+        ? widget.initialTag
+        : 'All';
+  }
 
   List<VocabWord> get _filteredWords {
     Iterable<VocabWord> list = widget.group.words;
@@ -1770,26 +1615,35 @@ class _VocabListScreenState extends State<VocabListScreen> {
       animation: widget.appState,
       builder: (context, _) {
         final isPinned =
-            widget.appState.favoriteGroupIds.contains(widget.group.id);
+            widget.appState.isSlicePinned(widget.group.id, _selectedTag);
+        final pinLabel = _selectedTag == 'All'
+            ? widget.group.title
+            : '${widget.group.title} • $_selectedTag';
+
         return Scaffold(
           appBar: AppBar(
-            title: Text(widget.group.title),
+            title: Text(
+              _selectedTag == 'All'
+                  ? widget.group.title
+                  : '${widget.group.title} ($_selectedTag)',
+            ),
             actions: [
               IconButton(
-                tooltip: 'Pin to Favorites',
+                tooltip: 'Pin "$pinLabel" to Favorites',
                 icon: Icon(
                   isPinned ? Icons.star_rounded : Icons.star_border_rounded,
                   color: isPinned ? Colors.amber : Colors.white,
                 ),
                 onPressed: () {
-                  widget.appState.toggleFavoriteGroup(widget.group.id);
+                  widget.appState
+                      .toggleFavoriteSlice(widget.group.id, _selectedTag);
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
                       duration: const Duration(seconds: 1),
                       content: Text(
                         isPinned
-                            ? 'Removed from Favorites'
-                            : 'Pinned to Favorites',
+                            ? 'Removed "$pinLabel" from Favorites'
+                            : 'Pinned "$pinLabel" to Favorites',
                       ),
                     ),
                   );
@@ -1802,7 +1656,7 @@ class _VocabListScreenState extends State<VocabListScreen> {
                       context,
                       MaterialPageRoute(
                         builder: (_) => FlashcardPracticeScreen(
-                          title: widget.group.title,
+                          title: pinLabel,
                           words: words,
                         ),
                       ),
@@ -2399,7 +2253,8 @@ class _FullScreenFavoriteWritingScreenState
       HapticFeedback.vibrate();
       setState(() {
         _feedbackIsError = true;
-        _feedbackText = 'ভুল হয়েছে! আগে বর্গাকার ঘরে হানজি লিখুন, তারপর আবার চেষ্টা করো।';
+        _feedbackText =
+            'ভুল হয়েছে! আগে বর্গাকার ঘরে হানজি লিখুন, তারপর আবার চেষ্টা করো।';
       });
       return;
     }
@@ -2453,7 +2308,9 @@ class _FullScreenFavoriteWritingScreenState
           IconButton(
             tooltip: _showHintChar ? 'Hide Guide' : 'Show Guide',
             icon: Icon(
-              _showHintChar ? Icons.visibility_rounded : Icons.visibility_off_rounded,
+              _showHintChar
+                  ? Icons.visibility_rounded
+                  : Icons.visibility_off_rounded,
             ),
             onPressed: () => setState(() => _showHintChar = !_showHintChar),
           ),
@@ -2461,7 +2318,6 @@ class _FullScreenFavoriteWritingScreenState
       ),
       body: Column(
         children: [
-          // Compact Word Header at Top
           Container(
             width: double.infinity,
             padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
@@ -2470,7 +2326,8 @@ class _FullScreenFavoriteWritingScreenState
               children: [
                 Text(
                   widget.word.hanzi,
-                  style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+                  style: const TextStyle(
+                      fontSize: 22, fontWeight: FontWeight.bold),
                 ),
                 const SizedBox(width: 10),
                 Expanded(
@@ -2490,7 +2347,8 @@ class _FullScreenFavoriteWritingScreenState
                         widget.word.en,
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
-                        style: const TextStyle(fontSize: 12, color: Colors.grey),
+                        style:
+                            const TextStyle(fontSize: 12, color: Colors.grey),
                       ),
                     ],
                   ),
@@ -2543,7 +2401,6 @@ class _FullScreenFavoriteWritingScreenState
                 ),
               ),
             ),
-          // Full-Screen Tianzige Grid Area
           Expanded(
             child: Padding(
               padding: const EdgeInsets.all(14),
@@ -2585,7 +2442,6 @@ class _FullScreenFavoriteWritingScreenState
               ),
             ),
           ),
-          // Bottom Action Bar
           Padding(
             padding: const EdgeInsets.fromLTRB(14, 0, 14, 16),
             child: Row(
@@ -2634,7 +2490,7 @@ class _FullScreenFavoriteWritingScreenState
 }
 
 // ============================================================================
-// 8C. HANZI WRITING COURSE SCREEN (TOP STEPS + DIAGONAL DOTTED GRID BELOW)
+// 8C. HANZI WRITING COURSE SCREEN (LOADED FROM assets/vocab/hanzi_course_300.json)
 // ============================================================================
 
 class HanziWritingCourseScreen extends StatefulWidget {
@@ -2655,8 +2511,14 @@ class _HanziWritingCourseScreenState extends State<HanziWritingCourseScreen> {
   String? _statusMsg;
   bool _isError = false;
 
-  HanziCourseChapter get _chapter => kHanziCourseChapters[_chapterIdx];
-  HanziCourseChar get _char => _chapter.characters[_charIdx];
+  List<HanziCourseChapter> get _chapters =>
+      VocabRepository.instance.hanziChapters;
+
+  HanziCourseChapter get _chapter =>
+      _chapters[_chapterIdx.clamp(0, _chapters.length - 1)];
+
+  HanziCourseChar get _char =>
+      _chapter.characters[_charIdx.clamp(0, _chapter.characters.length - 1)];
 
   void _selectChar(int idx) {
     setState(() {
@@ -2690,10 +2552,30 @@ class _HanziWritingCourseScreenState extends State<HanziWritingCourseScreen> {
   @override
   Widget build(BuildContext context) {
     final isDark = widget.appState.isDarkMode;
+
+    if (_chapters.isEmpty) {
+      return Scaffold(
+        appBar: AppBar(title: const Text('Hanzi Writing Course')),
+        body: const Center(
+          child: Padding(
+            padding: EdgeInsets.all(24),
+            child: Text(
+              'Please ensure assets/vocab/hanzi_course_300.json is present.',
+              textAlign: TextAlign.center,
+            ),
+          ),
+        ),
+      );
+    }
+
     final currentChar = _char;
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Hanzi Writing Course')),
+      appBar: AppBar(
+        title: Text(
+          'Hanzi Writing (${_charIdx + 1}/${_chapter.characters.length})',
+        ),
+      ),
       body: Column(
         children: [
           // Chapter Selector Chips
@@ -2702,12 +2584,12 @@ class _HanziWritingCourseScreenState extends State<HanziWritingCourseScreen> {
             child: ListView.separated(
               padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
               scrollDirection: Axis.horizontal,
-              itemCount: kHanziCourseChapters.length,
+              itemCount: _chapters.length,
               separatorBuilder: (_, __) => const SizedBox(width: 8),
               itemBuilder: (_, i) {
                 final selected = i == _chapterIdx;
                 return ChoiceChip(
-                  label: Text(kHanziCourseChapters[i].title.split(':').first),
+                  label: Text(_chapters[i].title.split(':').first),
                   selected: selected,
                   onSelected: (_) => setState(() {
                     _chapterIdx = i;
@@ -2819,46 +2701,48 @@ class _HanziWritingCourseScreenState extends State<HanziWritingCourseScreen> {
                     ),
                   ],
                 ),
-                const SizedBox(height: 8),
-                SizedBox(
-                  height: 34,
-                  child: ListView.separated(
-                    scrollDirection: Axis.horizontal,
-                    itemCount: currentChar.steps.length,
-                    separatorBuilder: (_, __) => const SizedBox(width: 6),
-                    itemBuilder: (_, sIdx) {
-                      final active = sIdx == _activeStep;
-                      return InkWell(
-                        onTap: () => setState(() => _activeStep = sIdx),
-                        child: Container(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 10, vertical: 6),
-                          decoration: BoxDecoration(
-                            color: active
-                                ? kImperialRed
-                                : (isDark
-                                    ? Colors.black26
-                                    : Colors.white),
-                            borderRadius: BorderRadius.circular(8),
-                            border: Border.all(
-                              color: active ? kImperialRed : Colors.black26,
-                            ),
-                          ),
-                          child: Text(
-                            currentChar.steps[sIdx],
-                            style: TextStyle(
-                              fontSize: 11.5,
-                              fontWeight: FontWeight.w600,
+                if (currentChar.steps.isNotEmpty) ...[
+                  const SizedBox(height: 8),
+                  SizedBox(
+                    height: 34,
+                    child: ListView.separated(
+                      scrollDirection: Axis.horizontal,
+                      itemCount: currentChar.steps.length,
+                      separatorBuilder: (_, __) => const SizedBox(width: 6),
+                      itemBuilder: (_, sIdx) {
+                        final active = sIdx == _activeStep;
+                        return InkWell(
+                          onTap: () => setState(() => _activeStep = sIdx),
+                          child: Container(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 10, vertical: 6),
+                            decoration: BoxDecoration(
                               color: active
-                                  ? Colors.white
-                                  : (isDark ? Colors.white70 : Colors.black87),
+                                  ? kImperialRed
+                                  : (isDark ? Colors.black26 : Colors.white),
+                              borderRadius: BorderRadius.circular(8),
+                              border: Border.all(
+                                color: active ? kImperialRed : Colors.black26,
+                              ),
+                            ),
+                            child: Text(
+                              currentChar.steps[sIdx],
+                              style: TextStyle(
+                                fontSize: 11.5,
+                                fontWeight: FontWeight.w600,
+                                color: active
+                                    ? Colors.white
+                                    : (isDark
+                                        ? Colors.white70
+                                        : Colors.black87),
+                              ),
                             ),
                           ),
-                        ),
-                      );
-                    },
+                        );
+                      },
+                    ),
                   ),
-                ),
+                ],
               ],
             ),
           ),
@@ -2889,7 +2773,8 @@ class _HanziWritingCourseScreenState extends State<HanziWritingCourseScreen> {
               child: AspectRatio(
                 aspectRatio: 1.0,
                 child: Container(
-                  margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 6),
+                  margin:
+                      const EdgeInsets.symmetric(horizontal: 20, vertical: 6),
                   decoration: BoxDecoration(
                     color: isDark ? const Color(0xFF191919) : Colors.white,
                     border: Border.all(color: kImperialRed, width: 2),
@@ -2968,7 +2853,12 @@ class _HanziWritingCourseScreenState extends State<HanziWritingCourseScreen> {
                 OutlinedButton(
                   onPressed: _charIdx < _chapter.characters.length - 1
                       ? () => _selectChar(_charIdx + 1)
-                      : null,
+                      : (_chapterIdx < _chapters.length - 1
+                          ? () => setState(() {
+                                _chapterIdx++;
+                                _selectChar(0);
+                              })
+                          : null),
                   child: const Text('Next'),
                 ),
               ],
@@ -3023,7 +2913,6 @@ class _HanziPadPainter extends CustomPainter {
       ..color = Colors.red.withValues(alpha: 0.28)
       ..strokeWidth = 1.2;
 
-    // Cross lines (horizontal & vertical)
     _drawDashedLine(
       canvas,
       Offset(0, size.height / 2),
@@ -3037,7 +2926,6 @@ class _HanziPadPainter extends CustomPainter {
       guidePaint,
     );
 
-    // Diagonal dotted lines (কোনাকোনি ডট-ডট লাইন)
     if (showDiagonalGuides) {
       final diagPaint = Paint()
         ..color = Colors.red.withValues(alpha: 0.20)
@@ -3056,7 +2944,6 @@ class _HanziPadPainter extends CustomPainter {
       );
     }
 
-    // Watermark Hanzi in center
     if (watermarkChar != null && watermarkChar!.isNotEmpty) {
       final fontSize = math.min(size.width, size.height) * 0.58;
       final tp = TextPainter(
@@ -3101,7 +2988,7 @@ class _HanziPadPainter extends CustomPainter {
 }
 
 // ============================================================================
-// 9. FAVORITES SCREEN (PINNED FOLDERS + SAVED WORDS WITH FULL-SCREEN WRITE)
+// 9. FAVORITES SCREEN (PINNED LESSONS/TOPICS + SAVED WORDS)
 // ============================================================================
 
 class FavoritesScreen extends StatelessWidget {
@@ -3114,9 +3001,9 @@ class FavoritesScreen extends StatelessWidget {
       animation: appState,
       builder: (context, _) {
         final repo = VocabRepository.instance;
-        final favGroups = appState.favoriteGroupIds
-            .map((id) => repo.byId(id))
-            .whereType<VocabGroup>()
+        final favSlices = appState.favoriteSliceKeys
+            .map((k) => repo.resolvePinnedSlice(k))
+            .whereType<PinnedVocabSlice>()
             .toList();
         final favWords = repo.allWords
             .where((w) => appState.favoriteWordKeys.contains(w.uniqueKey))
@@ -3132,36 +3019,42 @@ class FavoritesScreen extends StatelessWidget {
                 unselectedLabelColor: Colors.white70,
                 indicatorColor: Colors.amber,
                 tabs: [
-                  Tab(text: 'Pinned Folders'),
+                  Tab(text: 'Pinned Lessons'),
                   Tab(text: 'Saved Words'),
                 ],
               ),
             ),
             body: TabBarView(
               children: [
-                favGroups.isEmpty
+                favSlices.isEmpty
                     ? const Center(
-                        child: Text(
-                            'Tap the star icon in any category to pin it here.'),
+                        child: Padding(
+                          padding: EdgeInsets.all(24),
+                          child: Text(
+                            'Select any lesson or category chip inside a vocabulary list and tap the star icon to pin it here.',
+                            textAlign: TextAlign.center,
+                          ),
+                        ),
                       )
                     : ListView.builder(
                         padding: const EdgeInsets.all(14),
-                        itemCount: favGroups.length,
+                        itemCount: favSlices.length,
                         itemBuilder: (_, i) {
-                          final g = favGroups[i];
+                          final s = favSlices[i];
                           return Card(
                             child: ListTile(
                               leading: const Icon(Icons.star_rounded,
                                   color: Colors.amber),
-                              title: Text(g.title),
-                              subtitle: Text(g.subtitle),
+                              title: Text(s.displayTitle),
+                              subtitle: Text('${s.words.length} Words'),
                               trailing: const Icon(Icons.chevron_right_rounded),
                               onTap: () => Navigator.push(
                                 context,
                                 MaterialPageRoute(
                                   builder: (_) => VocabListScreen(
-                                    group: g,
+                                    group: s.group,
                                     appState: appState,
+                                    initialTag: s.tag,
                                   ),
                                 ),
                               ),
@@ -3171,8 +3064,8 @@ class FavoritesScreen extends StatelessWidget {
                       ),
                 favWords.isEmpty
                     ? const Center(
-                        child:
-                            Text('Tap the star icon on any word to save it here.'),
+                        child: Text(
+                            'Tap the star icon on any word to save it here.'),
                       )
                     : Column(
                         children: [
@@ -3225,7 +3118,7 @@ class FavoritesScreen extends StatelessWidget {
 }
 
 // ============================================================================
-// 10. COURSE DETAIL SCREEN (OFFLINE PDF & AUDIO ZIP + LESSON LIST)
+// 10. COURSE DETAIL SCREEN (CLEAN 2 CARDS: PDF + AUDIO LESSONS FOLDER)
 // ============================================================================
 
 class CourseDetailScreen extends StatefulWidget {
@@ -3376,6 +3269,7 @@ class _CourseDetailScreenState extends State<CourseDetailScreen> {
             Text(_statusMsg, style: const TextStyle(fontSize: 12.5)),
             const SizedBox(height: 14),
           ],
+          // 1. Textbook PDF Card
           Card(
             child: ListTile(
               leading: const Icon(Icons.picture_as_pdf_rounded,
@@ -3418,16 +3312,50 @@ class _CourseDetailScreenState extends State<CourseDetailScreen> {
             ),
           ),
           const SizedBox(height: 12),
+          // 2. Audio Lessons Folder Card (Lessons stay neatly inside!)
           Card(
             child: ListTile(
-              leading: const Icon(Icons.headphones_rounded,
+              leading: const Icon(Icons.folder_special_rounded,
                   color: kImperialRed, size: 32),
               title: Text('${widget.course.title} Audio Lessons'),
               subtitle: Text(_audioReady
-                  ? '${lessonNames.length} Lessons ready offline'
+                  ? '${lessonNames.length} Lessons inside • Tap to open folder'
                   : 'Download native audio pack (ZIP)'),
+              onTap: _audioReady
+                  ? () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) => CourseAudioFolderScreen(
+                            course: widget.course,
+                            lessonNames: lessonNames,
+                            lessonTracks: _lessonTracks,
+                            appState: widget.appState,
+                          ),
+                        ),
+                      );
+                    }
+                  : null,
               trailing: _audioReady
-                  ? const Icon(Icons.check_circle_rounded, color: Colors.green)
+                  ? FilledButton.icon(
+                      style:
+                          FilledButton.styleFrom(backgroundColor: kImperialRed),
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) => CourseAudioFolderScreen(
+                              course: widget.course,
+                              lessonNames: lessonNames,
+                              lessonTracks: _lessonTracks,
+                              appState: widget.appState,
+                            ),
+                          ),
+                        );
+                      },
+                      icon: const Icon(Icons.headphones_rounded, size: 18),
+                      label: const Text('Open'),
+                    )
                   : FilledButton(
                       style:
                           FilledButton.styleFrom(backgroundColor: kImperialRed),
@@ -3441,45 +3369,6 @@ class _CourseDetailScreenState extends State<CourseDetailScreen> {
                     ),
             ),
           ),
-          if (_audioReady) ...[
-            const SizedBox(height: 18),
-            const Text(
-              'Listening Lessons',
-              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-            ),
-            const SizedBox(height: 8),
-            ...List.generate(lessonNames.length, (idx) {
-              final lessonTitle = lessonNames[idx];
-              final count = _lessonTracks[lessonTitle]?.length ?? 0;
-              return Card(
-                child: ListTile(
-                  leading: CircleAvatar(
-                    backgroundColor: kImperialRed,
-                    foregroundColor: Colors.white,
-                    child: Text('${idx + 1}'),
-                  ),
-                  title: Text('${widget.course.title} • $lessonTitle'),
-                  subtitle: Text('$count Tracks'),
-                  trailing: const Icon(Icons.play_arrow_rounded),
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (_) => LessonAudioPlayerScreen(
-                          courseId: widget.course.id,
-                          courseTitle: widget.course.title,
-                          allLessonNames: lessonNames,
-                          allLessonTracks: _lessonTracks,
-                          initialLessonIndex: idx,
-                          appState: widget.appState,
-                        ),
-                      ),
-                    );
-                  },
-                ),
-              );
-            }),
-          ],
         ],
       ),
     );
@@ -3487,7 +3376,69 @@ class _CourseDetailScreenState extends State<CourseDetailScreen> {
 }
 
 // ============================================================================
-// 11. EDGE-TO-EDGE FULL-WIDTH PDF READER + HEADPHONE TOGGLE + MINI AUDIO BAR
+// 10B. COURSE AUDIO LESSONS FOLDER SCREEN (INSIDE AUDIO CARD)
+// ============================================================================
+
+class CourseAudioFolderScreen extends StatelessWidget {
+  final HskCourseItem course;
+  final List<String> lessonNames;
+  final Map<String, List<File>> lessonTracks;
+  final AppState appState;
+
+  const CourseAudioFolderScreen({
+    super.key,
+    required this.course,
+    required this.lessonNames,
+    required this.lessonTracks,
+    required this.appState,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: Text('${course.title} • Audio Lessons')),
+      body: ListView.builder(
+        padding: const EdgeInsets.all(14),
+        itemCount: lessonNames.length,
+        itemBuilder: (context, idx) {
+          final lessonTitle = lessonNames[idx];
+          final count = lessonTracks[lessonTitle]?.length ?? 0;
+          return Card(
+            margin: const EdgeInsets.only(bottom: 10),
+            child: ListTile(
+              leading: CircleAvatar(
+                backgroundColor: kImperialRed,
+                foregroundColor: Colors.white,
+                child: Text('${idx + 1}'),
+              ),
+              title: Text('${course.title} • $lessonTitle'),
+              subtitle: Text('$count Tracks'),
+              trailing: const Icon(Icons.play_arrow_rounded),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => LessonAudioPlayerScreen(
+                      courseId: course.id,
+                      courseTitle: course.title,
+                      allLessonNames: lessonNames,
+                      allLessonTracks: lessonTracks,
+                      initialLessonIndex: idx,
+                      appState: appState,
+                    ),
+                  ),
+                );
+              },
+            ),
+          );
+        },
+      ),
+    );
+  }
+}
+
+// ============================================================================
+// 11. PDF READER + V1.0.0 FULL AUDIO BAR + DUAL DRAG & TAP PAGE PILL
 // ============================================================================
 
 class FastPdfReaderScreen extends StatefulWidget {
@@ -3523,9 +3474,11 @@ class _FastPdfReaderScreenState extends State<FastPdfReaderScreen> {
   bool _showAudioBar = true;
   int _lessonIdx = 0;
   int _trackIdx = 0;
+  double _miniSpeed = 1.0;
   bool _isPlaying = false;
   Duration _pos = Duration.zero;
   Duration _dur = Duration.zero;
+  double _dragAccumDy = 0;
 
   StreamSubscription<Duration>? _posSub;
   StreamSubscription<Duration?>? _durSub;
@@ -3537,9 +3490,20 @@ class _FastPdfReaderScreenState extends State<FastPdfReaderScreen> {
   List<File> get _tracks =>
       _hasAudio ? (widget.lessonTracks[widget.lessonNames[_lessonIdx]] ?? []) : [];
 
+  String get _currentTrackCleanName {
+    if (_tracks.isEmpty) return '';
+    return _tracks[_trackIdx]
+        .uri
+        .pathSegments
+        .last
+        .replaceAll('.mp3', '')
+        .replaceAll('.m4a', '');
+  }
+
   @override
   void initState() {
     super.initState();
+    _miniSpeed = widget.appState.defaultSpeed;
     _initPdf();
     _initMiniAudio();
   }
@@ -3587,7 +3551,7 @@ class _FastPdfReaderScreenState extends State<FastPdfReaderScreen> {
     _trackIdx = idx.clamp(0, _tracks.length - 1);
     try {
       await _miniPlayer.setFilePath(_tracks[_trackIdx].path);
-      await _miniPlayer.setSpeed(widget.appState.defaultSpeed);
+      await _miniPlayer.setSpeed(_miniSpeed);
       if (autoPlay) await _miniPlayer.play();
       if (mounted) setState(() {});
     } catch (_) {}
@@ -3605,6 +3569,80 @@ class _FastPdfReaderScreenState extends State<FastPdfReaderScreen> {
     } else {
       _loadMiniTrack(0, autoPlay: false);
     }
+  }
+
+  void _cycleMiniSpeed() {
+    const speeds = [0.75, 1.0, 1.25];
+    final next = (speeds.indexOf(_miniSpeed) + 1) % speeds.length;
+    _miniSpeed = speeds[next];
+    _miniPlayer.setSpeed(_miniSpeed);
+    setState(() {});
+  }
+
+  void _rewindMini5s() {
+    final target = _pos - const Duration(seconds: 5);
+    _miniPlayer.seek(target < Duration.zero ? Duration.zero : target);
+  }
+
+  void _openTrackPickerSheet() {
+    if (_tracks.isEmpty) return;
+    showModalBottomSheet(
+      context: context,
+      builder: (ctx) => SafeArea(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(14),
+              child: Text(
+                '${widget.lessonNames[_lessonIdx]} • Select Track',
+                style: const TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 15,
+                  color: kImperialRed,
+                ),
+              ),
+            ),
+            const Divider(height: 1),
+            Flexible(
+              child: ListView.builder(
+                shrinkWrap: true,
+                itemCount: _tracks.length,
+                itemBuilder: (_, i) {
+                  final name = _tracks[i]
+                      .uri
+                      .pathSegments
+                      .last
+                      .replaceAll('.mp3', '')
+                      .replaceAll('.m4a', '');
+                  final active = i == _trackIdx;
+                  return ListTile(
+                    leading: Icon(
+                      active
+                          ? Icons.graphic_eq_rounded
+                          : Icons.music_note_rounded,
+                      color: active ? kImperialRed : Colors.grey,
+                    ),
+                    title: Text(
+                      'Track ${i + 1} ($name)',
+                      style: TextStyle(
+                        fontWeight:
+                            active ? FontWeight.bold : FontWeight.normal,
+                        color: active ? kImperialRed : null,
+                      ),
+                    ),
+                    onTap: () {
+                      Navigator.pop(ctx);
+                      _loadMiniTrack(i);
+                    },
+                  );
+                },
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 
   Future<void> _savePage(int page) async {
@@ -3625,6 +3663,7 @@ class _FastPdfReaderScreenState extends State<FastPdfReaderScreen> {
         title: const Text('Jump to Page'),
         content: TextField(
           controller: ctrl,
+          autofocus: true,
           keyboardType: TextInputType.number,
           decoration: InputDecoration(
             hintText: 'Enter page (1 - $_totalPages)',
@@ -3706,23 +3745,39 @@ class _FastPdfReaderScreenState extends State<FastPdfReaderScreen> {
                           },
                         ),
                       ),
+                      // Right-side Dual Page Pill: Tap to Search + Drag Up/Down to Scroll
                       Positioned(
                         right: 12,
                         top: 16,
                         child: GestureDetector(
                           onTap: _totalPages > 0 ? _showJumpDialog : null,
+                          onVerticalDragStart: (_) => _dragAccumDy = 0,
+                          onVerticalDragUpdate: (details) {
+                            if (_totalPages <= 1) return;
+                            _dragAccumDy += details.delta.dy;
+                            const stepPx = 14.0;
+                            if (_dragAccumDy.abs() >= stepPx) {
+                              final deltaPages = (_dragAccumDy / stepPx).truncate();
+                              _dragAccumDy -= deltaPages * stepPx;
+                              final target = (_currentPage + deltaPages)
+                                  .clamp(1, _totalPages);
+                              if (target != _currentPage) {
+                                _pdfController?.jumpToPage(target);
+                              }
+                            }
+                          },
                           child: Container(
                             padding: const EdgeInsets.symmetric(
-                                horizontal: 11, vertical: 7),
+                                horizontal: 11, vertical: 8),
                             decoration: BoxDecoration(
                               color: isDark
                                   ? Colors.black87
-                                  : Colors.white.withValues(alpha: 0.92),
+                                  : Colors.white.withValues(alpha: 0.94),
                               borderRadius: BorderRadius.circular(14),
                               border: Border.all(color: Colors.black12),
                               boxShadow: [
                                 BoxShadow(
-                                  color: Colors.black.withValues(alpha: 0.12),
+                                  color: Colors.black.withValues(alpha: 0.14),
                                   blurRadius: 6,
                                 ),
                               ],
@@ -3731,12 +3786,12 @@ class _FastPdfReaderScreenState extends State<FastPdfReaderScreen> {
                               mainAxisSize: MainAxisSize.min,
                               children: [
                                 const Icon(Icons.unfold_more_rounded,
-                                    size: 14, color: kImperialRed),
+                                    size: 15, color: kImperialRed),
                                 Text(
                                   '$_currentPage',
                                   style: const TextStyle(
                                     fontWeight: FontWeight.bold,
-                                    fontSize: 13,
+                                    fontSize: 13.5,
                                   ),
                                 ),
                               ],
@@ -3747,24 +3802,26 @@ class _FastPdfReaderScreenState extends State<FastPdfReaderScreen> {
                     ],
                   ),
                 ),
+                // Version 1.0.0 Full Audio Bar inside PDF Reader
                 if (_hasAudio && _showAudioBar)
                   Container(
-                    padding: const EdgeInsets.fromLTRB(12, 6, 12, 10),
+                    padding: const EdgeInsets.fromLTRB(12, 4, 12, 8),
                     decoration: BoxDecoration(
                       color: isDark ? kNightCard : const Color(0xFFFFF5F5),
                       border: Border(
                         top: BorderSide(
-                          color: kImperialRed.withValues(alpha: 0.2),
+                          color: kImperialRed.withValues(alpha: 0.25),
                         ),
                       ),
                     ),
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
                       children: [
+                        // Row 1: Lesson Dropdown + Track Selector with Track Name
                         Row(
                           children: [
-                            const Icon(Icons.headphones_rounded,
-                                size: 16, color: kImperialRed),
+                            const Icon(Icons.menu_book_rounded,
+                                size: 15, color: kImperialRed),
                             const SizedBox(width: 6),
                             DropdownButton<int>(
                               value: _lessonIdx,
@@ -3789,15 +3846,71 @@ class _FastPdfReaderScreenState extends State<FastPdfReaderScreen> {
                                 }
                               },
                             ),
-                            const Spacer(),
-                            Text(
-                              'Track ${_trackIdx + 1}/${_tracks.length}',
-                              style: const TextStyle(fontSize: 12),
+                            const SizedBox(width: 8),
+                            Expanded(
+                              child: InkWell(
+                                onTap: _openTrackPickerSheet,
+                                child: Text(
+                                  'Track ${_trackIdx + 1}/${_tracks.length} ($_currentTrackCleanName)',
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                  textAlign: TextAlign.right,
+                                  style: TextStyle(
+                                    fontSize: 11.5,
+                                    fontWeight: FontWeight.w600,
+                                    color: isDark
+                                        ? Colors.white70
+                                        : Colors.black87,
+                                  ),
+                                ),
+                              ),
                             ),
                           ],
                         ),
+                        // Thin Progress Slider
+                        SizedBox(
+                          height: 18,
+                          child: SliderTheme(
+                            data: SliderTheme.of(context).copyWith(
+                              trackHeight: 2.5,
+                              thumbShape: const RoundSliderThumbShape(
+                                  enabledThumbRadius: 5.5),
+                            ),
+                            child: Slider(
+                              activeColor: kImperialRed,
+                              value: _pos.inMilliseconds.toDouble().clamp(
+                                  0, _dur.inMilliseconds.toDouble() + 1),
+                              max: _dur.inMilliseconds.toDouble() + 1,
+                              onChanged: (v) => _miniPlayer
+                                  .seek(Duration(milliseconds: v.toInt())),
+                            ),
+                          ),
+                        ),
+                        // Row 2: Speed (1.0x) + Rewind (-5s) + Prev + Big Red Play/Pause + Next
                         Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
+                            TextButton(
+                              style: TextButton.styleFrom(
+                                minimumSize: const Size(44, 32),
+                                padding: EdgeInsets.zero,
+                              ),
+                              onPressed: _cycleMiniSpeed,
+                              child: Text(
+                                '${_miniSpeed}x',
+                                style: const TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 13,
+                                  color: kImperialRed,
+                                ),
+                              ),
+                            ),
+                            IconButton(
+                              tooltip: '-5s Rewind',
+                              visualDensity: VisualDensity.compact,
+                              icon: const Icon(Icons.replay_5_rounded),
+                              onPressed: _rewindMini5s,
+                            ),
                             IconButton(
                               visualDensity: VisualDensity.compact,
                               icon: const Icon(Icons.skip_previous_rounded),
@@ -3805,18 +3918,26 @@ class _FastPdfReaderScreenState extends State<FastPdfReaderScreen> {
                                   ? () => _loadMiniTrack(_trackIdx - 1)
                                   : null,
                             ),
-                            IconButton(
-                              visualDensity: VisualDensity.compact,
-                              icon: Icon(
-                                _isPlaying
-                                    ? Icons.pause_circle_filled_rounded
-                                    : Icons.play_circle_fill_rounded,
-                                color: kImperialRed,
-                                size: 32,
-                              ),
-                              onPressed: () => _isPlaying
+                            InkWell(
+                              borderRadius: BorderRadius.circular(24),
+                              onTap: () => _isPlaying
                                   ? _miniPlayer.pause()
                                   : _miniPlayer.play(),
+                              child: Container(
+                                width: 42,
+                                height: 42,
+                                decoration: const BoxDecoration(
+                                  color: kImperialRed,
+                                  shape: BoxShape.circle,
+                                ),
+                                child: Icon(
+                                  _isPlaying
+                                      ? Icons.pause_rounded
+                                      : Icons.play_arrow_rounded,
+                                  color: Colors.white,
+                                  size: 26,
+                                ),
+                              ),
                             ),
                             IconButton(
                               visualDensity: VisualDensity.compact,
@@ -3825,15 +3946,11 @@ class _FastPdfReaderScreenState extends State<FastPdfReaderScreen> {
                                   ? () => _loadMiniTrack(_trackIdx + 1)
                                   : null,
                             ),
-                            Expanded(
-                              child: Slider(
-                                activeColor: kImperialRed,
-                                value: _pos.inMilliseconds.toDouble().clamp(
-                                    0, _dur.inMilliseconds.toDouble() + 1),
-                                max: _dur.inMilliseconds.toDouble() + 1,
-                                onChanged: (v) => _miniPlayer
-                                    .seek(Duration(milliseconds: v.toInt())),
-                              ),
+                            IconButton(
+                              tooltip: 'Track List',
+                              visualDensity: VisualDensity.compact,
+                              icon: const Icon(Icons.queue_music_rounded),
+                              onPressed: _openTrackPickerSheet,
                             ),
                           ],
                         ),
@@ -3847,7 +3964,7 @@ class _FastPdfReaderScreenState extends State<FastPdfReaderScreen> {
 }
 
 // ============================================================================
-// 12. FULL AUDIO PLAYER SCREEN (LOOP + CONTINUOUS + BLUR/HIDE MODE)
+// 12. COMPACT FULL AUDIO PLAYER SCREEN (NO BLUR ICON + SLIM BOTTOM PLAYER)
 // ============================================================================
 
 class LessonAudioPlayerScreen extends StatefulWidget {
@@ -4001,20 +4118,9 @@ class _LessonAudioPlayerScreenState extends State<LessonAudioPlayerScreen> {
       animation: widget.appState,
       builder: (context, _) {
         final isAllMode = widget.appState.allLessonsContinuous;
-        final isBlurred = widget.appState.blurStudyHints;
         return Scaffold(
           appBar: AppBar(
             title: Text('${widget.courseTitle} • $_currentLessonName'),
-            actions: [
-              IconButton(
-                tooltip: isBlurred ? 'Show Track Info' : 'Blur Track Info',
-                icon: Icon(
-                  isBlurred ? Icons.blur_on_rounded : Icons.blur_off_rounded,
-                ),
-                onPressed: () =>
-                    widget.appState.setBlurStudyHints(!isBlurred),
-              ),
-            ],
           ),
           body: Column(
             children: [
@@ -4025,7 +4131,7 @@ class _LessonAudioPlayerScreenState extends State<LessonAudioPlayerScreen> {
                 child: Container(
                   width: double.infinity,
                   padding:
-                      const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+                      const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
                   color: isDark
                       ? const Color(0xFF2B1919)
                       : const Color(0xFFFFEFEF),
@@ -4036,7 +4142,7 @@ class _LessonAudioPlayerScreenState extends State<LessonAudioPlayerScreen> {
                         isAllMode
                             ? Icons.playlist_play_rounded
                             : Icons.repeat_rounded,
-                        size: 18,
+                        size: 17,
                         color: kImperialRed,
                       ),
                       const SizedBox(width: 8),
@@ -4046,7 +4152,7 @@ class _LessonAudioPlayerScreenState extends State<LessonAudioPlayerScreen> {
                               ? 'All Lessons Continuous (1 → End • Tap to switch)'
                               : 'Lesson-by-Lesson Loop (Current Lesson • Tap to switch)',
                           style: const TextStyle(
-                            fontSize: 12.5,
+                            fontSize: 12,
                             fontWeight: FontWeight.w600,
                             color: kImperialRed,
                           ),
@@ -4058,30 +4164,29 @@ class _LessonAudioPlayerScreenState extends State<LessonAudioPlayerScreen> {
               ),
               Expanded(
                 child: ListView.builder(
-                  padding: const EdgeInsets.all(14),
+                  padding: const EdgeInsets.all(12),
                   itemCount: _currentTracks.length,
                   itemBuilder: (_, i) {
                     final f = _currentTracks[i];
                     final rawName = f.uri.pathSegments.last
                         .replaceAll('.mp3', '')
                         .replaceAll('.m4a', '');
-                    final displayName =
-                        isBlurred ? 'Hidden Track (Listening Test)' : rawName;
                     final active = i == _trackIndex;
                     return Container(
-                      margin: const EdgeInsets.only(bottom: 8),
+                      margin: const EdgeInsets.only(bottom: 7),
                       decoration: BoxDecoration(
                         color: active
                             ? (isDark
                                 ? const Color(0xFF3E2723)
                                 : const Color(0xFFD7CCC8))
                             : (isDark ? kNightCard : const Color(0xFFFFF5F5)),
-                        borderRadius: BorderRadius.circular(14),
+                        borderRadius: BorderRadius.circular(12),
                         border: active
                             ? Border.all(color: kImperialRed, width: 1.5)
                             : null,
                       ),
                       child: ListTile(
+                        dense: true,
                         leading: Icon(
                           active
                               ? Icons.graphic_eq_rounded
@@ -4089,7 +4194,7 @@ class _LessonAudioPlayerScreenState extends State<LessonAudioPlayerScreen> {
                           color: active ? kImperialRed : Colors.grey,
                         ),
                         title: Text(
-                          'Track ${i + 1} ($displayName)',
+                          'Track ${i + 1} ($rawName)',
                           style: TextStyle(
                             fontWeight:
                                 active ? FontWeight.bold : FontWeight.normal,
@@ -4101,66 +4206,82 @@ class _LessonAudioPlayerScreenState extends State<LessonAudioPlayerScreen> {
                   },
                 ),
               ),
+              // Compact Slim Bottom Audio Bar
               Container(
-                padding: const EdgeInsets.fromLTRB(16, 12, 16, 22),
+                padding: const EdgeInsets.fromLTRB(12, 6, 12, 10),
                 decoration: BoxDecoration(
                   color: isDark ? kNightCard : Colors.white,
                   borderRadius:
-                      const BorderRadius.vertical(top: Radius.circular(24)),
+                      const BorderRadius.vertical(top: Radius.circular(18)),
                   boxShadow: [
                     BoxShadow(
                       color: Colors.black.withValues(alpha: 0.1),
-                      blurRadius: 12,
-                      offset: const Offset(0, -3),
+                      blurRadius: 8,
+                      offset: const Offset(0, -2),
                     ),
                   ],
                 ),
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    Slider(
-                      activeColor: kImperialRed,
-                      value: _position.inMilliseconds
-                          .toDouble()
-                          .clamp(0, _duration.inMilliseconds.toDouble() + 1),
-                      max: _duration.inMilliseconds.toDouble() + 1,
-                      onChanged: (v) =>
-                          _player.seek(Duration(milliseconds: v.toInt())),
+                    Row(
+                      children: [
+                        Text(_fmt(_position),
+                            style: const TextStyle(fontSize: 11)),
+                        Expanded(
+                          child: SizedBox(
+                            height: 22,
+                            child: SliderTheme(
+                              data: SliderTheme.of(context).copyWith(
+                                trackHeight: 2.5,
+                                thumbShape: const RoundSliderThumbShape(
+                                    enabledThumbRadius: 6),
+                              ),
+                              child: Slider(
+                                activeColor: kImperialRed,
+                                value: _position.inMilliseconds
+                                    .toDouble()
+                                    .clamp(
+                                        0, _duration.inMilliseconds.toDouble() + 1),
+                                max: _duration.inMilliseconds.toDouble() + 1,
+                                onChanged: (v) => _player
+                                    .seek(Duration(milliseconds: v.toInt())),
+                              ),
+                            ),
+                          ),
+                        ),
+                        Text(_fmt(_duration),
+                            style: const TextStyle(fontSize: 11)),
+                      ],
                     ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 12),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(_fmt(_position),
-                              style: const TextStyle(fontSize: 12)),
-                          Text(isBlurred ? '--:--' : _fmt(_duration),
-                              style: const TextStyle(fontSize: 12)),
-                        ],
-                      ),
-                    ),
-                    const SizedBox(height: 6),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
                         TextButton(
+                          style: TextButton.styleFrom(
+                            minimumSize: const Size(42, 30),
+                            padding: EdgeInsets.zero,
+                          ),
                           onPressed: _cycleSpeed,
                           child: Text(
                             '${_speed}x',
                             style: const TextStyle(
                               fontWeight: FontWeight.bold,
+                              fontSize: 12.5,
                               color: kImperialRed,
                             ),
                           ),
                         ),
                         IconButton(
                           tooltip: '-3s Rewind',
-                          icon: const Icon(Icons.fast_rewind_rounded),
+                          visualDensity: VisualDensity.compact,
+                          icon: const Icon(Icons.fast_rewind_rounded, size: 22),
                           onPressed: _rewind3s,
                         ),
                         IconButton(
+                          visualDensity: VisualDensity.compact,
                           icon: const Icon(Icons.skip_previous_rounded,
-                              size: 30),
+                              size: 26),
                           onPressed: () {
                             if (_trackIndex > 0) {
                               _playTrack(_trackIndex - 1);
@@ -4171,9 +4292,11 @@ class _LessonAudioPlayerScreenState extends State<LessonAudioPlayerScreen> {
                           style: FilledButton.styleFrom(
                             backgroundColor: kImperialRed,
                             shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(16),
+                              borderRadius: BorderRadius.circular(12),
                             ),
-                            padding: const EdgeInsets.all(14),
+                            minimumSize: const Size(46, 38),
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 14, vertical: 8),
                           ),
                           onPressed: () =>
                               _isPlaying ? _player.pause() : _player.play(),
@@ -4181,11 +4304,12 @@ class _LessonAudioPlayerScreenState extends State<LessonAudioPlayerScreen> {
                             _isPlaying
                                 ? Icons.pause_rounded
                                 : Icons.play_arrow_rounded,
-                            size: 30,
+                            size: 24,
                           ),
                         ),
                         IconButton(
-                          icon: const Icon(Icons.skip_next_rounded, size: 30),
+                          visualDensity: VisualDensity.compact,
+                          icon: const Icon(Icons.skip_next_rounded, size: 26),
                           onPressed: () {
                             if (_trackIndex + 1 < _currentTracks.length) {
                               _playTrack(_trackIndex + 1);
@@ -4200,8 +4324,10 @@ class _LessonAudioPlayerScreenState extends State<LessonAudioPlayerScreen> {
                         ),
                         IconButton(
                           tooltip: 'Repeat Single Track',
+                          visualDensity: VisualDensity.compact,
                           icon: Icon(
                             Icons.repeat_one_rounded,
+                            size: 22,
                             color: _singleTrackLoop ? kImperialRed : Colors.grey,
                           ),
                           onPressed: () => setState(
@@ -4678,7 +4804,7 @@ class _StorageManagerScreenState extends State<StorageManagerScreen> {
 }
 
 // ============================================================================
-// 15. SETTINGS & ABOUT SCREEN (WARM CREAM CARDS + FULL RED FACEBOOK BUTTONS)
+// 15. SETTINGS & ABOUT SCREEN (CLEAN + WARM CREAM CARDS + GROUP PHOTOS)
 // ============================================================================
 
 class SettingsScreen extends StatefulWidget {
@@ -4732,14 +4858,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     'Switch between Porcelain White and Dark Theme'),
                 value: widget.appState.isDarkMode,
                 onChanged: widget.appState.toggleDarkMode,
-              ),
-              SwitchListTile(
-                contentPadding: EdgeInsets.zero,
-                title: const Text('Blur Study Hints'),
-                subtitle: const Text(
-                    'Hide/blur audio track names & duration for listening test'),
-                value: widget.appState.blurStudyHints,
-                onChanged: widget.appState.setBlurStudyHints,
               ),
               const Divider(),
               const SizedBox(height: 4),
@@ -5020,4 +5138,4 @@ class _SettingsScreenState extends State<SettingsScreen> {
       },
     );
   }
-}
+}.
