@@ -35,6 +35,18 @@ jobs:
 
       - name: Get Dependencies, Patch All Legacy Plugins & Setup Icons
         run: |
+          python3 -m pip install --quiet Pillow
+          python3 -c '
+          from PIL import Image
+          im = Image.open("assets/icon.png").convert("RGBA")
+          w, h = im.size
+          scale = 0.72
+          nw, nh = int(w * scale), int(h * scale)
+          im_resized = im.resize((nw, nh), Image.Resampling.LANCZOS)
+          canvas = Image.new("RGBA", (w, h), (183, 28, 28, 255))
+          canvas.paste(im_resized, ((w - nw) // 2, (h - nh) // 2), im_resized)
+          canvas.save("assets/icon_padded.png")
+          '
           flutter pub get
           find ~/.pub-cache/hosted/pub.dev -name "build.gradle" -exec sed -i 's/jcenter()/mavenCentral()/g' {} +
           find ~/.pub-cache/hosted/pub.dev -name "build.gradle" -exec sed -i -E 's/compileSdkVersion (3[0-5]|flutter\.compileSdkVersion)/compileSdkVersion 36/g' {} +
