@@ -54,3 +54,4 @@ flutter:
     - assets/vocab/departments.json
     - assets/vocab/daily_nature_a.json
     - assets/vocab/daily_nature_b.json
+    - assets/vocab/hanzi_course_300.json
