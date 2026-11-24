@@ -14,7 +14,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Set up Java 17
-        uses: actions/setup-java@v4
+        uses: setup-java@v4
         with:
           distribution: 'zulu'
           java-version: '17'
@@ -53,12 +53,11 @@ jobs:
           find ~/.pub-cache/hosted/pub.dev -name "build.gradle" -exec sed -i -E 's/compileSdk[[:space:]]*=*[[:space:]]*(3[0-5]|flutter\.compileSdkVersion)/compileSdk = 36/g' {} +
           dart run flutter_launcher_icons
 
-      - name: Configure Android Permissions and Gradle SDK
+      - name: Configure Android Permissions, Background Audio & Gradle SDK
         run: |
           sed -i 's/android:label="[^"]*"/android:label="HSK"/g' android/app/src/main/AndroidManifest.xml
 
           python3 -c '
-          # 1. AndroidManifest.xml এ INTERNET পারমিশন যোগ করা
           m_path = "android/app/src/main/AndroidManifest.xml"
           with open(m_path, "r") as f:
               m = f.read()
@@ -66,15 +65,41 @@ jobs:
           perms = """
               <uses-permission android:name="android.permission.INTERNET"/>
               <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+              <uses-permission android:name="android.permission.WAKE_LOCK"/>
+              <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
+              <uses-permission android:name="android.permission.FOREGROUND_SERVICE_MEDIA_PLAYBACK"/>
           """
 
           if "android.permission.INTERNET" not in m:
               m = m.replace("<application", perms + "\n    <application")
 
+          # MainActivity-কে AudioServiceActivity-তে রূপান্তর (just_audio_background এর জন্য)
+          m = m.replace("android:name=\".MainActivity\"", "android:name=\"com.ryanheise.audioservice.AudioServiceActivity\"")
+
+          bg_services = """
+                  <service
+                      android:name="com.ryanheise.audioservice.AudioService"
+                      android:foregroundServiceType="mediaPlayback"
+                      android:exported="true">
+                      <intent-filter>
+                          <action android:name="android.media.browse.MediaBrowserService" />
+                      </intent-filter>
+                  </service>
+                  <receiver
+                      android:name="com.ryanheise.audioservice.MediaButtonReceiver"
+                      android:exported="true">
+                      <intent-filter>
+                          <action android:name="android.intent.action.MEDIA_BUTTON" />
+                      </intent-filter>
+                  </receiver>
+          """
+
+          if "com.ryanheise.audioservice.AudioService" not in m:
+              m = m.replace("</application>", bg_services + "\n    </application>")
+
           with open(m_path, "w") as f:
               f.write(m)
 
-          # 2. android/app/build.gradle.kts আপডেট করা
           b_path = "android/app/build.gradle.kts"
           with open(b_path, "r") as f:
               c = f.read()
