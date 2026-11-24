@@ -51,6 +51,7 @@ jobs:
           find ~/.pub-cache/hosted/pub.dev -name "build.gradle" -exec sed -i 's/jcenter()/mavenCentral()/g' {} +
           find ~/.pub-cache/hosted/pub.dev -name "build.gradle" -exec sed -i -E 's/compileSdkVersion (3[0-5]|flutter\.compileSdkVersion)/compileSdkVersion 36/g' {} +
           find ~/.pub-cache/hosted/pub.dev -name "build.gradle" -exec sed -i -E 's/compileSdk[[:space:]]*=*[[:space:]]*(3[0-5]|flutter\.compileSdkVersion)/compileSdk = 36/g' {} +
+          find ~/.pub-cache/hosted/pub.dev -name "build.gradle" -exec sed -i 's/compileSdkVersion 35/compileSdkVersion 36/g' {} +
           dart run flutter_launcher_icons
 
       - name: Configure Android Permissions, Background Audio & Gradle SDK
