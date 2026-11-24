@@ -58,3 +58,6 @@ flutter:
     - assets/vocab/daily_nature_a.json
     - assets/vocab/daily_nature_b.json
     - assets/vocab/hanzi_course_300.json
+    - assets/vocab/hsk1_dialogues.json
+    - assets/vocab/hsk2_dialogues.json
+    - assets/vocab/pinin-chart.json
