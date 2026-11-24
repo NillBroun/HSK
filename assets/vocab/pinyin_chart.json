@@ -1,0 +1,184 @@
+{
+  "title": "Mandarin Pinyin Initials & Finals Combination Guide",
+  "subtitle": "ম্যান্ডারিন পিনয়িন ইনিশিয়াল, ফাইনাল ও কম্বিনেশন চার্ট (উচ্চারণসহ)",
+  "initials": [
+    {"code": "b", "bnPron": "পা", "tip": "নরম 'ব' নয়, শক্ত 'প'-এর মতো; শ্বাস কম"},
+    {"code": "p", "bnPron": "ফা", "tip": "একটু জোরে বাতাস ছেড়ে 'ফ/ফা' উচ্চারণ"},
+    {"code": "m", "bnPron": "মা", "tip": "ঠোঁট বন্ধ করে নাকের সুরে 'মা'"},
+    {"code": "f", "bnPron": "ফা", "tip": "উপরের দাঁত নিচের ঠোঁটে ছুঁইয়ে 'ফা'"},
+    {"code": "d", "bnPron": "তা", "tip": "নরম 'দ' নয়, সামনের দিকে 'ত'-এর মতো"},
+    {"code": "t", "bnPron": "থা", "tip": "বাতাস ছেড়ে 'থ/থা'-এর মতো"},
+    {"code": "n", "bnPron": "না", "tip": "জিহ্বার ডগা তালুতে ছুঁইয়ে 'না'"},
+    {"code": "l", "bnPron": "লা", "tip": "স্বচ্ছ 'লা'"},
+    {"code": "g", "bnPron": "কা", "tip": "নরম 'গ' নয়, পেছন থেকে 'ক'-এর মতো"},
+    {"code": "k", "bnPron": "খা", "tip": "বাতাস ছেড়ে 'খ/খা'-এর মতো"},
+    {"code": "h", "bnPron": "হা", "tip": "গলার ভেতর থেকে হালকা 'হা'"},
+    {"code": "j", "bnPron": "চি", "tip": "জিহ্বার সামনের অংশ তালুর কাছে নিয়ে নরম 'চি'"},
+    {"code": "q", "bnPron": "ছি", "tip": "বাতাস ছেড়ে 'ছি'-এর মতো"},
+    {"code": "x", "bnPron": "সি", "tip": "জিহ্বা নিচে রেখে নরম শিসসহ 'সি'"},
+    {"code": "zh", "bnPron": "চ / জ়", "tip": "জিহ্বা সামান্য পেছনে মুড়ে 'চ/জ়'"},
+    {"code": "ch", "bnPron": "ছ / ছ্", "tip": "জিহ্বা পেছনে মুড়ে জোরে বাতাস ছেড়ে 'ছ'"},
+    {"code": "sh", "bnPron": "শ", "tip": "জিহ্বা সামান্য পেছনে নিয়ে 'শ'"},
+    {"code": "r", "bnPron": "র‍্য", "tip": "জিহ্বা না কাঁপিয়ে পেছনে মুড়ে 'র‍্য/র'"},
+    {"code": "z", "bnPron": "চ / জ়", "tip": "দাঁতের পেছনে জিহ্বা রেখে 'চ/জ়'"},
+    {"code": "c", "bnPron": "ছ / ছ্", "tip": "দাঁতের পেছনে বাতাস ছেড়ে 'ছ'"},
+    {"code": "s", "bnPron": "স", "tip": "স্বচ্ছ 'স'"}
+  ],
+  "finals": [
+    {"code": "a", "bnPron": "আ", "example": "a (আ)"},
+    {"code": "o", "bnPron": "ও / উয়ো", "example": "bo (পো)"},
+    {"code": "e", "bnPron": "এ / অ্য", "example": "de (ত্য)"},
+    {"code": "i", "bnPron": "ই", "example": "ni (নি)"},
+    {"code": "u", "bnPron": "উ", "example": "wu (উ)"},
+    {"code": "ü", "bnPron": "ইয়্যু", "example": "nü (নিউ)"},
+    {"code": "ai", "bnPron": "আই", "example": "ài (আই)"},
+    {"code": "ei", "bnPron": "এই", "example": "bēi (পেই)"},
+    {"code": "ao", "bnPron": "আও", "example": "hǎo (হাও)"},
+    {"code": "ou", "bnPron": "ওউ", "example": "gǒu (কৌ)"},
+    {"code": "an", "bnPron": "আন", "example": "kàn (খান)"},
+    {"code": "en", "bnPron": "এন", "example": "hěn (হেন)"},
+    {"code": "ang", "bnPron": "আং", "example": "shàng (শাং)"},
+    {"code": "eng", "bnPron": "এং", "example": "néng (নেং)"},
+    {"code": "ong", "bnPron": "উং", "example": "yùndòng (ইয়্যুন-তোং)"}
+  ],
+  "combinations": [
+    {
+      "initial": "b",
+      "initialBn": "পা",
+      "syllables": [
+        {"final": "a", "pinyin": "ba", "bnPron": "পা"},
+        {"final": "o", "pinyin": "bo", "bnPron": "পো"},
+        {"final": "ai", "pinyin": "bai", "bnPron": "পাই"},
+        {"final": "ei", "pinyin": "bei", "bnPron": "পেই"},
+        {"final": "ao", "pinyin": "bao", "bnPron": "পাও"},
+        {"final": "an", "pinyin": "ban", "bnPron": "পান"},
+        {"final": "en", "pinyin": "ben", "bnPron": "পেন"},
+        {"final": "ang", "pinyin": "bang", "bnPron": "পাং"},
+        {"final": "eng", "pinyin": "beng", "bnPron": "পেং"},
+        {"final": "i", "pinyin": "bi", "bnPron": "পি"},
+        {"final": "u", "pinyin": "bu", "bnPron": "পু"}
+      ]
+    },
+    {
+      "initial": "p",
+      "initialBn": "ফা",
+      "syllables": [
+        {"final": "a", "pinyin": "pa", "bnPron": "ফা"},
+        {"final": "o", "pinyin": "po", "bnPron": "ফো"},
+        {"final": "ai", "pinyin": "pai", "bnPron": "ফাই"},
+        {"final": "ei", "pinyin": "pei", "bnPron": "ফেই"},
+        {"final": "ao", "pinyin": "pao", "bnPron": "ফাও"},
+        {"final": "ou", "pinyin": "pou", "bnPron": "ফৌ"},
+        {"final": "an", "pinyin": "pan", "bnPron": "ফান"},
+        {"final": "en", "pinyin": "pen", "bnPron": "ফেন"},
+        {"final": "ang", "pinyin": "pang", "bnPron": "ফাং"},
+        {"final": "eng", "pinyin": "peng", "bnPron": "ফেং"},
+        {"final": "i", "pinyin": "pi", "bnPron": "ফি"},
+        {"final": "u", "pinyin": "pu", "bnPron": "ফু"}
+      ]
+    },
+    {
+      "initial": "m",
+      "initialBn": "মা",
+      "syllables": [
+        {"final": "a", "pinyin": "ma", "bnPron": "মা"},
+        {"final": "o", "pinyin": "mo", "bnPron": "মো"},
+        {"final": "e", "pinyin": "me", "bnPron": "ম্য"},
+        {"final": "ai", "pinyin": "mai", "bnPron": "মাই"},
+        {"final": "ei", "pinyin": "mei", "bnPron": "মেই"},
+        {"final": "ao", "pinyin": "mao", "bnPron": "মাও"},
+        {"final": "ou", "pinyin": "mou", "bnPron": "মৌ"},
+        {"final": "an", "pinyin": "man", "bnPron": "মান"},
+        {"final": "en", "pinyin": "men", "bnPron": "মেন"},
+        {"final": "ang", "pinyin": "mang", "bnPron": "মাং"},
+        {"final": "eng", "pinyin": "meng", "bnPron": "মেং"},
+        {"final": "i", "pinyin": "mi", "bnPron": "মি"},
+        {"final": "u", "pinyin": "mu", "bnPron": "মু"}
+      ]
+    },
+    {
+      "initial": "d",
+      "initialBn": "তা",
+      "syllables": [
+        {"final": "a", "pinyin": "da", "bnPron": "তা"},
+        {"final": "e", "pinyin": "de", "bnPron": "ত্য"},
+        {"final": "ai", "pinyin": "dai", "bnPron": "তাই"},
+        {"final": "ei", "pinyin": "dei", "bnPron": "তেই"},
+        {"final": "ao", "pinyin": "dao", "bnPron": "তাও"},
+        {"final": "ou", "pinyin": "dou", "bnPron": "তোউ"},
+        {"final": "an", "pinyin": "dan", "bnPron": "তান"},
+        {"final": "ang", "pinyin": "dang", "bnPron": "তাং"},
+        {"final": "eng", "pinyin": "deng", "bnPron": "তেং"},
+        {"final": "ong", "pinyin": "dong", "bnPron": "তুং"},
+        {"final": "i", "pinyin": "di", "bnPron": "তি"},
+        {"final": "u", "pinyin": "du", "bnPron": "তু"}
+      ]
+    },
+    {
+      "initial": "t",
+      "initialBn": "থা",
+      "syllables": [
+        {"final": "a", "pinyin": "ta", "bnPron": "থা"},
+        {"final": "e", "pinyin": "te", "bnPron": "থ্য"},
+        {"final": "ai", "pinyin": "tai", "bnPron": "থাই"},
+        {"final": "ao", "pinyin": "tao", "bnPron": "থাও"},
+        {"final": "ou", "pinyin": "tou", "bnPron": "থৌ"},
+        {"final": "an", "pinyin": "tan", "bnPron": "থান"},
+        {"final": "ang", "pinyin": "tang", "bnPron": "থাং"},
+        {"final": "eng", "pinyin": "teng", "bnPron": "থেং"},
+        {"final": "ong", "pinyin": "tong", "bnPron": "থুং"},
+        {"final": "i", "pinyin": "ti", "bnPron": "থি"},
+        {"final": "u", "pinyin": "tu", "bnPron": "থু"}
+      ]
+    },
+    {
+      "initial": "g",
+      "initialBn": "কা",
+      "syllables": [
+        {"final": "a", "pinyin": "ga", "bnPron": "কা"},
+        {"final": "e", "pinyin": "ge", "bnPron": "ক্য"},
+        {"final": "ai", "pinyin": "gai", "bnPron": "কাই"},
+        {"final": "ei", "pinyin": "gei", "bnPron": "কেই"},
+        {"final": "ao", "pinyin": "gao", "bnPron": "কাও"},
+        {"final": "ou", "pinyin": "gou", "bnPron": "কৌ"},
+        {"final": "an", "pinyin": "gan", "bnPron": "কান"},
+        {"final": "en", "pinyin": "gen", "bnPron": "কেন"},
+        {"final": "ang", "pinyin": "gang", "bnPron": "কাং"},
+        {"final": "eng", "pinyin": "geng", "bnPron": "কেং"},
+        {"final": "ong", "pinyin": "gong", "bnPron": "কুং"},
+        {"final": "u", "pinyin": "gu", "bnPron": "কু"}
+      ]
+    },
+    {
+      "initial": "k",
+      "initialBn": "খা",
+      "syllables": [
+        {"final": "a", "pinyin": "ka", "bnPron": "খা"},
+        {"final": "e", "pinyin": "ke", "bnPron": "খ্য"},
+        {"final": "ai", "pinyin": "kai", "bnPron": "খাই"},
+        {"final": "ao", "pinyin": "kao", "bnPron": "খাও"},
+        {"final": "ou", "pinyin": "kou", "bnPron": "খৌ"},
+        {"final": "an", "pinyin": "kan", "bnPron": "খান"},
+        {"final": "en", "pinyin": "ken", "bnPron": "খেন"},
+        {"final": "ang", "pinyin": "kang", "bnPron": "খাং"},
+        {"final": "eng", "pinyin": "keng", "bnPron": "খেং"},
+        {"final": "ong", "pinyin": "kong", "bnPron": "খুং"},
+        {"final": "u", "pinyin": "ku", "bnPron": "খু"}
+      ]
+    }
+  ],
+  "rules": [
+    {
+      "title": "j, q, x এর সাথে ü এর নিয়ম",
+      "detail": "j, q, x এর সাথে ü বসলে লেখার সময় দুটি ফোঁটা বাদ দিয়ে u লেখা হয় (যেমন ju, qu, xu), কিন্তু উচ্চারণ ü-এর মতোই থাকে।"
+    },
+    {
+      "title": "সব কম্বিনেশন একসাথে হয় না",
+      "detail": "Initial আর Final-এর প্রতিটি জোড়া বাস্তব শব্দে ব্যবহৃত হয় না; চার্টে যে কম্বিনেশনগুলো আছে, শুধু সেগুলোই প্রচলিত উচ্চারণ।"
+    },
+    {
+      "title": "টোন বদলালে অর্থ বদলায়",
+      "detail": "একই পিনয়িন সিলেবলকে ১ম, ২য়, ৩য় বা ৪র্থ টোনে উচ্চারণ করলে শব্দের অর্থ ভিন্ন হয়ে যায়।"
+    }
+  ]
+}
