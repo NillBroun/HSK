@@ -17,7 +17,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 const String kGithubReleaseBaseUrl =
-    '[https://github.com/NillBroun/HSK/releases/download/v1.0.0/](https://github.com/NillBroun/HSK/releases/download/v1.0.0/)';
+    'https://github.com/NillBroun/HSK/releases/download/v1.0.0/';
 
 const Color kImperialRed = Color(0xFFB71C1C);
 const Color kImperialDeepRed = Color(0xFF7F0000);
