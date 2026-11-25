@@ -1,7 +1,7 @@
 name: hsk_study_app
 description: HSK 1-6 Offline Mandarin Study Companion by AHM
 publish_to: 'none'
-version: 1.2.2+3
+version: 1.2.3+4
 
 environment:
   sdk: '>=3.2.0 <4.0.0'
@@ -59,4 +59,5 @@ flutter:
     - assets/vocab/hanzi_course_300.json
     - assets/vocab/hsk1_dialogues.json
     - assets/vocab/hsk2_dialogues.json
+    - assets/vocab/hsk3_dialogues.json
     - assets/vocab/pinyin_chart.json
