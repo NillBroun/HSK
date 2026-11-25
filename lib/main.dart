@@ -34,6 +34,95 @@ Future<void> main() async {
       androidNotificationChannelId: 'com.ahm.hsk.channel.audio',
       androidNotificationChannelName: 'HSK Study Audio',
       androidNotificationOngoing: true,
+      androidStopForegroundOnPause: false,
+    );
+  } catch (_) {}
+  runApp(const HskApp());
+}
+
+// ============================================================================
+// 1. DATA MODELS
+// ============================================================================
+
+class VocabWord {
+  final String hanzi;
+  final String pinyin;
+  final String en;
+  final String bn;
+  final String pron;
+  final String tag;
+  final String groupId;
+  final String groupTitle;
+
+  const VocabWord({
+    required this.hanzi,
+    required this.pinyin,
+    required this.en,
+    required this.bn,
+    required this.pron,
+    required this.tag,
+    required this.groupId,
+    required this.groupTitle,
+  });
+
+  String get uniqueKey => '$groupId::$hanzi::$pinyin';
+
+  factory VocabWord.fromJson(
+    Map<String, dynamic> json,
+    String groupId,
+    String groupTitle,
+  ) {
+    return VocabWord(
+সম্পূর্ণ `lib/main.dart` ফাইলটি পেয়েছি বন্ধু! তোমার সবগুলো আপডেট (`v1.2.2+3`):
+1. **স্মার্ট গ্লোবাল মিনি অডিও প্লেয়ার (`GlobalMiniAudioBar`):** অ্যাপের যেকোনো স্ক্রিনে অডিও চলতে থাকলে নিচে ভাসমান মিনি প্লেয়ার বার দেখাবে (যেখানে লেসন নাম, ট্র্যাক নাম, **-3s রিওয়াইন্ড**, **Play/Pause**, **Next Track** এবং **Close (`×`)** বাটন থাকবে)—শুধুমাত্র **PDF Reader** স্ক্রিনে এটি স্বয়ংক্রিয়ভাবে লুকিয়ে যাবে যাতে PDF-এর নিজস্ব অডিও বারের সাথে কোনো ঝামেলা না হয়।
+2. **লক-স্ক্রিন ও নোটিফিকেশন ড্রয়ার কন্ট্রোল:** নোটিফিকেশন প্যানেল ও লক-স্ক্রিনে সরাসরি **Play / Pause / Next / Previous** বাটন থাকবে এবং `stopAudio()` যুক্ত করা হয়েছে।
+3. **৩-ধাপের ফ্লিপ হ্যান্ডরাইটিং (`HanziWritingCourseScreen`):**
+   * **ধাপ ১ (ট্রেসিং মোড):** গ্রিডের দাগের ভেতরে ঝাপসা অক্ষর (**Watermark**) থাকবে।
+   * **ধাপ ২ (নিজে লিখুন / Flip মোড):** **"নিজে লিখুন"** বাটনে চাপ দিলে বক্সটি ৩ডি ফ্লিপ করে উল্টে যাবে—**গ্রিডের দাগগুলো ঠিকই থাকবে**, শুধু ভেতরের ঝাপসা অক্ষরটি মুছে যাবে।
+   * **ধাপ ৩ (Check মোড):** লেখার পর **Check** বাটনে চাপ দিলে কোনো স্বয়ংক্রিয় "চমৎকার হয়েছে" মেসেজ আসবে না—বরং হাতের লেখার নিচে আসল অক্ষরটি **গাঢ় ও রঙিন (`kImperialRed`)** হয়ে ভেসে উঠবে, যাতে নিজেই চোখে দেখে মিলিয়ে নেওয়া যায়।
+4. **স্ট্রোক কার্ড পরিষ্কারকরণ:** `নিচের ক্রম দেখে লিখুন` লেখাটি বাদ দেওয়া হয়েছে এবং নিচের বক্সগুলোতে কোনো বাংলা টেক্সট ছাড়াই **শুধুমাত্র বড় ফন্টে চায়নিজ স্ট্রোক চিহ্নগুলো (`亅`, `㇇`, `ノ` ইত্যাদি)** দেখাবে।
+
+তোমার সুবিধার জন্য পুরো আপডেটেড `lib/main.dart` কোডটি **৩ ধাপে ভাগ করে** দিচ্ছি। নিচে **ধাপ ১ (Part 1 of 3)** দিলাম—এটি পেস্ট করে আমাকে জানাও, সাথে সাথে **ধাপ ২** দিয়ে দেব!
+
+```dart
+import 'dart:async';
+import 'dart:convert';
+import 'dart:io';
+import 'dart:math' as math;
+
+import 'package:archive/archive.dart';
+import 'package:audio_session/audio_session.dart';
+import 'package:file_picker/file_picker.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:http/http.dart' as http;
+import 'package:just_audio/just_audio.dart';
+import 'package:just_audio_background/just_audio_background.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:pdfx/pdfx.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:url_launcher/url_launcher.dart';
+
+const String kGithubReleaseBaseUrl =
+    '[https://github.com/NillBroun/HSK/releases/download/v1.0.0/](https://github.com/NillBroun/HSK/releases/download/v1.0.0/)';
+
+const Color kImperialRed = Color(0xFFB71C1C);
+const Color kImperialDeepRed = Color(0xFF7F0000);
+const Color kImperialGold = Color(0xFFD4AF37);
+const Color kPorcelainWhite = Color(0xFFF9F7F2);
+const Color kWarmCream = Color(0xFFF7F2E9);
+const Color kNightDark = Color(0xFF121212);
+const Color kNightCard = Color(0xFF1E1E1E);
+
+final GlobalKey<NavigatorState> kRootNavigatorKey = GlobalKey<NavigatorState>();
+
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  try {
+    await JustAudioBackground.init(
+      androidNotificationChannelId: 'com.ahm.hsk.channel.audio',
+      androidNotificationChannelName: 'HSK Study Audio',
+      androidNotificationOngoing: true,
     );
   } catch (_) {}
   runApp(const HskApp());
@@ -884,7 +973,7 @@ Future<bool> showConfirmDeleteDialog(
 }
 
 // ============================================================================
-// 4. GLOBAL BACKGROUND AUDIO SERVICE (LOCK-SCREEN & BLUETOOTH HEADSET)
+// 4. GLOBAL BACKGROUND AUDIO SERVICE (LOCK-SCREEN & GLOBAL MINI PLAYER)
 // ============================================================================
 
 class GlobalAudioService extends ChangeNotifier {
@@ -907,6 +996,12 @@ class GlobalAudioService extends ChangeNotifier {
   bool allLessonsContinuous = false;
   int shadowingGapSeconds = 0;
   bool _waitingGap = false;
+
+  /// Automatically hides global mini-player when PDF reader or full audio player is open
+  bool hideGlobalMiniPlayer = false;
+
+  /// Explicitly dismissed by user via Close (×) button on global mini-player
+  bool isMiniPlayerDismissed = false;
 
   Duration position = Duration.zero;
   Duration duration = Duration.zero;
@@ -945,6 +1040,23 @@ class GlobalAudioService extends ChangeNotifier {
 
   bool get hasLoadedLesson => currentTracks.isNotEmpty;
 
+  bool get shouldShowGlobalMiniPlayer =>
+      hasLoadedLesson && !hideGlobalMiniPlayer && !isMiniPlayerDismissed;
+
+  void setHideGlobalMiniPlayer(bool hide) {
+    if (hideGlobalMiniPlayer == hide) return;
+    hideGlobalMiniPlayer = hide;
+    notifyListeners();
+  }
+
+  Future<void> dismissAndStopMiniPlayer() async {
+    isMiniPlayerDismissed = true;
+    await player.stop();
+    isPlaying = false;
+    position = Duration.zero;
+    notifyListeners();
+  }
+
   Future<void> _init() async {
     try {
       final session = await AudioSession.instance;
@@ -965,6 +1077,9 @@ class GlobalAudioService extends ChangeNotifier {
 
     player.playingStream.listen((playing) {
       isPlaying = playing;
+      if (playing) {
+        isMiniPlayerDismissed = false;
+      }
       notifyListeners();
     });
 
@@ -998,6 +1113,7 @@ class GlobalAudioService extends ChangeNotifier {
     this.allLessonTracks = allLessonTracks;
     this.lessonIndex = lessonIndex.clamp(0, allLessonNames.length - 1);
     trackIndex = initialTrackIndex;
+    isMiniPlayerDismissed = false;
 
     final tracks = currentTracks;
     if (tracks.isEmpty) return;
@@ -1077,6 +1193,7 @@ class GlobalAudioService extends ChangeNotifier {
     if (currentTracks.isEmpty) return;
     final safe = idx.clamp(0, currentTracks.length - 1);
     trackIndex = safe;
+    isMiniPlayerDismissed = false;
     await player.seek(Duration.zero, index: safe);
     await player.play();
     _notifyProgressSaved();
@@ -1087,6 +1204,7 @@ class GlobalAudioService extends ChangeNotifier {
     if (isPlaying) {
       await player.pause();
     } else {
+      isMiniPlayerDismissed = false;
       await player.play();
     }
     notifyListeners();
@@ -1372,7 +1490,7 @@ class AppState extends ChangeNotifier {
 }
 
 // ============================================================================
-// 6. ROOT APPLICATION
+// 6. ROOT APPLICATION & GLOBAL FLOATING MINI AUDIO PLAYER
 // ============================================================================
 
 class HskApp extends StatefulWidget {
@@ -1430,12 +1548,233 @@ class _HskAppState extends State<HskApp> {
         );
 
         return MaterialApp(
+          navigatorKey: kRootNavigatorKey,
           title: 'HSK Study • AHM',
           debugShowCheckedModeBanner: false,
           theme: lightTheme,
           darkTheme: darkTheme,
           themeMode: _state.isDarkMode ? ThemeMode.dark : ThemeMode.light,
+          builder: (context, child) {
+            return GlobalMiniAudioShell(
+              appState: _state,
+              child: child ?? const SizedBox.shrink(),
+            );
+          },
           home: HomeScreen(appState: _state),
+        );
+      },
+    );
+  }
+}
+
+class GlobalMiniAudioShell extends StatelessWidget {
+  final AppState appState;
+  final Widget child;
+
+  const GlobalMiniAudioShell({
+    super.key,
+    required this.appState,
+    required this.child,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final audio = GlobalAudioService.instance;
+    return AnimatedBuilder(
+      animation: Listenable.merge([appState, audio]),
+      builder: (context, _) {
+        final showBar = audio.shouldShowGlobalMiniPlayer;
+        final isDark = appState.isDarkMode;
+
+        return Column(
+          children: [
+            Expanded(child: child),
+            if (showBar)
+              Material(
+                elevation: 12,
+                color: isDark ? const Color(0xFF261717) : const Color(0xFFFFEFEF),
+                child: SafeArea(
+                  top: false,
+                  child: Container(
+                    padding: const EdgeInsets.fromLTRB(12, 6, 8, 8),
+                    decoration: BoxDecoration(
+                      border: Border(
+                        top: BorderSide(
+                          color: kImperialRed.withValues(alpha: 0.45),
+                          width: 1.4,
+                        ),
+                      ),
+                    ),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        SizedBox(
+                          height: 12,
+                          child: SliderTheme(
+                            data: SliderTheme.of(context).copyWith(
+                              trackHeight: 2.2,
+                              thumbShape: const RoundSliderThumbShape(
+                                  enabledThumbRadius: 4.5),
+                              overlayShape: SliderComponentShape.noOverlay,
+                            ),
+                            child: Slider(
+                              activeColor: kImperialRed,
+                              value: audio.position.inMilliseconds
+                                  .toDouble()
+                                  .clamp(
+                                      0,
+                                      audio.duration.inMilliseconds.toDouble() +
+                                          1),
+                              max: audio.duration.inMilliseconds.toDouble() + 1,
+                              onChanged: (v) => audio.player
+                                  .seek(Duration(milliseconds: v.toInt())),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(height: 2),
+                        Row(
+                          children: [
+                            InkWell(
+                              borderRadius: BorderRadius.circular(10),
+                              onTap: () {
+                                final nav = kRootNavigatorKey.currentState;
+                                if (nav != null &&
+                                    audio.allLessonNames.isNotEmpty) {
+                                  nav.push(
+                                    MaterialPageRoute(
+                                      builder: (_) => LessonAudioPlayerScreen(
+                                        courseId: audio.courseId,
+                                        courseTitle: audio.courseTitle,
+                                        allLessonNames: audio.allLessonNames,
+                                        allLessonTracks: audio.allLessonTracks,
+                                        initialLessonIndex: audio.lessonIndex,
+                                        appState: appState,
+                                      ),
+                                    ),
+                                  );
+                                }
+                              },
+                              child: Container(
+                                padding: const EdgeInsets.all(7),
+                                decoration: BoxDecoration(
+                                  color: kImperialRed.withValues(alpha: 0.14),
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                                child: const Icon(
+                                  Icons.headphones_rounded,
+                                  color: kImperialRed,
+                                  size: 20,
+                                ),
+                              ),
+                            ),
+                            const SizedBox(width: 9),
+                            Expanded(
+                              child: InkWell(
+                                onTap: () {
+                                  final nav = kRootNavigatorKey.currentState;
+                                  if (nav != null &&
+                                      audio.allLessonNames.isNotEmpty) {
+                                    nav.push(
+                                      MaterialPageRoute(
+                                        builder: (_) => LessonAudioPlayerScreen(
+                                          courseId: audio.courseId,
+                                          courseTitle: audio.courseTitle,
+                                          allLessonNames: audio.allLessonNames,
+                                          allLessonTracks:
+                                              audio.allLessonTracks,
+                                          initialLessonIndex: audio.lessonIndex,
+                                          appState: appState,
+                                        ),
+                                      ),
+                                    );
+                                  }
+                                },
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    Text(
+                                      '${audio.courseTitle} • ${audio.currentLessonName}',
+                                      maxLines: 1,
+                                      overflow: TextOverflow.ellipsis,
+                                      style: TextStyle(
+                                        fontSize: 12.5,
+                                        fontWeight: FontWeight.bold,
+                                        color: isDark
+                                            ? const Color(0xFFEF5350)
+                                            : kImperialRed,
+                                      ),
+                                    ),
+                                    Text(
+                                      'Track ${audio.trackIndex + 1}/${audio.currentTracks.length} (${audio.currentTrackCleanName})',
+                                      maxLines: 1,
+                                      overflow: TextOverflow.ellipsis,
+                                      style: TextStyle(
+                                        fontSize: 11,
+                                        color: isDark
+                                            ? Colors.white70
+                                            : Colors.black87,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                            IconButton(
+                              tooltip: '-3s Rewind',
+                              visualDensity: VisualDensity.compact,
+                              padding: EdgeInsets.zero,
+                              constraints: const BoxConstraints(
+                                  minWidth: 32, minHeight: 32),
+                              icon: const Icon(Icons.replay_5_rounded, size: 20),
+                              onPressed: () => audio.rewindSeconds(3),
+                            ),
+                            IconButton(
+                              tooltip: audio.isPlaying ? 'Pause' : 'Play',
+                              visualDensity: VisualDensity.compact,
+                              padding: EdgeInsets.zero,
+                              constraints: const BoxConstraints(
+                                  minWidth: 36, minHeight: 36),
+                              icon: Icon(
+                                audio.isPlaying
+                                    ? Icons.pause_circle_filled_rounded
+                                    : Icons.play_circle_filled_rounded,
+                                color: kImperialRed,
+                                size: 32,
+                              ),
+                              onPressed: audio.togglePlayPause,
+                            ),
+                            IconButton(
+                              tooltip: 'Next Track',
+                              visualDensity: VisualDensity.compact,
+                              padding: EdgeInsets.zero,
+                              constraints: const BoxConstraints(
+                                  minWidth: 32, minHeight: 32),
+                              icon: const Icon(Icons.skip_next_rounded,
+                                  size: 21),
+                              onPressed: audio.nextTrack,
+                            ),
+                            IconButton(
+                              tooltip: 'Close Mini Player',
+                              visualDensity: VisualDensity.compact,
+                              padding: EdgeInsets.zero,
+                              constraints: const BoxConstraints(
+                                  minWidth: 30, minHeight: 30),
+                              icon: Icon(
+                                Icons.close_rounded,
+                                size: 19,
+                                color: isDark ? Colors.white60 : Colors.black54,
+                              ),
+                              onPressed: audio.dismissAndStopMiniPlayer,
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+          ],
         );
       },
     );
@@ -2147,7 +2486,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
                 SizedBox(height: 6),
                 Text(
-                  'Curated by AHM • v1.2.1',
+                  'Curated by AHM • v1.2.2',
                   style: TextStyle(color: Colors.white70, fontSize: 12),
                 ),
               ],
@@ -2180,11 +2519,9 @@ class _HomeScreenState extends State<HomeScreen> {
             },
           ),
           const Divider(),
-          // Dialogues & Pinyin Combination Chart Section
           ExpansionTile(
             initiallyExpanded: false,
-            leading:
-                const Icon(Icons.forum_rounded, color: kImperialRed),
+            leading: const Icon(Icons.forum_rounded, color: kImperialRed),
             title: const Text(
               'Dialogues & Pinyin Chart',
               style: boldDrawerTitle,
@@ -2260,7 +2597,6 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ],
           ),
-          // 1. HSK 1-6 Vocabulary Bank
           ExpansionTile(
             initiallyExpanded: false,
             leading: const Icon(Icons.school_rounded, color: kImperialRed),
@@ -2285,11 +2621,11 @@ class _HomeScreenState extends State<HomeScreen> {
                             style: const TextStyle(fontWeight: FontWeight.w600),
                           ),
                           subtitle: Text('${g.words.length} Words'),
-                          trailing: widget.appState
-                                  .isAnySlicePinnedForGroup(g.id)
-                              ? const Icon(Icons.star_rounded,
-                                  color: Colors.amber, size: 18)
-                              : null,
+                          trailing:
+                              widget.appState.isAnySlicePinnedForGroup(g.id)
+                                  ? const Icon(Icons.star_rounded,
+                                      color: Colors.amber, size: 18)
+                                  : null,
                           onTap: () {
                             Navigator.pop(context);
                             _openGroup(g);
@@ -2297,7 +2633,6 @@ class _HomeScreenState extends State<HomeScreen> {
                         ))
                     .toList(),
           ),
-          // 2. Professions & Designations
           ExpansionTile(
             initiallyExpanded: false,
             leading: const Icon(Icons.work_rounded, color: kImperialRed),
@@ -2322,11 +2657,11 @@ class _HomeScreenState extends State<HomeScreen> {
                             style: const TextStyle(fontWeight: FontWeight.w600),
                           ),
                           subtitle: Text(g.subtitle),
-                          trailing: widget.appState
-                                  .isAnySlicePinnedForGroup(g.id)
-                              ? const Icon(Icons.star_rounded,
-                                  color: Colors.amber, size: 18)
-                              : null,
+                          trailing:
+                              widget.appState.isAnySlicePinnedForGroup(g.id)
+                                  ? const Icon(Icons.star_rounded,
+                                      color: Colors.amber, size: 18)
+                                  : null,
                           onTap: () {
                             Navigator.pop(context);
                             _openGroup(g);
@@ -2334,7 +2669,6 @@ class _HomeScreenState extends State<HomeScreen> {
                         ))
                     .toList(),
           ),
-          // 3. Daily Life & Nature
           ExpansionTile(
             initiallyExpanded: false,
             leading: const Icon(Icons.eco_rounded, color: kImperialRed),
@@ -2359,11 +2693,11 @@ class _HomeScreenState extends State<HomeScreen> {
                             style: const TextStyle(fontWeight: FontWeight.w600),
                           ),
                           subtitle: Text(g.subtitle),
-                          trailing: widget.appState
-                                  .isAnySlicePinnedForGroup(g.id)
-                              ? const Icon(Icons.star_rounded,
-                                  color: Colors.amber, size: 18)
-                              : null,
+                          trailing:
+                              widget.appState.isAnySlicePinnedForGroup(g.id)
+                                  ? const Icon(Icons.star_rounded,
+                                      color: Colors.amber, size: 18)
+                                  : null,
                           onTap: () {
                             Navigator.pop(context);
                             _openGroup(g);
@@ -2371,7 +2705,6 @@ class _HomeScreenState extends State<HomeScreen> {
                         ))
                     .toList(),
           ),
-          // 4. Hanzi Writing Course
           ListTile(
             leading: const Icon(Icons.brush_rounded, color: kImperialRed),
             title: const Text('Hanzi Writing Course', style: boldDrawerTitle),
@@ -2388,7 +2721,6 @@ class _HomeScreenState extends State<HomeScreen> {
             },
           ),
           const Divider(),
-          // 5. Settings & About
           ListTile(
             leading: const Icon(Icons.settings_rounded),
             title: const Text('Settings & About', style: boldDrawerTitle),
@@ -2409,7 +2741,7 @@ class _HomeScreenState extends State<HomeScreen> {
 }
 
 // ============================================================================
-// 7B. HSK 1 & HSK 2 DIALOGUES SCREEN (NEW WORDS ON TOP + DIALOGUE BELOW)
+// 7B. HSK 1 & HSK 2 DIALOGUES SCREEN
 // ============================================================================
 
 class DialogueCourseScreen extends StatefulWidget {
@@ -2468,7 +2800,7 @@ class _DialogueCourseScreenState extends State<DialogueCourseScreen> {
                 final c = widget.chapters[i];
                 final selected = i == _selectedChapterIdx;
                 return ChoiceChip(
-                  label: Text('অধ্যায় ${c.chapter}'),
+                  label: Text('অধ্যায় ${c.chapter}'),
                   selected: selected,
                   onSelected: (_) => setState(() => _selectedChapterIdx = i),
                 );
@@ -2599,74 +2931,69 @@ class _DialogueCourseScreenState extends State<DialogueCourseScreen> {
                                   : const Color(0xFFFAF7F2),
                               borderRadius: BorderRadius.circular(12),
                             ),
-                            child: Column(
+                            child: Row(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Row(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    CircleAvatar(
-                                      radius: 13,
-                                      backgroundColor: d.speaker == 'A'
-                                          ? kImperialRed
-                                          : const Color(0xFF2E7D32),
-                                      foregroundColor: Colors.white,
-                                      child: Text(
-                                        d.speaker,
+                                CircleAvatar(
+                                  radius: 13,
+                                  backgroundColor: d.speaker == 'A'
+                                      ? kImperialRed
+                                      : const Color(0xFF2E7D32),
+                                  foregroundColor: Colors.white,
+                                  child: Text(
+                                    d.speaker,
+                                    style: const TextStyle(
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ),
+                                const SizedBox(width: 10),
+                                Expanded(
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        d.hanzi,
                                         style: const TextStyle(
-                                          fontSize: 12,
+                                          fontSize: 18,
                                           fontWeight: FontWeight.bold,
                                         ),
                                       ),
-                                    ),
-                                    const SizedBox(width: 10),
-                                    Expanded(
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Text(
-                                            d.hanzi,
-                                            style: const TextStyle(
-                                              fontSize: 18,
-                                              fontWeight: FontWeight.bold,
-                                            ),
-                                          ),
-                                          const SizedBox(height: 2),
-                                          Text(
-                                            '${d.pinyin}  (${d.pron})',
-                                            style: TextStyle(
-                                              fontSize: 13.5,
-                                              fontWeight: FontWeight.w600,
-                                              color: isDark
-                                                  ? const Color(0xFFEF5350)
-                                                  : kImperialRed,
-                                            ),
-                                          ),
-                                          const SizedBox(height: 3),
-                                          Text(
-                                            d.bn,
-                                            style: const TextStyle(
-                                              fontSize: 14,
-                                              fontWeight: FontWeight.bold,
-                                            ),
-                                          ),
-                                          if (d.wordByWord.isNotEmpty) ...[
-                                            const SizedBox(height: 4),
-                                            Text(
-                                              'শব্দে শব্দে: ${d.wordByWord}',
-                                              style: TextStyle(
-                                                fontSize: 12,
-                                                color: isDark
-                                                    ? Colors.white60
-                                                    : Colors.black54,
-                                              ),
-                                            ),
-                                          ],
-                                        ],
+                                      const SizedBox(height: 2),
+                                      Text(
+                                        '${d.pinyin}  (${d.pron})',
+                                        style: TextStyle(
+                                          fontSize: 13.5,
+                                          fontWeight: FontWeight.w600,
+                                          color: isDark
+                                              ? const Color(0xFFEF5350)
+                                              : kImperialRed,
+                                        ),
                                       ),
-                                    ),
-                                  ],
+                                      const SizedBox(height: 3),
+                                      Text(
+                                        d.bn,
+                                        style: const TextStyle(
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                      if (d.wordByWord.isNotEmpty) ...[
+                                        const SizedBox(height: 4),
+                                        Text(
+                                          'শব্দে শব্দে: ${d.wordByWord}',
+                                          style: TextStyle(
+                                            fontSize: 12,
+                                            color: isDark
+                                                ? Colors.white60
+                                                : Colors.black54,
+                                          ),
+                                        ),
+                                      ],
+                                    ],
+                                  ),
                                 ),
                               ],
                             ),
@@ -2684,7 +3011,7 @@ class _DialogueCourseScreenState extends State<DialogueCourseScreen> {
 }
 
 // ============================================================================
-// 7C. PINYIN INITIALS & FINALS COMBINATION CHART SCREEN (pinin-chart.json)
+// 7C. PINYIN INITIALS & FINALS COMBINATION CHART SCREEN
 // ============================================================================
 
 class PinyinChartScreen extends StatelessWidget {
@@ -2738,7 +3065,6 @@ class PinyinChartScreen extends StatelessWidget {
         ),
         body: TabBarView(
           children: [
-            // Tab 1: Combinations Matrix
             ListView.builder(
               padding: const EdgeInsets.all(14),
               itemCount: data.combinations.length,
@@ -2817,7 +3143,6 @@ class PinyinChartScreen extends StatelessWidget {
                 );
               },
             ),
-            // Tab 2: 21 Initials
             ListView.builder(
               padding: const EdgeInsets.all(14),
               itemCount: data.initials.length,
@@ -2843,7 +3168,6 @@ class PinyinChartScreen extends StatelessWidget {
                 );
               },
             ),
-            // Tab 3: 36 Finals
             ListView.builder(
               padding: const EdgeInsets.all(14),
               itemCount: data.finals.length,
@@ -2870,7 +3194,6 @@ class PinyinChartScreen extends StatelessWidget {
                 );
               },
             ),
-            // Tab 4: Tones & Rules
             ListView(
               padding: const EdgeInsets.all(14),
               children: [
@@ -2895,7 +3218,7 @@ class PinyinChartScreen extends StatelessWidget {
                     )),
                 const SizedBox(height: 14),
                 const Text(
-                  'Important Pinyin Rules (গুরুত্বপূর্ণ নিয়মাবলি)',
+                  'Important Pinyin Rules (গুরুত্বপূর্ণ নিয়মাবলি)',
                   style: TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.bold,
@@ -3018,7 +3341,7 @@ class PartSelectionScreen extends StatelessWidget {
 }
 
 // ============================================================================
-// 9. VOCABULARY LIST SCREEN (SMART LESSON/CATEGORY FAVORITE + FILTER)
+// 9. VOCABULARY LIST SCREEN
 // ============================================================================
 
 class VocabListScreen extends StatefulWidget {
@@ -3161,7 +3484,8 @@ class _VocabListScreenState extends State<VocabListScreen> {
                 ),
               Expanded(
                 child: words.isEmpty
-                    ? const Center(child: Text('No words found in this category.'))
+                    ? const Center(
+                        child: Text('No words found in this category.'))
                     : ListView.builder(
                         padding: const EdgeInsets.all(14),
                         itemCount: words.length,
@@ -4011,7 +4335,7 @@ class _FullScreenFavoriteWritingScreenState
 }
 
 // ============================================================================
-// 10C. HANZI WRITING COURSE SCREEN (TOP STROKE STEPS + CLEAN BOTTOM GRID)
+// 10C. HANZI WRITING COURSE SCREEN (3-STEP FLIP: TRACE -> SELF-TEST -> CHECK)
 // ============================================================================
 
 class HanziWritingCourseScreen extends StatefulWidget {
@@ -4023,14 +4347,22 @@ class HanziWritingCourseScreen extends StatefulWidget {
       _HanziWritingCourseScreenState();
 }
 
-class _HanziWritingCourseScreenState extends State<HanziWritingCourseScreen> {
+class _HanziWritingCourseScreenState extends State<HanziWritingCourseScreen>
+    with SingleTickerProviderStateMixin {
   int _chapterIdx = 0;
   int _charIdx = 0;
   int _activeStep = 0;
   final List<List<Offset>> _strokes = [];
   List<Offset> _currentStroke = [];
-  String? _statusMsg;
-  bool _isError = false;
+
+  /// Step 1 (false): Watermark trace mode | Step 2 (true): Self-test blank grid
+  bool _isSelfTestMode = false;
+
+  /// Step 3: Bold colored reference character revealed behind strokes on Check
+  bool _showColoredCheckChar = false;
+
+  late AnimationController _flipController;
+  late Animation<double> _flipAnimation;
 
   List<HanziCourseChapter> get _chapters =>
       VocabRepository.instance.hanziChapters;
@@ -4041,32 +4373,56 @@ class _HanziWritingCourseScreenState extends State<HanziWritingCourseScreen> {
   HanziCourseChar get _char =>
       _chapter.characters[_charIdx.clamp(0, _chapter.characters.length - 1)];
 
+  @override
+  void initState() {
+    super.initState();
+    _flipController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 380),
+    );
+    _flipAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
+      CurvedAnimation(parent: _flipController, curve: Curves.easeInOut),
+    );
+  }
+
+  @override
+  void dispose() {
+    _flipController.dispose();
+    super.dispose();
+  }
+
   void _selectChar(int idx) {
+    _flipController.reset();
     setState(() {
       _charIdx = idx;
       _activeStep = 0;
       _strokes.clear();
       _currentStroke = [];
-      _statusMsg = null;
+      _isSelfTestMode = false;
+      _showColoredCheckChar = false;
     });
   }
 
-  void _checkPractice() {
-    if (_strokes.isEmpty || _strokes.first.length < 8) {
-      HapticFeedback.vibrate();
-      setState(() {
-        _isError = true;
-        _statusMsg =
-            'ভুল হয়েছে! নিচের বর্গাকার ঘরে দাগ টেনে অনুশীলন করুন, তারপর আবার চেষ্টা করো।';
-        _strokes.clear();
-      });
-      return;
+  void _toggleFlipSelfTest() {
+    HapticFeedback.selectionClick();
+    final nextMode = !_isSelfTestMode;
+    if (nextMode) {
+      _flipController.forward();
+    } else {
+      _flipController.reverse();
     }
+    setState(() {
+      _isSelfTestMode = nextMode;
+      _strokes.clear();
+      _currentStroke = [];
+      _showColoredCheckChar = false;
+    });
+  }
+
+  void _revealColoredReference() {
     HapticFeedback.lightImpact();
     setState(() {
-      _isError = false;
-      _statusMsg =
-          'চমৎকার! "${_char.char}" (${_char.pinyin}) অনুশীলন সম্পন্ন হয়েছে।';
+      _showColoredCheckChar = !_showColoredCheckChar;
     });
   }
 
@@ -4112,13 +4468,18 @@ class _HanziWritingCourseScreenState extends State<HanziWritingCourseScreen> {
                 return ChoiceChip(
                   label: Text(_chapters[i].title.split(':').first),
                   selected: selected,
-                  onSelected: (_) => setState(() {
-                    _chapterIdx = i;
-                    _charIdx = 0;
-                    _activeStep = 0;
-                    _strokes.clear();
-                    _statusMsg = null;
-                  }),
+                  onSelected: (_) {
+                    _flipController.reset();
+                    setState(() {
+                      _chapterIdx = i;
+                      _charIdx = 0;
+                      _activeStep = 0;
+                      _strokes.clear();
+                      _currentStroke = [];
+                      _isSelfTestMode = false;
+                      _showColoredCheckChar = false;
+                    });
+                  },
                 );
               },
             ),
@@ -4164,7 +4525,7 @@ class _HanziWritingCourseScreenState extends State<HanziWritingCourseScreen> {
               },
             ),
           ),
-          // Top Reference Card: Shows Character + Stroke-by-Stroke Steps Clearly
+          // Top Reference Card: Only "মোট স্ট্রোক: Xটি" + Pure Chinese Stroke Boxes
           Container(
             width: double.infinity,
             margin: const EdgeInsets.fromLTRB(12, 6, 12, 6),
@@ -4215,11 +4576,11 @@ class _HanziWritingCourseScreenState extends State<HanziWritingCourseScreen> {
                               fontWeight: FontWeight.bold,
                             ),
                           ),
-                          const SizedBox(height: 2),
+                          const SizedBox(height: 3),
                           Text(
-                            'মোট স্ট্রোক: ${currentChar.strokes}টি • নিচের ক্রম দেখে লিখুন',
+                            'মোট স্ট্রোক: ${currentChar.strokes}টি',
                             style: TextStyle(
-                              fontSize: 12,
+                              fontSize: 12.5,
                               fontWeight: FontWeight.w600,
                               color: isDark ? Colors.white70 : Colors.black87,
                             ),
@@ -4232,38 +4593,38 @@ class _HanziWritingCourseScreenState extends State<HanziWritingCourseScreen> {
                 if (currentChar.steps.isNotEmpty) ...[
                   const SizedBox(height: 10),
                   SizedBox(
-                    height: 36,
+                    height: 44,
                     child: ListView.separated(
                       scrollDirection: Axis.horizontal,
                       itemCount: currentChar.steps.length,
-                      separatorBuilder: (_, __) => const SizedBox(width: 6),
+                      separatorBuilder: (_, __) => const SizedBox(width: 8),
                       itemBuilder: (_, sIdx) {
                         final active = sIdx == _activeStep;
                         return InkWell(
-                          borderRadius: BorderRadius.circular(8),
+                          borderRadius: BorderRadius.circular(10),
                           onTap: () => setState(() => _activeStep = sIdx),
                           child: Container(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 11, vertical: 6),
+                            width: 44,
+                            height: 44,
+                            alignment: Alignment.center,
                             decoration: BoxDecoration(
                               color: active
                                   ? kImperialRed
                                   : (isDark ? Colors.black26 : Colors.white),
-                              borderRadius: BorderRadius.circular(8),
+                              borderRadius: BorderRadius.circular(10),
                               border: Border.all(
                                 color: active ? kImperialRed : Colors.black26,
+                                width: active ? 1.5 : 1.0,
                               ),
                             ),
                             child: Text(
                               currentChar.steps[sIdx],
                               style: TextStyle(
-                                fontSize: 12.5,
+                                fontSize: 22,
                                 fontWeight: FontWeight.bold,
                                 color: active
                                     ? Colors.white
-                                    : (isDark
-                                        ? Colors.white70
-                                        : Colors.black87),
+                                    : (isDark ? Colors.white : Colors.black87),
                               ),
                             ),
                           ),
@@ -4275,63 +4636,108 @@ class _HanziWritingCourseScreenState extends State<HanziWritingCourseScreen> {
               ],
             ),
           ),
-          if (_statusMsg != null)
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 2),
-              child: Container(
-                width: double.infinity,
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 12, vertical: 7),
-                decoration: BoxDecoration(
-                  color: _isError ? Colors.red.shade700 : Colors.green.shade700,
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                child: Text(
-                  _statusMsg!,
-                  style: const TextStyle(
-                    color: Colors.white,
-                    fontSize: 12.5,
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-              ),
-            ),
-          // Clean Bottom Writing Square Grid (No blurred watermark inside)
+          // 3-Step Interactive Writing Square Grid (Trace -> Flip Self-Test -> Check Colored Overlay)
           Expanded(
             child: Center(
-              child: AspectRatio(
-                aspectRatio: 1.0,
-                child: Container(
-                  margin:
-                      const EdgeInsets.symmetric(horizontal: 20, vertical: 6),
-                  decoration: BoxDecoration(
-                    color: isDark ? const Color(0xFF191919) : Colors.white,
-                    border: Border.all(color: kImperialRed, width: 2),
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(10),
-                    child: GestureDetector(
-                      onPanStart: (details) {
-                        setState(() {
-                          _statusMsg = null;
-                          _currentStroke = [details.localPosition];
-                          _strokes.add(_currentStroke);
-                        });
-                      },
-                      onPanUpdate: (details) {
-                        setState(() {
-                          _currentStroke.add(details.localPosition);
-                        });
-                      },
-                      onPanEnd: (_) => _currentStroke = [],
-                      child: CustomPaint(
-                        painter: _HanziPadPainter(
-                          strokes: _strokes,
-                          strokeColor: isDark ? Colors.white : Colors.black87,
-                          showDiagonalGuides: true,
+              child: AnimatedBuilder(
+                animation: _flipAnimation,
+                builder: (context, child) {
+                  final angle = _flipAnimation.value * math.pi;
+                  final isBack = angle > math.pi / 2;
+                  return Transform(
+                    alignment: Alignment.center,
+                    transform: Matrix4.identity()
+                      ..setEntry(3, 2, 0.001)
+                      ..rotateY(angle),
+                    child: Transform(
+                      alignment: Alignment.center,
+                      transform: Matrix4.identity()
+                        ..rotateY(isBack ? math.pi : 0.0),
+                      child: child,
+                    ),
+                  );
+                },
+                child: AspectRatio(
+                  aspectRatio: 1.0,
+                  child: Container(
+                    margin:
+                        const EdgeInsets.symmetric(horizontal: 20, vertical: 6),
+                    decoration: BoxDecoration(
+                      color: isDark ? const Color(0xFF191919) : Colors.white,
+                      border: Border.all(
+                        color: _isSelfTestMode
+                            ? const Color(0xFF2E7D32)
+                            : kImperialRed,
+                        width: 2.2,
+                      ),
+                      borderRadius: BorderRadius.circular(14),
+                    ),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(12),
+                      child: GestureDetector(
+                        onPanStart: (details) {
+                          setState(() {
+                            _currentStroke = [details.localPosition];
+                            _strokes.add(_currentStroke);
+                          });
+                        },
+                        onPanUpdate: (details) {
+                          setState(() {
+                            _currentStroke.add(details.localPosition);
+                          });
+                        },
+                        onPanEnd: (_) => _currentStroke = [],
+                        child: LayoutBuilder(
+                          builder: (context, constraints) {
+                            final boxSize = math.min(
+                                constraints.maxWidth, constraints.maxHeight);
+                            return Stack(
+                              alignment: Alignment.center,
+                              children: [
+                                // Step 1: Faint Watermark in Trace Mode (hidden in Self-Test Flip mode)
+                                if (!_isSelfTestMode && !_showColoredCheckChar)
+                                  IgnorePointer(
+                                    child: Text(
+                                      currentChar.char,
+                                      style: TextStyle(
+                                        fontSize: boxSize * 0.72,
+                                        height: 1.0,
+                                        fontWeight: FontWeight.w500,
+                                        color: isDark
+                                            ? Colors.white.withValues(alpha: 0.14)
+                                            : Colors.black.withValues(alpha: 0.13),
+                                      ),
+                                    ),
+                                  ),
+                                // Step 3: Bold Colored Reference Character on Check
+                                if (_showColoredCheckChar)
+                                  IgnorePointer(
+                                    child: Text(
+                                      currentChar.char,
+                                      style: TextStyle(
+                                        fontSize: boxSize * 0.72,
+                                        height: 1.0,
+                                        fontWeight: FontWeight.bold,
+                                        color: kImperialRed.withValues(
+                                            alpha: isDark ? 0.55 : 0.42),
+                                      ),
+                                    ),
+                                  ),
+                                // Grid lines + User's Handwritten Strokes
+                                CustomPaint(
+                                  painter: _HanziPadPainter(
+                                    strokes: _strokes,
+                                    strokeColor: isDark
+                                        ? Colors.white
+                                        : Colors.black87,
+                                    showDiagonalGuides: true,
+                                  ),
+                                  size: Size.infinite,
+                                ),
+                              ],
+                            );
+                          },
                         ),
-                        size: Size.infinite,
                       ),
                     ),
                   ),
@@ -4339,54 +4745,98 @@ class _HanziWritingCourseScreenState extends State<HanziWritingCourseScreen> {
               ),
             ),
           ),
+          // Bottom Controls: Undo, Clear, Flip ("নিজে লিখুন" / "দেখে লিখুন"), Check, Next
           Padding(
-            padding: const EdgeInsets.fromLTRB(12, 4, 12, 14),
+            padding: const EdgeInsets.fromLTRB(10, 4, 10, 12),
             child: Row(
               children: [
                 IconButton(
                   tooltip: 'Undo',
+                  visualDensity: VisualDensity.compact,
                   icon: const Icon(Icons.undo_rounded),
                   onPressed: _strokes.isEmpty
                       ? null
                       : () => setState(() {
                             _strokes.removeLast();
-                            _statusMsg = null;
                           }),
                 ),
                 IconButton(
                   tooltip: 'Clear',
+                  visualDensity: VisualDensity.compact,
                   icon: const Icon(Icons.delete_outline_rounded),
-                  onPressed: _strokes.isEmpty
+                  onPressed: _strokes.isEmpty && !_showColoredCheckChar
                       ? null
                       : () => setState(() {
                             _strokes.clear();
                             _currentStroke = [];
-                            _statusMsg = null;
+                            _showColoredCheckChar = false;
                           }),
+                ),
+                const SizedBox(width: 4),
+                Expanded(
+                  flex: 3,
+                  child: OutlinedButton.icon(
+                    style: OutlinedButton.styleFrom(
+                      foregroundColor:
+                          _isSelfTestMode ? kImperialRed : const Color(0xFF2E7D32),
+                      side: BorderSide(
+                        color: _isSelfTestMode
+                            ? kImperialRed
+                            : const Color(0xFF2E7D32),
+                      ),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 8, vertical: 11),
+                    ),
+                    onPressed: _toggleFlipSelfTest,
+                    icon: const Icon(Icons.flip_rounded, size: 18),
+                    label: Text(
+                      _isSelfTestMode ? 'দেখে লিখুন' : 'নিজে লিখুন',
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: const TextStyle(
+                        fontSize: 12.5,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
                 ),
                 const SizedBox(width: 6),
                 Expanded(
+                  flex: 2,
                   child: FilledButton.icon(
                     style: FilledButton.styleFrom(
-                      backgroundColor: kImperialRed,
-                      padding: const EdgeInsets.symmetric(vertical: 11),
+                      backgroundColor: _showColoredCheckChar
+                          ? const Color(0xFF2E7D32)
+                          : kImperialRed,
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 8, vertical: 11),
                     ),
-                    onPressed: _checkPractice,
-                    icon: const Icon(Icons.check_rounded),
-                    label: const Text('Check'),
+                    onPressed: _revealColoredReference,
+                    icon: const Icon(Icons.visibility_rounded, size: 17),
+                    label: const Text(
+                      'Check',
+                      style: TextStyle(fontSize: 12.5),
+                    ),
                   ),
                 ),
-                const SizedBox(width: 8),
+                const SizedBox(width: 6),
                 OutlinedButton(
+                  style: OutlinedButton.styleFrom(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 10, vertical: 11),
+                  ),
                   onPressed: _charIdx < _chapter.characters.length - 1
                       ? () => _selectChar(_charIdx + 1)
                       : (_chapterIdx < _chapters.length - 1
-                          ? () => setState(() {
+                          ? () {
+                              _flipController.reset();
+                              setState(() {
                                 _chapterIdx++;
                                 _selectChar(0);
-                              })
+                              });
+                            }
                           : null),
-                  child: const Text('Next'),
+                  child: const Text('Next', style: TextStyle(fontSize: 12.5)),
                 ),
               ],
             ),
@@ -4491,7 +4941,7 @@ class _HanziPadPainter extends CustomPainter {
 }
 
 // ============================================================================
-// 11. FAVORITES SCREEN (PINNED LESSONS/TOPICS + SAVED WORDS)
+// 11. FAVORITES SCREEN
 // ============================================================================
 
 class FavoritesScreen extends StatelessWidget {
@@ -4625,7 +5075,7 @@ class FavoritesScreen extends StatelessWidget {
 }
 
 // ============================================================================
-// 12. COURSE DETAIL SCREEN (PARALLEL & BACKGROUND PDF + AUDIO DOWNLOADS)
+// 12. COURSE DETAIL SCREEN
 // ============================================================================
 
 class CourseDetailScreen extends StatefulWidget {
@@ -4939,7 +5389,7 @@ class CourseAudioFolderScreen extends StatelessWidget {
 }
 
 // ============================================================================
-// 13. PDF READER (APP-BAR PAGE NAVIGATOR + INTEGRATED AUDIO BAR)
+// 13. PDF READER (AUTO-HIDES GLOBAL MINI PLAYER ON OPEN, RESTORES ON EXIT)
 // ============================================================================
 
 class FastPdfReaderScreen extends StatefulWidget {
@@ -4984,6 +5434,7 @@ class _FastPdfReaderScreenState extends State<FastPdfReaderScreen> {
   @override
   void initState() {
     super.initState();
+    Future.microtask(() => _audio.setHideGlobalMiniPlayer(true));
     _initPdf();
     _initMiniAudio();
   }
@@ -5054,8 +5505,8 @@ class _FastPdfReaderScreenState extends State<FastPdfReaderScreen> {
                       .last
                       .replaceAll('.mp3', '')
                       .replaceAll('.m4a', '');
-                  final active =
-                      _audio.courseId == widget.courseId && _audio.trackIndex == i;
+                  final active = _audio.courseId == widget.courseId &&
+                      _audio.trackIndex == i;
                   return ListTile(
                     leading: Icon(
                       active
@@ -5176,6 +5627,7 @@ class _FastPdfReaderScreenState extends State<FastPdfReaderScreen> {
 
   @override
   void dispose() {
+    _audio.setHideGlobalMiniPlayer(false);
     _pdfController?.dispose();
     super.dispose();
   }
@@ -5476,6 +5928,7 @@ class _LessonAudioPlayerScreenState extends State<LessonAudioPlayerScreen> {
   @override
   void initState() {
     super.initState();
+    Future.microtask(() => _audio.setHideGlobalMiniPlayer(true));
     final alreadyPlayingSame = _audio.courseId == widget.courseId &&
         _audio.lessonIndex == widget.initialLessonIndex &&
         _audio.hasLoadedLesson;
@@ -5491,6 +5944,12 @@ class _LessonAudioPlayerScreenState extends State<LessonAudioPlayerScreen> {
         autoPlay: true,
       );
     }
+  }
+
+  @override
+  void dispose() {
+    _audio.setHideGlobalMiniPlayer(false);
+    super.dispose();
   }
 
   String _fmt(Duration d) {
@@ -5743,7 +6202,7 @@ class _LessonAudioPlayerScreenState extends State<LessonAudioPlayerScreen> {
 }
 
 // ============================================================================
-// 15A. PERSONAL PDF GRAMMAR & NOTES (WITH DRAG & REORDER + CONFIRM DELETE)
+// 15A. PERSONAL PDF GRAMMAR & NOTES
 // ============================================================================
 
 class PersonalPdfNotesScreen extends StatefulWidget {
@@ -5899,7 +6358,7 @@ class _PersonalPdfNotesScreenState extends State<PersonalPdfNotesScreen> {
 }
 
 // ============================================================================
-// 15B. QUICK TEXT STUDY NOTES SCREEN (WITH CONFIRM DELETE)
+// 15B. QUICK TEXT STUDY NOTES SCREEN
 // ============================================================================
 
 class QuickNotesScreen extends StatefulWidget {
