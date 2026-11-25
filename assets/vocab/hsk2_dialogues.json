@@ -1,1894 +1,1051 @@
-{
-  "level": "HSK 2",
-  "chapters": [
+[
+  {
+    "chapter": 1,
+    "title": "九月去北京旅游最好",
+    "pinyin": "Jiǔ yuè qù Běijīng lǚyóu zuì hǎo",
+    "pron": "জিউ ইয়ুয়ে ছ্যু পেইচিং ল্যুইয়ো জুই হাও",
+    "bn": "সেপ্টেম্বর মাসে বেইজিং ভ্রমণে যাওয়া সবচেয়ে ভালো",
+    "en": "September is the best time to visit Beijing",
+    "lessons": [
+      {
+        "lessonCode": "01-1",
+        "title": "在学校 (স্কুলে)",
+        "newWords": [
+          { "hanzi": "旅游", "pinyin": "lǚyóu", "pron": "ল্যুইয়ো", "bn": "ভ্রমণ করা", "en": "to travel, to take a trip" },
+          { "hanzi": "觉得", "pinyin": "juéde", "pron": "চুয়েদা", "bn": "মনে করা, অনুভব করা", "en": "to think, to feel" },
+          { "hanzi": "最", "pinyin": "zuì", "pron": "জুই", "bn": "সবচেয়ে", "en": "most, to the greatest extent" },
+          { "hanzi": "为什么", "pinyin": "wèishénme", "pron": "ওয়েইশেনমা", "bn": "কেন", "en": "why" },
+          { "hanzi": "也", "pinyin": "yě", "pron": "ইয়ে", "bn": "ও, আরও", "en": "also, too" }
+        ],
+        "lines": [
+          { "speaker": "A", "hanzi": "我要去北京旅游，你觉得什么时候去最好？", "pinyin": "Wǒ yào qù Běijīng lǚyóu, nǐ juéde shénme shíhou qù zuì hǎo?", "pron": "ও ইয়াও ছ্যু পেইচিং ল্যুইয়ো, নি চুয়েদা শেনমা শিহৌ ছ্যু জুই হাও?", "bn": "আমি বেইজিং ভ্রমণে যেতে চাই, তোমার মতে কখন যাওয়া সবচেয়ে ভালো?", "en": "I'm thinking of a trip to Beijing. When do you think is the best time?" },
+          { "speaker": "B", "hanzi": "九月去北京旅游最好。", "pinyin": "Jiǔ yuè qù Běijīng lǚyóu zuì hǎo.", "pron": "জিউ ইয়ুয়ে ছ্যু পেইচিং ল্যুইয়ো জুই হাও।", "bn": "সেপ্টেম্বর মাসে বেইজিং ভ্রমণে যাওয়া সবচেয়ে ভালো।", "en": "September is the best time to visit Beijing." },
+          { "speaker": "A", "hanzi": "为什么？", "pinyin": "Wèishénme?", "pron": "ওয়েইশেনমা?", "bn": "কেন?", "en": "Why?" },
+          { "speaker": "B", "hanzi": "九月的北京天气不冷也不热。", "pinyin": "Jiǔ yuè de Běijīng tiānqì bù lěng yě bú rè.", "pron": "জিউ ইয়ুয়ে দা পেইচিং থিয়েনছি পু লং ইয়ে পু রা।", "bn": "সেপ্টেম্বরে বেইজিংয়ের আবহাওয়া ঠান্ডাও না আবার গরমও না।", "en": "Because it's neither cold nor hot there in September." }
+        ]
+      },
+      {
+        "lessonCode": "01-2",
+        "title": "看照片 (ছবি দেখা)",
+        "newWords": [
+          { "hanzi": "运动", "pinyin": "yùndòng", "pron": "ইয়ুনতোং", "bn": "খেলাধুলা, ব্যায়াম করা", "en": "sport; to take physical exercise" },
+          { "hanzi": "踢足球", "pinyin": "tī zúqiú", "pron": "থি জুছিউ", "bn": "ফুটবল খেলা", "en": "to play football" },
+          { "hanzi": "一起", "pinyin": "yìqǐ", "pron": "ইছি", "bn": "একসাথে", "en": "together" }
+        ],
+        "lines": [
+          { "speaker": "A", "hanzi": "你喜欢什么运动？", "pinyin": "Nǐ xǐhuan shénme yùndòng?", "pron": "নি সিহুয়ান শেনমা ইয়ুনতোং?", "bn": "তুমি কোন খেলাধুলা পছন্দ করো?", "en": "What sport do you like?" },
+          { "speaker": "B", "hanzi": "我最喜欢踢足球。", "pinyin": "Wǒ zuì xǐhuan tī zúqiú.", "pron": "ও জুই সিহুয়ান থি জুছিউ।", "bn": "আমি সবচেয়ে বেশি ফুটবল খেলতে পছন্দ করি।", "en": "I like playing football most." },
+          { "speaker": "A", "hanzi": "下午我们一起去踢足球吧。", "pinyin": "Xiàwǔ wǒmen yìqǐ qù tī zúqiú ba.", "pron": "সিয়াউ ওমেন ইছি ছ্যু থি জুছিউ বা।", "bn": "বিকেলে চলো আমরা একসাথে ফুটবল খেলতে যাই।", "en": "Let's go to play football this afternoon." },
+          { "speaker": "B", "hanzi": "好啊！", "pinyin": "Hǎo a!", "pron": "হাও আ!", "bn": "বেশ তো!", "en": "Great!" }
+        ]
+      },
+      {
+        "lessonCode": "01-3",
+        "title": "在家里 (বাড়িতে)",
+        "newWords": [
+          { "hanzi": "要", "pinyin": "yào", "pron": "ইয়াও", "bn": "চাওয়া, ইচ্ছা করা", "en": "to want to, would like to" },
+          { "hanzi": "新", "pinyin": "xīn", "pron": "সিন", "bn": "নতুন", "en": "new" }
+        ],
+        "lines": [
+          { "speaker": "A", "hanzi": "我们要不要买几个新的椅子？", "pinyin": "Wǒmen yào bu yào mǎi jǐ ge xīn de yǐzi?", "pron": "ওমেন ইয়াও পু ইয়াও মাই চি গা সিন দা ইজি?", "bn": "আমাদের কি কয়েকটা নতুন চেয়ার কেনা উচিত?", "en": "Don't you think we should buy some new chairs?" },
+          { "speaker": "B", "hanzi": "好啊。什么时候去买？", "pinyin": "Hǎo a. Shénme shíhou qù mǎi?", "pron": "হাও আ। শেনমা শিহৌ ছ্যু মাই?", "bn": "হ্যাঁ, ভালো হয়। কখন কিনতে যাবে?", "en": "Yes. When shall we go to buy them?" },
+          { "speaker": "A", "hanzi": "明天下午怎么样？你明天几点能回来？", "pinyin": "Míngtiān xiàwǔ zěnmeyàng? Nǐ míngtiān jǐ diǎn néng huílai?", "pron": "মিংথিয়েন সিয়াউ জেনমাইয়াং? নি মিংথিয়েন চি তিয়েন নং হুইলাই?", "bn": "আগামীকাল বিকেলে কেমন হয়? তুমি কাল কয়টার দিকে ফিরতে পারবে?", "en": "What about tomorrow afternoon? When will you be back tomorrow?" },
+          { "speaker": "B", "hanzi": "三点多。", "pinyin": "Sān diǎn duō.", "pron": "সান তিয়েন তুও।", "bn": "তিনটার কিছু পরে।", "en": "A little bit later after three o'clock." }
+        ]
+      },
+      {
+        "lessonCode": "01-4",
+        "title": "在家里 (বাড়িতে - বিড়াল প্রসঙ্গে)",
+        "newWords": [
+          { "hanzi": "它", "pinyin": "tā", "pron": "থা", "bn": "এটি, ইহা (প্রাণী/বস্তু)", "en": "it" },
+          { "hanzi": "眼睛", "pinyin": "yǎnjing", "pron": "ইয়েনচিং", "bn": "চোখ", "en": "eye" },
+          { "hanzi": "花花", "pinyin": "Huāhua", "pron": "হুয়াহুয়া", "bn": "হুয়াহুয়া (বিড়ালের নাম)", "en": "name of a cat" }
+        ],
+        "lines": [
+          { "speaker": "A", "hanzi": "桌子下面有个猫。", "pinyin": "Zhuōzi xiàmiàn yǒu ge māo.", "pron": "চুওজি সিয়ামিয়েন ইয়ৌ গা মাও।", "bn": "টেবিলের নিচে একটা বিড়াল আছে।", "en": "There is a cat under the table." },
+          { "speaker": "B", "hanzi": "那是我的猫，它叫花花。", "pinyin": "Nà shì wǒ de māo, tā jiào Huāhua.", "pron": "না শি ও দা মাও, থা চিয়াও হুয়াহুয়া।", "bn": "ওটা আমার বিড়াল, ওর নাম হুয়াহুয়া।", "en": "It's my cat Huahua." },
+          { "speaker": "A", "hanzi": "它很漂亮。", "pinyin": "Tā hěn piàoliang.", "pron": "থা হেন পিয়াওলিয়াং।", "bn": "এটি খুব সুন্দর।", "en": "It's beautiful." },
+          { "speaker": "B", "hanzi": "是啊，我觉得它的眼睛最漂亮。", "pinyin": "Shì a, wǒ juéde tā de yǎnjing zuì piàoliang.", "pron": "শি আ, ও চুয়েদা থা দা ইয়েনচিং জুই পিয়াওলিয়াং।", "bn": "হ্যাঁ, আমার মনে হয় ওর চোখ দুটো সবচেয়ে সুন্দর।", "en": "Yes. I think it has the most beautiful eyes." },
+          { "speaker": "A", "hanzi": "它多大了？", "pinyin": "Tā duō dà le?", "pron": "থা তুও তা লা?", "bn": "ওর বয়স কত?", "en": "How old is it?" },
+          { "speaker": "B", "hanzi": "六个多月。", "pinyin": "Liù ge duō yuè.", "pron": "লিউ গা তুও ইয়ুয়ে।", "bn": "ছয় মাসের কিছু বেশি।", "en": "More than six months." }
+        ]
+      }
+    ]
+  },
+  {
+    "chapter": 2,
+    "title": "我每天六点起床",
+    "pinyin": "Wǒ měi tiān liù diǎn qǐchuáng",
+    "pron": "ও মেই থিয়েন লিউ তিয়েন ছিছুয়াং",
+    "bn": "আমি প্রতিদিন ছয়টায় ঘুম থেকে উঠি",
+    "en": "I get up at six every day",
+    "lessons": [
+      {
+        "lessonCode": "02-1",
+        "title": "在运动场 (খেলার মাঠে)",
+        "newWords": [
+          { "hanzi": "生病", "pinyin": "shēng bìng", "pron": "শং পিং", "bn": "অসুস্থ হওয়া", "en": "to fall ill, to be sick" },
+          { "hanzi": "每", "pinyin": "měi", "pron": "মেই", "bn": "প্রতি, প্রত্যেক", "en": "every, each" },
+          { "hanzi": "早上", "pinyin": "zǎoshang", "pron": "জাওশাং", "bn": "সকালবেলা", "en": "morning" },
+          { "hanzi": "跑步", "pinyin": "pǎo bù", "pron": "ফাও পু", "bn": "দৌড়ানো, জগিং করা", "en": "to run, to jog" },
+          { "hanzi": "起床", "pinyin": "qǐ chuáng", "pron": "ছি ছুয়াং", "bn": "ঘুম থেকে ওঠা", "en": "to get up, to get out of bed" }
+        ],
+        "lines": [
+          { "speaker": "A", "hanzi": "你很少生病，是不是喜欢运动？", "pinyin": "Nǐ hěn shǎo shēng bìng, shì bu shì xǐhuan yùndòng?", "pron": "নি হেন শাও শং পিং, শি পু শি সিহুয়ান ইয়ুনতোং?", "bn": "তুমি খুব কম অসুস্থ হও, তুমি কি ব্যায়াম করতে পছন্দ করো?", "en": "You seldom get sick. I guess you like doing sports, don't you?" },
+          { "speaker": "B", "hanzi": "是啊，我每天早上都要出去跑步。", "pinyin": "Shì a, wǒ měi tiān zǎoshang dōu yào chūqu pǎo bù.", "pron": "শি আ, ও মেই থিয়েন জাওশাং তৌ ইয়াও ছুছ্যু ফাও পু।", "bn": "হ্যাঁ, আমি প্রতিদিন সকালে বাইরে দৌড়াতে যাই।", "en": "Yes. I go out for a jog every morning." },
+          { "speaker": "A", "hanzi": "你每天几点起床？", "pinyin": "Nǐ měi tiān jǐ diǎn qǐ chuáng?", "pron": "নি মেই থিয়েন চি তিয়েন ছি ছুয়াং?", "bn": "তুমি প্রতিদিন কয়টায় ঘুম থেকে ওঠো?", "en": "What time do you get up?" },
+          { "speaker": "B", "hanzi": "我每天六点起床。", "pinyin": "Wǒ měi tiān liù diǎn qǐ chuáng.", "pron": "ও মেই থিয়েন লিউ তিয়েন ছি ছুয়াং।", "bn": "আমি প্রতিদিন ছয়টায় ঘুম থেকে উঠি।", "en": "I get up at six every day." }
+        ]
+      },
+      {
+        "lessonCode": "02-2",
+        "title": "在医院 (হাসপাতালে)",
+        "newWords": [
+          { "hanzi": "药", "pinyin": "yào", "pron": "ইয়াও", "bn": "ওষুধ", "en": "medicine, drug" },
+          { "hanzi": "身体", "pinyin": "shēntǐ", "pron": "শেনথি", "bn": "শরীর, স্বাস্থ্য", "en": "body, health" },
+          { "hanzi": "出院", "pinyin": "chū yuàn", "pron": "ছু ইয়ুয়ান", "bn": "হাসপাতাল থেকে ছাড়পত্র পাওয়া", "en": "to leave hospital" },
+          { "hanzi": "出", "pinyin": "chū", "pron": "ছু", "bn": "বের হওয়া", "en": "to come/go out" }
+        ],
+        "lines": [
+          { "speaker": "A", "hanzi": "吃药了吗？现在身体怎么样？", "pinyin": "Chī yào le ma? Xiànzài shēntǐ zěnmeyàng?", "pron": "ছি ইয়াও লা মা? সিয়েনজাই শেনথি জেনমাইয়াং?", "bn": "ওষুধ খেয়েছ? এখন শরীর কেমন লাগছে?", "en": "Did you take your medicine? How do you feel now?" },
+          { "speaker": "B", "hanzi": "吃了。现在好多了。", "pinyin": "Chī le. Xiànzài hǎo duō le.", "pron": "ছি লা। সিয়েনজাই হাও তুও লা।", "bn": "খেয়েছি। এখন অনেক ভালো লাগছে।", "en": "Yes, I did. I feel much better now." },
+          { "speaker": "A", "hanzi": "什么时候能出院？", "pinyin": "Shénme shíhou néng chū yuàn?", "pron": "শেনমা শিহৌ নং ছু ইয়ুয়ান?", "bn": "কখন হাসপাতাল থেকে ছাড়া পাবে?", "en": "When can you leave the hospital?" },
+          { "speaker": "B", "hanzi": "医生说下个星期。", "pinyin": "Yīshēng shuō xià ge xīngqī.", "pron": "ইশং শুও সিয়া গা সিংছি।", "bn": "ডাক্তার বলেছেন আগামী সপ্তাহে।", "en": "Next week according to the doctor." }
+        ]
+      },
+      {
+        "lessonCode": "02-3",
+        "title": "在操场 (মাঠে ডেভিড প্রসঙ্গে)",
+        "newWords": [
+          { "hanzi": "高", "pinyin": "gāo", "pron": "কাও", "bn": "লম্বা, উঁচু", "en": "tall, high" },
+          { "hanzi": "米", "pinyin": "mǐ", "pron": "মি", "bn": "মিটার", "en": "meter" },
+          { "hanzi": "知道", "pinyin": "zhīdào", "pron": "ঝিতাও", "bn": "জানা", "en": "to know" }
+        ],
+        "lines": [
+          { "speaker": "A", "hanzi": "大卫今年多大？", "pinyin": "Dàwèi jīnnián duō dà?", "pron": "তাওয়েই চিননিয়েন তুও তা?", "bn": "ডেভিডের বয়স এ বছর কত?", "en": "How old is David?" },
+          { "speaker": "B", "hanzi": "二十多岁。", "pinyin": "Èrshí duō suì.", "pron": "আরশি তুও সুই।", "bn": "বিশ বছরের বেশি।", "en": "Above 20 years old." },
+          { "speaker": "A", "hanzi": "他多高？", "pinyin": "Tā duō gāo?", "pron": "থা তুও কাও?", "bn": "সে কতটা লম্বা?", "en": "How tall is he?" },
+          { "speaker": "B", "hanzi": "一米八几。", "pinyin": "Yì mǐ bā jǐ.", "pron": "ই মি পা চি।", "bn": "এক মিটার আশি সেন্টিমিটারের বেশি।", "en": "He is more than 180 centimeters tall." },
+          { "speaker": "A", "hanzi": "你怎么知道这么多啊？", "pinyin": "Nǐ zěnme zhīdào zhème duō a?", "pron": "নি জেনমা ঝিতাও ঝেমা তুও আ?", "bn": "তুমি এত কিছু কীভাবে জানো?", "en": "How come you know so much about him?" },
+          { "speaker": "B", "hanzi": "他是我同学。", "pinyin": "Tā shì wǒ tóngxué.", "pron": "থা শি ও থোংসোয়ে।", "bn": "সে আমার সহপাঠী।", "en": "He is my classmate." }
+        ]
+      },
+      {
+        "lessonCode": "02-4",
+        "title": "在房间 (কক্ষে)",
+        "newWords": [
+          { "hanzi": "休息", "pinyin": "xiūxi", "pron": "সিউসি", "bn": "বিশ্রাম নেওয়া", "en": "to have or take a rest" },
+          { "hanzi": "忙", "pinyin": "máng", "pron": "মাং", "bn": "ব্যস্ত", "en": "busy" },
+          { "hanzi": "时间", "pinyin": "shíjiān", "pron": "শিচিয়েন", "bn": "সময়", "en": "time" }
+        ],
+        "lines": [
+          { "speaker": "A", "hanzi": "张老师星期六也不休息啊？", "pinyin": "Zhāng lǎoshī xīngqīliù yě bù xiūxi a?", "pron": "চাং লাওশি সিংছিলিউ ইয়ে পু সিউসি আ?", "bn": "শিক্ষক ঝাং শনিবারেও বিশ্রাম নেন না?", "en": "Doesn't Mr. Zhang take Saturday off?" },
+          { "speaker": "B", "hanzi": "是啊，他这几天很忙，没有时间休息。", "pinyin": "Shì a, tā zhè jǐ tiān hěn máng, méiyǒu shíjiān xiūxi.", "pron": "শি আ, থা ঝে চি থিয়েন হেন মাং, মেইয়ৌ শিচিয়েন সিউসি।", "bn": "হ্যাঁ, উনি এই কয়দিন খুব ব্যস্ত, বিশ্রাম নেওয়ার সময় পান না।", "en": "No. He has been busy lately. He has no time to rest." },
+          { "speaker": "A", "hanzi": "那会很累吧？", "pinyin": "Nà huì hěn lèi ba?", "pron": "না হুই হেন লেই বা?", "bn": "তাহলে তো খুব ক্লান্ত হয়ে পড়েন, তাই না?", "en": "That must be really tiring." },
+          { "speaker": "B", "hanzi": "他每天回来都很累。", "pinyin": "Tā měi tiān huílai dōu hěn lèi.", "pron": "থা মেই থিয়েন হুইলাই তৌ হেন লেই।", "bn": "উনি প্রতিদিন বাড়ি ফিরে খুব ক্লান্ত থাকেন।", "en": "Every day he comes home exhausted." }
+        ]
+      }
+    ]
+  },
+  {
+    "chapter": 3,
+    "title": "左边那个红色的是我的",
+    "pinyin": "Zuǒbian nàge hóngsè de shì wǒ de",
+    "pron": "জুওপিয়েন নাগা হোংসো দা শি ও দা",
+    "bn": "বাম পাশের লাল রঙের ওইটা আমার",
+    "en": "The red one on the left is mine",
+    "lessons": [
+      {
+        "lessonCode": "03-1",
+        "title": "在房间 (কক্ষে হাতঘড়ি নিয়ে)",
+        "newWords": [
+          { "hanzi": "手表", "pinyin": "shǒubiǎo", "pron": "শৌপিয়াও", "bn": "হাতঘড়ি", "en": "watch" },
+          { "hanzi": "千", "pinyin": "qiān", "pron": "ছিয়েন", "bn": "হাজার", "en": "thousand" }
+        ],
+        "lines": [
+          { "speaker": "A", "hanzi": "这块手表是你的吗？", "pinyin": "Zhè kuài shǒubiǎo shì nǐ de ma?", "pron": "ঝে খুয়াই শৌপিয়াও শি নি দা মা?", "bn": "এই হাতঘড়িটা কি তোমার?", "en": "Is this watch yours?" },
+          { "speaker": "B", "hanzi": "不是我的。是我爸爸的。", "pinyin": "Bú shì wǒ de. Shì wǒ bàba de.", "pron": "পু শি ও দা। শি ও বাবা দা।", "bn": "আমার না। এটা আমার বাবার।", "en": "No, it isn't. It's my father's." },
+          { "speaker": "A", "hanzi": "多少钱买的？", "pinyin": "Duōshao qián mǎi de?", "pron": "তুওশাও ছিয়েন মাই দা?", "bn": "কত টাকা দিয়ে কেনা?", "en": "How much is it?" },
+          { "speaker": "B", "hanzi": "三千多块。", "pinyin": "Sānqiān duō kuài.", "pron": "সানছিয়েন তুও খুয়াই।", "bn": "তিন হাজার ইউয়ানের বেশি।", "en": "More than 3,000 yuan." }
+        ]
+      },
+      {
+        "lessonCode": "03-2",
+        "title": "在家里 (বাড়িতে খবরের কাগজ ও দুধ)",
+        "newWords": [
+          { "hanzi": "报纸", "pinyin": "bàozhǐ", "pron": "পাওঝি", "bn": "খবরের কাগজ", "en": "newspaper" },
+          { "hanzi": "送", "pinyin": "sòng", "pron": "সোং", "bn": "পৌঁছে দেওয়া, পাঠানো", "en": "to send, to deliver" },
+          { "hanzi": "一下", "pinyin": "yíxià", "pron": "ইসিয়া", "bn": "একবার, একটু", "en": "an act or an attempt" },
+          { "hanzi": "牛奶", "pinyin": "niúnǎi", "pron": "নিউনাই", "bn": "গরুর দুধ", "en": "milk" }
+        ],
+        "lines": [
+          { "speaker": "A", "hanzi": "这是今天早上的报纸吗？", "pinyin": "Zhè shì jīntiān zǎoshang de bàozhǐ ma?", "pron": "ঝে শি চিনথিয়েন জাওশাং দা পাওঝি মা?", "bn": "এটা কি আজ সকালের খবরের কাগজ?", "en": "Is it this morning's newspaper?" },
+          { "speaker": "B", "hanzi": "不是，是昨天的。", "pinyin": "Bú shì, shì zuótiān de.", "pron": "পু শি, শি জুওথিয়েন দা।", "bn": "না, এটা গতকালকের।", "en": "No, it isn't. It's yesterday's." },
+          { "speaker": "A", "hanzi": "你听，是不是送报纸的来了？", "pinyin": "Nǐ tīng, shì bu shì sòng bàozhǐ de lái le?", "pron": "নি থিং, শি পু শি সোং পাওঝি দা লাই লা?", "bn": "শোনো তো, খবরের কাগজওয়ালা কি এসেছে?", "en": "Listen. Is that the man who delivers newspaper?" },
+          { "speaker": "B", "hanzi": "我看一下。不是，是送牛奶的。", "pinyin": "Wǒ kàn yíxià. Bú shì, shì sòng niúnǎi de.", "pron": "ও খান ইসিয়া। পু শি, শি সোং নিউনাই দা।", "bn": "আমি একটু দেখে নিই। না, দুধওয়ালা এসেছে।", "en": "Let me see. No, it's the milkman." }
+        ]
+      },
+      {
+        "lessonCode": "03-3",
+        "title": "在家里 (বাড়িতে ঘর ও রঙ)",
+        "newWords": [
+          { "hanzi": "房间", "pinyin": "fángjiān", "pron": "ফাংচিয়েন", "bn": "ঘর, কক্ষ", "en": "room" },
+          { "hanzi": "丈夫", "pinyin": "zhàngfu", "pron": "চাংফু", "bn": "স্বামী", "en": "husband" },
+          { "hanzi": "旁边", "pinyin": "pángbiān", "pron": "ফাংপিয়েন", "bn": "পাশে", "en": "beside" },
+          { "hanzi": "真", "pinyin": "zhēn", "pron": "ঝেন", "bn": "সত্যিই, খুব", "en": "really, indeed" },
+          { "hanzi": "粉色", "pinyin": "fěnsè", "pron": "ফেনসো", "bn": "গোলাপি রঙ", "en": "pink" },
+          { "hanzi": "颜色", "pinyin": "yánsè", "pron": "ইয়েনসো", "bn": "রঙ", "en": "color" }
+        ],
+        "lines": [
+          { "speaker": "A", "hanzi": "这是谁的房间？", "pinyin": "Zhè shì shéi de fángjiān?", "pron": "ঝে শি শেই দা ফাংচিয়েন?", "bn": "এটা কার ঘর?", "en": "Whose room is this?" },
+          { "speaker": "B", "hanzi": "这是我和我丈夫的，旁边那个小的房间是我女儿的。", "pinyin": "Zhè shì wǒ hé wǒ zhàngfu de, pángbiān nàge xiǎo de fángjiān shì wǒ nǚ'ér de.", "pron": "ঝে শি ও হো ও চাংফু দা, ফাংপিয়েন নাগা সিয়াও দা ফাংচিয়েন শি ও ন্যুআর দা।", "bn": "এটা আমার আর আমার স্বামীর, পাশের ওই ছোট ঘরটা আমার মেয়ের।", "en": "It's my husband's and mine. The small one beside it is my daughter's." },
+          { "speaker": "A", "hanzi": "你女儿的房间真漂亮！都是粉色的。", "pinyin": "Nǐ nǚ'ér de fángjiān zhēn piàoliang! Dōu shì fěnsè de.", "pron": "নি ন্যুআর দা ফাংচিয়েন ঝেন পিয়াওলিয়াং! তৌ শি ফেনসো দা।", "bn": "তোমার মেয়ের ঘরটা সত্যিই খুব সুন্দর! সবকিছু গোলাপি রঙের।", "en": "Your daughter's room is so pretty! It's all pink." },
+          { "speaker": "B", "hanzi": "是啊，粉色是我女儿最喜欢的颜色。", "pinyin": "Shì a, fěnsè shì wǒ nǚ'ér zuì xǐhuan de yánsè.", "pron": "শি আ, ফেনসো শি ও ন্যুআর জুই সিহুয়ান দা ইয়েনসো।", "bn": "হ্যাঁ, গোলাপি আমার মেয়ের সবচেয়ে প্রিয় রঙ।", "en": "Yes. Pink is her favorite color." }
+        ]
+      },
+      {
+        "lessonCode": "03-4",
+        "title": "在办公室 (অফিসে)",
+        "newWords": [
+          { "hanzi": "左边", "pinyin": "zuǒbian", "pron": "জুওপিয়েন", "bn": "বাম পাশ", "en": "left side" },
+          { "hanzi": "红色", "pinyin": "hóngsè", "pron": "হোংসো", "bn": "লাল রঙ", "en": "red" },
+          { "hanzi": "红", "pinyin": "hóng", "pron": "হোং", "bn": "লাল", "en": "red" }
+        ],
+        "lines": [
+          { "speaker": "A", "hanzi": "你看见我的杯子了吗？", "pinyin": "Nǐ kànjiàn wǒ de bēizi le ma?", "pron": "নি খানচিয়েন ও দা পেইজি লা মা?", "bn": "তুমি কি আমার কাপটা দেখেছ?", "en": "Have you seen my cup?" },
+          { "speaker": "B", "hanzi": "这里有几个杯子，哪个是你的？", "pinyin": "Zhèli yǒu jǐ ge bēizi, nǎge shì nǐ de?", "pron": "ঝেলি ইয়ৌ চি গা পেইজি, নাগা শি নি দা?", "bn": "এখানে কয়েকটা কাপ আছে, কোনটা তোমার?", "en": "Here are a few cups. Which one is yours?" },
+          { "speaker": "A", "hanzi": "左边那个红色的是我的。", "pinyin": "Zuǒbian nàge hóngsè de shì wǒ de.", "pron": "জুওপিয়েন নাগা হোংসো দা শি ও দা।", "bn": "বাম পাশের লাল রঙের ওইটা আমার।", "en": "The red one on the left is mine." },
+          { "speaker": "B", "hanzi": "给你。", "pinyin": "Gěi nǐ.", "pron": "কেই নি।", "bn": "এই নাও।", "en": "Here you are." }
+        ]
+      }
+    ]
+  },
+  {
+    "chapter": 4,
+    "title": "这个工作是他帮我介绍的",
+    "pinyin": "Zhège gōngzuò shì tā bāng wǒ jièshào de",
+    "pron": "ঝেগা কোংজুও শি থা পাং ও চিয়েসাও দা",
+    "bn": "এই কাজটি সে আমাকে জোগাড় করে দিয়েছে",
+    "en": "He recommended me for this job",
+    "lessons": [
+      {
+        "lessonCode": "04-1",
+        "title": "在教室 (শ্রেণিকক্ষে জন্মদিনের উপহার)",
+        "newWords": [
+          { "hanzi": "生日", "pinyin": "shēngrì", "pron": "শংরি", "bn": "জন্মদিন", "en": "birthday" },
+          { "hanzi": "快乐", "pinyin": "kuàilè", "pron": "খুয়াইলো", "bn": "আনন্দিত, সুখী", "en": "happy, glad" },
+          { "hanzi": "给", "pinyin": "gěi", "pron": "কেই", "bn": "জন্য, কে (প্রিপোজিশন)", "en": "to, for" }
+        ],
+        "lines": [
+          { "speaker": "A", "hanzi": "生日快乐！这是送给你的！", "pinyin": "Shēngrì kuàilè! Zhè shì sòng gěi nǐ de!", "pron": "শংরি খুয়াইলো! ঝে শি সোং কেই নি দা!", "bn": "শুভ জন্মদিন! এটা তোমার জন্য উপহার!", "en": "Happy birthday! This is for you." },
+          { "speaker": "B", "hanzi": "是什么？是一本书吗？", "pinyin": "Shì shénme? Shì yì běn shū ma?", "pron": "শি শেনমা? শি ই পেন শু মা?", "bn": "কী এটা? একটা বই নাকি?", "en": "What is it? Is it a book?" },
+          { "speaker": "A", "hanzi": "对，这本书是我写的。", "pinyin": "Duì, zhè běn shū shì wǒ xiě de.", "pron": "তুই, ঝে পেন শু শি ও সিয়ে দা।", "bn": "হ্যাঁ, এই বইটা আমার লেখা।", "en": "Yes. A book written by me." },
+          { "speaker": "B", "hanzi": "太谢谢你了！", "pinyin": "Tài xièxie nǐ le!", "pron": "থাই সিয়েসিয়ে নি লা!", "bn": "তোমাকে অনেক ধন্যবাদ!", "en": "Thank you so much!" }
+        ]
+      },
+      {
+        "lessonCode": "04-2",
+        "title": "在家里 (বাড়িতে ফোন কল)",
+        "newWords": [
+          { "hanzi": "接", "pinyin": "jiē", "pron": "চিয়ে", "bn": "রিসিভ করা, গ্রহণ করা", "en": "to receive, to answer" },
+          { "hanzi": "晚上", "pinyin": "wǎnshang", "pron": "ওয়ানশাং", "bn": "সন্ধ্যা, রাত", "en": "evening, night" },
+          { "hanzi": "问", "pinyin": "wèn", "pron": "ওয়েন", "bn": "জিজ্ঞাসা করা", "en": "to ask" }
+        ],
+        "lines": [
+          { "speaker": "A", "hanzi": "早上有你一个电话。", "pinyin": "Zǎoshang yǒu nǐ yí ge diànhuà.", "pron": "জাওশাং ইয়ৌ নি ই গা তিয়েনহুয়া।", "bn": "সকালে তোমার একটা ফোন এসেছিল।", "en": "Someone called you this morning." },
+          { "speaker": "B", "hanzi": "电话是谁打的？", "pinyin": "Diànhuà shì shéi dǎ de?", "pron": "তিয়েনহুয়া শি শেই তা দা?", "bn": "ফোনটা কে করেছিল?", "en": "Who called?" },
+          { "speaker": "A", "hanzi": "不知道，是儿子接的。", "pinyin": "Bù zhīdào, shì érzi jiē de.", "pron": "পু ঝিতাও, শি আরজি চিয়ে দা।", "bn": "জানি না, ছেলে ফোনটা ধরেছিল।", "en": "I don't know. Our son answered it." },
+          { "speaker": "B", "hanzi": "好，晚上我问一下儿子。", "pinyin": "Hǎo, wǎnshang wǒ wèn yíxià érzi.", "pron": "হাও, ওয়ানশাং ও ওয়েন ইসিয়া আরজি।", "bn": "ঠিক আছে, সন্ধ্যায় আমি ছেলেকে জিজ্ঞাসা করব।", "en": "OK. I'll ask him about it this evening." }
+        ]
+      },
+      {
+        "lessonCode": "04-3",
+        "title": "在运动场 (মাঠে ফুটবল শুরু নিয়ে)",
+        "newWords": [
+          { "hanzi": "非常", "pinyin": "fēicháng", "pron": "ফেইছাং", "bn": "খুবই, অত্যন্ত", "en": "very, extremely" },
+          { "hanzi": "开始", "pinyin": "kāishǐ", "pron": "খাইশি", "bn": "শুরু করা", "en": "to begin, to start" },
+          { "hanzi": "已经", "pinyin": "yǐjīng", "pron": "ইচিং", "bn": "ইতিমধ্যে", "en": "already" }
+        ],
+        "lines": [
+          { "speaker": "A", "hanzi": "你喜欢踢足球吗？", "pinyin": "Nǐ xǐhuan tī zúqiú ma?", "pron": "নি সিহুয়ান থি জুছিউ মা?", "bn": "তুমি কি ফুটবল খেলতে পছন্দ করো?", "en": "Do you like playing football?" },
+          { "speaker": "B", "hanzi": "非常喜欢。", "pinyin": "Fēicháng xǐhuan.", "pron": "ফেইছাং সিহুয়ান।", "bn": "খুবই পছন্দ করি।", "en": "Yes, very much." },
+          { "speaker": "A", "hanzi": "你是什么时候开始踢足球的？", "pinyin": "Nǐ shì shénme shíhou kāishǐ tī zúqiú de?", "pron": "নি শি শেনমা শিহৌ খাইশি থি জুছিউ দা?", "bn": "তুমি কখন থেকে ফুটবল খেলা শুরু করেছ?", "en": "When did you begin to play football?" },
+          { "speaker": "B", "hanzi": "我十一岁的时候开始踢足球，已经踢了十年了。", "pinyin": "Wǒ shíyī suì de shíhou kāishǐ tī zúqiú, yǐjīng tī le shí nián le.", "pron": "ও শিই সুই দা শিহৌ খাইশি থি জুছিউ, ইচিং থি লা শি নিয়েন লা।", "bn": "আমি এগারো বছর বয়সে ফুটবল খেলা শুরু করি, ইতিমধ্যে দশ বছর ধরে খেলছি।", "en": "I was 11 when I played football for the first time. It has been 10 years." }
+        ]
+      },
+      {
+        "lessonCode": "04-4",
+        "title": "在公司 (কোম্পানিতে)",
+        "newWords": [
+          { "hanzi": "长", "pinyin": "cháng", "pron": "ছাং", "bn": "লম্বা, দীর্ঘ", "en": "long" },
+          { "hanzi": "两", "pinyin": "liǎng", "pron": "লিয়াং", "bn": "দুই", "en": "two" },
+          { "hanzi": "帮", "pinyin": "bāng", "pron": "পাং", "bn": "সাহায্য করা", "en": "to help, to assist" },
+          { "hanzi": "介绍", "pinyin": "jièshào", "pron": "চিয়েসাও", "bn": "পরিচয় করিয়ে দেওয়া, সুপারিশ করা", "en": "to introduce, to recommend" }
+        ],
+        "lines": [
+          { "speaker": "A", "hanzi": "你在这儿工作多长时间了？", "pinyin": "Nǐ zài zhèr gōngzuò duō cháng shíjiān le?", "pron": "নি জাই ঝার কোংজুও তুও ছাং শিচিয়েন লা?", "bn": "তুমি এখানে কতদিন ধরে কাজ করছ?", "en": "How long have you been working here?" },
+          { "speaker": "B", "hanzi": "已经两年多了，我是2011年来的。", "pinyin": "Yǐjīng liǎng nián duō le, wǒ shì èr líng yī yī nián lái de.", "pron": "ইচিং লিয়াং নিয়েন তুও লা, ও শি আর লিং ই ই নিয়েন লাই দা।", "bn": "ইতিমধ্যে দুই বছরের বেশি হয়ে গেছে, আমি ২০১১ সালে এসেছি।", "en": "More than two years, since 2011." },
+          { "speaker": "A", "hanzi": "你认识谢先生吗？", "pinyin": "Nǐ rènshi Xiè xiānsheng ma?", "pron": "নি রেনশি সিয়ে সিয়েনশং মা?", "bn": "তুমি কি মি. সিয়েকে চেনো?", "en": "Do you know Mr. Xie?" },
+          { "speaker": "B", "hanzi": "认识，我们是大学同学，这个工作是他帮我介绍的。", "pinyin": "Rènshi, wǒmen shì dàxué tóngxué, zhège gōngzuò shì tā bāng wǒ jièshào de.", "pron": "রেনশি, ওমেন শি তাসোয়ে থোংসোয়ে, ঝেগা কোংজুও শি থা পাং ও চিয়েসাও দা।", "bn": "চিনি, আমরা বিশ্ববিদ্যালয়ের সহপাঠী, এই কাজটি উনি আমাকে জোগাড় করে দিয়েছেন।", "en": "Yes. He is my college classmate. He recommended me for this job." }
+        ]
+      }
+    ]
+  },
+  {
+    "chapter": 5,
+    "title": "就买这件吧",
+    "pinyin": "Jiù mǎi zhè jiàn ba",
+    "pron": "চিউ মাই ঝে চিয়েন বা",
+    "bn": "তাহলে এটাই কিনে নাও",
+    "en": "Take this one",
+    "lessons": [
+      {
+        "lessonCode": "05-1",
+        "title": "在家里 (বাড়িতে রাতের খাবার নিয়ে)",
+        "newWords": [
+          { "hanzi": "外面", "pinyin": "wàimiàn", "pron": "ওয়াইমিয়েন", "bn": "বাইরে", "en": "outside" },
+          { "hanzi": "准备", "pinyin": "zhǔnbèi", "pron": "ঝুনপেই", "bn": "প্রস্তুত করা, পরিকল্পনা করা", "en": "to intend, to plan, to prepare" },
+          { "hanzi": "就", "pinyin": "jiù", "pron": "চিউ", "bn": "তাহলে, ঠিক", "en": "used to indicate a conclusion" },
+          { "hanzi": "鱼", "pinyin": "yú", "pron": "ইয়ু", "bn": "মাছ", "en": "fish" },
+          { "hanzi": "吧", "pinyin": "ba", "pron": "বা", "bn": "বাক্যের শেষে প্রস্তাব বা অনুরোধ সূচক অব্যয়", "en": "modal particle for suggestion" }
+        ],
+        "lines": [
+          { "speaker": "A", "hanzi": "晚上我们去饭馆吃饭，怎么样？", "pinyin": "Wǎnshang wǒmen qù fànguǎn chī fàn, zěnmeyàng?", "pron": "ওয়ানশাং ওমেন ছ্যু ফানকুয়ান ছি ফান, জেনমাইয়াং?", "bn": "রাতে চলো রেস্তোরাঁয় খেতে যাই, কেমন হয়?", "en": "Let's go to a restaurant for dinner. What do you think?" },
+          { "speaker": "B", "hanzi": "我不想去外面吃，我想在家吃。", "pinyin": "Wǒ bù xiǎng qù wàimiàn chī, wǒ xiǎng zài jiā chī.", "pron": "ও পু সিয়াং ছ্যু ওয়াইমিয়েন ছি, ও সিয়াং জাই চিয়া ছি।", "bn": "আমি বাইরে খেতে চাই না, আমি বাড়িতেই খেতে চাই।", "en": "I don't want to eat out. I want to eat at home." },
+          { "speaker": "A", "hanzi": "那你准备做什么呢？", "pinyin": "Nà nǐ zhǔnbèi zuò shénme ne?", "pron": "না নি ঝুনপেই জুও শেনমা না?", "bn": "তাহলে তুমি কী রান্না করার পরিকল্পনা করছ?", "en": "What are you planning to cook?" },
+          { "speaker": "B", "hanzi": "就做你爱吃的鱼吧。", "pinyin": "Jiù zuò nǐ ài chī de yú ba.", "pron": "চিউ জুও নি আই ছি দা ইয়ু বা।", "bn": "তোমার পছন্দের মাছই রান্না করি।", "en": "I'm thinking of fish, your favorite." }
+        ]
+      },
+      {
+        "lessonCode": "05-2",
+        "title": "在商店 (দোকানে কাপড় কেনা)",
+        "newWords": [
+          { "hanzi": "件", "pinyin": "jiàn", "pron": "চিয়েন", "bn": "টি, খানা (পোশাকের একক)", "en": "piece (measure word for clothes)" },
+          { "hanzi": "还", "pinyin": "hái", "pron": "হাই", "bn": "মোটামুটি, বেশ", "en": "passably, fairly, rather" },
+          { "hanzi": "可以", "pinyin": "kěyǐ", "pron": "খোই", "bn": "চলে, খারাপ না", "en": "not bad, acceptable" },
+          { "hanzi": "不错", "pinyin": "búcuò", "pron": "পুছুও", "bn": "বেশ ভালো", "en": "pretty good" }
+        ],
+        "lines": [
+          { "speaker": "A", "hanzi": "帮我看一下这件衣服怎么样。", "pinyin": "Bāng wǒ kàn yíxià zhè jiàn yīfu zěnmeyàng.", "pron": "পাং ও খান ইসিয়া ঝে চিয়েন ইফু জেনমাইয়াং।", "bn": "আমাকে একটু দেখে বলো তো এই জামাটা কেমন।", "en": "What do you think of this garment?" },
+          { "speaker": "B", "hanzi": "颜色还可以，就是有点儿大。", "pinyin": "Yánsè hái kěyǐ, jiùshì yǒudiǎnr dà.", "pron": "ইয়েনসো হাই খোই, চিউশি ইয়ৌতিয়ার তা।", "bn": "রঙটা মোটামুটি চলে, তবে একটু বড়।", "en": "The color is OK, but it seems a bit too large." },
+          { "speaker": "A", "hanzi": "这件小的怎么样？", "pinyin": "Zhè jiàn xiǎo de zěnmeyàng?", "pron": "ঝে চিয়েন সিয়াও দা জেনমাইয়াং?", "bn": "এই ছোটটা কেমন?", "en": "What about this small one?" },
+          { "speaker": "B", "hanzi": "这件不错，就买这件吧。", "pinyin": "Zhè jiàn búcuò, jiù mǎi zhè jiàn ba.", "pron": "ঝে চিয়েন পুছুও, চিউ মাই ঝে চিয়েন বা।", "bn": "এটা বেশ ভালো, এটাই কিনে নাও।", "en": "This one is good. Take this one." }
+        ]
+      },
+      {
+        "lessonCode": "05-3",
+        "title": "在教室 (শ্রেণিকক্ষে পরীক্ষা নিয়ে)",
+        "newWords": [
+          { "hanzi": "考试", "pinyin": "kǎoshì", "pron": "খাওশি", "bn": "পরীক্ষা", "en": "test, exam" },
+          { "hanzi": "意思", "pinyin": "yìsi", "pron": "ইসি", "bn": "অর্থ, মানে", "en": "meaning" }
+        ],
+        "lines": [
+          { "speaker": "A", "hanzi": "今天去不去打球？", "pinyin": "Jīntiān qù bu qù dǎ qiú?", "pron": "চিনথিয়েন ছ্যু পু ছ্যু তা ছিঊ?", "bn": "আজ বল খেলতে যাবে নাকি যাবে না?", "en": "Will you go to play ball today?" },
+          { "speaker": "B", "hanzi": "这两天有点儿累，不去打球了。", "pinyin": "Zhè liǎng tiān yǒudiǎnr lèi, bú qù dǎ qiú le.", "pron": "ঝে লিয়াং থিয়েন ইয়ৌতিয়ার লেই, পু ছ্যু তা ছিঊ লা।", "bn": "এই দুই দিন একটু ক্লান্ত লাগছে, খেলতে যাব না।", "en": "No, I won't. I've been feeling tired lately." },
+          { "speaker": "A", "hanzi": "你在做什么呢？是在想昨天的考试吗？", "pinyin": "Nǐ zài zuò shénme ne? Shì zài xiǎng zuótiān de kǎoshì ma?", "pron": "নি জাই জুও শেনমা না? শি জাই সিয়াং জুওথিয়েন দা খাওশি মা?", "bn": "তুমি কী করছ? গতকালকের পরীক্ষার কথা ভাবছ নাকি?", "en": "What are you doing? Are you thinking about yesterday's test?" },
+          { "speaker": "B", "hanzi": "是啊，我觉得听和说还可以，读和写不好，很多字我都不知道是什么意思。", "pinyin": "Shì a, wǒ juéde tīng hé shuō hái kěyǐ, dú hé xiě bù hǎo, hěn duō zì wǒ dōu bù zhīdào shì shénme yìsi.", "pron": "শি আ, ও চুয়েদা থিং হো শুও হাই খোই, তু হো সিয়ে পু হাও, হেন তুও জি ও তৌ পু ঝিতাও শি শেনমা ইসি।", "bn": "হ্যাঁ, আমার মনে হয় শোনা আর বলা মোটামুটি ভালো হয়েছে, কিন্তু পড়া আর লেখা ভালো হয়নি, অনেক অক্ষরের অর্থই আমি জানতাম না।", "en": "Yes. I think I did OK in listening and speaking, but not in reading and writing, I didn't know the meanings of many characters." }
+        ]
+      },
+      {
+        "lessonCode": "05-4",
+        "title": "在公司 (কোম্পানিতে কফি পানের বিরতি)",
+        "newWords": [
+          { "hanzi": "咖啡", "pinyin": "kāfēi", "pron": "খাফেই", "bn": "কফি", "en": "coffee" },
+          { "hanzi": "对", "pinyin": "duì", "pron": "তুই", "bn": "প্রতি, জন্য", "en": "to, for" },
+          { "hanzi": "以后", "pinyin": "yǐhòu", "pron": "ইহৌ", "bn": "পরে, ভবিষ্যতে", "en": "after, afterwards, later" }
+        ],
+        "lines": [
+          { "speaker": "A", "hanzi": "休息一下吧，喝咖啡吗？", "pinyin": "Xiūxi yíxià ba, hē kāfēi ma?", "pron": "সিউসি ইসিয়া বা, হো খাফেই মা?", "bn": "একটু বিশ্রাম নাও, কফি খাবে?", "en": "Let's take a rest. Would you like some coffee?" },
+          { "speaker": "B", "hanzi": "不喝了，我已经喝两杯了。", "pinyin": "Bù hē le, wǒ yǐjīng hē liǎng bēi le.", "pron": "পু হো লা, ও ইচিং হো লিয়াং পেই লা।", "bn": "আর খাব না, আমি ইতিমধ্যে দুই কাপ খেয়েছি।", "en": "No, thanks. I've already had two cups." },
+          { "speaker": "A", "hanzi": "是啊，咖啡喝多了对身体不好。", "pinyin": "Shì a, kāfēi hē duō le duì shēntǐ bù hǎo.", "pron": "শি আ, খাফেই হো তুও লা তুই শেনথি পু হাও।", "bn": "ঠিকই, বেশি কফি খাওয়া শরীরের জন্য ভালো না।", "en": "Right. Too much coffee is bad for our health." },
+          { "speaker": "B", "hanzi": "以后我少喝一点儿，每天喝一杯。", "pinyin": "Yǐhòu wǒ shǎo hē yìdiǎnr, měi tiān hē yì bēi.", "pron": "ইহৌ ও শাও হো ইতিয়ার, মেই থিয়েন হো ই পেই।", "bn": "এরপর থেকে আমি একটু কম খাব, প্রতিদিন এক কাপ খাব।", "en": "I'll drink less coffee. One cup a day." }
+        ]
+      }
+    ]
+  },
     {
-      "chapter": 1,
-      "title": "অধ্যায় ১: 九月去北京旅游最好",
-      "subtitle": "সেপ্টেম্বরে বেইজিং ভ্রমণ সবচেয়ে ভালো",
-      "lessons": [
-        {
-          "lessonTitle": "পাঠ ১: 在学校 (স্কুলে)",
-          "newWords": [
-            {"hanzi": "旅游", "pinyin": "lǚyóu", "pron": "ল্যুই-ইয়ৌ", "bn": "ভ্রমণ করা / বেড়াতে যাওয়া"},
-            {"hanzi": "觉得", "pinyin": "juéde", "pron": "চুয়ে-দ্য", "bn": "মনে করা / অনুভব করা"},
-            {"hanzi": "最", "pinyin": "zuì", "pron": "চুই", "bn": "সবচেয়ে (most)"},
-            {"hanzi": "为什么", "pinyin": "wèishénme", "pron": "ওয়েই-শেন-ম্য", "bn": "কেন (why)"},
-            {"hanzi": "也", "pinyin": "yě", "pron": "ইয়ে", "bn": "ও / আরও (also)"}
-          ],
-          "dialogues": [
-            {
-              "speaker": "A",
-              "hanzi": "我要去北京旅游，你觉得什么时候去最好？",
-              "pinyin": "Wǒ yào qù Běijīng lǚyóu, nǐ juéde shénme shíhou qù zuì hǎo?",
-              "pron": "ওয়ো ইয়াও ছু পেই-চিং ল্যুই-ইয়ৌ, নি চুয়ে-দ্য শেন-ম্য শি-হৌ ছু চুই হাও?",
-              "bn": "আমি বেইজিং ভ্রমণ করতে চাই, তোমার মতে কখন যাওয়া সবচেয়ে ভালো?",
-              "wordByWord": "我 (wǒ - আমি) 要 (yào - চাই) 去 (qù - যেতে) 北京 (Běijīng - বেইজিং) 旅游 (lǚyóu - ভ্রমণ করতে), 你 (nǐ - তুমি) 觉得 (juéde - মনে করো) 什么 (shénme - কী) 时候 (shíhou - সময়) 去 (qù - যাওয়া) 最 (zuì - সবচেয়ে) 好 (hǎo - ভালো)"
-            },
-            {
-              "speaker": "B",
-              "hanzi": "九月去北京旅游最好。",
-              "pinyin": "Jiǔ yuè qù Běijīng lǚyóu zuì hǎo.",
-              "pron": "চিউ ইউয়ে ছু পেই-চিং ল্যুই-ইয়ৌ চুই হাও।",
-              "bn": "সেপ্টেম্বর মাসে বেইজিং ভ্রমণ করা সবচেয়ে ভালো।",
-              "wordByWord": "九月 (jiǔ yuè - সেপ্টেম্বর মাসে) 去 (qù - যাওয়া) 北京 (Běijīng - বেইজিং) 旅游 (lǚyóu - ভ্রমণ করা) 最 (zuì - সবচেয়ে) 好 (hǎo - ভালো)"
-            },
-            {
-              "speaker": "A",
-              "hanzi": "为什么？",
-              "pinyin": "Wèishénme?",
-              "pron": "ওয়েই-শেন-ম্য?",
-              "bn": "কেন?",
-              "wordByWord": "为什么 (wèishénme - কেন)"
-            },
-            {
-              "speaker": "B",
-              "hanzi": "九月的北京天气不冷也不热。",
-              "pinyin": "Jiǔ yuè de Běijīng tiānqì bù lěng yě bú rè.",
-              "pron": "চিউ ইউয়ে দ্য পেই-চিং থিয়ান-ছি পু লেং ইয়ে পু র‍্য।",
-              "bn": "সেপ্টেম্বরে বেইজিংয়ের আবহাওয়া ঠান্ডাও থাকে না, গরমও থাকে না।",
-              "wordByWord": "九月的 (jiǔ yuè de - সেপ্টেম্বরের) 北京 (Běijīng - বেইজিংয়ের) 天气 (tiānqì - আবহাওয়া) 不冷 (bù lěng - ঠান্ডা নয়) 也 (yě - এবং/ও) 不热 (bú rè - গরমও নয়)"
-            }
-          ]
-        },
-        {
-          "lessonTitle": "পাঠ ২: 看照片 (ছবি দেখার সময়)",
-          "newWords": [
-            {"hanzi": "运动", "pinyin": "yùndòng", "pron": "ইয়্যুন-তোং", "bn": "খেলাধুলা / ব্যায়াম"},
-            {"hanzi": "踢足球", "pinyin": "tī zúqiú", "pron": "থি চু-ছিউ", "bn": "ফুটবল খেলা"},
-            {"hanzi": "一起", "pinyin": "yìqǐ", "pron": "ই-ছি", "bn": "একসাথে (together)"}
-          ],
-          "dialogues": [
-            {
-              "speaker": "A",
-              "hanzi": "你喜欢什么运动？",
-              "pinyin": "Nǐ xǐhuan shénme yùndòng?",
-              "pron": "নি সি-হুয়ান শেন-ম্য ইয়্যুন-তোং?",
-              "bn": "তুমি কোন খেলাধুলা পছন্দ করো?",
-              "wordByWord": "你 (nǐ - তুমি) 喜欢 (xǐhuan - পছন্দ করো) 什么 (shénme - কী) 运动 (yùndòng - খেলাধুলা)"
-            },
-            {
-              "speaker": "B",
-              "hanzi": "我最喜欢踢足球。",
-              "pinyin": "Wǒ zuì xǐhuan tī zúqiú.",
-              "pron": "ওয়ো চুই সি-হুয়ান থি চু-ছিউ।",
-              "bn": "আমি ফুটবল খেলতে সবচেয়ে বেশি পছন্দ করি।",
-              "wordByWord": "我 (wǒ - আমি) 最 (zuì - সবচেয়ে) 喜欢 (xǐhuan - পছন্দ করি) 踢足球 (tī zúqiú - ফুটবল খেলতে)"
-            },
-            {
-              "speaker": "A",
-              "hanzi": "下午我们一起去踢足球吧。",
-              "pinyin": "Xiàwǔ wǒmen yìqǐ qù tī zúqiú ba.",
-              "pron": "সিয়া-উ ওয়ো-ম্যান ই-ছি ছু থি চু-ছিউ পা।",
-              "bn": "চলো আজ বিকালে আমরা একসাথে ফুটবল খেলতে যাই।",
-              "wordByWord": "下午 (xiàwǔ - বিকেলে) 我们 (wǒmen - আমরা) 一起 (yìqǐ - একসাথে) 去 (qù - যাই) 踢足球 (tī zúqiú - ফুটবল খেলতে) 吧 (ba - চলো)"
-            },
-            {
-              "speaker": "B",
-              "hanzi": "好啊。",
-              "pinyin": "Hǎo a.",
-              "pron": "হাও আ।",
-              "bn": "ঠিক আছে।",
-              "wordByWord": "好啊 (hǎo a - ঠিক আছে)"
-            }
-          ]
-        },
-        {
-          "lessonTitle": "পাঠ ৩: 在家里 (বাড়িতে - চেয়ার কেনা)",
-          "newWords": [
-            {"hanzi": "要", "pinyin": "yào", "pron": "ইয়াও", "bn": "চাওয়া / করতে যাওয়া"},
-            {"hanzi": "新", "pinyin": "xīn", "pron": "সিন", "bn": "নতুন (new)"}
-          ],
-          "dialogues": [
-            {
-              "speaker": "A",
-              "hanzi": "我们要不要买几个新的椅子？",
-              "pinyin": "Wǒmen yào bu yào mǎi jǐ ge xīn de yǐzi?",
-              "pron": "ওয়ো-ম্যান ইয়াও পু ইয়াও মাই চি গ্য সিন দ্য ই-জ়ি?",
-              "bn": "আমরা কি কয়েকটি নতুন চেয়ার কিনব?",
-              "wordByWord": "我们 (wǒmen - আমরা) 要不要 (yào bu yào - কিনব কি কিনব না) 买 (mǎi - কিনতে) 几个 (jǐ ge - কয়েকটি) 新的 (xīn de - নতুন) 椅子 (yǐzi - চেয়ার)"
-            },
-            {
-              "speaker": "B",
-              "hanzi": "好啊。什么时候去买？",
-              "pinyin": "Hǎo a. Shénme shíhou qù mǎi?",
-              "pron": "হাও আ। শেন-ম্য শি-হৌ ছু মাই?",
-              "bn": "ঠিক আছে। কখন কিনতে যাব?",
-              "wordByWord": "好啊 (hǎo a - ঠিক আছে) 什么时候 (shénme shíhou - কখন) 去 (qù - যাব) 买 (mǎi - কিনতে)"
-            },
-            {
-              "speaker": "A",
-              "hanzi": "明天下午怎么样？你明天几点能回来？",
-              "pinyin": "Míngtiān xiàwǔ zěnmeyàng? Nǐ míngtiān jǐ diǎn néng huílái?",
-              "pron": "মিং-থিয়ান সিয়া-উ চেন-ম্য-ইয়াং? নি মিং-থিয়ান চি তিয়ান নেং হুই-লাই?",
-              "bn": "আগামীকাল বিকেলে হলে কেমন হয়? তুমি আগামীকাল কয়টায় ফিরে আসতে পারবে?",
-              "wordByWord": "明天 (míngtiān - আগামীকাল) 下午 (xiàwǔ - বিকেলে) 怎么样 (zěnmeyàng - কেমন হয়)? 你 (nǐ - তুমি) 明天 (míngtiān - আগামীকাল) 几点 (jǐ diǎn - কয়টায়) 能 (néng - পারবে) 回来 (huílái - ফিরে আসতে)"
-            },
-            {
-              "speaker": "B",
-              "hanzi": "三点多。",
-              "pinyin": "Sān diǎn duō.",
-              "pron": "সান তিয়ান তুয়ো।",
-              "bn": "তিনটার একটু পরে।",
-              "wordByWord": "三点 (sān diǎn - তিনটা) 多 (duō - একটু পরে/বেশি)"
-            }
-          ]
-        },
-        {
-          "lessonTitle": "পাঠ ৪: 在家里 (বাড়িতে - বিড়াল)",
-          "newWords": [
-            {"hanzi": "它", "pinyin": "tā", "pron": "থা", "bn": "ইহা / এটি (প্রাণী বা বস্তুর জন্য)"},
-            {"hanzi": "眼睛", "pinyin": "yǎnjing", "pron": "ইয়েন-চিং", "bn": "চোখ (eyes)"}
-          ],
-          "dialogues": [
-            {
-              "speaker": "A",
-              "hanzi": "桌子下面有个猫。",
-              "pinyin": "Zhuōzi xiàmiàn yǒu ge māo.",
-              "pron": "চুয়ো-জ়ি সিয়া-মিয়ান ইয়ৌ গ্য মাও।",
-              "bn": "টেবিলের নিচে একটি বিড়াল আছে।",
-              "wordByWord": "桌子 (zhuōzi - টেবিলের) 下面 (xiàmiàn - নিচে) 有 (yǒu - আছে) 个 (ge - একটি) 猫 (māo - বিড়াল)"
-            },
-            {
-              "speaker": "B",
-              "hanzi": "那是我的猫，它叫花花。",
-              "pinyin": "Nà shì wǒ de māo, tā jiào Huāhua.",
-              "pron": "না শি ওয়ো দ্য মাও, থা চিয়াও হুয়া-হুয়া।",
-              "bn": "ওটা আমার বিড়াল, ওর নাম হুয়াহুয়া।",
-              "wordByWord": "那是 (nà shì - ওটা) 我的 (wǒ de - আমার) 猫 (māo - বিড়াল), 它 (tā - ওর) 叫 (jiào - নাম) 花花 (Huāhua - হুয়াহুয়া)"
-            },
-            {
-              "speaker": "A",
-              "hanzi": "它很漂亮。",
-              "pinyin": "Tā hěn piàoliang.",
-              "pron": "থা হেন ফিয়াও-লিয়াং।",
-              "bn": "ও খুব সুন্দর।",
-              "wordByWord": "它 (tā - ও) 很 (hěn - খুব) 漂亮 (piàoliang - সুন্দর)"
-            },
-            {
-              "speaker": "B",
-              "hanzi": "是啊，我觉得它的眼睛最漂亮。",
-              "pinyin": "Shì a, wǒ juéde tā de yǎnjing zuì piàoliang.",
-              "pron": "শি আ, ওয়ো চুয়ে-দ্য থা দ্য ইয়েন-চিং চুই ফিয়াও-লিয়াং।",
-              "bn": "হ্যাঁ, আমার মনে হয় ওর চোখগুলো সবচেয়ে সুন্দর।",
-              "wordByWord": "是啊 (shì a - হ্যাঁ), 我 (wǒ - আমার) 觉得 (juéde - মনে হয়) 它的 (tā de - ওর) 眼睛 (yǎnjing - চোখ) 最 (zuì - সবচেয়ে) 漂亮 (piàoliang - সুন্দর)"
-            },
-            {
-              "speaker": "A",
-              "hanzi": "它多大了？",
-              "pinyin": "Tā duō dà le?",
-              "pron": "থা তুয়ো তা ল্য?",
-              "bn": "ওর বয়স কত হলো?",
-              "wordByWord": "它 (tā - ওর) 多大了 (duō dà le - বয়স কত)"
-            },
-            {
-              "speaker": "B",
-              "hanzi": "六个多月。",
-              "pinyin": "Liù ge duō yuè.",
-              "pron": "লিউ গ্য তুয়ো ইউয়ে।",
-              "bn": "ছয় মাসের একটু বেশি।",
-              "wordByWord": "六个 (liù ge - ছয়) 多 (duō - বেশি) 月 (yuè - মাস)"
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "chapter": 2,
-      "title": "অধ্যায় ২: 我每天六点起床",
-      "subtitle": "আমি প্রতিদিন ছয়টায় ঘুম থেকে উঠি",
-      "lessons": [
-        {
-          "lessonTitle": "পাঠ ১: 在运动场 (খেলার মাঠে)",
-          "newWords": [
-            {"hanzi": "生病", "pinyin": "shēngbìng", "pron": "শেং-পিং", "bn": "অসুস্থ হওয়া"},
-            {"hanzi": "每", "pinyin": "měi", "pron": "মেই", "bn": "প্রতি (every)"},
-            {"hanzi": "早上", "pinyin": "zǎoshang", "pron": "চাও-শাং", "bn": "সকাল"},
-            {"hanzi": "跑步", "pinyin": "pǎobù", "pron": "ফাও-পু", "bn": "দৌড়ানো / জগিং করা"},
-            {"hanzi": "起床", "pinyin": "qǐchuáng", "pron": "ছি-ছুয়াং", "bn": "ঘুম থেকে ওঠা"}
-          ],
-          "dialogues": [
-            {
-              "speaker": "A",
-              "hanzi": "你很少生病，是不是喜欢运动？",
-              "pinyin": "Nǐ hěn shǎo shēngbìng, shì bu shì xǐhuan yùndòng?",
-              "pron": "নি হেন শাও শেং-পিং, শি পু শি সি-হুয়ান ইয়্যুন-তোং?",
-              "bn": "তুমি খুব কম অসুস্থ হও, তুমি কি খেলাধুলা পছন্দ করো?",
-              "wordByWord": "你 (nǐ - তুমি) 很少 (hěn shǎo - খুব কম) 生病 (shēngbìng - অসুস্থ হও), 是不是 (shì bu shì - তাই না / কি না) 喜欢 (xǐhuan - পছন্দ করো) 运动 (yùndòng - খেলাধুলা)"
-            },
-            {
-              "speaker": "B",
-              "hanzi": "是啊，我每天早上都要出去跑步。",
-              "pinyin": "Shì a, wǒ měitiān zǎoshang dōu yào chūqù pǎobù.",
-              "pron": "শি আ, ওয়ো মেই-থিয়ান চাও-শাং তোউ ইয়াও ছু-ছু ফাও-পু।",
-              "bn": "হ্যাঁ, আমি প্রতিদিন সকালে বাইরে দৌড়াতে যাই।",
-              "wordByWord": "是啊 (shì a - হ্যাঁ), 我 (wǒ - আমি) 每天 (měitiān - প্রতিদিন) 早上 (zǎoshang - সকালে) 都要 (dōu yào - অবশ্যই) 出去 (chūqù - বাইরে যাই) 跑步 (pǎobù - দৌড়াতে)"
-            },
-            {
-              "speaker": "A",
-              "hanzi": "你每天几点起床？",
-              "pinyin": "Nǐ měitiān jǐ diǎn qǐchuáng?",
-              "pron": "নি মেই-থিয়ান চি তিয়ান ছি-ছুয়াং?",
-              "bn": "তুমি প্রতিদিন কয়টায় ঘুম থেকে ওঠো?",
-              "wordByWord": "你 (nǐ - তুমি) 每天 (měitiān - প্রতিদিন) 几点 (jǐ diǎn - কয়টায়) 起床 (qǐchuáng - ঘুম থেকে ওঠো)"
-            },
-            {
-              "speaker": "B",
-              "hanzi": "我每天六点起床。",
-              "pinyin": "Wǒ měitiān liù diǎn qǐchuáng.",
-              "pron": "ওয়ো মেই-থিয়ান লিউ তিয়ান ছি-ছুয়াং।",
-              "bn": "আমি প্রতিদিন ছয়টায় ঘুম থেকে উঠি।",
-              "wordByWord": "我 (wǒ - আমি) 每天 (měitiān - প্রতিদিন) 六点 (liù diǎn - ছয়টায়) 起床 (qǐchuáng - ঘুম থেকে উঠি)"
-            }
-          ]
-        },
-        {
-          "lessonTitle": "পাঠ ২: 在医院 (হাসপাতালে)",
-          "newWords": [
-            {"hanzi": "药", "pinyin": "yào", "pron": "ইয়াও", "bn": "ওষুধ (medicine)"},
-            {"hanzi": "身体", "pinyin": "shēntǐ", "pron": "শেন-থি", "bn": "শরীর / স্বাস্থ্য"},
-            {"hanzi": "出院", "pinyin": "chū yuàn", "pron": "ছু ইউয়ান", "bn": "হাসপাতাল থেকে ছাড়া পাওয়া"},
-            {"hanzi": "出", "pinyin": "chū", "pron": "ছু", "bn": "বের হওয়া"}
-          ],
-          "dialogues": [
-            {
-              "speaker": "A",
-              "hanzi": "吃药了吗？现在身体怎么样？",
-              "pinyin": "Chī yào le ma? Xiànzài shēntǐ zěnmeyàng?",
-              "pron": "ছি ইয়াও ল্য মা? সিয়ান-জ়াই শেন-থি চেন-ম্য-ইয়াং?",
-              "bn": "ওষুধ খেয়েছো? এখন শরীর কেমন?",
-              "wordByWord": "吃药 (chī yào - ওষুধ খেয়েছ) 了吗 (le ma - কি)? 现在 (xiànzài - এখন) 身体 (shēntǐ - শরীর) 怎么样 (zěnmeyàng - কেমন)"
-            },
-            {
-              "speaker": "B",
-              "hanzi": "吃了。现在好多了。",
-              "pinyin": "Chī le. Xiànzài hǎo duō le.",
-              "pron": "ছি ল্য। সিয়ান-জ়াই হাও তুয়ো ল্য।",
-              "bn": "খেয়েছি। এখন অনেকটা ভালো আছি।",
-              "wordByWord": "吃了 (chī le - খেয়েছি)। 现在 (xiànzài - এখন) 好 (hǎo - ভালো) 多了 (duō le - অনেকটা)"
-            },
-            {
-              "speaker": "A",
-              "hanzi": "什么时候能出院？",
-              "pinyin": "Shénme shíhou néng chū yuàn?",
-              "pron": "শেন-ম্য শি-হৌ নেং ছু ইউয়ান?",
-              "bn": "কখন হাসপাতাল থেকে ছাড়পত্র পাবে?",
-              "wordByWord": "什么时候 (shénme shíhou - কখন) 能 (néng - পারবে) 出院 (chū yuàn - হাসপাতাল থেকে ছাড়া পেতে)"
-            },
-            {
-              "speaker": "B",
-              "hanzi": "医生说下个星期。",
-              "pinyin": "Yīshēng shuō xià ge xīngqī.",
-              "pron": "ই-শেং শুয়ো সিয়া গ্য সিং-ছি।",
-              "bn": "ডাক্তার বলেছেন আগামী সপ্তাহে।",
-              "wordByWord": "医生 (yīshēng - ডাক্তার) 说 (shuō - বলেছেন) 下个 (xià ge - আগামী) 星期 (xīngqī - সপ্তাহে)"
-            }
-          ]
-        },
-        {
-          "lessonTitle": "পাঠ ৩: 在操场 (মাঠে)",
-          "newWords": [
-            {"hanzi": "高", "pinyin": "gāo", "pron": "কাও", "bn": "উঁচু / লম্বা"},
-            {"hanzi": "米", "pinyin": "mǐ", "pron": "মি", "bn": "মিটার (দৈর্ঘ্যের একক)"},
-            {"hanzi": "知道", "pinyin": "zhīdào", "pron": "চি-তাও", "bn": "জানা (to know)"}
-          ],
-          "dialogues": [
-            {
-              "speaker": "A",
-              "hanzi": "大卫今年多大？",
-              "pinyin": "Dàwèi jīnnián duō dà?",
-              "pron": "তা-ওয়েই চিন-নিয়েন তুয়ো তা?",
-              "bn": "ডেভিডের বয়স এ বছর কত?",
-              "wordByWord": "大卫 (Dàwèi - ডেভিডের) 今年 (jīnnián - এ বছর) 多大 (duō dà - বয়স কত)"
-            },
-            {
-              "speaker": "B",
-              "hanzi": "二十多岁。",
-              "pinyin": "Èrshí duō suì.",
-              "pron": "আর-শি তুয়ো সুই।",
-              "bn": "বিশ বছরের বেশি।",
-              "wordByWord": "二十 (èrshí - বিশ) 多 (duō - বেশি) 岁 (suì - বছর)"
-            },
-            {
-              "speaker": "A",
-              "hanzi": "他多高？",
-              "pinyin": "Tā duō gāo?",
-              "pron": "থা তুয়ো কাও?",
-              "bn": "সে কত লম্বা?",
-              "wordByWord": "他 (tā - সে) 多高 (duō gāo - কত লম্বা)"
-            },
-            {
-              "speaker": "B",
-              "hanzi": "一米八几。",
-              "pinyin": "Yì mǐ bā jǐ.",
-              "pron": "ই মি পা চি।",
-              "bn": "এক মিটার আশির চেয়ে একটু বেশি।",
-              "wordByWord": "一米 (yì mǐ - এক মিটার) 八几 (bā jǐ - আশির বেশি)"
-            },
-            {
-              "speaker": "A",
-              "hanzi": "你怎么知道这么多呀？",
-              "pinyin": "Nǐ zěnme zhīdào zhème duō ya?",
-              "pron": "নি চেন-ম্য চি-তাও চ্য-ম্য তুয়ো ইয়া?",
-              "bn": "তুমি এত কিছু কীভাবে জানো?",
-              "wordByWord": "你 (nǐ - তুমি) 怎么 (zěnme - কীভাবে) 知道 (zhīdào - জানো) 这么多 (zhème duō - এত কিছু) 呀 (ya)"
-            },
-            {
-              "speaker": "B",
-              "hanzi": "他是我同学。",
-              "pinyin": "Tā shì wǒ tóngxué.",
-              "pron": "থা শি ওয়ো থুং-শুয়ে।",
-              "bn": "সে আমার সহপাঠী।",
-              "wordByWord": "他 (tā - সে) 是 (shì - হলো) 我 (wǒ - আমার) 同学 (tóngxué - সহপাঠী)"
-            }
-          ]
-        },
-        {
-          "lessonTitle": "পাঠ ৪: 在房间 (রুমে)",
-          "newWords": [
-            {"hanzi": "休息", "pinyin": "xiūxi", "pron": "সিউ-সি", "bn": "বিশ্রাম নেওয়া"},
-            {"hanzi": "忙", "pinyin": "máng", "pron": "মাং", "bn": "ব্যস্ত"},
-            {"hanzi": "时间", "pinyin": "shíjiān", "pron": "শি-চিয়ান", "bn": "সময়"}
-          ],
-          "dialogues": [
-            {
-              "speaker": "A",
-              "hanzi": "张老师星期六也不休息啊？",
-              "pinyin": "Zhāng lǎoshī xīngqīliù yě bù xiūxi a?",
-              "pron": "চাং লাও-শি সিং-ছি-লিউ ইয়ে পু সিউ-সি আ?",
-              "bn": "শিক্ষক ঝাং শনিবারেও বিশ্রাম নেন না?",
-              "wordByWord": "张老师 (Zhāng lǎoshī - শিক্ষক ঝাং) 星期六 (xīngqīliù - শনিবারেও) 也 (yě - ও) 不 (bù - না) 休息 (xiūxi - বিশ্রাম নেন) 啊 (a)"
-            },
-            {
-              "speaker": "B",
-              "hanzi": "是啊，他这几天很忙，没有时间休息。",
-              "pinyin": "Shì a, tā zhè jǐ tiān hěn máng, méiyǒu shíjiān xiūxi.",
-              "pron": "শি আ, থা চ্য চি থিয়ান হেন মাং, মেই-ইয়ৌ শি-চিয়ান সিউ-সি।",
-              "bn": "হ্যাঁ, তিনি গত কয়েকদিন ধরে খুব ব্যস্ত, বিশ্রাম নেওয়ার সময় নেই।",
-              "wordByWord": "是啊 (shì a - হ্যাঁ), 他 (tā - তিনি) 这几天 (zhè jǐ tiān - এই কয়েকদিন) 很忙 (hěn máng - খুব ব্যস্ত), 没有 (méiyǒu - নেই) 时间 (shíjiān - সময়) 休息 (xiūxi - বিশ্রাম নেওয়ার)"
-            },
-            {
-              "speaker": "A",
-              "hanzi": "那会很累吧？",
-              "pinyin": "Nà huì hěn lèi ba?",
-              "pron": "না হুই হেন লেই পা?",
-              "bn": "তাহলে তো খুব ক্লান্তি লাগে, তাই না?",
-              "wordByWord": "那 (nà - তাহলে তো) 会 (huì - হয়ে পড়েন) 很累 (hěn lèi - খুব ক্লান্ত) 吧 (ba - তাই না)"
-            },
-            {
-              "speaker": "B",
-              "hanzi": "他每天回来都很累。",
-              "pinyin": "Tā měitiān huílái dōu hěn lèi.",
-              "pron": "থা মেই-থিয়ান হুই-লাই তোউ হেন লেই।",
-              "bn": "তিনি প্রতিদিন ফিরে এসে খুব ক্লান্ত থাকেন।",
-              "wordByWord": "他 (tā - তিনি) 每天 (měitiān - প্রতিদিন) 回来 (huílái - ফিরে এসে) 都 (dōu - সবসময়) 很累 (hěn lèi - খুব ক্লান্ত থাকেন)"
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "chapter": 3,
-      "title": "অধ্যায় ৩: 左边那个红色的是我的",
-      "subtitle": "বাম দিকের লালটি আমার",
-      "lessons": [
-        {
-          "lessonTitle": "পাঠ ১: 在房间 (রুমে - হাতঘড়ি)",
-          "newWords": [
-            {"hanzi": "手表", "pinyin": "shǒubiǎo", "pron": "শৌ-পিয়াও", "bn": "হাতঘড়ি"},
-            {"hanzi": "千", "pinyin": "qiān", "pron": "ছিয়ান", "bn": "হাজার (thousand)"}
-          ],
-          "dialogues": [
-            {
-              "speaker": "A",
-              "hanzi": "这块手表是你的吗？",
-              "pinyin": "Zhè kuài shǒubiǎo shì nǐ de ma?",
-              "pron": "চ্য খুয়াই শৌ-পিয়াও শি নি দ্য মা?",
-              "bn": "এই ঘড়িটি কি তোমার?",
-              "wordByWord": "这块 (zhè kuài - এই) 手表 (shǒubiǎo - হাতঘড়িটি) 是 (shì - কি) 你的 (nǐ de - তোমার) 吗 (ma - কি)"
-            },
-            {
-              "speaker": "B",
-              "hanzi": "不是我的，是我爸爸的。",
-              "pinyin": "Bú shì wǒ de, shì wǒ bàba de.",
-              "pron": "পু শি ওয়ো দ্য, শি ওয়ো পা-পা দ্য।",
-              "bn": "আমার নয়, এটি আমার বাবার।",
-              "wordByWord": "不是 (bú shì - নয়) 我的 (wǒ de - আমার)। 是 (shì - হলো) 我爸爸的 (wǒ bàba de - আমার বাবার)"
-            },
-            {
-              "speaker": "A",
-              "hanzi": "多少钱买的？",
-              "pinyin": "Duōshao qián mǎi de?",
-              "pron": "তুয়ো-শাও ছিয়ান মাই দ্য?",
-              "bn": "কত টাকা দিয়ে কিনেছেন?",
-              "wordByWord": "多少 (duōshao - কত) 钱 (qián - টাকা দিয়ে) 买的 (mǎi de - কিনেছেন)"
-            },
-            {
-              "speaker": "B",
-              "hanzi": "三千多块。",
-              "pinyin": "Sānqiān duō kuài.",
-              "pron": "সান-ছিয়ান তুয়ো খুয়াই।",
-              "bn": "তিন হাজারেরও বেশি ইউয়ান।",
-              "wordByWord": "三千 (sānqiān - তিন হাজার) 多 (duō - বেশি) 块 (kuài - ইউয়ান)"
-            }
-          ]
-        },
-        {
-          "lessonTitle": "পাঠ ২: 在家里 (বাড়িতে - খবরের কাগজ ও দুধ)",
-          "newWords": [
-            {"hanzi": "报纸", "pinyin": "bàozhǐ", "pron": "পাও-চি", "bn": "খবরের কাগজ"},
-            {"hanzi": "送", "pinyin": "sòng", "pron": "সোং", "bn": "দেওয়া / ডেলিভারি করা"},
-            {"hanzi": "一下", "pinyin": "yíxià", "pron": "ই-সিয়া", "bn": "একটু (কোনো কাজের চেষ্টা)"},
-            {"hanzi": "牛奶", "pinyin": "niúnǎi", "pron": "নিউ-নাই", "bn": "গরুর দুধ"}
-          ],
-          "dialogues": [
-            {
-              "speaker": "A",
-              "hanzi": "这是今天早上的报纸吗？",
-              "pinyin": "Zhè shì jīntiān zǎoshang de bàozhǐ ma?",
-              "pron": "চ্য শি চিন-থিয়ান চাও-শাং দ্য পাও-চি মা?",
-              "bn": "এটি কি আজ সকালের খবরের কাগজ?",
-              "wordByWord": "这是 (zhè shì - এটা কি) 今天 (jīntiān - আজকের) 早上的 (zǎoshang de - সকালের) 报纸 (bàozhǐ - পত্রিকা) 吗 (ma)"
-            },
-            {
-              "speaker": "B",
-              "hanzi": "不是，是昨天的。",
-              "pinyin": "Bú shì, shì zuótiān de.",
-              "pron": "পু শি, শি চুয়ো-থিয়ান দ্য।",
-              "bn": "না, এটি গতকালের।",
-              "wordByWord": "不是 (bú shì - না), 是 (shì - এটা) 昨天的 (zuótiān de - গতকালের)"
-            },
-            {
-              "speaker": "A",
-              "hanzi": "你听，是不是送报纸的来了？",
-              "pinyin": "Nǐ tīng, shì bu shì sòng bàozhǐ de lái le?",
-              "pron": "নি থিং, শি পু শি সোং পাও-চি দ্য লাই ল্য?",
-              "bn": "শোনো তো, খবরের কাগজ দেওয়ার লোক কি এসেছে?",
-              "wordByWord": "你听 (nǐ tīng - শোনো তো), 是不是 (shì bu shì - কি না) 送 (sòng - পৌঁছে দেওয়ার) 报纸的 (bàozhǐ de - পত্রিকা লোক) 来了 (lái le - এসেছে)"
-            },
-            {
-              "speaker": "B",
-              "hanzi": "我看一下。不是，是送牛奶的。",
-              "pinyin": "Wǒ kàn yíxià. Bú shì, shì sòng niúnǎi de.",
-              "pron": "ওয়ো খান ই-সিয়া। পু শি, শি সোং নিউ-নাই দ্য।",
-              "bn": "আমি একটু দেখি। না, দুধ দেওয়ার লোক এসেছে।",
-              "wordByWord": "我 (wǒ - আমি) 看一下 (kàn yíxià - একটু দেখছি)। 不是 (bú shì - না), 是 (shì - এটা) 送 (sòng - দিয়ে যাওয়ার) 牛奶的 (niúnǎi de - দুধের লোক)"
-            }
-          ]
-        },
-        {
-          "lessonTitle": "পাঠ ৩: 在家里 (বাড়িতে - গোলাপি রুম)",
-          "newWords": [
-            {"hanzi": "房间", "pinyin": "fángjiān", "pron": "ফাং-চিয়ান", "bn": "রুম / কক্ষ"},
-            {"hanzi": "丈夫", "pinyin": "zhàngfu", "pron": "চাং-ফু", "bn": "স্বামী"},
-            {"hanzi": "旁边", "pinyin": "pángbiān", "pron": "ফাং-পিয়ান", "bn": "পাশে"},
-            {"hanzi": "真", "pinyin": "zhēn", "pron": "চেন", "bn": "সত্যিই / আসলেই"},
-            {"hanzi": "粉色", "pinyin": "fěnsè", "pron": "ফেন-স্য", "bn": "গোলাপি রং"},
-            {"hanzi": "颜色", "pinyin": "yánsè", "pron": "ইয়ান-স্য", "bn": "রং (color)"}
-          ],
-          "dialogues": [
-            {
-              "speaker": "A",
-              "hanzi": "这是谁的房间？",
-              "pinyin": "Zhè shì shéi de fángjiān?",
-              "pron": "চ্য শি শেই দ্য ফাং-চিয়ান?",
-              "bn": "এটি কার রুম?",
-              "wordByWord": "这是 (zhè shì - এটা) 谁的 (shéi de - কার) 房间 (fángjiān - রুম)"
-            },
-            {
-              "speaker": "B",
-              "hanzi": "这是我和我丈夫的，旁边那个小的房间是我女儿的。",
-              "pinyin": "Zhè shì wǒ hé wǒ zhàngfu de, pángbiān nàge xiǎo de fángjiān shì wǒ nǚ'ér de.",
-              "pron": "চ্য শি ওয়ো হ্য ওয়ো চাং-ফু দ্য, ফাং-পিয়ান না-গ্য সিয়াও দ্য ফাং-চিয়ান শি ওয়ো নিউ-আর দ্য।",
-              "bn": "এটি আমার এবং আমার স্বামীর, পাশের ছোট রুমটি আমার মেয়ের।",
-              "wordByWord": "这是 (zhè shì - এটা) 我 (wǒ - আমার) 和 (hé - এবং) 我丈夫的 (wǒ zhàngfu de - আমার স্বামীর), 旁边 (pángbiān - পাশের) 那个 (nàge - ওই) 小的 (xiǎo de - ছোট) 房间 (fángjiān - রুমটা) 是 (shì - হলো) 我女儿的 (wǒ nǚ'ér de - আমার মেয়ের)"
-            },
-            {
-              "speaker": "A",
-              "hanzi": "你女儿的房间真漂亮！都是粉色的。",
-              "pinyin": "Nǐ nǚ'ér de fángjiān zhēn piàoliang! Dōu shì fěnsè de.",
-              "pron": "নি নিউ-আর দ্য ফাং-চিয়ান চেন ফিয়াও-লিয়াং! তোউ শি ফেন-স্য দ্য।",
-              "bn": "আপনার মেয়ের রুমটি সত্যিই সুন্দর! পুরোটা গোলাপি রঙের।",
-              "wordByWord": "你女儿的 (nǐ nǚ'ér de - তোমার মেয়ের) 房间 (fángjiān - রুমটা) 真 (zhēn - সত্যিই) 漂亮 (piàoliang - সুন্দর)! 都是 (dōu shì - পুরোটাই) 粉色的 (fěnsè de - গোলাপি)"
-            },
-            {
-              "speaker": "B",
-              "hanzi": "是啊，粉色是她最喜欢的颜色。",
-              "pinyin": "Shì a, fěnsè shì tā zuì xǐhuan de yánsè.",
-              "pron": "শি আ, ফেন-স্য শি থা চুই সি-হুয়ান দ্য ইয়ান-স্য।",
-              "bn": "হ্যাঁ, গোলাপি তার সবচেয়ে পছন্দের রং।",
-              "wordByWord": "是啊 (shì a - হ্যাঁ), 粉色 (fěnsè - গোলাপি) 是 (shì - হলো) 她 (tā - তার) 最喜欢的 (zuì xǐhuan de - সবচেয়ে প্রিয়) 颜色 (yánsè - রং)"
-            }
-          ]
-        },
-        {
-          "lessonTitle": "পাঠ ৪: 在办公室 (অফিসে)",
-          "newWords": [
-            {"hanzi": "左边", "pinyin": "zuǒbian", "pron": "চুয়ো-পিয়ান", "bn": "বাম দিক"},
-            {"hanzi": "红色", "pinyin": "hóngsè", "pron": "হুং-স্য", "bn": "লাল রং"}
-          ],
-          "dialogues": [
-            {
-              "speaker": "A",
-              "hanzi": "你看见我的杯子了吗？",
-              "pinyin": "Nǐ kànjiàn wǒ de bēizi le ma?",
-              "pron": "নি খান-চিয়ান ওয়ো দ্য পেই-জ়ি ল্য মা?",
-              "bn": "তুমি কি আমার কাপটি দেখেছো?",
-              "wordByWord": "你 (nǐ - তুমি) 看见 (kànjiàn - দেখেছ কি) 我的 (wǒ de - আমার) 杯子 (bēizi - কাপটি) 了吗 (le ma - কি)"
-            },
-            {
-              "speaker": "B",
-              "hanzi": "这里有几个杯子，哪个是你的？",
-              "pinyin": "Zhèlǐ yǒu jǐ ge bēizi, nǎge shì nǐ de?",
-              "pron": "চ্য-লি ইয়ৌ চি গ্য পেই-জ়ি, না-গ্য শি নি দ্য?",
-              "bn": "এখানে কয়েকটি কাপ আছে, কোনটি তোমার?",
-              "wordByWord": "这里 (zhèlǐ - এখানে) 有 (yǒu - আছে) 几个 (jǐ ge - কয়েকটা) 杯子 (bēizi - কাপ), 哪个 (nǎge - কোনটা) 是 (shì - হলো) 你的 (nǐ de - তোমার)"
-            },
-            {
-              "speaker": "A",
-              "hanzi": "左边那个红色的是我的。",
-              "pinyin": "Zuǒbian nàge hóngsè de shì wǒ de.",
-              "pron": "চুয়ো-পিয়ান না-গ্য হুং-স্য দ্য শি ওয়ো দ্য।",
-              "bn": "বাম দিকের ওই লাল রঙেরটা আমার।",
-              "wordByWord": "左边 (zuǒbian - বাম দিকের) 那个 (nàge - ওই) 红色的 (hóngsè de - লাল রঙেরটা) 是 (shì - হলো) 我的 (wǒ de - আমার)"
-            },
-            {
-              "speaker": "B",
-              "hanzi": "给你。",
-              "pinyin": "Gěi nǐ.",
-              "pron": "কেই নি।",
-              "bn": "এই নাও।",
-              "wordByWord": "给你 (gěi nǐ - এই নাও)"
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "chapter": 4,
-      "title": "অধ্যায় ৪: 这个工作是他帮我介绍的",
-      "subtitle": "এই কাজটি সে আমাকে পরিচয় করিয়ে দিয়েছে",
-      "lessons": [
-        {
-          "lessonTitle": "পাঠ ১: 在教室 (শ্রেণিকক্ষে - জন্মদিন)",
-          "newWords": [
-            {"hanzi": "生日", "pinyin": "shēngrì", "pron": "শেং-রি", "bn": "জন্মদিন"},
-            {"hanzi": "快乐", "pinyin": "kuàilè", "pron": "খুয়াই-ল্য", "bn": "আনন্দ / সুখী"},
-            {"hanzi": "给", "pinyin": "gěi", "pron": "কেই", "bn": "দেওয়া"},
-            {"hanzi": "接", "pinyin": "jiē", "pron": "চিয়ে", "bn": "রিসিভ করা (ফোন)"}
-          ],
-          "dialogues": [
-            {
-              "speaker": "A",
-              "hanzi": "生日快乐！这是送给你的。",
-              "pinyin": "Shēngrì kuàilè! Zhè shì sòng gěi nǐ de.",
-              "pron": "শেং-রি খুয়াই-ল্য! চ্য শি সোং কেই নি দ্য।",
-              "bn": "শুভ জন্মদিন! এটি তোমার জন্য উপহার।",
-              "wordByWord": "生日快乐 (shēngrì kuàilè - শুভ জন্মদিন)! 这 (zhè - এটি) 是 (shì - হলো) 送给 (sòng gěi - উপহার দেওয়া) 你的 (nǐ de - তোমাকে)"
-            },
-            {
-              "speaker": "B",
-              "hanzi": "是什么？是一本书吗？",
-              "pinyin": "Shì shénme? Shì yì běn shū ma?",
-              "pron": "শি শেন-ম্য? শি ই পেন শু মা?",
-              "bn": "কী এটা? একটি বই নাকি?",
-              "wordByWord": "是 (shì - হয়) 什么 (shénme - কী)? 是 (shì - কি) 一本 (yì běn - একটি) 书 (shū - বই) 吗 (ma)"
-            },
-            {
-              "speaker": "A",
-              "hanzi": "对，这本书是我写的。",
-              "pinyin": "Duì, zhè běn shū shì wǒ xiě de.",
-              "pron": "তুই, চ্য পেন শু শি ওয়ো সিয়ে দ্য।",
-              "bn": "হ্যাঁ, এই বইটি আমার লেখা।",
-              "wordByWord": "对 (duì - ঠিক), 这本 (zhè běn - এই) 书 (shū - বইটি) 是 (shì) 我 (wǒ - আমার) 写的 (xiě de - লেখা)"
-            },
-            {
-              "speaker": "B",
-              "hanzi": "太谢谢你了！",
-              "pinyin": "Tài xièxie nǐ le!",
-              "pron": "থাই সিয়ে-সিয়ে নি ল্য!",
-              "bn": "তোমাকে অসংখ্য ধন্যবাদ!",
-              "wordByWord": "太 (tài - অনেক) 谢谢 (xièxie - ধন্যবাদ) 你 (nǐ - তোমাকে) 了 (le)"
-            }
-          ]
-        },
-        {
-          "lessonTitle": "পাঠ ২: 在家里 (বাড়িতে - ফোন আসা)",
-          "newWords": [
-            {"hanzi": "晚上", "pinyin": "wǎnshang", "pron": "ওয়ান-শাং", "bn": "সন্ধ্যা / রাত"},
-            {"hanzi": "问", "pinyin": "wèn", "pron": "ওয়েন", "bn": "জিজ্ঞাসা করা"},
-            {"hanzi": "非常", "pinyin": "fēicháng", "pron": "ফেই-ছাং", "bn": "খুবই / অত্যন্ত"}
-          ],
-          "dialogues": [
-            {
-              "speaker": "A",
-              "hanzi": "早上有你一个电话。",
-              "pinyin": "Zǎoshang yǒu nǐ yí ge diànhuà.",
-              "pron": "চাও-শাং ইয়ৌ নি ই গ্য তিয়েন-হুয়া।",
-              "bn": "সকালে তোমার একটা ফোন এসেছিল।",
-              "wordByWord": "早上 (zǎoshang - সকালে) 有 (yǒu - ছিল) 你 (nǐ - তোমার) 一个 (yí ge - একটি) 电话 (diànhuà - ফোন)"
-            },
-            {
-              "speaker": "B",
-              "hanzi": "电话是谁打的？",
-              "pinyin": "Diànhuà shì shéi dǎ de?",
-              "pron": "তিয়েন-হুয়া শি শেই তা দ্য?",
-              "bn": "ফোনটি কে করেছিলেন?",
-              "wordByWord": "电话 (diànhuà - ফোনটি) 是 (shì) 谁 (shéi - কে) 打的 (dǎ de - করেছিলেন)"
-            },
-            {
-              "speaker": "A",
-              "hanzi": "不知道，是儿子接的。",
-              "pinyin": "Bù zhīdào, shì érzi jiē de.",
-              "pron": "পু চি-তাও, শি আর-জ়ি চিয়ে দ্য।",
-              "bn": "জানি না, ছেলে রিসিভ করেছিল।",
-              "wordByWord": "不知道 (bù zhīdào - জানি না), 是 (shì) 儿子 (érzi - ছেলে) 接的 (jiē de - ধরেছিল)"
-            },
-            {
-              "speaker": "B",
-              "hanzi": "好，晚上我问一下儿子。",
-              "pinyin": "Hǎo, wǎnshang wǒ wèn yíxià érzi.",
-              "pron": "হাও, ওয়ান-শাং ওয়ো ওয়েন ই-সিয়া আর-জ়ি।",
-              "bn": "ঠিক আছে, রাতে আমি ছেলেকে একটু জিজ্ঞাসা করব।",
-              "wordByWord": "好 (hǎo - ঠিক আছে), 晚上 (wǎnshang - রাতে) 我 (wǒ - আমি) 问一下 (wèn yíxià - একটু জিজ্ঞাসা করব) 儿子 (érzi - ছেলেকে)"
-            }
-          ]
-        },
-        {
-          "lessonTitle": "পাঠ ৩: 在运动场 (খেলার মাঠে - ফুটবল ম্যাচ)",
-          "newWords": [
-            {"hanzi": "开始", "pinyin": "kāishǐ", "pron": "খাই-শি", "bn": "শুরু হওয়া"},
-            {"hanzi": "已经", "pinyin": "yǐjīng", "pron": "ই-চিং", "bn": "ইতিমধ্যে"}
-          ],
-          "dialogues": [
-            {
-              "speaker": "A",
-              "hanzi": "你喜欢踢足球吗？",
-              "pinyin": "Nǐ xǐhuan tī zúqiú ma?",
-              "pron": "নি সি-হুয়ান থি চু-ছিউ মা?",
-              "bn": "তুমি কি ফুটবল খেলতে পছন্দ করো?",
-              "wordByWord": "你 (nǐ - তুমি) 喜欢 (xǐhuan - পছন্দ করো) 踢足球 (tī zúqiú - ফুটবল খেলতে) 吗 (ma)"
-            },
-            {
-              "speaker": "B",
-              "hanzi": "非常喜欢。",
-              "pinyin": "Fēicháng xǐhuan.",
-              "pron": "ফেই-ছাং সি-হুয়ান।",
-              "bn": "খুবই পছন্দ করি।",
-              "wordByWord": "非常 (fēicháng - খুবই) 喜欢 (xǐhuan - পছন্দ করি)"
-            },
-            {
-              "speaker": "A",
-              "hanzi": "你是什么时候开始踢足球的？",
-              "pinyin": "Nǐ shì shénme shíhou kāishǐ tī zúqiú de?",
-              "pron": "নি শি শেন-ম্য শি-হৌ খাই-শি থি চু-ছিউ দ্য?",
-              "bn": "তুমি কবে থেকে ফুটবল খেলা শুরু করেছো?",
-              "wordByWord": "你 (nǐ - তুমি) 是 (shì) 什么时候 (shénme shíhou - কখন) 开始 (kāishǐ - শুরু করেছো) 踢足球的 (tī zúqiú de - ফুটবল খেলা)"
-            },
-            {
-              "speaker": "B",
-              "hanzi": "我十一岁的时候开始踢足球，已经踢了十年了。",
-              "pinyin": "Wǒ shíyī suì de shíhou kāishǐ tī zúqiú, yǐjīng tī le shí nián le.",
-              "pron": "ওয়ো শি-ই সুই দ্য শি-হৌ খাই-শি থি চু-ছিউ, ই-চিং থি ল্য শি নিয়েন ল্য।",
-              "bn": "আমি এগারো বছর বয়স থেকে ফুটবল খেলা শুরু করেছি, ইতিমধ্যে দশ বছর ধরে খেলছি।",
-              "wordByWord": "我 (wǒ - আমি) 十一岁的时候 (shíyī suì de shíhou - ১১ বছর বয়সে) 开始 (kāishǐ - শুরু করি) 踢足球 (tī zúqiú - ফুটবল খেলা), 已经 (yǐjīng - ইতিমধ্যে) 踢了 (tī le - খেলেছি) 十年 (shí nián - দশ বছর) 了 (le)"
-            }
-          ]
-        },
-        {
-          "lessonTitle": "পাঠ ৪: 在公司 (কোম্পানিতে - নতুন চাকরি)",
-          "newWords": [
-            {"hanzi": "长", "pinyin": "cháng", "pron": "ছাং", "bn": "দীর্ঘ / লম্বা"},
-            {"hanzi": "两", "pinyin": "liǎng", "pron": "লিয়াং", "bn": "দুই (পরিমাণ)"},
-            {"hanzi": "帮", "pinyin": "bāng", "pron": "পাং", "bn": "সাহায্য করা"},
-            {"hanzi": "介绍", "pinyin": "jièshào", "pron": "চিয়ে-শাও", "bn": "পরিচয় করিয়ে দেওয়া"}
-          ],
-          "dialogues": [
-            {
-              "speaker": "A",
-              "hanzi": "你在这儿工作多长时间了？",
-              "pinyin": "Nǐ zài zhèr gōngzuò duō cháng shíjiān le?",
-              "pron": "নি চাই চ্যার কুং-চুয়ো তুয়ো ছাং শি-চিয়ান ল্য?",
-              "bn": "তুমি এখানে কতদিন ধরে কাজ করছো?",
-              "wordByWord": "你 (nǐ - তুমি) 在这儿 (zài zhèr - এখানে) 工作 (gōngzuò - কাজ করছো) 多长时间 (duō cháng shíjiān - কত দীর্ঘ সময়) 了 (le)"
-            },
-            {
-              "speaker": "B",
-              "hanzi": "已经两年多了，我是2011年来的。",
-              "pinyin": "Yǐjīng liǎng nián duō le, wǒ shì èr líng yāo yāo nián lái de.",
-              "pron": "ই-চিং লিয়াং নিয়েন তুয়ো ল্য, ওয়ো শি আর লিং ইয়াও ইয়াও নিয়েন লাই দ্য।",
-              "bn": "ইতিমধ্যে দুই বছরের বেশি হয়ে গেছে, আমি ২০১১ সালে এসেছি।",
-              "wordByWord": "已经 (yǐjīng - ইতিমধ্যে) 两年多 (liǎng nián duō - দুই বছরের বেশি) 了 (le), 我 (wǒ - আমি) 是 (shì) 2011年 (èr líng yāo yāo nián - ২০১১ সালে) 来的 (lái de - এসেছি)"
-            },
-            {
-              "speaker": "A",
-              "hanzi": "你认识谢先生吗？",
-              "pinyin": "Nǐ rènshi Xiè xiānsheng ma?",
-              "pron": "নি র‍্যন-শি সিয়ে সিয়ান-শেং মা?",
-              "bn": "তুমি কি মিস্টার সিয়ে-কে চেনো?",
-              "wordByWord": "你 (nǐ - তুমি) 认识 (rènshi - চেনো) 谢先生 (Xiè xiānsheng - মিস্টার সিয়েকে) 吗 (ma)"
-            },
-            {
-              "speaker": "B",
-              "hanzi": "认识，我们是大学同学，这个工作是他帮我介绍的。",
-              "pinyin": "Rènshi, wǒmen shì dàxué tóngxué, zhège gōngzuò shì tā bāng wǒ jièshào de.",
-              "pron": "র‍্যন-শি, ওয়ো-ম্যান শি তা-শুয়ে থুং-শুয়ে, চ্য-গ্য কুং-চুয়ো শি থা পাং ওয়ো চিয়ে-শাও দ্য।",
-              "bn": "চিনি, আমরা বিশ্ববিদ্যালয়ের সহপাঠী, এই চাকরিটি সে-ই আমাকে পরিচয় করিয়ে দিয়েছে।",
-              "wordByWord": "认识 (rènshi - চিনি), 我们 (wǒmen - আমরা) 是 (shì - হই) 大学同学 (dàxué tóngxué - বিশ্ববিদ্যালয়ের সহপাঠী), 这个工作 (zhège gōngzuò - এই কাজটি) 是 (shì) 他 (tā - সে) 帮 (bāng - সাহায্য করে) 我 (wǒ - আমাকে) 介绍的 (jièshào de - পরিচয় করিয়ে দিয়েছে)"
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "chapter": 5,
-      "title": "অধ্যায় ৫: 就买这件吧",
-      "subtitle": "এই পোশাকটাই কিনে ফেলি",
-      "lessons": [
-        {
-          "lessonTitle": "পাঠ ১: 在家里 (বাড়িতে - রাতের খাবার)",
-          "newWords": [
-            {"hanzi": "外面", "pinyin": "wàimiàn", "pron": "ওয়াই-মিয়ান", "bn": "বাইরে"},
-            {"hanzi": "准备", "pinyin": "zhǔnbèi", "pron": "চুন-পেই", "bn": "প্রস্তুত করা"},
-            {"hanzi": "就", "pinyin": "jiù", "pron": "চিউ", "bn": "তাহলে / ঠিক এটাই"},
-            {"hanzi": "鱼", "pinyin": "yú", "pron": "ইয়্যু", "bn": "মাছ"},
-            {"hanzi": "吧", "pinyin": "ba", "pron": "পা", "bn": "চলো / প্রস্তাবসূচক"}
-          ],
-          "dialogues": [
-            {
-              "speaker": "A",
-              "hanzi": "晚上我们去外面吃吧？",
-              "pinyin": "Wǎnshang wǒmen qù wàimiàn chī ba?",
-              "pron": "ওয়ান-শাং ওয়ো-ম্যান ছু ওয়াই-মিয়ান ছি পা?",
-              "bn": "রাতে চলো আমরা বাইরে খেতে যাই?",
-              "wordByWord": "晚上 (wǎnshang - রাতে) 我们 (wǒmen - আমরা) 去 (qù - যাই) 外面 (wàimiàn - বাইরে) 吃 (chī - খেতে) 吧 (ba)"
-            },
-            {
-              "speaker": "B",
-              "hanzi": "我不想去外面吃，我想在家吃。",
-              "pinyin": "Wǒ bù xiǎng qù wàimiàn chī, wǒ xiǎng zài jiā chī.",
-              "pron": "ওয়ো পু সিয়াং ছু ওয়াই-মিয়ান ছি, ওয়ো সিয়াং চাই চিয়া ছি।",
-              "bn": "আমি বাইরে খেতে যেতে চাই না, আমি বাসায় খেতে চাই।",
-              "wordByWord": "我 (wǒ - আমি) 不想 (bù xiǎng - চাই না) 去外面吃 (qù wàimiàn chī - বাইরে খেতে যেতে), 我 (wǒ - আমি) 想 (xiǎng - চাই) 在家吃 (zài jiā chī - বাসায় খেতে)"
-            },
-            {
-              "speaker": "A",
-              "hanzi": "那你准备做什么呢？",
-              "pinyin": "Nà nǐ zhǔnbèi zuò shénme ne?",
-              "pron": "না নি চুন-পেই চুয়ো শেন-ম্য ন্য?",
-              "bn": "তাহলে তুমি কী রান্না করার প্রস্তুতি নিচ্ছো?",
-              "wordByWord": "那 (nà - তাহলে) 你 (nǐ - তুমি) 准备 (zhǔnbèi - প্রস্তুত করছো) 做 (zuò - রান্না করতে) 什么 (shénme - কী) 呢 (ne)"
-            },
-            {
-              "speaker": "B",
-              "hanzi": "就做你爱吃的鱼吧。",
-              "pinyin": "Jiù zuò nǐ ài chī de yú ba.",
-              "pron": "চিউ চুয়ো নি আই ছি দ্য ইয়্যু পা।",
-              "bn": "তোমার পছন্দের মাছই রান্না করি।",
-              "wordByWord": "就 (jiù - ঠিক) 做 (zuò - রান্না করি) 你爱吃的 (nǐ ài chī de - তোমার পছন্দের) 鱼 (yú - মাছ) 吧 (ba)"
-            }
-          ]
-        },
-        {
-          "lessonTitle": "পাঠ ২: 在商店 (দোকানে - কাপড় পছন্দ)",
-          "newWords": [
-            {"hanzi": "件", "pinyin": "jiàn", "pron": "চিয়েন", "bn": "টি / পিস (পোশাকের একক)"},
-            {"hanzi": "还", "pinyin": "hái", "pron": "হাই", "bn": "বেশ / মোটামুটি"},
-            {"hanzi": "可以", "pinyin": "kěyǐ", "pron": "খ্য-ই", "bn": "মোটামুটি ভালো / চলনসই"},
-            {"hanzi": "不错", "pinyin": "búcuò", "pron": "পু-ছুয়ো", "bn": "বেশ ভালো"}
-          ],
-          "dialogues": [
-            {
-              "speaker": "A",
-              "hanzi": "帮我看一下这件衣服怎么样。",
-              "pinyin": "Bāng wǒ kàn yíxià zhè jiàn yīfu zěnmeyàng.",
-              "pron": "পাং ওয়ো খান ই-সিয়া চ্য চিয়েন ই-ফু চেন-ম্য-ইয়াং।",
-              "bn": "আমাকে একটু দেখে দাও তো এই পোশাকটি কেমন।",
-              "wordByWord": "帮 (bāng - সাহায্য করে) 我 (wǒ - আমাকে) 看一下 (kàn yíxià - একটু দেখো) 这件 (zhè jiàn - এই) 衣服 (yīfu - পোশাকটি) 怎么样 (zěnmeyàng - কেমন)"
-            },
-            {
-              "speaker": "B",
-              "hanzi": "颜色还可以，就是有点儿大。",
-              "pinyin": "Yánsè hái kěyǐ, jiùshì yǒudiǎnr dà.",
-              "pron": "ইয়ান-স্য হাই খ্য-ই, চিউ-শি ইয়ৌ-তিয়ার তা।",
-              "bn": "রংটা মোটামুটি ভালোই, শুধু একটু বড়।",
-              "wordByWord": "颜色 (yánsè - রং) 还可以 (hái kěyǐ - মোটামুটি ভালো), 就是 (jiùshì - শুধু) 有点儿 (yǒudiǎnr - একটু) 大 (dà - বড়)"
-            },
-            {
-              "speaker": "A",
-              "hanzi": "这件小的怎么样？",
-              "pinyin": "Zhè jiàn xiǎo de zěnmeyàng?",
-              "pron": "চ্য চিয়েন সিয়াও দ্য চেন-ম্য-ইয়াং?",
-              "bn": "এই ছোটটি কেমন?",
-              "wordByWord": "这件 (zhè jiàn - এই) 小的 (xiǎo de - ছোটটি) 怎么样 (zěnmeyàng - কেমন)"
-            },
-            {
-              "speaker": "B",
-              "hanzi": "这件不错，就买这件吧。",
-              "pinyin": "Zhè jiàn búcuò, jiù mǎi zhè jiàn ba.",
-              "pron": "চ্য চিয়েন পু-ছুয়ো, চিউ মাই চ্য চিয়েন পা।",
-              "bn": "এটি বেশ ভালো, এইটাই কিনে ফেলো।",
-              "wordByWord": "这件 (zhè jiàn - এটি) 不错 (búcuò - বেশ ভালো), 就 (jiù - তাহলে) 买 (mǎi - কিনো) 这件 (zhè jiàn - এটিই) 吧 (ba)"
-            }
-          ]
-        },
-        {
-          "lessonTitle": "পাঠ ৩: 在教室 (শ্রেণিকক্ষে - পরীক্ষা)",
-          "newWords": [
-            {"hanzi": "考试", "pinyin": "kǎoshì", "pron": "খাও-শি", "bn": "পরীক্ষা"},
-            {"hanzi": "意思", "pinyin": "yìsi", "pron": "ই-সি", "bn": "অর্থ / মজা"},
-            {"hanzi": "咖啡", "pinyin": "kāfēi", "pron": "খা-ফেই", "bn": "কফি"},
-            {"hanzi": "对", "pinyin": "duì", "pron": "তুই", "bn": "জন্য / প্রতি"}
-          ],
-          "dialogues": [
-            {
-              "speaker": "A",
-              "hanzi": "今天下午没有考试，我们去看电影吧。",
-              "pinyin": "Jīntiān xiàwǔ méiyǒu kǎoshì, wǒmen qù kàn diànyǐng ba.",
-              "pron": "চিন-থিয়ান সিয়া-উ মেই-ইয়ৌ খাও-শি, ওয়ো-ম্যান ছু খান তিয়েন-ইং পা।",
-              "bn": "আজ বিকেলে কোনো পরীক্ষা নেই, চলো আমরা সিনেমা দেখতে যাই।",
-              "wordByWord": "今天下午 (jīntiān xiàwǔ - আজ বিকেলে) 没有 (méiyǒu - নেই) 考试 (kǎoshì - পরীক্ষা), 我们 (wǒmen - আমরা) 去 (qù - যাই) 看电影 (kàn diànyǐng - সিনেমা দেখতে) 吧 (ba)"
-            },
-            {
-              "speaker": "B",
-              "hanzi": "那个电影没有意思，我们去喝咖啡吧。",
-              "pinyin": "Nàge diànyǐng méiyǒu yìsi, wǒmen qù hē kāfēi ba.",
-              "pron": "না-গ্য তিয়েন-ইং মেই-ইয়ৌ ই-সি, ওয়ো-ম্যান ছু হ্য খা-ফেই পা।",
-              "bn": "ওই সিনেমাটি মজার না, চলো আমরা কফি পান করতে যাই।",
-              "wordByWord": "那个电影 (nàge diànyǐng - ওই সিনেমাটি) 没有意思 (méiyǒu yìsi - মজার না), 我们 (wǒmen - আমরা) 去 (qù - যাই) 喝咖啡 (hē kāfēi - কফি পান করতে) 吧 (ba)"
-            },
-            {
-              "speaker": "A",
-              "hanzi": "医生说我不能喝咖啡，对身体不好。",
-              "pinyin": "Yīshēng shuō wǒ bù néng hē kāfēi, duì shēntǐ bù hǎo.",
-              "pron": "ই-শেং শুয়ো ওয়ো পু নেং হ্য খা-ফেই, তুই শেন-থি পু হাও।",
-              "bn": "ডাক্তার বলেছেন আমি কফি পান করতে পারব না, শরীরের জন্য ভালো নয়।",
-              "wordByWord": "医生 (yīshēng - ডাক্তার) 说 (shuō - বলেছেন) 我 (wǒ - আমি) 不能 (bù néng - পারব না) 喝咖啡 (hē kāfēi - কফি পান করতে), 对 (duì - জন্য) 身体 (shēntǐ - শরীরের) 不好 (bù hǎo - ভালো না)"
-            },
-            {
-              "speaker": "B",
-              "hanzi": "那我们去喝茶吧。",
-              "pinyin": "Nà wǒmen qù hē chá ba.",
-              "pron": "না ওয়ো-ম্যান ছু হ্য ছা পা।",
-              "bn": "তাহলে চলো আমরা চা পান করতে যাই।",
-              "wordByWord": "那 (nà - তাহলে) 我们 (wǒmen - আমরা) 去 (qù - যাই) 喝茶 (hē chá - চা পান করতে) 吧 (ba)"
-            }
-          ]
-        },
-        {
-          "lessonTitle": "পাঠ ৪: 在办公室 (অফিসে - শরীর চর্চা)",
-          "newWords": [
-            {"hanzi": "以后", "pinyin": "yǐhòu", "pron": "ই-হৌ", "bn": "পরে / ভবিষ্যতে"}
-          ],
-          "dialogues": [
-            {
-              "speaker": "A",
-              "hanzi": "你最近身体怎么样？",
-              "pinyin": "Nǐ zuìjìn shēntǐ zěnmeyàng?",
-              "pron": "নি চুই-চিন শেন-থি চেন-ম্য-ইয়াং?",
-              "bn": "ইদানীং তোমার শরীর কেমন?",
-              "wordByWord": "你 (nǐ - তোমার) 最近 (zuìjìn - ইদানীং) 身体 (shēntǐ - শরীর) 怎么样 (zěnmeyàng - কেমন)"
-            },
-            {
-              "speaker": "B",
-              "hanzi": "不太好，有点儿累。",
-              "pinyin": "Bú tài hǎo, yǒudiǎnr lèi.",
-              "pron": "পু থাই হাও, ইয়ৌ-তিয়ার লেই।",
-              "bn": "তেমন ভালো না, একটু ক্লান্ত লাগছে।",
-              "wordByWord": "不太好 (bú tài hǎo - তেমন ভালো না), 有点儿 (yǒudiǎnr - একটু) 累 (lèi - ক্লান্ত)"
-            },
-            {
-              "speaker": "A",
-              "hanzi": "你工作太忙了，以后少工作，多休息。",
-              "pinyin": "Nǐ gōngzuò tài máng le, yǐhòu shǎo gōngzuò, duō xiūxi.",
-              "pron": "নি কুং-চুয়ো থাই মাং ল্য, ই-হৌ শাও কুং-চুয়ো, তুয়ো সিউ-সি।",
-              "bn": "তুমি কাজে খুব বেশি ব্যস্ত থাকো, এরপর থেকে কাজ কম করবে, বিশ্রাম বেশি নেবে।",
-              "wordByWord": "你 (nǐ - তুমি) 工作 (gōngzuò - কাজে) 太忙了 (tài máng le - খুব ব্যস্ত), 以后 (yǐhòu - এরপর থেকে) 少 (shǎo - কম) 工作 (gōngzuò - কাজ করবে), 多 (duō - বেশি) 休息 (xiūxi - বিশ্রাম নেবে)"
-            },
-            {
-              "speaker": "B",
-              "hanzi": "好，谢谢你。",
-              "pinyin": "Hǎo, xièxie nǐ.",
-              "pron": "হাও, সিয়ে-সিয়ে নি।",
-              "bn": "ঠিক আছে, তোমাকে ধন্যবাদ।",
-              "wordByWord": "好 (hǎo - ঠিক আছে), 谢谢 (xièxie - ধন্যবাদ) 你 (nǐ - তোমাকে)"
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "chapter": 6,
-      "title": "অধ্যায় ৬: 你怎么不吃了",
-      "subtitle": "তুমি খাচ্ছো না কেন",
-      "lessons": [
-        {
-          "lessonTitle": "পাঠ ১: 在学校 (স্কুলে - চশমা)",
-          "newWords": [
-            {"hanzi": "门", "pinyin": "mén", "pron": "মেন", "bn": "দরজা"},
-            {"hanzi": "外", "pinyin": "wài", "pron": "ওয়াই", "bn": "বাইরে"},
-            {"hanzi": "自行车", "pinyin": "zìxíngchē", "pron": "জ়ি-সিং-ছ্য", "bn": "সাইকেল"},
-            {"hanzi": "羊肉", "pinyin": "yángròu", "pron": "ইয়াং-রৌ", "bn": "খাসির মাংস"},
-            {"hanzi": "好吃", "pinyin": "hǎochī", "pron": "হাও-ছি", "bn": "সুস্বাদু"}
-          ],
-          "dialogues": [
-            {
-              "speaker": "A",
-              "hanzi": "你知道门外那辆自行车是谁的吗？",
-              "pinyin": "Nǐ zhīdào mén wài nà liàng zìxíngchē shì shéi de ma?",
-              "pron": "নি চি-তাও মেন ওয়াই না লিয়াং জ়ি-সিং-ছ্য শি শেই দ্য মা?",
-              "bn": "তুমি কি জানো দরজার বাইরের ওই সাইকেলটি কার?",
-              "wordByWord": "你 (nǐ - তুমি) 知道 (zhīdào - জানো) 门外 (mén wài - দরজার বাইরের) 那辆 (nà liàng - ওই) 自行车 (zìxíngchē - সাইকেলটি) 是 (shì) 谁的 (shéi de - কার) 吗 (ma)"
-            },
-            {
-              "speaker": "B",
-              "hanzi": "是王方的。",
-              "pinyin": "Shì Wáng Fāng de.",
-              "pron": "শি ওয়াং ফাং দ্য।",
-              "bn": "ওয়াং ফাং-এর।",
-              "wordByWord": "是 (shì - হলো) 王方的 (Wáng Fāng de - ওয়াং ফাং-এর)"
-            },
-            {
-              "speaker": "A",
-              "hanzi": "她不是买了一辆新的吗？",
-              "pinyin": "Tā bú shì mǎi le yí liàng xīn de ma?",
-              "pron": "থা পু শি মাই ল্য ই লিয়াং সিন দ্য মা?",
-              "bn": "সে কি একটি নতুন সাইকেল কেনেনি?",
-              "wordByWord": "她 (tā - সে) 不是 (bú shì - কি না) 买了 (mǎi le - কিনেছে) 一辆 (yí liàng - একটি) 新的 (xīn de - নতুন) 吗 (ma)"
-            },
-            {
-              "speaker": "B",
-              "hanzi": "门外那辆就是新的。",
-              "pinyin": "Mén wài nà liàng jiùshì xīn de.",
-              "pron": "মেন ওয়াই না লিয়াং চিউ-শি সিন দ্য।",
-              "bn": "দরজার বাইরের ওইটাই তো নতুনটা।",
-              "wordByWord": "门外 (mén wài - দরজার বাইরের) 那辆 (nà liàng - ওইটা) 就是 (jiùshì - হলো) 新的 (xīn de - নতুনটা)"
-            }
-          ]
-        },
-        {
-          "lessonTitle": "পাঠ ২: 在饭店 (রেস্তোরাঁয় - খাওয়া)",
-          "newWords": [
-            {"hanzi": "面条", "pinyin": "miàntiáo", "pron": "মিয়ান-থিয়াও", "bn": "নুডলস"},
-            {"hanzi": "打篮球", "pinyin": "dǎ lánqiú", "pron": "তা লান-ছিউ", "bn": "বাস্কেটবল খেলা"},
-            {"hanzi": "因为", "pinyin": "yīnwèi", "pron": "ইন-ওয়েই", "bn": "কারণ"},
-            {"hanzi": "所以", "pinyin": "suǒyǐ", "pron": "সুয়ো-ই", "bn": "তাই / সেজন্য"}
-          ],
-          "dialogues": [
-            {
-              "speaker": "A",
-              "hanzi": "你怎么不吃了？",
-              "pinyin": "Nǐ zěnme bù chī le?",
-              "pron": "নি চেন-ম্য পু ছি ল্য?",
-              "bn": "তুমি খাচ্ছো না কেন?",
-              "wordByWord": "你 (nǐ - তুমি) 怎么 (zěnme - কেন) 不 (bù - না) 吃了 (chī le - খাচ্ছো)"
-            },
-            {
-              "speaker": "B",
-              "hanzi": "我吃好了，这些羊肉很好吃，你怎么也吃这么少？",
-              "pinyin": "Wǒ chī hǎo le, zhèxiē yángròu hěn hǎochī, nǐ zěnme yě chī zhème shǎo?",
-              "pron": "ওয়ো ছি হাও ল্য, চ্য-সিয়ে ইয়াং-রৌ হেন হাও-ছি, নি চেন-ম্য ইয়ে ছি চ্য-ম্য শাও?",
-              "bn": "আমার খাওয়া হয়ে গেছে, এই খাসির মাংসগুলো খুব সুস্বাদু, তুমিও এত কম খাচ্ছো কেন?",
-              "wordByWord": "我 (wǒ - আমার) 吃好了 (chī hǎo le - খাওয়া হয়েছে), 这些 (zhèxiē - এই) 羊肉 (yángròu - খাসির মাংস) 很好吃 (hěn hǎochī - খুব সুস্বাদু), 你 (nǐ - তুমি) 怎么 (zěnme - কেন) 也 (yě - ও) 吃 (chī - খাচ্ছো) 这么少 (zhème shǎo - এত কম)"
-            },
-            {
-              "speaker": "A",
-              "hanzi": "我最近想减肥，不能吃太多。",
-              "pinyin": "Wǒ zuìjìn xiǎng jiǎnféi, bù néng chī tài duō.",
-              "pron": "ওয়ো চুই-চিন সিয়াং চিয়েন-ফেই, পু নেং ছি থাই তুয়ো।",
-              "bn": "আমি ইদানীং ওজন কমাতে চাচ্ছি, তাই খুব বেশি খেতে পারব না।",
-              "wordByWord": "我 (wǒ - আমি) 最近 (zuìjìn - ইদানীং) 想 (xiǎng - চাই) 减肥 (jiǎnféi - ওজন কমাতে), 不能 (bù néng - পারব না) 吃 (chī - খেতে) 太多 (tài duō - খুব বেশি)"
-            }
-          ]
-        },
-        {
-          "lessonTitle": "পাঠ ৩: 在健身房 (জিমে - সাঁতার)",
-          "newWords": [
-            {"hanzi": "游泳", "pinyin": "yóuyǒng", "pron": "ইয়ৌ-ইয়োং", "bn": "সাঁতার কাটা"},
-            {"hanzi": "经常", "pinyin": "jīngcháng", "pron": "চিং-ছাং", "bn": "প্রায়ই / নিয়মিত"}
-          ],
-          "dialogues": [
-            {
-              "speaker": "A",
-              "hanzi": "你经常游泳吗？",
-              "pinyin": "Nǐ jīngcháng yóuyǒng ma?",
-              "pron": "নি চিং-ছাং ইয়ৌ-ইয়োং মা?",
-              "bn": "তুমি কি নিয়মিত সাঁতার কাটো?",
-              "wordByWord": "你 (nǐ - তুমি) 经常 (jīngcháng - নিয়মিত) 游泳 (yóuyǒng - সাঁতার কাটো) 吗 (ma)"
-            },
-            {
-              "speaker": "B",
-              "hanzi": "这个月我天天游泳，现在七十公斤了。",
-              "pinyin": "Zhège yuè wǒ tiāntiān yóuyǒng, xiànzài qīshí gōngjīn le.",
-              "pron": "চ্য-গ্য ইউয়ে ওয়ো থিয়ান-থিয়ান ইয়ৌ-ইয়োং, সিয়ান-চাই ছি-শি কুং-চিন ল্য।",
-              "bn": "এই মাসে আমি প্রতিদিন সাঁতার কাটছি, এখন ওজন ৭০ কেজি হয়েছে।",
-              "wordByWord": "这个月 (zhège yuè - এই মাসে) 我 (wǒ - আমি) 天天 (tiāntiān - প্রতিদিন) 游泳 (yóuyǒng - সাঁতার কাটি), 现在 (xiànzài - এখন) 七十公斤 (qīshí gōngjīn - ৭০ কেজি) 了 (le)"
-            }
-          ]
-        },
-        {
-          "lessonTitle": "পাঠ ৪: 在办公室 (অফিসে - দেরি হওয়া)",
-          "newWords": [
-            {"hanzi": "公斤", "pinyin": "gōngjīn", "pron": "কুং-চিন", "bn": "কিলোগ্রাম (কেজি)"},
-            {"hanzi": "姐姐", "pinyin": "jiějie", "pron": "চিয়ে-চিয়ে", "bn": "বড় বোন"}
-          ],
-          "dialogues": [
-            {
-              "speaker": "A",
-              "hanzi": "这两天怎么没看见小王？",
-              "pinyin": "Zhè liǎng tiān zěnme méi kànjiàn Xiǎo Wáng?",
-              "pron": "চ্য লিয়াং থিয়ান চেন-ম্য মেই খান-চিয়েন সিয়াও ওয়াং?",
-              "bn": "এই দুইদিন ছোট ওয়াং-কে দেখছি না কেন?",
-              "wordByWord": "这两天 (zhè liǎng tiān - এই দুইদিন) 怎么 (zěnme - কেন) 没看见 (méi kànjiàn - দেখিনি) 小王 (Xiǎo Wáng - ছোট ওয়াংকে)"
-            },
-            {
-              "speaker": "B",
-              "hanzi": "他去北京了。",
-              "pinyin": "Tā qù Běijīng le.",
-              "pron": "থা ছু পেই-চিং ল্য।",
-              "bn": "সে বেইজিং গেছে।",
-              "wordByWord": "他 (tā - সে) 去 (qù - গেছে) 北京 (Běijīng - বেইজিং) 了 (le)"
-            },
-            {
-              "speaker": "A",
-              "hanzi": "去北京做什么了？",
-              "pinyin": "Qù Běijīng zuò shénme le?",
-              "pron": "ছু পেই-চিং চুয়ো শেন-ম্য ল্য?",
-              "bn": "বেইজিংয়ে কী করতে গেছে?",
-              "wordByWord": "去 (qù - গিয়ে) 北京 (Běijīng - বেইজিং) 做 (zuò - করতে) 什么 (shénme - কী) 了 (le)"
-            },
-            {
-              "speaker": "B",
-              "hanzi": "去北京旅游了。",
-              "pinyin": "Qù Běijīng lǚyóu le.",
-              "pron": "ছু পেই-চিং ল্যুই-ইয়ৌ ল্য।",
-              "bn": "বেইজিংয়ে বেড়াতে গেছে।",
-              "wordByWord": "去 (qù - গিয়ে) 北京 (Běijīng - বেইজিং) 旅游 (lǚyóu - ভ্রমণ করতে) 了 (le)"
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "chapter": 7,
-      "title": "অধ্যায় ৭: 你家离公司远吗",
-      "subtitle": "তোমার বাসা অফিস থেকে কি দূরে",
-      "lessons": [
-        {
-          "lessonTitle": "পাঠ ১: 在教室 (শ্রেণিকক্ষে - দেরি)",
-          "newWords": [
-            {"hanzi": "教室", "pinyin": "jiàoshì", "pron": "চিয়াও-শি", "bn": "শ্রেণিকক্ষ"},
-            {"hanzi": "机场", "pinyin": "jīchǎng", "pron": "চি-ছাং", "bn": "বিমানবন্দর"},
-            {"hanzi": "路", "pinyin": "lù", "pron": "লু", "bn": "রাস্তা / পথ"}
-          ],
-          "dialogues": [
-            {
-              "speaker": "A",
-              "hanzi": "大卫怎么还没来？",
-              "pinyin": "Dàwèi zěnme hái méi lái?",
-              "pron": "তা-ওয়েই চেন-ম্য হাই মেই লাই?",
-              "bn": "ডেভিড এখনো আসছে না কেন?",
-              "wordByWord": "大卫 (Dàwèi - ডেভিড) 怎么 (zěnme - কেন) 还没 (hái méi - এখনো না) 来 (lái - এসেছে)"
-            },
-            {
-              "speaker": "B",
-              "hanzi": "他在去机场的路上呢，已经快到了。",
-              "pinyin": "Tā zài qù jīchǎng de lù shàng ne, yǐjīng kuài dào le.",
-              "pron": "থা চাই ছু চি-ছাং দ্য লু শাং ন্য, ই-চিং খুয়াই তাও ল্য।",
-              "bn": "সে বিমানবন্দরে যাওয়ার পথে আছে, প্রায় পৌঁছে গেছে।",
-              "wordByWord": "他 (tā - সে) 在 (zài) 去机场的路上 (qù jīchǎng de lù shàng - বিমানবন্দরে যাওয়ার পথে) 呢 (ne), 已经 (yǐjīng - ইতিমধ্যে) 快到了 (kuài dào le - প্রায় পৌঁছে গেছে)"
-            }
-          ]
-        },
-        {
-          "lessonTitle": "পাঠ ২: 在公司 (কোম্পানিতে - দূরত্ব)",
-          "newWords": [
-            {"hanzi": "离", "pinyin": "lí", "pron": "লি", "bn": "থেকে (দূরত্ব)"},
-            {"hanzi": "公司", "pinyin": "gōngsī", "pron": "কুং-সি", "bn": "কোম্পানি / অফিস"},
-            {"hanzi": "远", "pinyin": "yuǎn", "pron": "ইউয়ান", "bn": "দূরে"},
-            {"hanzi": "公共汽车", "pinyin": "gōnggòng qìchē", "pron": "কুং-কুং ছি-ছ্য", "bn": "পাবলিক বাস"},
-            {"hanzi": "小时", "pinyin": "xiǎoshí", "pron": "সিয়াও-শি", "bn": "ঘণ্টা"}
-          ],
-          "dialogues": [
-            {
-              "speaker": "A",
-              "hanzi": "你家离公司远吗？",
-              "pinyin": "Nǐ jiā lí gōngsī yuǎn ma?",
-              "pron": "নি চিয়া লি কুং-সি ইউয়ান মা?",
-              "bn": "তোমার বাসা অফিস থেকে কি দূরে?",
-              "wordByWord": "你家 (nǐ jiā - তোমার বাসা) 离 (lí - থেকে) 公司 (gōngsī - অফিস) 远 (yuǎn - দূরে) 吗 (ma)"
-            },
-            {
-              "speaker": "B",
-              "hanzi": "很远，坐公共汽车要一个多小时呢！",
-              "pinyin": "Hěn yuǎn, zuò gōnggòng qìchē yào yí ge duō xiǎoshí ne!",
-              "pron": "হেন ইউয়ান, চুয়ো কুং-কুং ছি-ছ্য ইয়াও ই গ্য তুয়ো সিয়াও-শি ন্য!",
-              "bn": "অনেক দূরে, বাসে চড়ে যেতে এক ঘণ্টারও বেশি সময় লাগে!",
-              "wordByWord": "很远 (hěn yuǎn - অনেক দূরে), 坐 (zuò - চড়ে) 公共汽车 (gōnggòng qìchē - বাস) 要 (yào - লাগে) 一个多小时 (yí ge duō xiǎoshí - এক ঘণ্টার বেশি) 呢 (ne)"
-            },
-            {
-              "speaker": "A",
-              "hanzi": "太远了，你为什么不买辆车？",
-              "pinyin": "Tài yuǎn le, nǐ wèishénme bù mǎi liàng chē?",
-              "pron": "থাই ইউয়ান ল্য, নি ওয়েই-শেন-ম্য পু মাই লিয়াং ছ্য?",
-              "bn": "অনেক দূরে তো, তুমি একটি গাড়ি কিনছো না কেন?",
-              "wordByWord": "太远了 (tài yuǎn le - অনেক দূরে), 你 (nǐ - তুমি) 为什么 (wèishénme - কেন) 不买 (bù mǎi - কিনছো না) 辆车 (liàng chē - একটি গাড়ি)"
-            },
-            {
-              "speaker": "B",
-              "hanzi": "我不会开车，也不会骑自行车。",
-              "pinyin": "Wǒ bú huì kāi chē, yě bú huì qí zìxíngchē.",
-              "pron": "ওয়ো পু হুই খাই ছ্য, ইয়ে পু হুই ছি জ়ি-সিং-ছ্য।",
-              "bn": "আমি গাড়ি চালাতে পারি না, সাইকেলও চালাতে পারি না।",
-              "wordByWord": "我 (wǒ - আমি) 不会 (bú huì - পারি না) 开车 (kāi chē - গাড়ি চালাতে), 也 (yě - ও) 不会 (bú huì - পারি না) 骑自行车 (qí zìxíngchē - সাইকেল চালাতে)"
-            }
-          ]
-        },
-        {
-          "lessonTitle": "পাঠ ৩: 在路上 (রাস্তায় - পার্টিতে যাওয়া)",
-          "newWords": [
-            {"hanzi": "慢", "pinyin": "màn", "pron": "মান", "bn": "ধীরে"},
-            {"hanzi": "快", "pinyin": "kuài", "pron": "খুয়াই", "bn": "দ্রুত / তাড়াতাড়ি"},
-            {"hanzi": "过", "pinyin": "guò", "pron": "কুয়ো", "bn": "উদযাপন করা / পার হওয়া"},
-            {"hanzi": "走", "pinyin": "zǒu", "pron": "চৌ", "bn": "হাঁটা / যাওয়া"}
-          ],
-          "dialogues": [
-            {
-              "speaker": "A",
-              "hanzi": "今天晚上我们一起吃饭吧，给你过生日。",
-              "pinyin": "Jīntiān wǎnshang wǒmen yìqǐ chī fàn ba, gěi nǐ guò shēngrì.",
-              "pron": "চিন-থিয়ান ওয়ান-শাং ওয়ো-ম্যান ই-ছি ছি ফান পা, কেই নি কুয়ো শেং-রি।",
-              "bn": "আজ রাতে চলো আমরা একসাথে খাবার খাই, তোমার জন্মদিন উদযাপন করব।",
-              "wordByWord": "今天晚上 (jīntiān wǎnshang - আজ রাতে) 我们 (wǒmen - আমরা) 一起 (yìqǐ - একসাথে) 吃饭 (chī fàn - খাব) 吧 (ba), 给 (gěi - জন্য) 你 (nǐ - তোমার) 过生日 (guò shēngrì - জন্মদিন উদযাপন)"
-            },
-            {
-              "speaker": "B",
-              "hanzi": "今天？离我的生日还有一个多星期呢！",
-              "pinyin": "Jīntiān? Lí wǒ de shēngrì hái yǒu yí ge duō xīngqī ne!",
-              "pron": "চিন-থিয়ান? লি ওয়ো দ্য শেং-রি হাই ইয়ৌ ই গ্য তুয়ো সিং-ছি ন্য!",
-              "bn": "আজ? আমার জন্মদিনের এখনো এক সপ্তাহেরও বেশি বাকি আছে!",
-              "wordByWord": "今天 (jīntiān - আজ)? 离 (lí - থেকে) 我的生日 (wǒ de shēngrì - আমার জন্মদিন) 还有 (hái yǒu - এখনো আছে) 一个多星期 (yí ge duō xīngqī - এক সপ্তাহের বেশি) 呢 (ne)"
-            },
-            {
-              "speaker": "A",
-              "hanzi": "下个星期我要去北京，今天过吧。",
-              "pinyin": "Xià ge xīngqī wǒ yào qù Běijīng, jīntiān guò ba.",
-              "pron": "সিয়া গ্য সিং-ছি ওয়ো ইয়াও ছু পেই-চিং, চিন-থিয়ান কুয়ো পা।",
-              "bn": "আগামী সপ্তাহে আমি বেইজিং যাব, আজই উদযাপন করি।",
-              "wordByWord": "下个星期 (xià ge xīngqī - আগামী সপ্তাহে) 我 (wǒ - আমি) 要 (yào - যাব) 去北京 (qù Běijīng - বেইজিং), 今天 (jīntiān - আজ) 过 (guò - উদযাপন করি) 吧 (ba)"
-            },
-            {
-              "speaker": "B",
-              "hanzi": "好吧，离这儿不远有一个中国饭馆，走几分钟就到了。",
-              "pinyin": "Hǎo ba, lí zhèr bù yuǎn yǒu yí ge Zhōngguó fànguǎn, zǒu jǐ fēnzhōng jiù dào le.",
-              "pron": "হাও পা, লি চ্যার পু ইউয়ান ইয়ৌ ই গ্য চুং-কুয়ো ফান-কুয়ান, চৌ চি ফেন-চুং চিউ তাও ল্য।",
-              "bn": "বেশ তো, এখান থেকে কাছেই একটি চাইনিজ রেস্তোরাঁ আছে, কয়েক মিনিট হাঁটলেই পৌঁছে যাব।",
-              "wordByWord": "好吧 (hǎo ba - ঠিক আছে), 离这儿不远 (lí zhèr bù yuǎn - এখান থেকে দূরে নয়) 有 (yǒu - আছে) 一个中国饭馆 (yí ge Zhōngguó fànguǎn - একটি চাইনিজ রেস্তোরাঁ), 走几分钟 (zǒu jǐ fēnzhōng - কয়েক মিনিট হাঁটলে) 就到了 (jiù dào le - পৌঁছে যাব)"
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "chapter": 8,
-      "title": "অধ্যায় ৮: 让我想想再告诉你",
-      "subtitle": "আমাকে একটু ভাবতে দাও তারপর তোমাকে জানাব",
-      "lessons": [
-        {
-          "lessonTitle": "পাঠ ১: 在家里 (বাড়িতে - সিনেমা দেখা)",
-          "newWords": [
-            {"hanzi": "再", "pinyin": "zài", "pron": "চাই", "bn": "আবার / পরে"},
-            {"hanzi": "让", "pinyin": "ràng", "pron": "রাং", "bn": "দেওয়া / অনুমতি দেওয়া"},
-            {"hanzi": "告诉", "pinyin": "gàosu", "pron": "কাও-সু", "bn": "বলা / জানানো"},
-            {"hanzi": "等", "pinyin": "děng", "pron": "তেং", "bn": "অপেক্ষা করা"}
-          ],
-          "dialogues": [
-            {
-              "speaker": "A",
-              "hanzi": "我们下午去看电影，好吗？",
-              "pinyin": "Wǒmen xiàwǔ qù kàn diànyǐng, hǎo ma?",
-              "pron": "ওয়ো-ম্যান সিয়া-উ ছু খান তিয়েন-ইং, হাও মা?",
-              "bn": "আমরা বিকেলে সিনেমা দেখতে যাই, কেমন?",
-              "wordByWord": "我们 (wǒmen - আমরা) 下午 (xiàwǔ - বিকেলে) 去 (qù - যাই) 看电影 (kàn diànyǐng - সিনেমা দেখতে), 好吗 (hǎo ma - কেমন)"
-            },
-            {
-              "speaker": "B",
-              "hanzi": "今天下午我没有时间，明天再去吧。",
-              "pinyin": "Jīntiān xiàwǔ wǒ méiyǒu shíjiān, míngtiān zài qù ba.",
-              "pron": "চিন-থিয়ান সিয়া-উ ওয়ো মেই-ইয়ৌ শি-চিয়ান, মিং-থিয়ান চাই ছু পা।",
-              "bn": "আজ বিকেলে আমার সময় নেই, আগামীকাল যাব।",
-              "wordByWord": "今天下午 (jīntiān xiàwǔ - আজ বিকেলে) 我 (wǒ - আমার) 没有时间 (méiyǒu shíjiān - সময় নেই), 明天 (míngtiān - আগামীকাল) 再 (zài - পরে) 去 (qù - যাব) 吧 (ba)"
-            },
-            {
-              "speaker": "A",
-              "hanzi": "你想什么时候去？",
-              "pinyin": "Nǐ xiǎng shénme shíhou qù?",
-              "pron": "নি সিয়াং শেন-ম্য শি-হৌ ছু?",
-              "bn": "তুমি কখন যেতে চাও?",
-              "wordByWord": "你 (nǐ - তুমি) 想 (xiǎng - চাও) 什么时候 (shénme shíhou - কখন) 去 (qù - যেতে)"
-            },
-            {
-              "speaker": "B",
-              "hanzi": "让我想想，再告诉你。",
-              "pinyin": "Ràng wǒ xiǎngxiang, zài gàosu nǐ.",
-              "pron": "রাং ওয়ো সিয়াং-সিয়াং, চাই কাও-সু নি।",
-              "bn": "আমাকে একটু ভাবতে দাও, তারপর তোমাকে জানাব।",
-              "wordByWord": "让 (ràng - দাও) 我 (wǒ - আমাকে) 想想 (xiǎngxiang - একটু ভাবতে), 再 (zài - তারপর) 告诉 (gàosu - জানাব) 你 (nǐ - তোমাকে)"
-            }
-          ]
-        },
-        {
-          "lessonTitle": "পাঠ ২: 在学校 (স্কুলে - শিক্ষক খোঁজা)",
-          "newWords": [
-            {"hanzi": "找", "pinyin": "zhǎo", "pron": "চাও", "bn": "খোঁজা"},
-            {"hanzi": "事情", "pinyin": "shìqing", "pron": "শি-ছিং", "bn": "কাজ / বিষয়"},
-            {"hanzi": "服务员", "pinyin": "fúwùyuán", "pron": "ফু-উ-ইউয়ান", "bn": "ওয়েটার / কর্মচারী"},
-            {"hanzi": "白", "pinyin": "bái", "pron": "পাই", "bn": "সাদা"},
-            {"hanzi": "黑", "pinyin": "hēi", "pron": "হেই", "bn": "কালো"}
-          ],
-          "dialogues": [
-            {
-              "speaker": "A",
-              "hanzi": "外边颜色黑的那个人是谁？",
-              "pinyin": "Wàibian yánsè hēi de nàge rén shì shéi?",
-              "pron": "ওয়াই-পিয়ান ইয়ান-স্য হেই দ্য না-গ্য র‍্যন শি শেই?",
-              "bn": "বাইরে কালো রঙের পোশাক পরা ওই মানুষটি কে?",
-              "wordByWord": "外边 (wàibian - বাইরের) 颜色黑的 (yánsè hēi de - কালো রঙের) 那个人 (nàge rén - ওই মানুষটি) 是 (shì - হন) 谁 (shéi - কে)"
-            },
-            {
-              "speaker": "B",
-              "hanzi": "他是我新认识的汉语老师，姓王。",
-              "pinyin": "Tā shì wǒ xīn rènshi de Hànyǔ lǎoshī, xìng Wáng.",
-              "pron": "থা শি ওয়ো সিন র‍্যন-শি দ্য হান-ইয়্যু লাও-শি, সিং ওয়াং।",
-              "bn": "তিনি আমার নতুন পরিচিত চাইনিজ শিক্ষক, পদবি ওয়াং।",
-              "wordByWord": "他 (tā - তিনি) 是 (shì - হন) 我新认识的 (wǒ xīn rènshi de - আমার নতুন পরিচিত) 汉语老师 (Hànyǔ lǎoshī - চাইনিজ শিক্ষক), 姓 (xìng - পদবি) 王 (Wáng - ওয়াং)"
-            },
-            {
-              "speaker": "A",
-              "hanzi": "你找他有事情吗？",
-              "pinyin": "Nǐ zhǎo tā yǒu shìqing ma?",
-              "pron": "নি চাও থা ইয়ৌ শি-ছিং মা?",
-              "bn": "তোমার কি তার কাছে কোনো কাজ আছে?",
-              "wordByWord": "你 (nǐ - তুমি) 找 (zhǎo - খুঁজছো) 他 (tā - তাকে) 有 (yǒu - আছে) 事情 (shìqing - কাজ) 吗 (ma)"
-            },
-            {
-              "speaker": "B",
-              "hanzi": "是，我想问他几个问题。",
-              "pinyin": "Shì, wǒ xiǎng wèn tā jǐ ge wèntí.",
-              "pron": "শি, ওয়ো সিয়াং ওয়েন থা চি গ্য ওয়েন-থি।",
-              "bn": "হ্যাঁ, আমি তাকে কয়েকটি প্রশ্ন জিজ্ঞাসা করতে চাই।",
-              "wordByWord": "是 (shì - হ্যাঁ), 我 (wǒ - আমি) 想 (xiǎng - চাই) 问 (wèn - জিজ্ঞাসা করতে) 他 (tā - তাকে) 几个问题 (jǐ ge wèntí - কয়েকটি প্রশ্ন)"
-            }
-          ]
-        },
-        {
-          "lessonTitle": "পাঠ ৩: 在咖啡馆 (কফি শপে - দাম ও রঙ)",
-          "newWords": [
-            {"hanzi": "贵", "pinyin": "guì", "pron": "কুই", "bn": "দামি"}
-          ],
-          "dialogues": [
-            {
-              "speaker": "A",
-              "hanzi": "服务员，我想要一杯咖啡。",
-              "pinyin": "Fúwùyuán, wǒ xiǎng yào yì bēi kāfēi.",
-              "pron": "ফু-উ-ইউয়ান, ওয়ো সিয়াং ইয়াও ই পেই খা-ফেই।",
-              "bn": "ওয়েটার, আমি এক কাপ কফি চাই।",
-              "wordByWord": "服务员 (fúwùyuán - ওয়েটার), 我 (wǒ - আমি) 想要 (xiǎng yào - চাই) 一杯 (yì bēi - এক কাপ) 咖啡 (kāfēi - কফি)"
-            },
-            {
-              "speaker": "B",
-              "hanzi": "好的，请稍等。",
-              "pinyin": "Hǎo de, qǐng shāo děng.",
-              "pron": "হাও দ্য, ছিং শাও তেং।",
-              "bn": "ঠিক আছে, দয়া করে একটু অপেক্ষা করুন।",
-              "wordByWord": "好的 (hǎo de - ঠিক আছে), 请 (qǐng - দয়া করে) 稍等 (shāo děng - একটু অপেক্ষা করুন)"
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "chapter": 9,
-      "title": "অধ্যায় ৯: 题太多，我没做完",
-      "subtitle": "প্রশ্ন অনেক বেশি, আমি শেষ করতে পারিনি",
-      "lessons": [
-        {
-          "lessonTitle": "পাঠ ১: 在教室 (শ্রেণিকক্ষে - পরীক্ষার ফলাফল)",
-          "newWords": [
-            {"hanzi": "错", "pinyin": "cuò", "pron": "ছুয়ো", "bn": "ভুল"},
-            {"hanzi": "从", "pinyin": "cóng", "pron": "ছুং", "bn": "থেকে"},
-            {"hanzi": "跳舞", "pinyin": "tiào wǔ", "pron": "থিয়াও উ", "bn": "নাচা"},
-            {"hanzi": "第一", "pinyin": "dì-yī", "pron": "তি-ই", "bn": "প্রথম"},
-            {"hanzi": "希望", "pinyin": "xīwàng", "pron": "সি-ওয়াং", "bn": "আশা করা"}
-          ],
-          "dialogues": [
-            {
-              "speaker": "A",
-              "hanzi": "你昨天的考试怎么样？",
-              "pinyin": "Nǐ zuótiān de kǎoshì zěnmeyàng?",
-              "pron": "নি চুয়ো-থিয়ান দ্য খাও-শি চেন-ম্য-ইয়াং?",
-              "bn": "গতকালের তোমার পরীক্ষা কেমন হয়েছে?",
-              "wordByWord": "你昨天的 (nǐ zuótiān de - তোমার গতকালের) 考试 (kǎoshì - পরীক্ষা) 怎么样 (zěnmeyàng - কেমন)"
-            },
-            {
-              "speaker": "B",
-              "hanzi": "我觉得听和说还可以，读和写不好，很多字我都不会写。",
-              "pinyin": "Wǒ juéde tīng hé shuō hái kěyǐ, dú hé xiě bù hǎo, hěn duō zì wǒ dōu bú huì xiě.",
-              "pron": "ওয়ো চুয়ে-দ্য থিং হ্য শুয়ো হাই খ্য-ই, তু হ্য সিয়ে পু হাও, হেন তুয়ো জ়ি ওয়ো তোউ পু হুই সিয়ে।",
-              "bn": "আমার মনে হয় শোনা আর বলা মোটামুটি ভালো হয়েছে, পড়া আর লেখা ভালো হয়নি, অনেক অক্ষরই আমি লিখতে পারিনি।",
-              "wordByWord": "我觉得 (wǒ juéde - আমার মনে হয়) 听和说 (tīng hé shuō - শোনা ও বলা) 还可以 (hái kěyǐ - মোটামুটি ভালো), 读和写 (dú hé xiě - পড়া ও লেখা) 不好 (bù hǎo - ভালো না), 很多字 (hěn duō zì - অনেক অক্ষর) 我都不会写 (wǒ dōu bú huì xiě - আমি লিখতে পারি না)"
-            }
-          ]
-        },
-        {
-          "lessonTitle": "পাঠ ২: 在教室 (শ্রেণিকক্ষে - প্রশ্ন শেষ না হওয়া)",
-          "newWords": [
-            {"hanzi": "问题", "pinyin": "wèntí", "pron": "ওয়েন-থি", "bn": "প্রশ্ন / সমস্যা"},
-            {"hanzi": "欢迎", "pinyin": "huānyíng", "pron": "হুয়ান-ইং", "bn": "স্বাগতম"},
-            {"hanzi": "上班", "pinyin": "shàng bān", "pron": "শাং পান", "bn": "অফিসে/কাজে যাওয়া"},
-            {"hanzi": "懂", "pinyin": "dǒng", "pron": "তোং", "bn": "বোঝা"},
-            {"hanzi": "完", "pinyin": "wán", "pron": "ওয়ান", "bn": "শেষ হওয়া"},
-            {"hanzi": "题", "pinyin": "tí", "pron": "থি", "bn": "প্রশ্ন"}
-          ],
-          "dialogues": [
-            {
-              "speaker": "A",
-              "hanzi": "今天的作业你做完了吗？",
-              "pinyin": "Jīntiān de zuòyè nǐ zuò wán le ma?",
-              "pron": "চিন-থিয়ান দ্য চুয়ো-ইয়ে নি চুয়ো ওয়ান ল্য মা?",
-              "bn": "আজকের বাড়ির কাজ কি তুমি শেষ করেছো?",
-              "wordByWord": "今天的 (jīntiān de - আজকের) 作业 (zuòyè - বাড়ির কাজ) 你 (nǐ - তুমি) 做完了 (zuò wán le - করে শেষ করেছো) 吗 (ma)"
-            },
-            {
-              "speaker": "B",
-              "hanzi": "题太多，我没做完。",
-              "pinyin": "Tí tài duō, wǒ méi zuò wán.",
-              "pron": "থি থাই তুয়ো, ওয়ো মেই চুয়ো ওয়ান।",
-              "bn": "প্রশ্ন অনেক বেশি, আমি শেষ করতে পারিনি।",
-              "wordByWord": "题 (tí - প্রশ্ন) 太多 (tài duō - অনেক বেশি), 我 (wǒ - আমি) 没做完 (méi zuò wán - করে শেষ করতে পারিনি)"
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "chapter": 10,
-      "title": "অধ্যায় ১০: 别找了，手机在桌子上呢",
-      "subtitle": "আর খুঁজো না, মোবাইল টেবিলের ওপরেই আছে",
-      "lessons": [
-        {
-          "lessonTitle": "পাঠ ১: 在家里 (বাড়িতে - মোবাইল খোঁজা)",
-          "newWords": [
-            {"hanzi": "课", "pinyin": "kè", "pron": "খ্য", "bn": "ক্লাস / পাঠ"},
-            {"hanzi": "帮助", "pinyin": "bāngzhù", "pron": "পাং-চু", "bn": "সাহায্য"},
-            {"hanzi": "别", "pinyin": "bié", "pron": "পিয়ে", "bn": "না / নিষেধ (Don't)"},
-            {"hanzi": "哥哥", "pinyin": "gēge", "pron": "ক্য-ক্য", "bn": "বড় ভাই"},
-            {"hanzi": "鸡蛋", "pinyin": "jīdàn", "pron": "চি-তান", "bn": "ডিম"},
-            {"hanzi": "西瓜", "pinyin": "xīguā", "pron": "সি-কুয়া", "bn": "তরমুজ"},
-            {"hanzi": "正在", "pinyin": "zhèngzài", "pron": "চেং-চাই", "bn": "ঠিক এখন চলছে"},
-            {"hanzi": "手机", "pinyin": "shǒujī", "pron": "শৌ-চি", "bn": "মোবাইল ফোন"},
-            {"hanzi": "洗", "pinyin": "xǐ", "pron": "সি", "bn": "ধোয়া"}
-          ],
-          "dialogues": [
-            {
-              "speaker": "A",
-              "hanzi": "别看报纸了，医生说你要多休息。",
-              "pinyin": "Bié kàn bàozhǐ le, yīshēng shuō nǐ yào duō xiūxi.",
-              "pron": "পিয়ে খান পাও-চি ল্য, ই-শেং শুয়ো নি ইয়াও তুয়ো সিউ-সি।",
-              "bn": "আর খবরের কাগজ পড়ো না, ডাক্তার বলেছেন তোমাকে বেশি করে বিশ্রাম নিতে হবে।",
-              "wordByWord": "别 (bié - না) 看报纸 (kàn bàozhǐ - খবরের কাগজ পড়া) 了 (le), 医生 (yīshēng - ডাক্তার) 说 (shuō - বলেছেন) 你 (nǐ - তোমাকে) 要 (yào - হবে) 多休息 (duō xiūxi - বেশি বিশ্রাম নিতে)"
-            },
-            {
-              "speaker": "B",
-              "hanzi": "好，不看了。给我一杯茶吧。",
-              "pinyin": "Hǎo, bú kàn le. Gěi wǒ yì bēi chá ba.",
-              "pron": "হাও, পু খান ল্য। কেই ওয়ো ই পেই ছা পা।",
-              "bn": "ঠিক আছে, আর পড়ব না। আমাকে এক কাপ চা দাও তো।",
-              "wordByWord": "好 (hǎo - ঠিক আছে), 不看了 (bú kàn le - আর দেখব না)। 给 (gěi - দাও) 我 (wǒ - আমাকে) 一杯茶 (yì bēi chá - এক কাপ চা) 吧 (ba)"
-            },
-            {
-              "speaker": "A",
-              "hanzi": "别找了，手机在桌子上呢，电脑旁边。",
-              "pinyin": "Bié zhǎo le, shǒujī zài zhuōzi shàng ne, diànnǎo pángbiān.",
-              "pron": "পিয়ে চাও ল্য, শৌ-চি চাই চুয়ো-জ়ি শাং ন্য, তিয়েন-নাও ফাং-পিয়ান।",
-              "bn": "আর খুঁজো না, মোবাইল টেবিলের ওপরেই আছে, কম্পিউটারের পাশে।",
-              "wordByWord": "别找了 (bié zhǎo le - আর খুঁজো না), 手机 (shǒujī - মোবাইল) 在桌子上 (zài zhuōzi shàng - টেবিলের ওপরে) 呢 (ne), 电脑旁边 (diànnǎo pángbiān - কম্পিউটারের পাশে)"
-            },
-            {
-              "speaker": "B",
-              "hanzi": "你看见我的衣服了吗？红色的那件。",
-              "pinyin": "Nǐ kànjiàn wǒ de yīfu le ma? Hóngsè de nà jiàn.",
-              "pron": "নি খান-চিয়ান ওয়ো দ্য ই-ফু ল্য মা? হুং-স্য দ্য না চিয়েন।",
-              "bn": "তুমি কি আমার জামাটা দেখেছো? লাল রঙের ওইটা।",
-              "wordByWord": "你 (nǐ - তুমি) 看见 (kànjiàn - দেখেছো) 我的衣服 (wǒ de yīfu - আমার জামা) 了吗 (le ma)? 红色的那件 (hóngsè de nà jiàn - লাল রঙের ওইটা)"
-            },
-            {
-              "speaker": "A",
-              "hanzi": "那件衣服我帮你洗了，在外边呢。",
-              "pinyin": "Nà jiàn yīfu wǒ bāng nǐ xǐ le, zài wàibian ne.",
-              "pron": "না চিয়েন ই-ফু ওয়ো পাং নি সি ল্য, চাই ওয়াই-পিয়ান ন্য।",
-              "bn": "ওই জামাটা আমি তোমার জন্য ধুয়ে দিয়েছি, বাইরে (শুকানো) আছে।",
-              "wordByWord": "那件衣服 (nà jiàn yīfu - ওই জামাটা) 我 (wǒ - আমি) 帮 (bāng - সাহায্য করে) 你 (nǐ - তোমার) 洗了 (xǐ le - ধুয়েছি), 在外边 (zài wàibian - বাইরে) 呢 (ne)"
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "chapter": 11,
-      "title": "অধ্যায় ১১: 他比我大三岁",
-      "subtitle": "সে আমার চেয়ে তিন বছরের বড়",
-      "lessons": [
-        {
-          "lessonTitle": "পাঠ ১: 在教室 (শ্রেণিকক্ষে - গান ও বয়স তুলনা)",
-          "newWords": [
-            {"hanzi": "唱歌", "pinyin": "chàng gē", "pron": "ছাং ক্য", "bn": "গান গাওয়া"},
-            {"hanzi": "男", "pinyin": "nán", "pron": "নান", "bn": "পুরুষ / ছেলে"},
-            {"hanzi": "女", "pinyin": "nǚ", "pron": "নিউ", "bn": "নারী / মেয়ে"},
-            {"hanzi": "孩子", "pinyin": "háizi", "pron": "হাই-জ়ি", "bn": "শিশু / সন্তান"},
-            {"hanzi": "右边", "pinyin": "yòubian", "pron": "ইয়ৌ-পিয়ান", "bn": "ডান দিক"},
-            {"hanzi": "比", "pinyin": "bǐ", "pron": "পি", "bn": "চেয়ে (তুলনা)"},
-            {"hanzi": "便宜", "pinyin": "piányi", "pron": "ফিয়ান-ই", "bn": "সস্তা"}
-          ],
-          "dialogues": [
-            {
-              "speaker": "A",
-              "hanzi": "王方，唱歌的那个女孩子是谁？",
-              "pinyin": "Wáng Fāng, chàng gē de nàge nǚ háizi shì shéi?",
-              "pron": "ওয়াং ফাং, ছাং ক্য দ্য না-গ্য নিউ হাই-জ়ি শি শেই?",
-              "bn": "ওয়াং ফাং, গান গাইছে যে মেয়েটি, সে কে?",
-              "wordByWord": "王方 (Wáng Fāng - ওয়াং ফাং), 唱歌的 (chàng gē de - গান গাইছে যে) 那个女孩子 (nàge nǚ háizi - ওই মেয়েটি) 是 (shì - হয়) 谁 (shéi - কে)"
-            },
-            {
-              "speaker": "B",
-              "hanzi": "你不知道吗？她是我姐姐。",
-              "pinyin": "Nǐ bù zhīdào ma? Tā shì wǒ jiějie.",
-              "pron": "নি পু চি-তাও মা? থা শি ওয়ো চিয়ে-চিয়ে।",
-              "bn": "তুমি জানো না? সে আমার বড় বোন।",
-              "wordByWord": "你 (nǐ - তুমি) 不知道 (bù zhīdào - জানো না) 吗 (ma)? 她 (tā - সে) 是 (shì - হয়) 我姐姐 (wǒ jiějie - আমার বড় বোন)"
-            },
-            {
-              "speaker": "A",
-              "hanzi": "她比你大几岁？",
-              "pinyin": "Tā bǐ nǐ dà jǐ suì?",
-              "pron": "থা পি নি তা চি সুই?",
-              "bn": "সে তোমার চেয়ে কত বছরের বড়?",
-              "wordByWord": "她 (tā - সে) 比 (bǐ - চেয়ে) 你 (nǐ - তোমার) 大 (dà - বড়) 几岁 (jǐ suì - কত বছর)"
-            },
-            {
-              "speaker": "B",
-              "hanzi": "她比我大三岁。",
-              "pinyin": "Tā bǐ wǒ dà sān suì.",
-              "pron": "থা পি ওয়ো তা সান সুই।",
-              "bn": "সে আমার চেয়ে তিন বছরের বড়।",
-              "wordByWord": "她 (tā - সে) 比 (bǐ - চেয়ে) 我 (wǒ - আমার) 大 (dà - বড়) 三岁 (sān suì - তিন বছর)"
-            }
-          ]
-        },
-        {
-          "lessonTitle": "পাঠ ২: 在商店 (দোকানে - দামের তুলনা)",
-          "newWords": [
-            {"hanzi": "说话", "pinyin": "shuō huà", "pron": "শুয়ো হুয়া", "bn": "কথা বলা"},
-            {"hanzi": "可能", "pinyin": "kěnéng", "pron": "খ্য-নেং", "bn": "সম্ভবত / হতে পারে"},
-            {"hanzi": "去年", "pinyin": "qùnián", "pron": "ছু-নিয়েন", "bn": "গত বছর"},
-            {"hanzi": "姓", "pinyin": "xìng", "pron": "সিং", "bn": "পদবি"}
-          ],
-          "dialogues": [
-            {
-              "speaker": "A",
-              "hanzi": "今天的西瓜怎么这么便宜？",
-              "pinyin": "Jīntiān de xīguā zěnme zhème piányi?",
-              "pron": "চিন-থিয়ান দ্য সি-কুয়া চেন-ম্য চ্য-ম্য ফিয়ান-ই?",
-              "bn": "আজকের তরমুজ এত সস্তা কেন?",
-              "wordByWord": "今天的 (jīntiān de - আজকের) 西瓜 (xīguā - তরমুজ) 怎么 (zěnme - কেন) 这么便宜 (zhème piányi - এত সস্তা)"
-            },
-            {
-              "speaker": "B",
-              "hanzi": "因为现在是夏天，西瓜比以前便宜多了。",
-              "pinyin": "Yīnwèi xiànzài shì xiàtiān, xīguā bǐ yǐqián piányi duō le.",
-              "pron": "ইন-ওয়েই সিয়ান-চাই শি সিয়া-থিয়ান, সি-কুয়া পি ই-ছিয়ান ফিয়ান-ই তুয়ো ল্য।",
-              "bn": "কারণ এখন গ্রীষ্মকাল, তরমুজ আগের চেয়ে অনেক সস্তা।",
-              "wordByWord": "因为 (yīnwèi - কারণ) 现在是夏天 (xiànzài shì xiàtiān - এখন গ্রীষ্মকাল), 西瓜 (xīguā - তরমুজ) 比 (bǐ - চেয়ে) 以前 (yǐqián - আগের) 便宜多了 (piányi duō le - অনেক সস্তা)"
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "chapter": 12,
-      "title": "অধ্যায় ১২: 你穿得太少了",
-      "subtitle": "তুমি খুব পাতলা কাপড় পরেছো",
-      "lessons": [
-        {
-          "lessonTitle": "পাঠ ১: 在家里 (বাড়িতে - শীতের পোশাক)",
-          "newWords": [
-            {"hanzi": "得", "pinyin": "de", "pron": "দ্য", "bn": "মাত্রা নির্দেশক অব্যয়"},
-            {"hanzi": "妻子", "pinyin": "qīzi", "pron": "ছি-জ়ি", "bn": "স্ত্রী"},
-            {"hanzi": "雪", "pinyin": "xuě", "pron": "শুয়ে", "bn": "তুষার / বরফ"},
-            {"hanzi": "零", "pinyin": "líng", "pron": "লিং", "bn": "শূন্য (০)"},
-            {"hanzi": "度", "pinyin": "dù", "pron": "তু", "bn": "ডিগ্রি (তাপমাত্রা)"},
-            {"hanzi": "穿", "pinyin": "chuān", "pron": "ছুয়ান", "bn": "পরিধান করা"},
-            {"hanzi": "进", "pinyin": "jìn", "pron": "চিন", "bn": "ভেতরে প্রবেশ করা"}
-          ],
-          "dialogues": [
-            {
-              "speaker": "A",
-              "hanzi": "你每天早上几点起床？",
-              "pinyin": "Nǐ měitiān zǎoshang jǐ diǎn qǐchuáng?",
-              "pron": "নি মেই-থিয়ান চাও-শাং চি তিয়ান ছি-ছুয়াং?",
-              "bn": "তুমি প্রতিদিন সকালে কয়টায় ঘুম থেকে ওঠো?",
-              "wordByWord": "你 (nǐ - তুমি) 每天早上 (měitiān zǎoshang - প্রতিদিন সকালে) 几点 (jǐ diǎn - কয়টায়) 起床 (qǐchuáng - ঘুম থেকে ওঠো)"
-            },
-            {
-              "speaker": "B",
-              "hanzi": "六点多。",
-              "pinyin": "Liù diǎn duō.",
-              "pron": "লিউ তিয়ান তুয়ো।",
-              "bn": "ছয়টার একটু পরে।",
-              "wordByWord": "六点多 (liù diǎn duō - ছয়টার একটু পরে)"
-            },
-            {
-              "speaker": "A",
-              "hanzi": "你比我早起一个小时。",
-              "pinyin": "Nǐ bǐ wǒ zǎo qǐ yí ge xiǎoshí.",
-              "pron": "নি পি ওয়ো চাও ছি ই গ্য সিয়াও-শি।",
-              "bn": "তুমি আমার চেয়ে এক ঘণ্টা আগে ঘুম থেকে ওঠো।",
-              "wordByWord": "你 (nǐ - তুমি) 比 (bǐ - চেয়ে) 我 (wǒ - আমার) 早起 (zǎo qǐ - আগে ওঠো) 一个小时 (yí ge xiǎoshí - এক ঘণ্টা)"
-            },
-            {
-              "speaker": "B",
-              "hanzi": "我睡得也早，我每天晚上十点就睡觉。",
-              "pinyin": "Wǒ shuì de yě zǎo, wǒ měitiān wǎnshang shí diǎn jiù shuì jiào.",
-              "pron": "ওয়ো শুই দ্য ইয়ে চাও, ওয়ো মেই-থিয়ান ওয়ান-শাং শি তিয়ান চিউ শুই চিয়াও।",
-              "bn": "আমি ঘুমাইও তাড়াতাড়ি, আমি প্রতিদিন রাত দশটায় ঘুমিয়ে পড়ি।",
-              "wordByWord": "我 (wǒ - আমি) 睡得也早 (shuì de yě zǎo - ঘুমাইও তাড়াতাড়ি), 我每天晚上 (wǒ měitiān wǎnshang - আমি প্রতিদিন রাতে) 十点 (shí diǎn - দশটায়) 就睡觉 (jiù shuì jiào - ঘুমিয়ে পড়ি)"
-            }
-          ]
-        },
-        {
-          "lessonTitle": "পাঠ ২: 在教室 (শ্রেণিকক্ষে - ঠান্ডা আবহাওয়া)",
-          "newWords": [
-            {"hanzi": "弟弟", "pinyin": "dìdi", "pron": "তি-তি", "bn": "ছোট ভাই"},
-            {"hanzi": "近", "pinyin": "jìn", "pron": "চিন", "bn": "কাছে / নিকটে"}
-          ],
-          "dialogues": [
-            {
-              "speaker": "A",
-              "hanzi": "快进来吧，外边真冷！",
-              "pinyin": "Kuài jìnlái ba, wàibian zhēn lěng!",
-              "pron": "খুয়াই চিন-লাই পা, ওয়াই-পিয়ান চেন লেং!",
-              "bn": "তাড়াতাড়ি ভেতরে আসো, বাইরে সত্যিই খুব ঠান্ডা!",
-              "wordByWord": "快进来吧 (kuài jìnlái ba - তাড়াতাড়ি ভেতরে আসো), 外边 (wàibian - বাইরে) 真冷 (zhēn lěng - সত্যিই ঠান্ডা)"
-            },
-            {
-              "speaker": "B",
-              "hanzi": "是啊，下雪了，今天零下十度。",
-              "pinyin": "Shì a, xià xuě le, jīntiān língxià shí dù.",
-              "pron": "শি আ, সিয়া শুয়ে ল্য, চিন-থিয়ান লিং-সিয়া শি তু।",
-              "bn": "হ্যাঁ, তুষারপাত হচ্ছে, আজ মাইনাস দশ ডিগ্রি তাপমাত্রা।",
-              "wordByWord": "是啊 (shì a - হ্যাঁ), 下雪了 (xià xuě le - বরফ পড়ছে), 今天 (jīntiān - আজ) 零下十度 (língxià shí dù - মাইনাস ১০ ডিগ্রি)"
-            },
-            {
-              "speaker": "A",
-              "hanzi": "你穿得太少了，我们进房间吧。",
-              "pinyin": "Nǐ chuān de tài shǎo le, wǒmen jìn fángjiān ba.",
-              "pron": "নি ছুয়ান দ্য থাই শাও ল্য, ওয়ো-ম্যান চিন ফাং-চিয়ান পা।",
-              "bn": "তুমি খুব পাতলা কাপড় পরেছো, চলো আমরা রুমের ভেতরে যাই।",
-              "wordByWord": "你 (nǐ - তুমি) 穿得太少了 (chuān de tài shǎo le - খুব কম কাপড় পরেছো), 我们 (wǒmen - আমরা) 进房间吧 (jìn fángjiān ba - রুমে যাই)"
-            },
-            {
-              "speaker": "B",
-              "hanzi": "好吧。",
-              "pinyin": "Hǎo ba.",
-              "pron": "হাও পা।",
-              "bn": "ঠিক আছে।",
-              "wordByWord": "好吧 (hǎo ba - ঠিক আছে)"
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "chapter": 13,
-      "title": "অধ্যায় ১৩: 门开着呢",
-      "subtitle": "দরজা খোলা আছে",
-      "lessons": [
-        {
-          "lessonTitle": "পাঠ ১: 在办公室 (অফিসে - দরজা খোলা)",
-          "newWords": [
-            {"hanzi": "着", "pinyin": "zhe", "pron": "চ্য", "bn": "চলমান অবস্থা নির্দেশক"},
-            {"hanzi": "手", "pinyin": "shǒu", "pron": "শৌ", "bn": "হাত"},
-            {"hanzi": "拿", "pinyin": "ná", "pron": "না", "bn": "ধরা / নেওয়া"},
-            {"hanzi": "铅笔", "pinyin": "qiānbǐ", "pron": "ছিয়ান-পি", "bn": "পেন্সিল"},
-            {"hanzi": "班", "pinyin": "bān", "pron": "পান", "bn": "ক্লাস / শিফট"},
-            {"hanzi": "长", "pinyin": "zhǎng", "pron": "চাং", "bn": "প্রধান / নেতা (班长 = ক্লাস ক্যাপ্টেন)"}
-          ],
-          "dialogues": [
-            {
-              "speaker": "A",
-              "hanzi": "门开着呢，请进。",
-              "pinyin": "Mén kāi zhe ne, qǐng jìn.",
-              "pron": "মেন খাই চ্য ন্য, ছিং চিন।",
-              "bn": "দরজা খোলা আছে, দয়া করে ভেতরে আসুন।",
-              "wordByWord": "门 (mén - দরজা) 开着呢 (kāi zhe ne - খোলা আছে), 请进 (qǐng jìn - দয়া করে ভেতরে আসুন)"
-            },
-            {
-              "speaker": "B",
-              "hanzi": "请问，张先生在吗？",
-              "pinyin": "Qǐngwèn, Zhāng xiānsheng zài ma?",
-              "pron": "ছিং-ওয়েন, চাং সিয়ান-শেং চাই মা?",
-              "bn": "দয়া করে বলবেন, মিস্টার ঝাং কি আছেন?",
-              "wordByWord": "请问 (qǐngwèn - দয়া করে বলুন), 张先生 (Zhāng xiānsheng - মিস্টার ঝাং) 在吗 (zài ma - আছেন কি)"
-            },
-            {
-              "speaker": "A",
-              "hanzi": "他出去了，你下午再来吧。",
-              "pinyin": "Tā chūqù le, nǐ xiàwǔ zài lái ba.",
-              "pron": "থা ছু-ছু ল্য, নি সিয়া-উ চাই লাই পা।",
-              "bn": "তিনি বাইরে গেছেন, তুমি বিকেলে আবার এসো।",
-              "wordByWord": "他 (tā - তিনি) 出去了 (chūqù le - বাইরে গেছেন), 你 (nǐ - তুমি) 下午再来吧 (xiàwǔ zài lái ba - বিকেলে আবার এসো)"
-            },
-            {
-              "speaker": "B",
-              "hanzi": "好的，谢谢！",
-              "pinyin": "Hǎo de, xièxie!",
-              "pron": "হাও দ্য, সিয়ে-সিয়ে!",
-              "bn": "ঠিক আছে, ধন্যবাদ!",
-              "wordByWord": "好的 (hǎo de - ঠিক আছে), 谢谢 (xièxie - ধন্যবাদ)"
-            }
-          ]
-        },
-        {
-          "lessonTitle": "পাঠ ২: 在学校 (স্কুলে - কারা আসছে)",
-          "newWords": [
-            {"hanzi": "笑", "pinyin": "xiào", "pron": "সিয়াও", "bn": "হাসা"},
-            {"hanzi": "宾馆", "pinyin": "bīnguǎn", "pron": "পিন-কুয়ান", "bn": "হোটেল"},
-            {"hanzi": "一直", "pinyin": "yìzhí", "pron": "ই-চি", "bn": "সোজা / একটানা"},
-            {"hanzi": "往", "pinyin": "wǎng", "pron": "ওয়াং", "bn": "দিকে"},
-            {"hanzi": "路口", "pinyin": "lùkǒu", "pron": "লু-খৌ", "bn": "রাস্তার মোড়"}
-          ],
-          "dialogues": [
-            {
-              "speaker": "A",
-              "hanzi": "那个笑着说话的女孩是谁？",
-              "pinyin": "Nàge xiào zhe shuō huà de nǚhái shì shéi?",
-              "pron": "না-গ্য সিয়াও চ্য শুয়ো হুয়া দ্য নিউ-হাই শি শেই?",
-              "bn": "হাসতে হাসতে কথা বলছে যে মেয়েটি, সে কে?",
-              "wordByWord": "那个 (nàge - ওই) 笑着说话的 (xiào zhe shuō huà de - হাসতে হাসতে কথা বলছে যে) 女孩 (nǚhái - মেয়েটি) 是谁 (shì shéi - কে)"
-            },
-            {
-              "speaker": "B",
-              "hanzi": "我知道，她是李老师的女儿。",
-              "pinyin": "Wǒ zhīdào, tā shì Lǐ lǎoshī de nǚ'ér.",
-              "pron": "ওয়ো চি-তাও, থা শি লি লাও-শি দ্য নিউ-আর।",
-              "bn": "আমি জানি, সে শিক্ষক লি-এর মেয়ে।",
-              "wordByWord": "我知道 (wǒ zhīdào - আমি জানি), 她 (tā - সে) 是 (shì - হয়) 李老师的女儿 (Lǐ lǎoshī de nǚ'ér - শিক্ষক লি-এর মেয়ে)"
-            },
-            {
-              "speaker": "A",
-              "hanzi": "她手里拿着什么呢？",
-              "pinyin": "Tā shǒu lǐ ná zhe shénme ne?",
-              "pron": "থা শৌ লি না চ্য শেন-ম্য ন্য?",
-              "bn": "তার হাতে কী ধরা আছে?",
-              "wordByWord": "她手里 (tā shǒu lǐ - তার হাতে) 拿着 (ná zhe - ধরে আছে) 什么呢 (shénme ne - কী)"
-            },
-            {
-              "speaker": "B",
-              "hanzi": "拿着一本书和一支铅笔。",
-              "pinyin": "Ná zhe yì běn shū hé yì zhī qiānbǐ.",
-              "pron": "না চ্য ই পেন শু হ্য ই চি ছিয়ান-পি।",
-              "bn": "একটি বই এবং একটি পেন্সিল ধরা আছে।",
-              "wordByWord": "拿着 (ná zhe - ধরে আছে) 一本书 (yì běn shū - একটি বই) 和 (hé - এবং) 一支铅笔 (yì zhī qiānbǐ - একটি পেন্সিল)"
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "chapter": 14,
-      "title": "অধ্যায় ১৪: 你看过那个电影吗",
-      "subtitle": "তুমি কি ওই সিনেমাটি দেখেছো",
-      "lessons": [
-        {
-          "lessonTitle": "পাঠ ১: 在教室 (শ্রেণিকক্ষে - সিনেমা দেখা)",
-          "newWords": [
-            {"hanzi": "有意思", "pinyin": "yǒu yìsi", "pron": "ইয়ৌ ই-সি", "bn": "মজার / আকর্ষণীয়"},
-            {"hanzi": "但是", "pinyin": "dànshì", "pron": "তান-শি", "bn": "কিন্তু"},
-            {"hanzi": "虽然", "pinyin": "suīrán", "pron": "সুই-রান", "bn": "যদিও"},
-            {"hanzi": "次", "pinyin": "cì", "pron": "ছি", "bn": "বার (times)"},
-            {"hanzi": "玩儿", "pinyin": "wánr", "pron": "ওয়ার", "bn": "খেলা / ঘুরে বেড়ানো"}
-          ],
-          "dialogues": [
-            {
-              "speaker": "A",
-              "hanzi": "你看过那个电影吗？",
-              "pinyin": "Nǐ kàn guo nàge diànyǐng ma?",
-              "pron": "নি খান কুয়ো না-গ্য তিয়েন-ইং মা?",
-              "bn": "তুমি কি ওই সিনেমাটি দেখেছো?",
-              "wordByWord": "你 (nǐ - তুমি) 看过 (kàn guo - দেখেছো) 那个电影 (nàge diànyǐng - ওই সিনেমাটি) 吗 (ma)"
-            },
-            {
-              "speaker": "B",
-              "hanzi": "没看过，听说很有意思，那我们明天一起去看吧？",
-              "pinyin": "Méi kàn guo, tīngshuō hěn yǒu yìsi, nà wǒmen míngtiān yìqǐ qù kàn ba?",
-              "pron": "মেই খান কুয়ো, থিং-শুয়ো হেন ইয়ৌ ই-সি, না ওয়ো-ম্যান মিং-থিয়ান ই-ছি ছু খান পা?",
-              "bn": "দেখিনি, শুনেছি খুব মজার, তাহলে চলো আমরা আগামীকাল একসাথে দেখতে যাই?",
-              "wordByWord": "没看过 (méi kàn guo - দেখিনি), 听说 (tīngshuō - শুনেছি) 很有意思 (hěn yǒu yìsi - খুব মজার), 那我们明天一起去看吧 (nà wǒmen míngtiān yìqǐ qù kàn ba - তাহলে চলো কাল একসাথে দেখতে যাই)"
-            },
-            {
-              "speaker": "A",
-              "hanzi": "可以，但是我明天上午有课，下午去怎么样？",
-              "pinyin": "Kěyǐ, dànshì wǒ míngtiān shàngwǔ yǒu kè, xiàwǔ qù zěnmeyàng?",
-              "pron": "খ্য-ই, তান-শি ওয়ো মিং-থিয়ান শাং-উ ইয়ৌ খ্য, সিয়া-উ ছু চেন-ম্য-ইয়াং?",
-              "bn": "ঠিক আছে, কিন্তু আগামীকাল সকালে আমার ক্লাস আছে, বিকেলে গেলে কেমন হয়?",
-              "wordByWord": "可以 (kěyǐ - ঠিক আছে), 但是 (dànshì - কিন্তু) 我明天上午有课 (wǒ míngtiān shàngwǔ yǒu kè - কাল সকালে আমার ক্লাস আছে), 下午去怎么样 (xiàwǔ qù zěnmeyàng - বিকেলে গেলে কেমন হয়)"
-            },
-            {
-              "speaker": "B",
-              "hanzi": "好啊。",
-              "pinyin": "Hǎo a.",
-              "pron": "হাও আ।",
-              "bn": "বেশ তো।",
-              "wordByWord": "好啊 (hǎo a - ঠিক আছে)"
-            }
-          ]
-        },
-        {
-          "lessonTitle": "পাঠ ২: 在公司 (কোম্পানিতে - বেইজিং ভ্রমণ অভিজ্ঞতা)",
-          "newWords": [
-            {"hanzi": "晴", "pinyin": "qíng", "pron": "ছিং", "bn": "রোদ্রোজ্জ্বল"},
-            {"hanzi": "百", "pinyin": "bǎi", "pron": "পাই", "bn": "শত (১০০)"}
-          ],
-          "dialogues": [
-            {
-              "speaker": "A",
-              "hanzi": "你去过北京吗？",
-              "pinyin": "Nǐ qù guo Běijīng ma?",
-              "pron": "নি ছু কুয়ো পেই-চিং মা?",
-              "bn": "তুমি কি কখনো বেইজিং গিয়েছো?",
-              "wordByWord": "你 (nǐ - তুমি) 去过 (qù guo - গিয়েছো) 北京 (Běijīng - বেইজিং) 吗 (ma)"
-            },
-            {
-              "speaker": "B",
-              "hanzi": "我去过三次，北京很漂亮。",
-              "pinyin": "Wǒ qù guo sān cì, Běijīng hěn piàoliang.",
-              "pron": "ওয়ো ছু কুয়ো সান ছি, পেই-চিং হেন ফিয়াও-লিয়াং।",
-              "bn": "আমি তিনবার গিয়েছি, বেইজিং খুব সুন্দর।",
-              "wordByWord": "我去过 (wǒ qù guo - আমি গিয়েছি) 三次 (sān cì - তিনবার), 北京很漂亮 (Běijīng hěn piàoliang - বেইজিং খুব সুন্দর)"
-            },
-            {
-              "speaker": "A",
-              "hanzi": "你吃过北京烤鸭吗？",
-              "pinyin": "Nǐ chī guo Běijīng kǎoyā ma?",
-              "pron": "নি ছি কুয়ো পেই-চিং খাও-ইয়া মা?",
-              "bn": "তুমি কি বেইজিং রোস্ট ডাক খেয়েছো?",
-              "wordByWord": "你 (nǐ - তুমি) 吃过 (chī guo - খেয়েছো) 北京烤鸭 (Běijīng kǎoyā - বেইজিং রোস্ট ডাক) 吗 (ma)"
-            },
-            {
-              "speaker": "B",
-              "hanzi": "吃过，非常好吃！",
-              "pinyin": "Chī guo, fēicháng hǎochī!",
-              "pron": "ছি কুয়ো, ফেই-ছাং হাও-ছি!",
-              "bn": "খেয়েছি, খুবই সুস্বাদু!",
-              "wordByWord": "吃过 (chī guo - খেয়েছি), 非常好吃 (fēicháng hǎochī - খুবই সুস্বাদু)"
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "chapter": 15,
-      "title": "অধ্যায় ১৫: 新年就要到了",
-      "subtitle": "নববর্ষ প্রায় চলে এসেছে",
-      "lessons": [
-        {
-          "lessonTitle": "পাঠ ১: 在朋友家 (বন্ধুর বাড়িতে - নববর্ষ)",
-          "newWords": [
-            {"hanzi": "日", "pinyin": "rì", "pron": "রি", "bn": "দিন / তারিখ"},
-            {"hanzi": "新年", "pinyin": "xīnnián", "pron": "সিন-নিয়েন", "bn": "নববর্ষ"},
-            {"hanzi": "票", "pinyin": "piào", "pron": "ফিয়াও", "bn": "টিকিট"},
-            {"hanzi": "火车站", "pinyin": "huǒchēzhàn", "pron": "হুয়ো-ছ্য-চান", "bn": "রেলস্টেশন"},
-            {"hanzi": "大家", "pinyin": "dàjiā", "pron": "তা-চিয়া", "bn": "সবাই"},
-            {"hanzi": "更", "pinyin": "gèng", "pron": "কেং", "bn": "আরও বেশি"},
-            {"hanzi": "妹妹", "pinyin": "mèimei", "pron": "মেই-মেই", "bn": "ছোট বোন"},
-            {"hanzi": "阴", "pinyin": "yīn", "pron": "ইন", "bn": "মেঘলা"}
-          ],
-          "dialogues": [
-            {
-              "speaker": "A",
-              "hanzi": "今天是12月20号，新年就要到了。",
-              "pinyin": "Jīntiān shì shí'èr yuè èrshí hào, xīnnián jiù yào dào le.",
-              "pron": "চিন-থিয়ান শি শি-আর ইউয়ে আর-শি হাও, সিন-নিয়েন চিউ ইয়াও তাও ল্য।",
-              "bn": "আজ ১২ই ডিসেম্বর (ডিসেম্বরের ২০ তারিখ), নববর্ষ প্রায় চলে এসেছে।",
-              "wordByWord": "今天是 (jīntiān shì - আজ হলো) 12月20号 (shí'èr yuè èrshí hào - ডিসেম্বর ২০ তারিখ), 新年 (xīnnián - নববর্ষ) 就要到了 (jiù yào dào le - প্রায় চলে এসেছে)"
-            },
-            {
-              "speaker": "B",
-              "hanzi": "新的一年，你有什么打算？",
-              "pinyin": "Xīn de yì nián, nǐ yǒu shénme dǎsuàn?",
-              "pron": "সিন দ্য ই নিয়েন, নি ইয়ৌ শেন-ম্য তা-সুয়ান?",
-              "bn": "নতুন বছরে তোমার কী পরিকল্পনা আছে?",
-              "wordByWord": "新的一年 (xīn de yì nián - নতুন বছরে), 你有 (nǐ yǒu - তোমার আছে) 什么打算 (shénme dǎsuàn - কী পরিকল্পনা)"
-            },
-            {
-              "speaker": "A",
-              "hanzi": "我打算去中国学习汉语，希望我的汉语越来越好。",
-              "pinyin": "Wǒ dǎsuàn qù Zhōngguó xuéxí Hànyǔ, xīwàng wǒ de Hànyǔ yuè lái yuè hǎo.",
-              "pron": "ওয়ো তা-সুয়ান ছু চুং-কুয়ো শুয়ে-সি হান-ইয়্যু, সি-ওয়াং ওয়ো দ্য হান-ইয়্যু ইউয়ে লাই ইউয়ে হাও।",
-              "bn": "আমি চীনে গিয়ে চাইনিজ ভাষা শেখার পরিকল্পনা করেছি, আশা করি আমার চাইনিজ দিন দিন আরও ভালো হবে।",
-              "wordByWord": "我打算 (wǒ dǎsuàn - আমি পরিকল্পনা করেছি) 去中国 (qù Zhōngguó - চীনে যেতে) 学习汉语 (xuéxí Hànyǔ - চাইনিজ শিখতে), 希望 (xīwàng - আশা করি) 我的汉语 (wǒ de Hànyǔ - আমার চাইনিজ) 越来越好 (yuè lái yuè hǎo - দিন দিন আরও ভালো হবে)"
-            },
-            {
-              "speaker": "B",
-              "hanzi": "祝你新年快乐，希望你的愿望都能实现！",
-              "pinyin": "Zhù nǐ xīnnián kuàilè, xīwàng nǐ de yuànwàng dōu néng shíxiàn!",
-              "pron": "চু নি সিন-নিয়েন খুয়াই-ল্য, সি-ওয়াং নি দ্য ইউয়ান-ওয়াং তোউ নেং শি-সিয়েন!",
-              "bn": "তোমাকে নববর্ষের শুভেচ্ছা, আশা করি তোমার সব ইচ্ছা পূরণ হবে!",
-              "wordByWord": "祝你 (zhù nǐ - তোমাকে জানাই) 新年快乐 (xīnnián kuàilè - নববর্ষের শুভেচ্ছা), 希望 (xīwàng - আশা করি) 你的愿望 (nǐ de yuànwàng - তোমার ইচ্ছাগুলো) 都能实现 (dōu néng shíxiàn - সব পূরণ হবে)"
-            }
-          ]
-        },
-        {
-          "lessonTitle": "পাঠ ২: 在火车站 (রেলস্টেশনে - টিকিট কাটা)",
-          "newWords": [
-            {"hanzi": "火车", "pinyin": "huǒchē", "pron": "হুয়ো-ছ্য", "bn": "ট্রেন"},
-            {"hanzi": "站", "pinyin": "zhàn", "pron": "চান", "bn": "স্টেশন"}
-          ],
-          "dialogues": [
-            {
-              "speaker": "A",
-              "hanzi": "你买到去北京的火车票了吗？",
-              "pinyin": "Nǐ mǎidào qù Běijīng de huǒchēpiào le ma?",
-              "pron": "নি মাই-তাও ছু পেই-চিং দ্য হুয়ো-ছ্য-ফিয়াও ল্য মা?",
-              "bn": "তুমি কি বেইজিং যাওয়ার ট্রেনের টিকিট কিনতে পেরেছো?",
-              "wordByWord": "你 (nǐ - তুমি) 买到 (mǎidào - কিনতে পেরেছো) 去北京的 (qù Běijīng de - বেইজিং যাওয়ার) 火车票 (huǒchēpiào - ট্রেনের টিকিট) 了吗 (le ma)"
-            },
-            {
-              "speaker": "B",
-              "hanzi": "买到了，明天上午十点的火车。",
-              "pinyin": "Mǎidào le, míngtiān shàngwǔ shí diǎn de huǒchē.",
-              "pron": "মাই-তাও ল্য, মিং-থিয়ান শাং-উ শি তিয়ান দ্য হুয়ো-ছ্য।",
-              "bn": "হ্যাঁ, কিনতে পেরেছি, আগামীকাল সকাল দশটার ট্রেন।",
-              "wordByWord": "买到了 (mǎidào le - কিনতে পেরেছি), 明天上午 (míngtiān shàngwǔ - আগামীকাল সকাল) 十点的火车 (shí diǎn de huǒchē - দশটার ট্রেন)"
-            },
-            {
-              "speaker": "A",
-              "hanzi": "大家都在火车站等你呢，快走吧。",
-              "pinyin": "Dàjiā dōu zài huǒchēzhàn děng nǐ ne, kuài zǒu ba.",
-              "pron": "তা-চিয়া তোউ চাই হুয়ো-ছ্য-চান তেং নি ন্য, খুয়াই চৌ পা।",
-              "bn": "সবাই রেলস্টেশনে তোমার জন্য অপেক্ষা করছে, তাড়াতাড়ি চলো।",
-              "wordByWord": "大家 (dàjiā - সবাই) 都在火车站 (dōu zài huǒchēzhàn - রেলস্টেশনে) 等你呢 (děng nǐ ne - তোমার জন্য অপেক্ষা করছে), 快走吧 (kuài zǒu ba - তাড়াতাড়ি চলো)"
-            },
-            {
-              "speaker": "B",
-              "hanzi": "好的，我们现在就去。",
-              "pinyin": "Hǎo de, wǒmen xiànzài jiù qù.",
-              "pron": "হাও দ্য, ওয়ো-ম্যান সিয়ান-চাই চিউ ছু।",
-              "bn": "ঠিক আছে, আমরা এখনই যাচ্ছি।",
-              "wordByWord": "好的 (hǎo de - ঠিক আছে), 我们现在就去 (wǒmen xiànzài jiù qù - আমরা এখনই যাচ্ছি)"
-            }
-          ]
-        }
-      ]
-    }
-  ]
-}
+    "chapter": 6,
+    "title": "你怎么不吃了",
+    "pinyin": "Nǐ zěnme bù chī le",
+    "pron": "নি জেনমা পু ছি লা",
+    "bn": "তুমি আর খাচ্ছ না কেন?",
+    "en": "Why don't you eat more",
+    "lessons": [
+      {
+        "lessonCode": "06-1",
+        "title": "在学校 (স্কুলে)",
+        "newWords": [
+          { "hanzi": "门", "pinyin": "mén", "pron": "মেন", "bn": "দরজা, গেট", "en": "door, gate" },
+          { "hanzi": "外", "pinyin": "wài", "pron": "ওয়াই", "bn": "বাইরে", "en": "outer, outside" },
+          { "hanzi": "自行车", "pinyin": "zìxíngchē", "pron": "জিসিংছো", "bn": "সাইকেল", "en": "bike, bicycle" }
+        ],
+        "lines": [
+          { "speaker": "A", "hanzi": "你知道小王今天什么时候来学校吗？", "pinyin": "Nǐ zhīdào Xiǎo Wáng jīntiān shénme shíhou lái xuéxiào ma?", "pron": "নি ঝিতাও সিয়াও ওয়াং চিনথিয়েন শেনমা শিহৌ লাই সোয়েসিয়াও মা?", "bn": "তুমি কি জানো সিয়াও ওয়াং আজ কখন স্কুলে আসবে?", "en": "Do you know when Xiao Wang will come to school today?" },
+          { "speaker": "B", "hanzi": "他已经来了。", "pinyin": "Tā yǐjīng lái le.", "pron": "থা ইচিং লাই লা।", "bn": "সে ইতিমধ্যে চলে এসেছে।", "en": "He is already here." },
+          { "speaker": "A", "hanzi": "你怎么知道他来了？", "pinyin": "Nǐ zěnme zhīdào tā lái le?", "pron": "নি জেনমা ঝিতাও থা লাই লা?", "bn": "তুমি কীভাবে জানলে যে সে এসেছে?", "en": "How do you know?" },
+          { "speaker": "B", "hanzi": "我在门外看见他的自行车了。", "pinyin": "Wǒ zài mén wài kànjiàn tā de zìxíngchē le.", "pron": "ও জাই মেন ওয়াই খানচিয়েন থা দা জিসিংছো লা।", "bn": "আমি দরজার বাইরে ওর সাইকেলটা দেখেছি।", "en": "I saw his bike outside the door." }
+        ]
+      },
+      {
+        "lessonCode": "06-2",
+        "title": "在饭馆 (রেস্তোরাঁয়)",
+        "newWords": [
+          { "hanzi": "羊肉", "pinyin": "yángròu", "pron": "ইয়াংরৌ", "bn": "খাসির/ভেড়ার মাংস", "en": "mutton" },
+          { "hanzi": "好吃", "pinyin": "hǎochī", "pron": "হাওছি", "bn": "সুস্বাদু", "en": "delicious, yummy" },
+          { "hanzi": "面条", "pinyin": "miàntiáo", "pron": "মিয়েনথিয়াও", "bn": "নুডলস", "en": "noodles" }
+        ],
+        "lines": [
+          { "speaker": "A", "hanzi": "今天的羊肉很好吃，你怎么不吃了？", "pinyin": "Jīntiān de yángròu hěn hǎochī, nǐ zěnme bù chī le?", "pron": "চিনথিয়েন দা ইয়াংরৌ হেন হাওছি, নি জেনমা পু ছি লা?", "bn": "আজকের খাসির মাংসটা খুব সুস্বাদু, তুমি আর খাচ্ছ না কেন?", "en": "The mutton today is excellent. Why don't you eat more?" },
+          { "speaker": "B", "hanzi": "这个星期天天都吃羊肉，不想吃了。", "pinyin": "Zhège xīngqī tiāntiān dōu chī yángròu, bù xiǎng chī le.", "pron": "ঝেগা সিংছি থিয়েনথিয়েন তৌ ছি ইয়াংরৌ, পু সিয়াং ছি লা।", "bn": "এই সপ্তাহে প্রতিদিনই খাসির মাংস খেয়েছি, আর খেতে ইচ্ছে করছে না।", "en": "I eat mutton every day this week. I don't want to eat it any more." },
+          { "speaker": "A", "hanzi": "那你还想吃什么？", "pinyin": "Nà nǐ hái xiǎng chī shénme?", "pron": "না নি হাই সিয়াং ছি শেনমা?", "bn": "তাহলে তুমি আর কী খেতে চাও?", "en": "What would you like then?" },
+          { "speaker": "B", "hanzi": "来一点儿面条吧。", "pinyin": "Lái yìdiǎnr miàntiáo ba.", "pron": "লাই ইতিয়ার মিয়েনথিয়াও বা।", "bn": "অল্প একটু নুডলস দাও।", "en": "Some noodles please." }
+        ]
+      },
+      {
+        "lessonCode": "06-3",
+        "title": "在健身房 (জিমে)",
+        "newWords": [
+          { "hanzi": "打篮球", "pinyin": "dǎ lánqiú", "pron": "তা লানছিউ", "bn": "বাস্কেটবল খেলা", "en": "to play basketball" },
+          { "hanzi": "因为", "pinyin": "yīnwèi", "pron": "ইনওয়েই", "bn": "কারণ", "en": "because, since" },
+          { "hanzi": "所以", "pinyin": "suǒyǐ", "pron": "সুওই", "bn": "তাই, সেজন্য", "en": "so, therefore" },
+          { "hanzi": "游泳", "pinyin": "yóu yǒng", "pron": "ইয়ৌ ইয়োং", "bn": "সাঁতার কাটা", "en": "to swim" },
+          { "hanzi": "经常", "pinyin": "jīngcháng", "pron": "চিংছাং", "bn": "প্রায়ই", "en": "often, frequently" },
+          { "hanzi": "公斤", "pinyin": "gōngjīn", "pron": "কোংচিন", "bn": "কিলোগ্রাম", "en": "kilogram" }
+        ],
+        "lines": [
+          { "speaker": "A", "hanzi": "昨天你们怎么都没去打篮球？", "pinyin": "Zuótiān nǐmen zěnme dōu méi qù dǎ lánqiú?", "pron": "জুওথিয়েন নিমেন জেনমা তৌ মেই ছ্যু তা লানছিউ?", "bn": "গতকাল তোমরা কেউই বাস্কেটবল খেলতে যাওনি কেন?", "en": "Why didn't you guys go to play basketball yesterday?" },
+          { "speaker": "B", "hanzi": "因为昨天下雨，所以我们都没去。我去游泳了。", "pinyin": "Yīnwèi zuótiān xià yǔ, suǒyǐ wǒmen dōu méi qù. Wǒ qù yóu yǒng le.", "pron": "ইনওয়েই জুওথিয়েন সিয়া ইয়ু, সুওই ওমেন তৌ মেই ছ্যু। ও ছ্যু ইয়ৌ ইয়োং লা।", "bn": "কারণ গতকাল বৃষ্টি হচ্ছিল, তাই আমরা কেউই যাইনি। আমি সাঁতার কাটতে গিয়েছিলাম।", "en": "Because it rained yesterday. So we didn't go. I went swimming." },
+          { "speaker": "A", "hanzi": "你经常游泳吗？", "pinyin": "Nǐ jīngcháng yóu yǒng ma?", "pron": "নি চিংছাং ইয়ৌ ইয়োং মা?", "bn": "তুমি কি প্রায়ই সাঁতার কাটো?", "en": "Do you often swim?" },
+          { "speaker": "B", "hanzi": "这个月我天天游泳，我现在七十公斤了。", "pinyin": "Zhège yuè wǒ tiāntiān yóu yǒng, wǒ xiànzài qīshí gōngjīn le.", "pron": "ঝেগা ইয়ুয়ে ও থিয়েনথিয়েন ইয়ৌ ইয়োং, ও সিয়েনজাই ছিশি কোংচিন লা।", "bn": "এই মাসে আমি প্রতিদিন সাঁতার কাটছি, আমার ওজন এখন সত্তর কেজি হয়েছে।", "en": "I swim every day this month. I weigh 70 kilograms now." }
+        ]
+      },
+      {
+        "lessonCode": "06-4",
+        "title": "在办公室 (অফিসে)",
+        "newWords": [
+          { "hanzi": "姐姐", "pinyin": "jiějie", "pron": "চিয়েচিয়ে", "bn": "বড় বোন", "en": "elder sister" }
+        ],
+        "lines": [
+          { "speaker": "A", "hanzi": "这两天怎么没看见小张？", "pinyin": "Zhè liǎng tiān zěnme méi kànjiàn Xiǎo Zhāng?", "pron": "ঝে লিয়াং থিয়েন জেনমা মেই খানচিয়েন সিয়াও চাং?", "bn": "এই দুই দিন ধরে সিয়াও ঝাংকে দেখা যাচ্ছে না কেন?", "en": "I haven't seen Xiao Zhang for days. What's going on?" },
+          { "speaker": "B", "hanzi": "他去北京了。", "pinyin": "Tā qù Běijīng le.", "pron": "থা ছ্যু পেইচিং লা।", "bn": "সে বেইজিংয়ে গেছে।", "en": "He has gone to Beijing." },
+          { "speaker": "A", "hanzi": "去北京了？是去旅游吗？", "pinyin": "Qù Běijīng le? Shì qù lǚyóu ma?", "pron": "ছ্যু পেইচিং লা? শি ছ্যু ল্যুইয়ো মা?", "bn": "বেইজিংয়ে গেছে? ঘুরতে গেছে নাকি?", "en": "Gone to Beijing? For traveling?" },
+          { "speaker": "B", "hanzi": "不是，听说是去看他姐姐。", "pinyin": "Bú shì, tīngshuō shì qù kàn tā jiějie.", "pron": "পু শি, থিংসুও শি ছ্যু খান থা চিয়েচিয়ে।", "bn": "না, শুনলাম ওর বড় বোনকে দেখতে গেছে।", "en": "No. Visiting his elder sister, as far as I've heard." }
+        ]
+      }
+    ]
+  },
+  {
+    "chapter": 7,
+    "title": "你家离公司远吗",
+    "pinyin": "Nǐ jiā lí gōngsī yuǎn ma",
+    "pron": "নি চিয়া লি কোংসি ইয়ুয়ান মা",
+    "bn": "তোমার বাসা কি অফিস থেকে দূরে?",
+    "en": "Do you live far from your company",
+    "lessons": [
+      {
+        "lessonCode": "07-1",
+        "title": "在家里 (বাড়িতে)",
+        "newWords": [
+          { "hanzi": "教室", "pinyin": "jiàoshì", "pron": "চিয়াওশি", "bn": "শ্রেণিকক্ষ", "en": "classroom" }
+        ],
+        "lines": [
+          { "speaker": "A", "hanzi": "大卫回来了吗？", "pinyin": "Dàwèi huílai le ma?", "pron": "তাওয়েই হুইলাই লা মা?", "bn": "ডেভিড কি ফিরে এসেছে?", "en": "Is David back?" },
+          { "speaker": "B", "hanzi": "没有，他还在教室学习呢。", "pinyin": "Méiyǒu, tā hái zài jiàoshì xuéxí ne.", "pron": "মেইয়ৌ, থা হাই জাই চিয়াওশি সোয়েসি না।", "bn": "না, সে এখনো শ্রেণিকক্ষে পড়াশোনা করছে।", "en": "No. He is still studying in the classroom." },
+          { "speaker": "A", "hanzi": "已经九点多了，他怎么还在学习？", "pinyin": "Yǐjīng jiǔ diǎn duō le, tā zěnme hái zài xuéxí?", "pron": "ইচিং জিউ তিয়েন তুও লা, থা জেনমা হাই জাই সোয়েসি?", "bn": "ইতিমধ্যে রাত নয়টার বেশি বাজে, সে এখনো পড়ছে কেন?", "en": "It's after 9 o'clock. Why is he still studying?" },
+          { "speaker": "B", "hanzi": "明天有考试，他说今天要好好准备。", "pinyin": "Míngtiān yǒu kǎoshì, tā shuō jīntiān yào hǎohāo zhǔnbèi.", "pron": "মিংথিয়েন ইয়ৌ খাওশি, থা শুও চিনথিয়েন ইয়াও হাওহাও ঝুনপেই।", "bn": "আগামীকাল পরীক্ষা আছে, সে বলেছে আজ ভালোভাবে প্রস্তুতি নেবে।", "en": "There will be a test tomorrow. He said he'll work hard in preparation for it today." }
+        ]
+      },
+      {
+        "lessonCode": "07-2",
+        "title": "去机场的路上 (বিমানবন্দরে যাওয়ার পথে)",
+        "newWords": [
+          { "hanzi": "机场", "pinyin": "jīchǎng", "pron": "চিছাং", "bn": "বিমানবন্দর", "en": "airport" },
+          { "hanzi": "路", "pinyin": "lù", "pron": "লু", "bn": "রাস্তা, পথ", "en": "road, path, way" }
+        ],
+        "lines": [
+          { "speaker": "A", "hanzi": "你现在在哪儿呢？", "pinyin": "Nǐ xiànzài zài nǎr ne?", "pron": "নি সিয়েনজাই জাই নার না?", "bn": "তুমি এখন কোথায় আছ?", "en": "Where are you now?" },
+          { "speaker": "B", "hanzi": "在去机场的路上。你已经到了吗？", "pinyin": "Zài qù jīchǎng de lùshang. Nǐ yǐjīng dàole ma?", "pron": "জাই ছ্যু চিছাং দা লুশাং। নি ইচিং তাওলা মা?", "bn": "বিমানবন্দরে যাওয়ার পথে আছি। তুমি কি ইতিমধ্যে পৌঁছে গেছ?", "en": "I'm on the way to the airport. Have you arrived?" },
+          { "speaker": "A", "hanzi": "我下飞机了。你还有多长时间能到这儿？", "pinyin": "Wǒ xià fēijī le. Nǐ hái yǒu duō cháng shíjiān néng dào zhèr?", "pron": "ও সিয়া ফেইচি লা। নি হাই ইয়ৌ তুও ছাং শিচিয়েন নং তাও ঝার?", "bn": "আমি বিমান থেকে নেমেছি। তোমার এখানে পৌঁছাতে আর কতক্ষণ লাগবে?", "en": "I've got off the plane. How many more minutes do you need to get here?" },
+          { "speaker": "B", "hanzi": "二十分钟就到。", "pinyin": "Èrshí fēnzhōng jiù dào.", "pron": "আরশি ফেনচোং চিউ তাও।", "bn": "বিশ মিনিটের মধ্যেই পৌঁছে যাব।", "en": "In 20 minutes." }
+        ]
+      },
+      {
+        "lessonCode": "07-3",
+        "title": "在健身房 (জিমে অফিসের দূরত্ব নিয়ে)",
+        "newWords": [
+          { "hanzi": "离", "pinyin": "lí", "pron": "লি", "bn": "থেকে (দূরত্ব বোঝাতে)", "en": "to be away from" },
+          { "hanzi": "公司", "pinyin": "gōngsī", "pron": "কোংসি", "bn": "কোম্পানি, অফিস", "en": "company, firm" },
+          { "hanzi": "远", "pinyin": "yuǎn", "pron": "ইয়ুয়ান", "bn": "দূরে", "en": "far, distant" },
+          { "hanzi": "公共汽车", "pinyin": "gōnggòng qìchē", "pron": "কোংগোং ছিছো", "bn": "বাস", "en": "bus" },
+          { "hanzi": "小时", "pinyin": "xiǎoshí", "pron": "সিয়াওশি", "bn": "ঘণ্টা", "en": "hour" },
+          { "hanzi": "慢", "pinyin": "màn", "pron": "মান", "bn": "ধীরগতির", "en": "slow" },
+          { "hanzi": "快", "pinyin": "kuài", "pron": "খুয়াই", "bn": "দ্রুত", "en": "quick, fast" }
+        ],
+        "lines": [
+          { "speaker": "A", "hanzi": "你家离公司远吗？", "pinyin": "Nǐ jiā lí gōngsī yuǎn ma?", "pron": "নি চিয়া লি কোংসি ইয়ুয়ান মা?", "bn": "তোমার বাসা কি অফিস থেকে দূরে?", "en": "Do you live far from your company?" },
+          { "speaker": "B", "hanzi": "很远，坐公共汽车要一个多小时呢！", "pinyin": "Hěn yuǎn, zuò gōnggòng qìchē yào yí ge duō xiǎoshí ne!", "pron": "হেন ইয়ুয়ান, জুও কোংগোং ছিছো ইয়াও ই গা তুও সিয়াওশি না!", "bn": "অনেক দূরে, বাসে গেলে এক ঘণ্টারও বেশি সময় লাগে!", "en": "Yes, very far. It takes more than one hour by bus." },
+          { "speaker": "A", "hanzi": "坐公共汽车太慢了，你怎么不开车？", "pinyin": "Zuò gōnggòng qìchē tài màn le, nǐ zěnme bù kāi chē?", "pron": "জুও কোংগোং ছিছো থাই মান লা, নি জেনমা পু খাই ছো?", "bn": "বাসে তো অনেক দেরি হয়, তুমি গাড়ি চালিয়ে যাও না কেন?", "en": "Buses are slow. Why don't you drive?" },
+          { "speaker": "B", "hanzi": "开车也不快，路上车太多了！", "pinyin": "Kāi chē yě bú kuài, lùshang chē tài duō le!", "pron": "খাই ছো ইয়ে পু খুয়াই, লুশাং ছো থাই তুও লা!", "bn": "গাড়ি চালালেও দ্রুত যাওয়া যায় না, রাস্তায় প্রচণ্ড গাড়ি থাকে!", "en": "It's not fast either. There are too many cars on the road." }
+        ]
+      },
+      {
+        "lessonCode": "07-4",
+        "title": "在路上 (রাস্তায় জন্মদিন পালন নিয়ে)",
+        "newWords": [
+          { "hanzi": "过", "pinyin": "guò", "pron": "কুও", "bn": "উদযাপন করা, সময় কাটানো", "en": "to pass (time), to celebrate" },
+          { "hanzi": "走", "pinyin": "zǒu", "pron": "জৌ", "bn": "হাঁটা", "en": "to walk" },
+          { "hanzi": "到", "pinyin": "dào", "pron": "তাও", "bn": "পৌঁছানো", "en": "to arrive, to reach" }
+        ],
+        "lines": [
+          { "speaker": "A", "hanzi": "今天晚上我们一起吃饭吧，给你过生日。", "pinyin": "Jīntiān wǎnshang wǒmen yìqǐ chī fàn ba, gěi nǐ guò shēngrì.", "pron": "চিনথিয়েন ওয়ানশাং ওমেন ইছি ছি ফান বা, কেই নি কুও শংরি।", "bn": "আজ রাতে চলো একসাথে রাতের খাবার খাই, তোমার জন্মদিন উদযাপন করব।", "en": "Let's have dinner together tonight to celebrate your birthday." },
+          { "speaker": "B", "hanzi": "今天？离我的生日还有一个多星期呢！", "pinyin": "Jīntiān? Lí wǒ de shēngrì hái yǒu yí ge duō xīngqī ne!", "pron": "চিনথিয়েন? লি ও দা শংরি হাই ইয়ৌ ই গা তুও সিংছি না!", "bn": "আজকে? আমার জন্মদিনের তো এখনো এক সপ্তাহের বেশি বাকি!", "en": "Tonight? My birthday is more than one week later." },
+          { "speaker": "A", "hanzi": "下个星期我要去北京，今天过吧。", "pinyin": "Xià ge xīngqī wǒ yào qù Běijīng, jīntiān guò ba.", "pron": "সিয়া গা সিংছি ও ইয়াও ছ্যু পেইচিং, চিনথিয়েন কুও বা।", "bn": "আগামী সপ্তাহে আমি বেইজিং যাব, তাই আজই পালন করি।", "en": "Next week I'll go to Beijing. Let's celebrate it today." },
+          { "speaker": "B", "hanzi": "好吧，离这儿不远有一个中国饭馆，走几分钟就到了。", "pinyin": "Hǎo ba, lí zhèr bù yuǎn yǒu yí ge Zhōngguó fànguǎn, zǒu jǐ fēnzhōng jiù dào le.", "pron": "হাও বা, লি ঝার পু ইয়ুয়ান ইয়ৌ ই গা চোংকুও ফানকুয়ান, জৌ চি ফেনচোং চিউ তাও লা।", "bn": "ঠিক আছে, এখান থেকে কাছেই একটা চায়নিজ রেস্তোরাঁ আছে, কয়েক মিনিট হাঁটলেই পৌঁছে যাব।", "en": "Fine. There's a Chinese restaurant nearby, only a few minutes' walk away." }
+        ]
+      }
+    ]
+  },
+  {
+    "chapter": 8,
+    "title": "让我想想再告诉你",
+    "pinyin": "Ràng wǒ xiǎngxiang zài gàosu nǐ",
+    "pron": "রাং ও সিয়াংসিয়াং জাই কাওসু নি",
+    "bn": "আমাকে একটু ভেবে তারপর তোমাকে জানাতে দাও",
+    "en": "Let me think about it and I'll tell you later",
+    "lessons": [
+      {
+        "lessonCode": "08-1",
+        "title": "在教室 (শ্রেণিকক্ষে সিনেমা দেখা নিয়ে)",
+        "newWords": [
+          { "hanzi": "再", "pinyin": "zài", "pron": "জাই", "bn": "আবার, পরে", "en": "again, later" },
+          { "hanzi": "让", "pinyin": "ràng", "pron": "রাং", "bn": "অনুমতি দেওয়া, করতে দেওয়া", "en": "to let, to allow" },
+          { "hanzi": "告诉", "pinyin": "gàosu", "pron": "কাওসু", "bn": "বলা, জানানো", "en": "to tell" }
+        ],
+        "lines": [
+          { "speaker": "A", "hanzi": "我们下午去看电影，好吗？", "pinyin": "Wǒmen xiàwǔ qù kàn diànyǐng, hǎo ma?", "pron": "ওমেন সিয়াউ ছ্যু খান তিয়েনইং, হাও মা?", "bn": "চলো বিকেলে সিনেমা দেখতে যাই, কেমন?", "en": "Let's go to see a movie this afternoon, shall we?" },
+          { "speaker": "B", "hanzi": "今天下午我没有时间，明天下午再去吧。", "pinyin": "Jīntiān xiàwǔ wǒ méiyǒu shíjiān, míngtiān xiàwǔ zài qù ba.", "pron": "চিনথিয়েন সিয়াউ ও মেইয়ৌ শিচিয়েন, মিংথিয়েন সিয়াউ জাই ছ্যু বা।", "bn": "আজ বিকেলে আমার সময় নেই, আগামীকাল বিকেলে যাই।", "en": "I'm not free this afternoon. Let's go tomorrow afternoon." },
+          { "speaker": "A", "hanzi": "你想看什么电影？", "pinyin": "Nǐ xiǎng kàn shénme diànyǐng?", "pron": "নি সিয়াং খান শেনমা তিয়েনইং?", "bn": "তুমি কোন সিনেমা দেখতে চাও?", "en": "Which movie would you like to see?" },
+          { "speaker": "B", "hanzi": "让我想想再告诉你。", "pinyin": "Ràng wǒ xiǎngxiang zài gàosu nǐ.", "pron": "রাং ও সিয়াংসিয়াং জাই কাওসু নি।", "bn": "আমাকে একটু ভেবে তারপর তোমাকে জানাতে দাও।", "en": "Let me think about it and I'll tell you later." }
+        ]
+      },
+      {
+        "lessonCode": "08-2",
+        "title": "在宿舍 (হোস্টেলে)",
+        "newWords": [
+          { "hanzi": "等", "pinyin": "děng", "pron": "তং", "bn": "অপেক্ষা করা", "en": "to wait, to await" },
+          { "hanzi": "找", "pinyin": "zhǎo", "pron": "ঝাও", "bn": "খোঁজা, দেখা করা", "en": "to look for" },
+          { "hanzi": "事情", "pinyin": "shìqing", "pron": "শিছিং", "bn": "ব্যাপার, কাজ, বিষয়", "en": "thing, matter, affair" }
+        ],
+        "lines": [
+          { "speaker": "A", "hanzi": "外边天气很好，我们出去运动运动吧！", "pinyin": "Wàibian tiānqì hěn hǎo, wǒmen chūqu yùndòng yùndòng ba!", "pron": "ওয়াইপিয়েন থিয়েনছি হেন হাও, ওমেন ছুছ্যু ইয়ুনতোং ইয়ুনতোং বা!", "bn": "বাইরে আবহাওয়া খুব সুন্দর, চলো বাইরে গিয়ে একটু ব্যায়াম করি!", "en": "It's a nice day outside. Let's go out to do some exercise." },
+          { "speaker": "B", "hanzi": "你等等我，好吗？王老师让我给大卫打个电话。", "pinyin": "Nǐ děngdeng wǒ, hǎo ma? Wáng lǎoshī ràng wǒ gěi Dàwèi dǎ ge diànhuà.", "pron": "নি তংতং ও, হাও মা? ওয়াং লাওশি রাং ও কেই তাওয়েই তা গা তিয়েনহুয়া।", "bn": "তুমি আমার জন্য একটু অপেক্ষা করবে? শিক্ষক ওয়াং আমাকে ডেভিডকে একটা ফোন করতে বলেছেন।", "en": "Please wait for me for a minute, will you? Professor Wang asked me to give David a call." },
+          { "speaker": "A", "hanzi": "回来再打吧。找大卫有什么事情吗？", "pinyin": "Huílai zài dǎ ba. Zhǎo Dàwèi yǒu shénme shìqing ma?", "pron": "হুইলাই জাই তা বা। ঝাও তাওয়েই ইয়ৌ শেনমা শিছিং মা?", "bn": "ফিরে এসে তারপর ফোন কোরো। ডেভিডের সাথে কোনো কাজ আছে নাকি?", "en": "Call him after we come back. What's the matter?" },
+          { "speaker": "B", "hanzi": "听说大卫病了，我想找时间去看看他。", "pinyin": "Tīngshuō Dàwèi bìng le, wǒ xiǎng zhǎo shíjiān qù kànkan tā.", "pron": "থিংসুও তাওয়েই পিং লা, ও সিয়াং ঝাও শিচিয়েন ছ্যু খানখান থা।", "bn": "শুনলাম ডেভিড অসুস্থ হয়েছে, আমি সময় বের করে ওকে দেখতে যেতে চাই।", "en": "I heard that David is sick. I want to visit him sometime." }
+        ]
+      },
+      {
+        "lessonCode": "08-3",
+        "title": "在宾馆的前台 (হোটেলের রিসেপশনে)",
+        "newWords": [
+          { "hanzi": "服务员", "pinyin": "fúwùyuán", "pron": "ফুউইয়ুয়ান", "bn": "ওয়েটার, হোটেল কর্মী", "en": "attendant, waiter/waitress" }
+        ],
+        "lines": [
+          { "speaker": "A", "hanzi": "服务员，我房间的门打不开了。", "pinyin": "Fúwùyuán, wǒ fángjiān de mén dǎ bu kāi le.", "pron": "ফুউইয়ুয়ান, ও ফাংচিয়েন দা মেন তা পু খাই লা।", "bn": "এক্সকিউজ মি, আমার ঘরের দরজাটা খুলছে না।", "en": "Excuse me, I can't open my door." },
+          { "speaker": "B", "hanzi": "您住哪个房间？", "pinyin": "Nín zhù nǎge fángjiān?", "pron": "নিন ঝু নাগা ফাংচিয়েন?", "bn": "আপনি কোন ঘরে থাকেন?", "en": "Which room do you stay in?" },
+          { "speaker": "A", "hanzi": "317。", "pinyin": "Sān yāo qī.", "pron": "সান ইয়াও ছি।", "bn": "৩১৭ নম্বর ঘরে।", "en": "Room 317." },
+          { "speaker": "B", "hanzi": "好的，我叫人去看看。", "pinyin": "Hǎo de, wǒ jiào rén qù kànkan.", "pron": "হাও দা, ও চিয়াও রেন ছ্যু খানখান।", "bn": "ঠিক আছে, আমি লোক পাঠাচ্ছি দেখার জন্য।", "en": "OK. I'll send someone to have a check." }
+        ]
+      },
+      {
+        "lessonCode": "08-4",
+        "title": "在商店 (দোকানে জামা পছন্দ করা)",
+        "newWords": [
+          { "hanzi": "白", "pinyin": "bái", "pron": "পাই", "bn": "সাদা", "en": "white" },
+          { "hanzi": "黑", "pinyin": "hēi", "pron": "হেই", "bn": "কালো", "en": "black" },
+          { "hanzi": "贵", "pinyin": "guì", "pron": "কুই", "bn": "দামি", "en": "expensive" }
+        ],
+        "lines": [
+          { "speaker": "A", "hanzi": "你看看这几件衣服怎么样。", "pinyin": "Nǐ kànkan zhè jǐ jiàn yīfu zěnmeyàng.", "pron": "নি খানখান ঝে চি চিয়েন ইফু জেনমাইয়াং।", "bn": "তুমি একটু দেখে বলো তো এই কয়েকটা জামা কেমন।", "en": "What do you think of these dresses?" },
+          { "speaker": "B", "hanzi": "这件白的有点儿长，那件黑的有点儿贵。", "pinyin": "Zhè jiàn bái de yǒudiǎnr cháng, nà jiàn hēi de yǒudiǎnr guì.", "pron": "ঝে চিয়েন পাই দা ইয়ৌতিয়ার ছাং, না চিয়েন হেই দা ইয়ৌতিয়ার কুই।", "bn": "এই সাদাটা একটু লম্বা, আর ওই কালোটা একটু দামি।", "en": "This white one is a little bit too long. That black one is a bit expensive." },
+          { "speaker": "A", "hanzi": "这件红的呢？这是今天新来的。", "pinyin": "Zhè jiàn hóng de ne? Zhè shì jīntiān xīn lái de.", "pron": "ঝে চিয়েন হোং দা না? ঝে শি চিনথিয়েন সিন লাই দা।", "bn": "এই লালটা কেমন? এটা আজ নতুন এসেছে।", "en": "What about this red one? This one has just got here today." },
+          { "speaker": "B", "hanzi": "让我再看看。", "pinyin": "Ràng wǒ zài kànkan.", "pron": "রাং ও জাই খানখান।", "bn": "আমাকে আরেকটু দেখতে দাও।", "en": "Thanks. I'll look around." }
+        ]
+      }
+    ]
+  },
+  {
+    "chapter": 9,
+    "title": "题太多，我没做完",
+    "pinyin": "Tí tài duō, wǒ méi zuòwán",
+    "pron": "থি থাই তুও, ও মেই জুওওয়ান",
+    "bn": "প্রশ্ন অনেক বেশি ছিল, আমি শেষ করতে পারিনি",
+    "en": "There were too many questions; I didn't finish all of them",
+    "lessons": [
+      {
+        "lessonCode": "09-1",
+        "title": "打电话 (ফোনে কথা বলা)",
+        "newWords": [
+          { "hanzi": "错", "pinyin": "cuò", "pron": "ছুও", "bn": "ভুল", "en": "wrong, incorrect" }
+        ],
+        "lines": [
+          { "speaker": "A", "hanzi": "你好！请问张欢在吗？", "pinyin": "Nǐ hǎo! Qǐngwèn Zhāng Huān zài ma?", "pron": "নি হাও! ছিংওয়েন চাং হুয়ান জাই মা?", "bn": "হ্যালো! দয়া করে বলবেন ঝাং হুয়ান কি আছেন?", "en": "Hello! May I speak to Zhang Huan?" },
+          { "speaker": "B", "hanzi": "你打错了，我们这儿没有叫张欢的。", "pinyin": "Nǐ dǎcuò le, wǒmen zhèr méiyǒu jiào Zhāng Huān de.", "pron": "নি তাছুও লা, ওমেন ঝার মেইয়ৌ চিয়াও চাং হুয়ান দা।", "bn": "আপনি ভুল নম্বরে ফোন করেছেন, আমাদের এখানে ঝাং হুয়ান নামে কেউ নেই।", "en": "You've got the wrong number. There isn't a person called Zhang Huan here." },
+          { "speaker": "A", "hanzi": "对不起。", "pinyin": "Duìbuqǐ.", "pron": "তুইপুছি।", "bn": "দুঃখিত।", "en": "I'm sorry." }
+        ]
+      },
+      {
+        "lessonCode": "09-2",
+        "title": "在学校 (স্কুলে নাচ শেখা নিয়ে)",
+        "newWords": [
+          { "hanzi": "从", "pinyin": "cóng", "pron": "ছোং", "bn": "থেকে (সময়/স্থান)", "en": "from" },
+          { "hanzi": "跳舞", "pinyin": "tiào wǔ", "pron": "থিয়াও উ", "bn": "নাচা", "en": "to dance" },
+          { "hanzi": "第一", "pinyin": "dì yī", "pron": "তি ই", "bn": "প্রথম", "en": "first" },
+          { "hanzi": "希望", "pinyin": "xīwàng", "pron": "সিওয়াং", "bn": "আশা করা", "en": "to hope, to wish" },
+          { "hanzi": "问题", "pinyin": "wèntí", "pron": "ওয়েনথি", "bn": "সমস্যা, প্রশ্ন", "en": "question, problem" },
+          { "hanzi": "欢迎", "pinyin": "huānyíng", "pron": "হুয়ানইং", "bn": "স্বাগতম", "en": "to welcome" }
+        ],
+        "lines": [
+          { "speaker": "A", "hanzi": "您从几岁开始学习跳舞？", "pinyin": "Nín cóng jǐ suì kāishǐ xuéxí tiào wǔ?", "pron": "নিন ছোং চি সুই খাইশি সোয়েসি থিয়াও উ?", "bn": "আপনি কত বছর বয়স থেকে নাচ শেখা শুরু করেছেন?", "en": "At what age did you start to learn dancing?" },
+          { "speaker": "B", "hanzi": "我第一次跳舞是在七岁的时候。", "pinyin": "Wǒ dì yī cì tiào wǔ shì zài qī suì de shíhou.", "pron": "ও তি ই ছি থিয়াও উ শি জাই ছি সুই দা শিহৌ।", "bn": "আমি প্রথমবার নেচেছিলাম সাত বছর বয়সে।", "en": "I was seven when I danced for the first time." },
+          { "speaker": "A", "hanzi": "我女儿今年也七岁了。我希望她能跟您学跳舞，可以吗？", "pinyin": "Wǒ nǚ'ér jīnnián yě qī suì le. Wǒ xīwàng tā néng gēn nín xué tiào wǔ, kěyǐ ma?", "pron": "ও ন্যুআর চিননিয়েন ইয়ে ছি সুই লা। ও সিওয়াং থা নং কেন নিন সোয়ে থিয়াও উ, খোই মা?", "bn": "আমার মেয়ের বয়সও এ বছর সাত বছর। আমি আশা করি সে আপনার কাছে নাচ শিখতে পারবে, সম্ভব কি?", "en": "My daughter is seven now. I hope she can learn to dance from you, can she?" },
+          { "speaker": "B", "hanzi": "没问题，非常欢迎。", "pinyin": "Méi wèntí, fēicháng huānyíng.", "pron": "মেই ওয়েনথি, ফেইছাং হুয়ানইং।", "bn": "কোনো সমস্যা নেই, অবশ্যই স্বাগতম।", "en": "Sure. It's my pleasure." }
+        ]
+      },
+      {
+        "lessonCode": "09-3",
+        "title": "在家里 (বাড়িতে ডেভিডের নতুন চাকরি)",
+        "newWords": [
+          { "hanzi": "上班", "pinyin": "shàng bān", "pron": "শাং পান", "bn": "কাজে যাওয়া, অফিস শুরু করা", "en": "to work, to go to work" }
+        ],
+        "lines": [
+          { "speaker": "A", "hanzi": "你知道吗？大卫找到工作了。", "pinyin": "Nǐ zhīdào ma? Dàwèi zhǎodào gōngzuò le.", "pron": "নি ঝিতাও মা? তাওয়েই ঝাওতাও কোংজুও লা।", "bn": "তুমি কি জানো? ডেভিড চাকরি পেয়ে গেছে।", "en": "You know what? David has got a job." },
+          { "speaker": "B", "hanzi": "太好了！他从什么时候开始上班？", "pinyin": "Tài hǎo le! Tā cóng shénme shíhou kāishǐ shàng bān?", "pron": "থাই হাও লা! থা ছোং শেনমা শিহৌ খাইশি শাং পান?", "bn": "দারুণ খবর! সে কবে থেকে অফিস শুরু করবে?", "en": "That's great! When will he start to work?" },
+          { "speaker": "A", "hanzi": "从下个星期一开始。", "pinyin": "Cóng xià ge xīngqī yī kāishǐ.", "pron": "ছোং সিয়া গা সিংছি ই খাইশি।", "bn": "আগামী সোমবার থেকে শুরু করবে।", "en": "Next Monday." },
+          { "speaker": "B", "hanzi": "这是他的第一个工作，希望他能喜欢。", "pinyin": "Zhè shì tā de dì yī ge gōngzuò, xīwàng tā néng xǐhuan.", "pron": "ঝে শি থা দা তি ই গা কোংজুও, সিওয়াং থা নং সিহুয়ান।", "bn": "এটা ওর জীবনের প্রথম চাকরি, আশা করি ওর ভালো লাগবে।", "en": "This is his first job. I hope he will like it." }
+        ]
+      },
+      {
+        "lessonCode": "09-4",
+        "title": "在教室 (শ্রেণিকক্ষে পরীক্ষার ফলাফল)",
+        "newWords": [
+          { "hanzi": "懂", "pinyin": "dǒng", "pron": "তোং", "bn": "বোঝা", "en": "to understand, to know" },
+          { "hanzi": "完", "pinyin": "wán", "pron": "ওয়ান", "bn": "শেষ করা", "en": "to finish, to end" },
+          { "hanzi": "题", "pinyin": "tí", "pron": "থি", "bn": "প্রশ্ন", "en": "question, problem" }
+        ],
+        "lines": [
+          { "speaker": "A", "hanzi": "昨天的考试怎么样？你都听懂了吗？", "pinyin": "Zuótiān de kǎoshì zěnmeyàng? Nǐ dōu tīngdǒng le ma?", "pron": "জুওথিয়েন দা খাওশি জেনমাইয়াং? নি তৌ থিংতোং লা মা?", "bn": "গতকালকের পরীক্ষা কেমন হলো? তুমি কি সব শুনে বুঝতে পেরেছ?", "en": "How was the test yesterday? Did you understand everything you heard?" },
+          { "speaker": "B", "hanzi": "听懂了。", "pinyin": "Tīngdǒng le.", "pron": "থিংতোং লা।", "bn": "হ্যাঁ, শুনে বুঝতে পেরেছি।", "en": "Yes, I did." },
+          { "speaker": "A", "hanzi": "你都做完了没有？", "pinyin": "Nǐ dōu zuòwán le méiyǒu?", "pron": "নি তৌ জুওওয়ান লা মেইয়ৌ?", "bn": "তুমি কি সব প্রশ্নের উত্তর শেষ করতে পেরেছ?", "en": "Did you finish the test paper?" },
+          { "speaker": "B", "hanzi": "题太多，我没做完。", "pinyin": "Tí tài duō, wǒ méi zuòwán.", "pron": "থি থাই তুও, ও মেই জুওওয়ান।", "bn": "প্রশ্ন অনেক বেশি ছিল, আমি শেষ করতে পারিনি।", "en": "There were too many questions, I didn't finish all of them." }
+        ]
+      }
+    ]
+  },
+  {
+    "chapter": 10,
+    "title": "别找了，手机在桌子上呢",
+    "pinyin": "Bié zhǎo le, shǒujī zài zhuōzi shang ne",
+    "pron": "পিয়ে ঝাও লা, শৌচি জাই চুওজি শাং না",
+    "bn": "আর খুঁজো না, মোবাইল ফোনটা টেবিলের ওপরেই আছে",
+    "en": "Stop looking for your cell phone; it's on the desk",
+    "lessons": [
+      {
+        "lessonCode": "10-1",
+        "title": "在家里 (বাড়িতে টিভি দেখা নিয়ে)",
+        "newWords": [
+          { "hanzi": "课", "pinyin": "kè", "pron": "খো", "bn": "ক্লাস, পাঠ", "en": "class, lesson" },
+          { "hanzi": "帮助", "pinyin": "bāngzhù", "pron": "পাংঝু", "bn": "সাহায্য করা, উপকার করা", "en": "to help, to assist, to aid" }
+        ],
+        "lines": [
+          { "speaker": "A", "hanzi": "不要看电视了，明天上午还有汉语课呢。", "pinyin": "Búyào kàn diànshì le, míngtiān shàngwǔ hái yǒu Hànyǔ kè ne.", "pron": "পুইয়াও খান তিয়েনশি লা, মিংথিয়েন শাংউ হাই ইয়ৌ হানইয়ু খো না।", "bn": "আর টিভি দেখো না, আগামীকাল সকালে কিন্তু চাইনিজ ক্লাস আছে।", "en": "Stop watching TV. You'll have a Chinese class tomorrow morning." },
+          { "speaker": "B", "hanzi": "看电视对学汉语有帮助。", "pinyin": "Kàn diànshì duì xué Hànyǔ yǒu bāngzhù.", "pron": "খান তিয়েনশি তুই সোয়ে হানইয়ু ইয়ৌ পাংঝু।", "bn": "টিভি দেখলে চাইনিজ ভাষা শেখায় সাহায্য হয়।", "en": "Watching TV is good for Chinese learning." },
+          { "speaker": "A", "hanzi": "明天的课你都准备好了吗？", "pinyin": "Míngtiān de kè nǐ dōu zhǔnbèi hǎo le ma?", "pron": "মিংথিয়েন দা খো নি তৌ ঝুনপেই হাও লা মা?", "bn": "আগামীকালকের ক্লাসের পড়া কি তুমি সব প্রস্তুত করেছ?", "en": "Are you well prepared for the lessons tomorrow?" },
+          { "speaker": "B", "hanzi": "都准备好了。", "pinyin": "Dōu zhǔnbèi hǎo le.", "pron": "তৌ ঝুনপেই হাও লা।", "bn": "সব প্রস্তুত হয়ে গেছে।", "en": "Yes, I am." }
+        ]
+      },
+      {
+        "lessonCode": "10-2",
+        "title": "在医院 (হাসপাতালে)",
+        "newWords": [
+          { "hanzi": "别", "pinyin": "bié", "pron": "পিয়ে", "bn": "না (নিষেধ অর্থে)", "en": "don't" }
+        ],
+        "lines": [
+          { "speaker": "A", "hanzi": "别看报纸了，医生说你要多休息。", "pinyin": "Bié kàn bàozhǐ le, yīshēng shuō nǐ yào duō xiūxi.", "pron": "পিয়ে খান পাওঝি লা, ইশং শুও নি ইয়াও তুও সিউসি।", "bn": "আর খবরের কাগজ পড়ো না, ডাক্তার বলেছেন তোমাকে বেশি করে বিশ্রাম নিতে হবে।", "en": "Stop reading the newspaper. The doctor said you need more rest." },
+          { "speaker": "B", "hanzi": "好，不看了。给我一杯茶吧。", "pinyin": "Hǎo, bú kàn le. Gěi wǒ yì bēi chá ba.", "pron": "হাও, পু খান লা। কেই ও ই পেই ছা বা।", "bn": "ঠিক আছে, আর পড়ছি না। আমাকে এক কাপ চা দাও।", "en": "OK. Give me a cup of tea." },
+          { "speaker": "A", "hanzi": "医生说吃药后两个小时不要喝茶。", "pinyin": "Yīshēng shuō chī yào hòu liǎng ge xiǎoshí búyào hē chá.", "pron": "ইশং শুও ছি ইয়াও হৌ লিয়াং গা সিয়াওশি পুইয়াও হো ছা।", "bn": "ডাক্তার বলেছেন ওষুধ খাওয়ার পর দুই ঘণ্টা চা খাওয়া যাবে না।", "en": "The doctor said you shouldn't drink tea during the first two hours after you've taken the medicine." },
+          { "speaker": "B", "hanzi": "医生还说什么了？", "pinyin": "Yīshēng hái shuō shénme le?", "pron": "ইশং হাই শুও শেনমা লা?", "bn": "ডাক্তার আর কী বলেছেন?", "en": "What else did the doctor say?" },
+          { "speaker": "A", "hanzi": "医生让你听我的。", "pinyin": "Yīshēng ràng nǐ tīng wǒ de.", "pron": "ইশং রাং নি থিং ও দা।", "bn": "ডাক্তার বলেছেন তোমাকে আমার কথা শুনতে।", "en": "The doctor said you should listen to me." }
+        ]
+      },
+      {
+        "lessonCode": "10-3",
+        "title": "在家里 (বাড়িতে বাজার করা নিয়ে)",
+        "newWords": [
+          { "hanzi": "哥哥", "pinyin": "gēge", "pron": "কোগো", "bn": "বড় ভাই", "en": "elder brother" },
+          { "hanzi": "鸡蛋", "pinyin": "jīdàn", "pron": "চিতান", "bn": "মুরগির ডিম", "en": "(hen's) egg" },
+          { "hanzi": "西瓜", "pinyin": "xīguā", "pron": "সিকুয়া", "bn": "তরমুজ", "en": "watermelon" },
+          { "hanzi": "正在", "pinyin": "zhèngzài", "pron": "ঝংজাই", "bn": "চলমান অবস্থা (করছে)", "en": "in the process of" }
+        ],
+        "lines": [
+          { "speaker": "A", "hanzi": "你怎么买了这么多东西啊？", "pinyin": "Nǐ zěnme mǎile zhème duō dōngxi a?", "pron": "নি জেনমা মাইলা ঝেমা তুও তোংসি আ?", "bn": "তুমি এত জিনিসপত্র কিনেছ কেন?", "en": "Why did you buy so many things?" },
+          { "speaker": "B", "hanzi": "哥哥今天中午回来吃饭。", "pinyin": "Gēge jīntiān zhōngwǔ huílai chī fàn.", "pron": "কোগো চিনথিয়েন চোংউ হুইলাই ছি ফান।", "bn": "বড় ভাই আজ দুপুরে বাড়িতে এসে খাবার খাবেন।", "en": "Our elder brother will come back to have lunch." },
+          { "speaker": "A", "hanzi": "我看看买什么了。羊肉、鸡蛋、面条、西瓜……真不少！妈妈呢？", "pinyin": "Wǒ kànkan mǎi shénme le. Yángròu, jīdàn, miàntiáo, xīguā...... zhēn bù shǎo! Māma ne?", "pron": "ও খানখান মাই শেনমা লা। ইয়াংরৌ, চিতান, মিয়েনথিয়াও, সিকুয়া... ঝেন পু শাও! মামা না?", "bn": "দেখি কী কী কিনেছ। খাসির মাংস, ডিম, নুডলস, তরমুজ... সত্যিই কম না! মা কোথায়?", "en": "Let me see. Mutton, eggs, noodles, watermelon... That's a lot! Where is Mom?" },
+          { "speaker": "B", "hanzi": "正在准备午饭呢！", "pinyin": "Zhèngzài zhǔnbèi wǔfàn ne!", "pron": "ঝংজাই ঝুনপেই উফান না!", "bn": "উনি এখন দুপুরের খাবার তৈরি করছেন!", "en": "She is preparing lunch!" }
+        ]
+      },
+      {
+        "lessonCode": "10-4",
+        "title": "在家里 (বাড়িতে মোবাইল ফোন খোঁজা)",
+        "newWords": [
+          { "hanzi": "手机", "pinyin": "shǒujī", "pron": "শৌচি", "bn": "মোবাইল ফোন", "en": "cell phone" },
+          { "hanzi": "洗", "pinyin": "xǐ", "pron": "সি", "bn": "ধোয়া", "en": "to wash, to bathe" }
+        ],
+        "lines": [
+          { "speaker": "A", "hanzi": "你在找什么？", "pinyin": "Nǐ zài zhǎo shénme?", "pron": "নি জাই ঝাও শেনমা?", "bn": "তুমি কী খুঁজছ?", "en": "What are you looking for?" },
+          { "speaker": "B", "hanzi": "你看见我的手机了吗？白色的。", "pinyin": "Nǐ kànjiàn wǒ de shǒujī le ma? Báisè de.", "pron": "নি খানচিয়েন ও দা শৌচি লা মা? পাইসো দা।", "bn": "তুমি কি আমার মোবাইল ফোনটা দেখেছ? সাদা রঙের।", "en": "Have you seen my cell phone? It's white." },
+          { "speaker": "A", "hanzi": "别找了，手机在桌子上呢，电脑旁边。", "pinyin": "Bié zhǎo le, shǒujī zài zhuōzi shang ne, diànnǎo pángbiān.", "pron": "পিয়ে ঝাও লা, শৌচি জাই চুওজি শাং না, তিয়েননাও ফাংপিয়েন।", "bn": "আর খুঁজো না, মোবাইল ফোনটা টেবিলের ওপরেই আছে, কম্পিউটারের পাশে।", "en": "Stop looking for your cell phone. It's on the desk, beside the computer." },
+          { "speaker": "B", "hanzi": "你看见我的衣服了吗？红色的那件。", "pinyin": "Nǐ kànjiàn wǒ de yīfu le ma? Hóngsè de nà jiàn.", "pron": "নি খানচিয়েন ও দা ইফু লা মা? হোংসো দা না চিয়েন।", "bn": "তুমি কি আমার জামাটা দেখেছ? লাল রঙের ওইটা।", "en": "Have you seen my garment? The red one." },
+          { "speaker": "A", "hanzi": "那件衣服我帮你洗了，在外边呢。", "pinyin": "Nà jiàn yīfu wǒ bāng nǐ xǐ le, zài wàibian ne.", "pron": "না চিয়েন ইফু ও পাং নি সি লা, জাই ওয়াইপিয়েন না।", "bn": "ওই জামাটা আমি তোমার জন্য ধুয়ে দিয়েছি, বাইরে মেলা আছে।", "en": "I have washed it for you. It's hung outside." }
+        ]
+      }
+    ]
+  },
+  {
+    "chapter": 11,
+    "title": "他比我大三岁",
+    "pinyin": "Tā bǐ wǒ dà sān suì",
+    "pron": "থা পি ও তা সান সুই",
+    "bn": "সে আমার চেয়ে তিন বছরের বড়",
+    "en": "He is three years older than me",
+    "lessons": [
+      {
+        "lessonCode": "11-1",
+        "title": "在歌厅 (কারাওকে বারে)",
+        "newWords": [
+          { "hanzi": "唱歌", "pinyin": "chàng gē", "pron": "ছাং কো", "bn": "গান গাওয়া", "en": "to sing" },
+          { "hanzi": "男", "pinyin": "nán", "pron": "নান", "bn": "পুরুষ, ছেলে", "en": "man, male" }
+        ],
+        "lines": [
+          { "speaker": "A", "hanzi": "王方，昨天和你一起唱歌的人是谁？", "pinyin": "Wáng Fāng, zuótiān hé nǐ yìqǐ chàng gē de rén shì shéi?", "pron": "ওয়াং ফাং, জুওথিয়েন হো নি ইছি ছাং কো দা রেন শি শেই?", "bn": "ওয়াং ফাং, গতকাল তোমার সাথে যে গান গাইছিল সে কে?", "en": "Wang Fang, who was the guy with you in the karaoke yesterday?" },
+          { "speaker": "B", "hanzi": "一个朋友。", "pinyin": "Yí ge péngyou.", "pron": "ই গা ফংইয়ৌ।", "bn": "একজন বন্ধু।", "en": "A friend." },
+          { "speaker": "A", "hanzi": "什么朋友？是不是男朋友？", "pinyin": "Shénme péngyou? Shì bu shì nánpéngyou?", "pron": "শেনমা ফংইয়ৌ? শি পু শি নানফংইয়ৌ?", "bn": "কিসের বন্ধু? বয়ফ্রেন্ড নাকি?", "en": "What friend? Boyfriend?" },
+          { "speaker": "B", "hanzi": "不是不是，我同学介绍的，昨天第一次见。", "pinyin": "Bú shì bú shì, wǒ tóngxué jièshào de, zuótiān dì yī cì jiàn.", "pron": "পু শি পু শি, ও থোংসোয়ে চিয়েসাও দা, জুওথিয়েন তি ই ছি চিয়েন।", "bn": "না না, আমার সহপাঠী পরিচয় করিয়ে দিয়েছে, গতকালই প্রথম দেখা হলো।", "en": "No. My classmate set me up with him. We met only yesterday." }
+        ]
+      },
+      {
+        "lessonCode": "11-2",
+        "title": "在宿舍 (হোস্টেলে)",
+        "newWords": [
+          { "hanzi": "女", "pinyin": "nǚ", "pron": "ন্যু", "bn": "মহিলা, মেয়ে", "en": "woman, female" },
+          { "hanzi": "孩子", "pinyin": "háizi", "pron": "হাইজি", "bn": "শিশু, সন্তান, ছেলে/মেয়ে", "en": "child, kid" },
+          { "hanzi": "右边", "pinyin": "yòubian", "pron": "ইয়ৌপিয়েন", "bn": "ডান পাশ", "en": "right, right side" },
+          { "hanzi": "比", "pinyin": "bǐ", "pron": "পি", "bn": "চেয়ে (তুলনা অর্থে)", "en": "than, (superior or inferior) to" }
+        ],
+        "lines": [
+          { "speaker": "A", "hanzi": "左边这个看报纸的女孩子是你姐姐吗？", "pinyin": "Zuǒbian zhège kàn bàozhǐ de nǚ háizi shì nǐ jiějie ma?", "pron": "জুওপিয়েন ঝেগা খান পাওঝি দা ন্যু হাইজি শি নি চিয়েচিয়ে মা?", "bn": "বাম পাশে খবরের কাগজ পড়া এই মেয়েটি কি তোমার বড় বোন?", "en": "Is the girl on the left reading a newspaper your elder sister?" },
+          { "speaker": "B", "hanzi": "是，右边写字的那个人是我哥哥。", "pinyin": "Shì, yòubian xiě zì de nàge rén shì wǒ gēge.", "pron": "শি, ইয়ৌপিয়েন সিয়ে জি দা নাগা রেন শি ও কোগো।", "bn": "হ্যাঁ, আর ডান পাশে যে লিখছে সে আমার বড় ভাই।", "en": "Yes. And the guy on the right writing is my elder brother." },
+          { "speaker": "A", "hanzi": "你哥哥多大？", "pinyin": "Nǐ gēge duō dà?", "pron": "নি কোগো তুও তা?", "bn": "তোমার বড় ভাইয়ের বয়স কত?", "en": "How old is he?" },
+          { "speaker": "B", "hanzi": "25岁，他比我大三岁。", "pinyin": "Èrshíwǔ suì, tā bǐ wǒ dà sān suì.", "pron": "আরশিউ সুই, থা পি ও তা সান সুই।", "bn": "২৫ বছর, সে আমার চেয়ে তিন বছরের বড়।", "en": "25. He is three years older than me." }
+        ]
+      },
+      {
+        "lessonCode": "11-3",
+        "title": "在商店 (দোকানে তরমুজের দাম)",
+        "newWords": [
+          { "hanzi": "便宜", "pinyin": "piányi", "pron": "ফিয়েনই", "bn": "সস্তা", "en": "cheap, inexpensive" }
+        ],
+        "lines": [
+          { "speaker": "A", "hanzi": "今天的西瓜怎么卖？", "pinyin": "Jīntiān de xīguā zěnme mài?", "pron": "চিনথিয়েন দা সিকুয়া জেনমা মাই?", "bn": "আজকের তরমুজ কত করে বিক্রি হচ্ছে?", "en": "What's the price of watermelons today?" },
+          { "speaker": "B", "hanzi": "三块五一斤。", "pinyin": "Sān kuài wǔ yì jīn.", "pron": "সান খুয়াই উ ই চিন।", "bn": "প্রতি আধা কেজি (৫০০ গ্রাম) সাড়ে তিন ইউয়ান।", "en": "Three yuan and a half per 500 grams." },
+          { "speaker": "A", "hanzi": "比昨天便宜。", "pinyin": "Bǐ zuótiān piányi.", "pron": "পি জুওথিয়েন ফিয়েনই।", "bn": "গতকালকের চেয়ে সস্তা।", "en": "It's cheaper than the price yesterday." },
+          { "speaker": "B", "hanzi": "是，苹果也比昨天便宜一些。您来点儿吧。", "pinyin": "Shì, píngguǒ yě bǐ zuótiān piányi yìxiē. Nín lái diǎnr ba.", "pron": "শি, ফিংকুও ইয়ে পি জুওথিয়েন ফিয়েনই ইসিয়ে। নিন লাই তিয়ার বা।", "bn": "হ্যাঁ, আপেলও গতকালকের চেয়ে কিছুটা সস্তা। আপনি কিছু নিন না।", "en": "Yes. The apples are also cheaper. Why not take some?" }
+        ]
+      },
+      {
+        "lessonCode": "11-4",
+        "title": "在学校 (স্কুলে নতুন শিক্ষক)",
+        "newWords": [
+          { "hanzi": "说话", "pinyin": "shuō huà", "pron": "শুও হুয়া", "bn": "কথা বলা", "en": "to speak, to say, to talk" },
+          { "hanzi": "可能", "pinyin": "kěnéng", "pron": "খোনং", "bn": "সম্ভবত, হতে পারে", "en": "maybe, perhaps, probably" },
+          { "hanzi": "去年", "pinyin": "qùnián", "pron": "ছ্যুনিয়েন", "bn": "গত বছর", "en": "last year" },
+          { "hanzi": "姓", "pinyin": "xìng", "pron": "সিং", "bn": "পদবি, বংশনাম", "en": "family name, surname" }
+        ],
+        "lines": [
+          { "speaker": "A", "hanzi": "前边说话的那个人就是我的汉语老师。你可能不认识她。", "pinyin": "Qiánbian shuō huà de nàge rén jiù shì wǒ de Hànyǔ lǎoshī. Nǐ kěnéng bú rènshi tā.", "pron": "ছিয়েনপিয়েন শুও হুয়া দা নাগা রেন চিউ শি ও দা হানইয়ু লাওশি। নি খোনং পু রেনশি থা।", "bn": "সামনে যিনি কথা বলছেন উনিই আমার চাইনিজ শিক্ষক। তুমি সম্ভবত ওনাকে চেনো না।", "en": "The woman speaking in front of us is my Chinese teacher. You may not know her." },
+          { "speaker": "B", "hanzi": "是新来的汉语老师吗？", "pinyin": "Shì xīn lái de Hànyǔ lǎoshī ma?", "pron": "শি সিন লাই দা হানইয়ু লাওশি মা?", "bn": "উনি কি নতুন আসা চাইনিজ শিক্ষক?", "en": "Is she a new-comer?" },
+          { "speaker": "A", "hanzi": "是去年来的，她姓王，28岁。", "pinyin": "Shì qùnián lái de, tā xìng Wáng, èrshíbā suì.", "pron": "শি ছ্যুনিয়েন লাই দা, থা সিং ওয়াং, আরশিপা সুই।", "bn": "গত বছর এসেছেন, ওনার পদবি ওয়াং, বয়স ২৮ বছর।", "en": "She came here last year. Her family name is Wang, 28 years old." },
+          { "speaker": "B", "hanzi": "她比我们老师小两岁。", "pinyin": "Tā bǐ wǒmen lǎoshī xiǎo liǎng suì.", "pron": "থা পি ওমেন লাওশি সিয়াও লিয়াং সুই।", "bn": "উনি আমাদের শিক্ষকের চেয়ে দুই বছরের ছোট।", "en": "She is two years younger than my teacher." }
+        ]
+      }
+    ]
+  },
+  {
+    "chapter": 12,
+    "title": "你穿得太少了",
+    "pinyin": "Nǐ chuān de tài shǎo le",
+    "pron": "নি ছুয়ান দা থাই শাও লা",
+    "bn": "তুমি খুব কম কাপড় পরেছ",
+    "en": "You wear too little",
+    "lessons": [
+      {
+        "lessonCode": "12-1",
+        "title": "在教室 (শ্রেণিকক্ষে নাচ নিয়ে)",
+        "newWords": [
+          { "hanzi": "得", "pinyin": "de", "pron": "দা", "bn": "ক্রিয়ার মাত্রা বা অবস্থা নির্দেশক অব্যয়", "en": "structural particle for degree complement" },
+          { "hanzi": "妻子", "pinyin": "qīzi", "pron": "ছিজি", "bn": "স্ত্রী", "en": "wife" }
+        ],
+        "lines": [
+          { "speaker": "A", "hanzi": "你每天早上几点起床？", "pinyin": "Nǐ měi tiān zǎoshang jǐ diǎn qǐ chuáng?", "pron": "নি মেই থিয়েন জাওশাং চি তিয়েন ছি ছুয়াং?", "bn": "তুমি প্রতিদিন সকালে কয়টায় ঘুম থেকে ওঠো?", "en": "What time do you get up every morning?" },
+          { "speaker": "B", "hanzi": "六点多。", "pinyin": "Liù diǎn duō.", "pron": "লিউ তিয়েন তুও।", "bn": "ছয়টার কিছু পরে।", "en": "A little after six." },
+          { "speaker": "A", "hanzi": "你比我早起一个小时。", "pinyin": "Nǐ bǐ wǒ zǎo qǐ yí ge xiǎoshí.", "pron": "নি পি ও জাও ছি ই গা সিয়াওশি।", "bn": "তুমি আমার চেয়ে এক ঘণ্টা আগে ঘুম থেকে ওঠো।", "en": "You get up one hour earlier than me." },
+          { "speaker": "B", "hanzi": "我睡得也早，我每天晚上十点就睡觉。早睡早起身体好。", "pinyin": "Wǒ shuì de yě zǎo, wǒ měi tiān wǎnshang shí diǎn jiù shuì jiào. Zǎo shuì zǎo qǐ shēntǐ hǎo.", "pron": "ও শুই দা ইয়ে জাও, ও মেই থিয়েন ওয়ানশাং শি তিয়েন চিউ শুই চিয়াও। জাও শুই জাও ছি শেনথি হাও।", "bn": "আমি ঘুমাইও তাড়াতাড়ি, প্রতিদিন রাত দশটায় ঘুমিয়ে পড়ি। তাড়াতাড়ি ঘুমানো ও তাড়াতাড়ি ওঠা স্বাস্থ্যের জন্য ভালো।", "en": "I go to bed early too, at 10 every night. Early to bed and early to rise makes a man healthy." }
+        ]
+      },
+      {
+        "lessonCode": "12-2",
+        "title": "在朋友家 (বন্ধুর বাড়িতে)",
+        "newWords": [
+          { "hanzi": "雪", "pinyin": "xuě", "pron": "সোয়ে", "bn": "তুষার", "en": "snow" },
+          { "hanzi": "零", "pinyin": "líng", "pron": "লিং", "bn": "শূন্য", "en": "zero" },
+          { "hanzi": "度", "pinyin": "dù", "pron": "তু", "bn": "ডিগ্রি (তাপমাত্রা)", "en": "degree" },
+          { "hanzi": "穿", "pinyin": "chuān", "pron": "ছুয়ান", "bn": "পরিধান করা", "en": "to wear, to put on" },
+          { "hanzi": "进", "pinyin": "jìn", "pron": "চিন", "bn": "ভেতরে প্রবেশ করা", "en": "to enter, to come/go in" }
+        ],
+        "lines": [
+          { "speaker": "A", "hanzi": "再做几个菜吧，今天是我生日。", "pinyin": "Zài zuò jǐ ge cài ba, jīntiān shì wǒ shēngrì.", "pron": "জাই জুও চি গা ছাই বা, চিনথিয়েন শি ও শংরি।", "bn": "আরও কয়েকটা পদ রান্না করি, আজ আমার জন্মদিন।", "en": "Let's cook a few more dishes. Today is my birthday." },
+          { "speaker": "B", "hanzi": "够了，已经很多了。你做的菜很好吃。", "pinyin": "Gòu le, yǐjīng hěn duō le. Nǐ zuò de cài hěn hǎochī.", "pron": "কৌ লা, ইচিং হেন তুও লা। নি জুও দা ছাই হেন হাওছি।", "bn": "যথেষ্ট হয়েছে, ইতিমধ্যে অনেক বেশি হয়ে গেছে। তোমার রান্না খুব সুস্বাদু।", "en": "That's enough. There are already a lot. The dishes you cooked are delicious." },
+          { "speaker": "A", "hanzi": "谢谢！快请坐，先喝点儿茶。", "pinyin": "Xièxie! Kuài qǐng zuò, xiān hē diǎnr chá.", "pron": "সিয়েসিয়ে! খুয়াই ছিং জুও, সিয়েন হো তিয়ার ছা।", "bn": "ধন্যবাদ! তাড়াতাড়ি বসো, আগে একটু চা খাও।", "en": "Thank you! Please have a seat and have some tea first." },
+          { "speaker": "B", "hanzi": "好，今天外边下雪了，真冷！", "pinyin": "Hǎo, jīntiān wàibian xià xuě le, zhēn lěng!", "pron": "হাও, চিনথিয়েন ওয়াইপিয়েন সিয়া সোয়ে লা, ঝেন লং!", "bn": "ঠিক আছে, আজ বাইরে তুষারপাত হচ্ছে, প্রচণ্ড ঠান্ডা!", "en": "OK. It's snowing outside today. So cold!" },
+          { "speaker": "A", "hanzi": "今天零下十度，你穿得太少了，快进房间吧。", "pinyin": "Jīntiān língxià shí dù, nǐ chuān de tài shǎo le, kuài jìn fángjiān ba.", "pron": "চিনথিয়েন লিংসিয়া শি তু, নি ছুয়ান দা থাই শাও লা, খুয়াই চিন ফাংচিয়েন বা।", "bn": "আজ মাইনাস দশ ডিগ্রি তাপমাত্রা, তুমি খুব কম কাপড় পরেছ, তাড়াতাড়ি ঘরের ভেতরে এসো।", "en": "It's minus 10 degrees today. You wear too little. Come into the room quickly." }
+        ]
+      },
+      {
+        "lessonCode": "12-3",
+        "title": "在家里 (বাড়িতে ছোট ভাই প্রসঙ্গে)",
+        "newWords": [
+          { "hanzi": "弟弟", "pinyin": "dìdi", "pron": "তিতি", "bn": "ছোট ভাই", "en": "younger brother" },
+          { "hanzi": "近", "pinyin": "jìn", "pron": "চিন", "bn": "কাছে, নিকটবর্তী", "en": "near, close" }
+        ],
+        "lines": [
+          { "speaker": "A", "hanzi": "你在忙什么呢？", "pinyin": "Nǐ zài máng shénme ne?", "pron": "নি জাই মাং শেনমা না?", "bn": "তুমি কী নিয়ে এত ব্যস্ত আছ?", "en": "What are you busy with?" },
+          { "speaker": "B", "hanzi": "我弟弟让我帮他找个房子，现在他家离公司有点儿远。", "pinyin": "Wǒ dìdi ràng wǒ bāng tā zhǎo ge fángzi, xiànzài tā jiā lí gōngsī yǒudiǎnr yuǎn.", "pron": "ও তিতি রাং ও পাং থা ঝাও গা ফাংজি, সিয়েনজাই থা চিয়া লি কোংসি ইয়ৌতিয়ার ইয়ুয়ান।", "bn": "আমার ছোট ভাই আমাকে ওর জন্য একটা বাসা খুঁজে দিতে বলেছে, এখন ওর বাসা অফিস থেকে একটু দূরে।", "en": "My younger brother asked me to find an apartment for him. His current place is a bit far from his company." },
+          { "speaker": "A", "hanzi": "住得远真的很累。", "pinyin": "Zhù de yuǎn zhēn de hěn lèi.", "pron": "ঝু দা ইয়ুয়ান ঝেন দা হেন লেই।", "bn": "দূরে থাকলে সত্যিই খুব ক্লান্ত লাগে।", "en": "Living far away is really tiring." },
+          { "speaker": "B", "hanzi": "是啊，他也希望能住得近一点儿。", "pinyin": "Shì a, tā yě xīwàng néng zhù de jìn yìdiǎnr.", "pron": "শি আ, থা ইয়ে সিওয়াং নং ঝু দা চিন ইতিয়ার।", "bn": "হ্যাঁ, ও আশা করছে যেন অফিসের আরেকটু কাছাকাছি থাকতে পারে।", "en": "Yes, he also hopes to live closer." }
+        ]
+      },
+      {
+        "lessonCode": "12-4",
+        "title": "在机场 (বিমানবন্দরে)",
+        "newWords": [],
+        "lines": [
+          { "speaker": "A", "hanzi": "今天的飞机怎么这么晚？", "pinyin": "Jīntiān de fēijī zěnme zhème wǎn?", "pron": "চিনথিয়েন দা ফেইচি জেনমা ঝেমা ওয়ান?", "bn": "আজকের ফ্লাইট এত দেরি করছে কেন?", "en": "Why is today's flight so late?" },
+          { "speaker": "B", "hanzi": "听说北京下大雪了，所以飞机晚点。", "pinyin": "Tīngshuō Běijīng xià dà xuě le, suǒyǐ fēijī wǎndiǎn.", "pron": "থিংসুও পেইচিং সিয়া তা সোয়ে লা, সুওই ফেইচি ওয়ানতিয়েন।", "bn": "শুনলাম বেইজিংয়ে প্রচণ্ড তুষারপাত হচ্ছে, তাই ফ্লাইট দেরি করছে।", "en": "I heard it's snowing heavily in Beijing, so the flight is delayed." },
+          { "speaker": "A", "hanzi": "那我们得等几个小时？", "pinyin": "Nà wǒmen děi děng jǐ ge xiǎoshí?", "pron": "না ওমেন তেই তং চি গা সিয়াওশি?", "bn": "তাহলে আমাদের কয়েক ঘণ্টা অপেক্ষা করতে হবে?", "en": "Then we have to wait for a few hours?" },
+          { "speaker": "B", "hanzi": "不知道，再等等吧。", "pinyin": "Bù zhīdào, zài děngdeng ba.", "pron": "পু ঝিতাও, জাই তংতং বা।", "bn": "জানি না, আরও কিছুক্ষণ অপেক্ষা করি।", "en": "I don't know, let's wait a bit longer." }
+        ]
+      }
+    ]
+  },
+  {
+    "chapter": 13,
+    "title": "门开着呢",
+    "pinyin": "Mén kāizhe ne",
+    "pron": "মেন খাইঝো না",
+    "bn": "দরজা খোলাই আছে",
+    "en": "The door is open",
+    "lessons": [
+      {
+        "lessonCode": "13-1",
+        "title": "在办公室 (অফিসে)",
+        "newWords": [
+          { "hanzi": "着", "pinyin": "zhe", "pron": "ঝো", "bn": "কাজের চলমান অবস্থা নির্দেশক অব্যয়", "en": "structural particle indicating ongoing state" },
+          { "hanzi": "手", "pinyin": "shǒu", "pron": "শৌ", "bn": "হাত", "en": "hand" },
+          { "hanzi": "拿", "pinyin": "ná", "pron": "না", "bn": "হাতে ধরা, নেওয়া", "en": "to hold, to take" },
+          { "hanzi": "铅笔", "pinyin": "qiānbǐ", "pron": "ছিয়েনপি", "bn": "পেন্সিল", "en": "pencil" }
+        ],
+        "lines": [
+          { "speaker": "A", "hanzi": "门开着呢，请进。", "pinyin": "Mén kāizhe ne, qǐng jìn.", "pron": "মেন খাইঝো না, ছিং চিন।", "bn": "দরজা খোলাই আছে, ভেতরে আসুন।", "en": "The door is open, please come in." },
+          { "speaker": "B", "hanzi": "请问，张先生在吗？", "pinyin": "Qǐngwèn, Zhāng xiānsheng zài ma?", "pron": "ছিংওয়েন, চাং সিয়েনশং জাই মা?", "bn": "দয়া করে বলবেন, মি. ঝাং কি আছেন?", "en": "Excuse me, is Mr. Zhang in?" },
+          { "speaker": "A", "hanzi": "他出去了。你找他有事？", "pinyin": "Tā chūqù le. Nǐ zhǎo tā yǒu shì?", "pron": "থা ছুছ্যু লা। নি ঝাও থা ইয়ৌ শি?", "bn": "উনি বাইরে গেছেন। ওনার সাথে কি আপনার কোনো কাজ আছে?", "en": "He went out. Do you have something to discuss with him?" },
+          { "speaker": "B", "hanzi": "我给他送点儿东西。他手里拿着什么呢？", "pinyin": "Wǒ gěi tā sòng diǎnr dōngxi. Tā shǒuli názhe shénme ne?", "pron": "ও কেই থা সোং তিয়ার তোংসি। থা শৌলি নাঝো শেনমা না?", "bn": "আমি ওনাকে কিছু জিনিস দিতে এসেছি। ওনার হাতে ওটা কী ধরা আছে?", "en": "I brought him something. What is he holding in his hand?" },
+          { "speaker": "A", "hanzi": "是一些铅笔。", "pinyin": "Shì yìxiē qiānbǐ.", "pron": "শি ইসিয়ে ছিয়েনপি।", "bn": "কয়েকটা পেন্সিল।", "en": "Some pencils." }
+        ]
+      },
+      {
+        "lessonCode": "13-2",
+        "title": "在教室 (শ্রেণিকক্ষে)",
+        "newWords": [
+          { "hanzi": "班", "pinyin": "bān", "pron": "পান", "bn": "ক্লাস, ব্যাচ", "en": "class" },
+          { "hanzi": "长", "pinyin": "zhǎng", "pron": "ঝাং", "bn": "বেড়ে ওঠা, বড় হওয়া", "en": "to grow, to develop" },
+          { "hanzi": "笑", "pinyin": "xiào", "pron": "সিয়াও", "bn": "হাসা", "en": "to smile, to laugh" }
+        ],
+        "lines": [
+          { "speaker": "A", "hanzi": "听说你女朋友是你们班最漂亮的，是吗？", "pinyin": "Tīngshuō nǐ nǚpéngyou shì nǐmen bān zuì piàoliang de, shì ma?", "pron": "থিংসুও নি ন্যুফংইয়ৌ শি নিমেন পান জুই পিয়াওলিয়াং দা, শি মা?", "bn": "শুনলাম তোমার গার্লফ্রেন্ড নাকি তোমাদের ক্লাসের সবচেয়ে সুন্দরী, তাই নাকি?", "en": "I heard your girlfriend is the prettiest in your class, is that true?" },
+          { "speaker": "B", "hanzi": "是的，她长得非常漂亮，也很爱笑。", "pinyin": "Shì de, tā zhǎng de fēicháng piàoliang, yě hěn ài xiào.", "pron": "শি দা, থা ঝাং দা ফেইছাং পিয়াওলিয়াং, ইয়ে হেন আই সিয়াও।", "bn": "হ্যাঁ, সে দেখতে খুবই সুন্দর, আর খুব হাসিখুশিও।", "en": "Yes, she is very pretty and loves to smile." },
+          { "speaker": "A", "hanzi": "那个笑着说话的女孩儿就是她吧？", "pinyin": "Nàge xiàozhe shuō huà de nǚháir jiù shì tā ba?", "pron": "নাগা সিয়াওঝো শুও হুয়া দা ন্যুহার চিউ শি থা বা?", "bn": "ওই যে হাসতে হাসতে কথা বলছে ওই মেয়েটাই কি সে?", "en": "Is that girl talking with a smile her?" },
+          { "speaker": "B", "hanzi": "不是，她穿着一件红衣服呢。", "pinyin": "Bú shì, tā chuānzhe yí jiàn hóng yīfu ne.", "pron": "পু শি, থা ছুয়ানঝো ই চিয়েন হোং ইফু না।", "bn": "না, সে একটা লাল জামা পরে আছে।", "en": "No, she is wearing a red dress." }
+        ]
+      },
+      {
+        "lessonCode": "13-3",
+        "title": "在路上 (রাস্তায় দিকনির্দেশনা)",
+        "newWords": [
+          { "hanzi": "宾馆", "pinyin": "bīnguǎn", "pron": "পিনকুয়ান", "bn": "হোটেল", "en": "hotel" },
+          { "hanzi": "一直", "pinyin": "yìzhí", "pron": "ইঝি", "bn": "সোজা, একটানা", "en": "straight, continuously" },
+          { "hanzi": "往", "pinyin": "wǎng", "pron": "ওয়াং", "bn": "দিকে", "en": "towards, to" },
+          { "hanzi": "路口", "pinyin": "lùkǒu", "pron": "লুখৌ", "bn": "রাস্তার মোড়", "en": "crossing, intersection" }
+        ],
+        "lines": [
+          { "speaker": "A", "hanzi": "请问，去新京宾馆怎么走？", "pinyin": "Qǐngwèn, qù Xīnjīng Bīnguǎn zěnme zǒu?", "pron": "ছিংওয়েন, ছ্যু সিনচিং পিনকুয়ান জেনমা জৌ?", "bn": "দয়া করে বলবেন, সিনচিং হোটেলে কীভাবে যেতে হয়?", "en": "Excuse me, how do I get to Xinjing Hotel?" },
+          { "speaker": "B", "hanzi": "从这儿一直往前走，到了前面的路口再往右走。", "pinyin": "Cóng zhèr yìzhí wǎng qián zǒu, dàole qiánmiàn de lùkǒu zài wǎng yòu zǒu.", "pron": "ছোং ঝার ইঝি ওয়াং ছিয়েন জৌ, তাওলা ছিয়েনমিয়েন দা লুখৌ জাই ওয়াং ইয়ৌ জৌ।", "bn": "এখান থেকে সোজা সামনের দিকে যান, সামনের মোড়ে পৌঁছে ডান দিকে ঘুরুন।", "en": "Go straight ahead from here, and turn right at the intersection ahead." },
+          { "speaker": "A", "hanzi": "离这儿远吗？", "pinyin": "Lí zhèr yuǎn ma?", "pron": "লি ঝার ইয়ুয়ান মা?", "bn": "এখান থেকে কি দূরে?", "en": "Is it far from here?" },
+          { "speaker": "B", "hanzi": "不远，走十分钟就到了。", "pinyin": "Bù yuǎn, zǒu shí fēnzhōng jiù dào le.", "pron": "পু ইয়ুয়ান, জৌ শি ফেনচোং চিউ তাও লা।", "bn": "দূরে না, দশ মিনিট হাঁটলেই পৌঁছে যাবেন।", "en": "Not far, 10 minutes' walk." }
+        ]
+      },
+      {
+        "lessonCode": "13-4",
+        "title": "在公司 (কোম্পানিতে)",
+        "newWords": [
+          { "hanzi": "杨笑笑", "pinyin": "Yáng Xiàoxiao", "pron": "ইয়াং সিয়াওসিয়াও", "bn": "ইয়াং সিয়াওসিয়াও (ব্যক্তির নাম)", "en": "name of a person" }
+        ],
+        "lines": [
+          { "speaker": "A", "hanzi": "你认识杨笑笑吗？", "pinyin": "Nǐ rènshi Yáng Xiàoxiao ma?", "pron": "নি রেনশি ইয়াং সিয়াওসিয়াও মা?", "bn": "তুমি কি ইয়াং সিয়াওসিয়াওকে চেনো?", "en": "Do you know Yang Xiaoxiao?" },
+          { "speaker": "B", "hanzi": "认识，她不是我们公司的吗？", "pinyin": "Rènshi, tā bú shì wǒmen gōngsī de ma?", "pron": "রেনশি, থা পু শি ওমেন কোংসি দা মা?", "bn": "চিনি, সে কি আমাদের কোম্পানিরই না?", "en": "Yes, isn't she from our company?" },
+          { "speaker": "A", "hanzi": "对，她就在那边坐着呢，手里拿着一本书。", "pinyin": "Duì, tā jiù zài nàbiān zuòzhe ne, shǒuli názhe yì běn shū.", "pron": "তুই, থা চিউ জাই নাপিয়েন জুওঝো না, শৌলি নাঝো ই পেন শু।", "bn": "হ্যাঁ, ওই যে ওপাশে বসে আছে, হাতে একটা বই ধরা আছে।", "en": "Yes, she is sitting right over there, holding a book in her hand." },
+          { "speaker": "B", "hanzi": "我过去找她有点儿事。", "pinyin": "Wǒ guòqù zhǎo tā yǒudiǎnr shì.", "pron": "ও কুওছ্যু ঝাও থা ইয়ৌতিয়ার শি।", "bn": "আমি ওর কাছে যাচ্ছি, একটু কাজ আছে।", "en": "I'll go over to talk to her about something." }
+        ]
+      }
+    ]
+  },
+  {
+    "chapter": 14,
+    "title": "你看过那个电影吗",
+    "pinyin": "Nǐ kànguo nàge diànyǐng ma",
+    "pron": "নি খানকুও নাগা তিয়েনইং মা",
+    "bn": "তুমি কি ওই সিনেমাটা দেখেছ?",
+    "en": "Have you seen that movie",
+    "lessons": [
+      {
+        "lessonCode": "14-1",
+        "title": "在教室 (শ্রেণিকক্ষে সিনেমা নিয়ে)",
+        "newWords": [
+          { "hanzi": "有意思", "pinyin": "yǒu yìsi", "pron": "ইয়ৌ ইসি", "bn": "মজার, আকর্ষণীয়", "en": "interesting, meaningful" },
+          { "hanzi": "但是", "pinyin": "dànshì", "pron": "তানশি", "bn": "কিন্তু", "en": "but, however" },
+          { "hanzi": "虽然", "pinyin": "suīrán", "pron": "সুইরান", "bn": "যদিও", "en": "although, though" }
+        ],
+        "lines": [
+          { "speaker": "A", "hanzi": "你看过那个电影吗？", "pinyin": "Nǐ kànguo nàge diànyǐng ma?", "pron": "নি খানকুও নাগা তিয়েনইং মা?", "bn": "তুমি কি ওই সিনেমাটা দেখেছ?", "en": "Have you seen that movie?" },
+          { "speaker": "B", "hanzi": "没有，听说很有意思。", "pinyin": "Méiyǒu, tīngshuō hěn yǒu yìsi.", "pron": "মেইয়ৌ, থিংসুও হেন ইয়ৌ ইসি।", "bn": "না, শুনলাম নাকি খুব মজার।", "en": "No, I heard it's very interesting." },
+          { "speaker": "A", "hanzi": "那我们明天一起去看吧？", "pinyin": "Nà wǒmen míngtiān yìqǐ qù kàn ba?", "pron": "না ওমেন মিংথিয়েন ইছি ছ্যু খান বা?", "bn": "তাহলে চলো আগামীকাল একসাথে দেখতে যাই?", "en": "Then let's go see it together tomorrow?" },
+          { "speaker": "B", "hanzi": "虽然我也很想去，但是明天我要准备考试，没时间。", "pinyin": "Suīrán wǒ yě hěn xiǎng qù, dànshì míngtiān wǒ yào zhǔnbèi kǎoshì, méi shíjiān.", "pron": "সুইরান ও ইয়ে হেন সিয়াং ছ্যু, তানশি মিংথিয়েন ও ইয়াও ঝুনপেই খাওশি, মেই শিচিয়েন।", "bn": "যদিও আমারও খুব যেতে ইচ্ছে করছে, কিন্তু আগামীকাল আমাকে পরীক্ষার প্রস্তুতি নিতে হবে, সময় নেই।", "en": "Although I really want to go too, I have to prepare for an exam tomorrow and have no time." }
+        ]
+      },
+      {
+        "lessonCode": "14-2",
+        "title": "在办公室 (অফিসে ভ্রমণ নিয়ে)",
+        "newWords": [
+          { "hanzi": "次", "pinyin": "cì", "pron": "ছি", "bn": "বার (সংখ্যার একক)", "en": "time (measure word for frequency)" },
+          { "hanzi": "玩儿", "pinyin": "wánr", "pron": "ওয়ার", "bn": "মজা করা, ঘুরতে যাওয়া", "en": "to play, to have fun" },
+          { "hanzi": "晴", "pinyin": "qíng", "pron": "ছিং", "bn": "রৌদ্রোজ্জ্বল, পরিষ্কার আকাশ", "en": "sunny, clear" }
+        ],
+        "lines": [
+          { "speaker": "A", "hanzi": "你去过北京吗？", "pinyin": "Nǐ qùguo Běijīng ma?", "pron": "নি ছ্যুকুও পেইচিং মা?", "bn": "তুমি কি কখনো বেইজিং গিয়েছ?", "en": "Have you ever been to Beijing?" },
+          { "speaker": "B", "hanzi": "我去过一次，是去年和朋友一起去的。", "pinyin": "Wǒ qùguo yí cì, shì qùnián hé péngyou yìqǐ qù de.", "pron": "ও ছ্যুকুও ই ছি, শি ছ্যুনিয়েন হো ফংইয়ৌ ইছি ছ্যু দা।", "bn": "আমি একবার গিয়েছি, গত বছর বন্ধুর সাথে গিয়েছিলাম।", "en": "I've been there once, last year with my friends." },
+          { "speaker": "A", "hanzi": "你们玩儿得怎么样？", "pinyin": "Nǐmen wánr de zěnmeyàng?", "pron": "নিমেন ওয়ার দা জেনমাইয়াং?", "bn": "তোমরা কেমন মজা করলে?", "en": "How was your trip?" },
+          { "speaker": "B", "hanzi": "非常好，那几天都是晴天，我们去了很多地方。", "pinyin": "Fēicháng hǎo, nà jǐ tiān dōu shì qíngtiān, wǒmen qùle hěn duō dìfang.", "pron": "ফেইছাং হাও, না চি থিয়েন তৌ শি ছিংথিয়েন, ওমেন ছ্যুলা হেন তুও তিফাং।", "bn": "দারুণ কেটেছে, ওই কয়দিন আকাশ খুব পরিষ্কার ছিল, আমরা অনেক জায়গায় ঘুরেছি।", "en": "Very good, those days were all sunny, and we visited many places." }
+        ]
+      },
+      {
+        "lessonCode": "14-3",
+        "title": "在商店 (দোকানে ফল কেনা)",
+        "newWords": [
+          { "hanzi": "百", "pinyin": "bǎi", "pron": "পাই", "bn": "শত (১০০)", "en": "hundred" }
+        ],
+        "lines": [
+          { "speaker": "A", "hanzi": "这儿的西瓜真不错，你吃过吗？", "pinyin": "Zhèr de xīguā zhēn búcuò, nǐ chīguo ma?", "pron": "ঝার দা সিকুয়া ঝেন পুছুও, নি ছিকুও মা?", "bn": "এখানকার তরমুজ সত্যিই খুব ভালো, তুমি কি কখনো খেয়েছ?", "en": "The watermelons here are really good, have you tried them?" },
+          { "speaker": "B", "hanzi": "吃过，我买过好几次了，虽然贵了一点儿，但是非常甜。", "pinyin": "Chīguo, wǒ mǎiguo hǎo jǐ cì le, suīrán guì le yìdiǎnr, dànshì fēicháng tián.", "pron": "ছিকুও, ও মাইকুও হাও চি ছি লা, সুইরান কুই লা ইতিয়ার, তানশি ফেইছাং থিয়েন।", "bn": "খেয়েছি, আমি বেশ কয়েকবার কিনেছি, যদিও দাম একটু বেশি, কিন্তু দারুণ মিষ্টি।", "en": "Yes, I've bought them several times. Although a bit expensive, they are very sweet." },
+          { "speaker": "A", "hanzi": "那我们也买一个吧。", "pinyin": "Nà wǒmen yě mǎi yí ge ba.", "pron": "না ওমেন ইয়ে মাই ই গা বা।", "bn": "তাহলে চলো আমরাও একটা কিনি।", "en": "Then let's buy one too." },
+          { "speaker": "B", "hanzi": "好，我带了一百块钱，够了。", "pinyin": "Hǎo, wǒ dàile yìbǎi kuài qián, gòu le.", "pron": "হাও, ও তাইলা ইপাই খুয়াই ছিয়েন, কৌ লা।", "bn": "ঠিক আছে, আমি একশ ইউয়ান সাথে এনেছি, হয়ে যাবে।", "en": "Okay, I brought 100 yuan, that's enough." }
+        ]
+      },
+      {
+        "lessonCode": "14-4",
+        "title": "在学校 (স্কুলে ক্লাস নিয়ে)",
+        "newWords": [],
+        "lines": [
+          { "speaker": "A", "hanzi": "你听过王老师的课吗？", "pinyin": "Nǐ tīngguo Wáng lǎoshī de kè ma?", "pron": "নি থিংকুও ওয়াং লাওশি দা খো মা?", "bn": "তুমি কি কখনো শিক্ষক ওয়াংয়ের ক্লাস করেছ?", "en": "Have you ever attended Professor Wang's class?" },
+          { "speaker": "B", "hanzi": "听过两次，他讲得很有意思。", "pinyin": "Tīngguo liǎng cì, tā jiǎng de hěn yǒu yìsi.", "pron": "থিংকুও লিয়াং ছি, থা চিয়াং দা হেন ইয়ৌ ইসি।", "bn": "দুইবার করেছি, উনি খুব মজা করে পড়ান।", "en": "Twice, his lectures are very interesting." },
+          { "speaker": "A", "hanzi": "今天下午他有课，我们一起去听听吧。", "pinyin": "Jīntiān xiàwǔ tā yǒu kè, wǒmen yìqǐ qù tīngting ba.", "pron": "চিনথিয়েন সিয়াউ থা ইয়ৌ খো, ওমেন ইছি ছ্যু থিংথিং বা।", "bn": "আজ বিকেলে ওনার ক্লাস আছে, চলো একসাথে গিয়ে শুনি।", "en": "He has a class this afternoon, let's go listen together." },
+          { "speaker": "B", "hanzi": "好啊，几点开始？", "pinyin": "Hǎo a, jǐ diǎn kāishǐ?", "pron": "হাও আ, চি তিয়েন খাইশি?", "bn": "বেশ তো, কয়টায় শুরু হবে?", "en": "Great, what time does it start?" }
+        ]
+      }
+    ]
+  },
+  {
+    "chapter": 15,
+    "title": "新年就要到了",
+    "pinyin": "Xīnnián jiù yào dào le",
+    "pron": "সিননিয়েন চিউ ইয়াও তাও লা",
+    "bn": "নতুন বছর প্রায় চলেই এসেছে",
+    "en": "The New Year is coming",
+    "lessons": [
+      {
+        "lessonCode": "15-1",
+        "title": "在朋友家 (বন্ধুর বাড়িতে)",
+        "newWords": [
+          { "hanzi": "日", "pinyin": "rì", "pron": "রি", "bn": "দিন, তারিখ", "en": "day, date" },
+          { "hanzi": "新年", "pinyin": "xīnnián", "pron": "সিননিয়েন", "bn": "নতুন বছর", "en": "New Year" },
+          { "hanzi": "票", "pinyin": "piào", "pron": "ফিয়াও", "bn": "টিকিট", "en": "ticket" },
+          { "hanzi": "火车站", "pinyin": "huǒchēzhàn", "pron": "হুওছোঝান", "bn": "রেলস্টেশন", "en": "railway station" },
+          { "hanzi": "大家", "pinyin": "dàjiā", "pron": "তাচিয়া", "bn": "সবাই", "en": "everyone, everybody" }
+        ],
+        "lines": [
+          { "speaker": "A", "hanzi": "今天几月几日？", "pinyin": "Jīntiān jǐ yuè jǐ rì?", "pron": "চিনথিয়েন চি ইয়ুয়ে চি রি?", "bn": "আজ কোন মাসের কত তারিখ?", "en": "What's the date today?" },
+          { "speaker": "B", "hanzi": "12月20日，新年就要到了。", "pinyin": "Shí'èr yuè èrshí rì, xīnnián jiù yào dào le.", "pron": "শিআর ইয়ুয়ে আরশি রি, সিননিয়েন চিউ ইয়াও তাও লা।", "bn": "২০শে ডিসেম্বর, নতুন বছর প্রায় চলেই এসেছে।", "en": "December 20th, the New Year is coming soon." },
+          { "speaker": "A", "hanzi": "新年你准备去哪儿玩儿？", "pinyin": "Xīnnián nǐ zhǔnbèi qù nǎr wánr?", "pron": "সিননিয়েন নি ঝুনপেই ছ্যু নার ওয়ার?", "bn": "নতুন বছরে তুমি কোথায় ঘুরতে যাওয়ার পরিকল্পনা করছ?", "en": "Where are you planning to go for the New Year?" },
+          { "speaker": "B", "hanzi": "我要回家，我已经买好火车票了。明天去火车站拿票。", "pinyin": "Wǒ yào huí jiā, wǒ yǐjīng mǎihǎo huǒchēpiào le. Míngtiān qù huǒchēzhàn ná piào.", "pron": "ও ইয়াও হুই চিয়া, ও ইচিং মাইহাও হুওছোফিয়াও লা। মিংথিয়েন ছ্যু হুওছোঝান না ফিয়াও।", "bn": "আমি বাড়ি যাব, ইতিমধ্যে ট্রেনের টিকিট কিনে ফেলেছি। আগামীকাল স্টেশনে গিয়ে টিকিট সংগ্রহ করব।", "en": "I'm going home. I've already bought the train ticket. I'll pick it up at the station tomorrow." },
+          { "speaker": "A", "hanzi": "大家都回家过新年。", "pinyin": "Dàjiā dōu huí jiā guò xīnnián.", "pron": "তাচিয়া তৌ হুই চিয়া কুও সিননিয়েন।", "bn": "সবাই নতুন বছর উদযাপন করতে বাড়ি ফিরছে।", "en": "Everyone goes home to celebrate the New Year." }
+        ]
+      },
+      {
+        "lessonCode": "15-2",
+        "title": "在公司 (কোম্পানিতে)",
+        "newWords": [
+          { "hanzi": "更", "pinyin": "gèng", "pron": "কং", "bn": "আরও বেশি", "en": "more, even more" }
+        ],
+        "lines": [
+          { "speaker": "A", "hanzi": "时间过得真快，新的一年快要到了！", "pinyin": "Shíjiān guò de zhēn kuài, xīn de yì nián kuài yào dào le!", "pron": "শিচিয়েন কুও দা ঝেন খুয়াই, সিন দা ই নিয়েন খুয়াই ইয়াও তাও লা!", "bn": "সময় কত দ্রুত কেটে যায়, নতুন আরেকটি বছর প্রায় চলেই এল!", "en": "Time flies, the new year is almost here!" },
+          { "speaker": "B", "hanzi": "是啊，谢谢大家这一年对我的帮助。", "pinyin": "Shì a, xièxie dàjiā zhè yì nián duì wǒ de bāngzhù.", "pron": "শি আ, সিয়েসিয়ে তাচিয়া ঝে ই নিয়েন তুই ও দা পাংঝু।", "bn": "হ্যাঁ, পুরো বছর জুড়ে আমাকে সাহায্য করার জন্য সবাইকে ধন্যবাদ।", "en": "Yes, thank you all for your help this past year." },
+          { "speaker": "A", "hanzi": "希望我们的公司明年更好！", "pinyin": "Xīwàng wǒmen de gōngsī míngnián gèng hǎo!", "pron": "সিওয়াং ওমেন দা কোংসি মিংনিয়েন কং হাও!", "bn": "আশা করি আগামী বছর আমাদের কোম্পানি আরও ভালো করবে!", "en": "Hope our company does even better next year!" },
+          { "speaker": "B", "hanzi": "也祝大家身体更好，工作更顺利！", "pinyin": "Yě zhù dàjiā shēntǐ gèng hǎo, gōngzuò gèng shùnlì!", "pron": "ইয়ে ঝু তাচিয়া শেনথি কং হাও, কোংজুও কং শুনলি!", "bn": "সেইসাথে সবার সুস্বাস্থ্য ও কাজের আরও সাফল্য কামনা করছি!", "en": "Wishing everyone better health and smoother work too!" }
+        ]
+      },
+      {
+        "lessonCode": "15-3",
+        "title": "在火车站 (রেলস্টেশনে)",
+        "newWords": [
+          { "hanzi": "妹妹", "pinyin": "mèimei", "pron": "মেইমেই", "bn": "ছোট বোন", "en": "younger sister" }
+        ],
+        "lines": [
+          { "speaker": "A", "hanzi": "你妹妹怎么还没来？都八点四十了。", "pinyin": "Nǐ mèimei zěnme hái méi lái? Dōu bā diǎn sìshí le.", "pron": "নি মেইমেই জেনমা হাই মেই লাই? তৌ পা তিয়েন সিশি লা।", "bn": "তোমার ছোট বোন এখনো আসছে না কেন? ইতিমধ্যে ৮টা ৪০ বেজে গেছে।", "en": "Why hasn't your younger sister arrived yet? It's already 8:40." },
+          { "speaker": "B", "hanzi": "我们再等等吧，她已经到火车站外面了。", "pinyin": "Wǒmen zài děngdeng ba, tā yǐjīng dào huǒchēzhàn wàimiàn le.", "pron": "ওমেন জাই তংতং বা, থা ইচিং তাও হুওছোঝান ওয়াইমিয়েন লা।", "bn": "চলো আর একটু অপেক্ষা করি, সে ইতিমধ্যে স্টেশনের বাইরে চলে এসেছে।", "en": "Let's wait a bit longer, she's already outside the station." },
+          { "speaker": "A", "hanzi": "火车九点就要开了，让她快点儿！", "pinyin": "Huǒchē jiǔ diǎn jiù yào kāi le, ràng tā kuài diǎnr!", "pron": "হুওছো জিউ তিয়েন চিউ ইয়াও খাই লা, রাং থা খুয়াই তিয়ার!", "bn": "ট্রেন ঠিক ৯টায় ছেড়ে দেবে, ওকে তাড়াতাড়ি আসতে বলো!", "en": "The train is leaving at 9, tell her to hurry up!" },
+          { "speaker": "B", "hanzi": "你看，她跑过来了！", "pinyin": "Nǐ kàn, tā pǎo guòlái le!", "pron": "নি খান, থা ফাও কুওলাই লা!", "bn": "ওই দেখো, সে দৌড়ে এদিকেই আসছে!", "en": "Look, she's running over here!" }
+        ]
+      },
+      {
+        "lessonCode": "15-4",
+        "title": "在家里 (বাড়িতে আবহাওয়া নিয়ে)",
+        "newWords": [
+          { "hanzi": "阴", "pinyin": "yīn", "pron": "ইন", "bn": "মেঘলা", "en": "cloudy, overcast" }
+        ],
+        "lines": [
+          { "speaker": "A", "hanzi": "外边天阴了，是不是要下雪了？", "pinyin": "Wàibian tiān yīn le, shì bu shì yào xià xuě le?", "pron": "ওয়াইপিয়েন থিয়েন ইন লা, শি পু শি ইয়াও সিয়া সোয়ে লা?", "bn": "বাইরে আকাশ মেঘলা হয়ে গেছে, তুষারপাত শুরু হবে নাকি?", "en": "It's getting cloudy outside, is it going to snow?" },
+          { "speaker": "B", "hanzi": "对，天气预报说今天下午有雪。", "pinyin": "Duì, tiānqì yùbào shuō jīntiān xiàwǔ yǒu xuě.", "pron": "তুই, থিয়েনছি ইয়ুপাও শুও চিনথিয়েন সিয়াউ ইয়ৌ সোয়ে।", "bn": "হ্যাঁ, আবহাওয়ার পূর্বাভাসে বলেছে আজ বিকেলে তুষারপাত হবে।", "en": "Yes, the weather forecast says there will be snow this afternoon." },
+          { "speaker": "A", "hanzi": "都快新年了，下雪才像过新年呢！", "pinyin": "Dōu kuài xīnnián le, xià xuě cái xiàng guò xīnnián ne!", "pron": "তৌ খুয়াই সিননিয়েন লা, সিয়া সোয়ে ছাই সিয়াং কুও সিননিয়েন না!", "bn": "নতুন বছর তো চলেই এল, তুষারপাত হলেই বরং নতুন বছরের আমেজটা জমে ওঠে!", "en": "It's almost New Year, snow makes it feel like celebrating the New Year!" },
+          { "speaker": "B", "hanzi": "是啊，下雪以后空气也会更好。", "pinyin": "Shì a, xià xuě yǐhòu kōngqì yě huì gèng hǎo.", "pron": "শি আ, সিয়া সোয়ে ইহৌ খোংছি ইয়ে হুই কং হাও।", "bn": "ঠিকই বলেছ, তুষারপাতের পর বাতাসও আরও নির্মল হয়ে যাবে।", "en": "Yes, the air will be even fresher after it snows." }
+        ]
+      }
+    ]
+  }
+]
