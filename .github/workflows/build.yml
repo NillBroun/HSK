@@ -2,11 +2,11 @@ name: Build HSK Android APK
 
 on:
   push:
-    branches: [ "main", "master" ]
+    branches: [ main, master ]
   workflow_dispatch:
 
 jobs:
-  build:
+  build-apk:
     runs-on: ubuntu-latest
 
     steps:
@@ -24,100 +24,111 @@ jobs:
         with:
           channel: 'stable'
 
-      - name: Recreate Clean Android Project Structure Safely
+      - name: Recreate Clean Android Project Structure
         run: |
           cp lib/main.dart /tmp/main.dart.bak
           cp pubspec.yaml /tmp/pubspec.yaml.bak
           rm -rf android
-          flutter create --platforms=android --org com.ahm.hsk --project-name hsk .
+          flutter create --platforms=android --org com.ahm.hsk .
           cp /tmp/main.dart.bak lib/main.dart
           cp /tmp/pubspec.yaml.bak pubspec.yaml
 
       - name: Get Dependencies, Patch All Legacy Plugins & Setup Icons
         run: |
+          flutter pub get
+          find ~/.pub-cache/hosted/pub.dev -name "build.gradle" -exec sed -i 's/jcenter()/mavenCentral()/g' {} +
+          find ~/.pub-cache/hosted/pub.dev -name "build.gradle" -exec sed -i -E 's/compileSdkVersion[[:space:]]+(3[0-5]|flutter\.compileSdkVersion)/compileSdkVersion 36/g' {} +
+          find ~/.pub-cache/hosted/pub.dev -name "build.gradle" -exec sed -i -E 's/compileSdk[[:space:]]*=*[[:space:]]*(3[0-5]|flutter\.compileSdkVersion)/compileSdk = 36/g' {} +
+          find ~/.pub-cache/hosted/pub.dev -name "build.gradle.kts" -exec sed -i -E 's/compileSdk[[:space:]]*=[[:space:]]*(3[0-5]|flutter\.compileSdkVersion)/compileSdk = 36/g' {} +
           python3 -m pip install --quiet Pillow
           python3 -c '
           from PIL import Image
-          im = Image.open("assets/icon.png").convert("RGBA")
-          w, h = im.size
-          scale = 0.72
-          nw, nh = int(w * scale), int(h * scale)
-          im_resized = im.resize((nw, nh), Image.Resampling.LANCZOS)
-          canvas = Image.new("RGBA", (w, h), (183, 28, 28, 255))
-          canvas.paste(im_resized, ((w - nw) // 2, (h - nh) // 2), im_resized)
+          img = Image.open("assets/icon.png").convert("RGBA")
+          canvas = Image.new("RGBA", (1024, 1024), (0, 0, 0, 0))
+          resized = img.resize((660, 660), Image.LANCZOS)
+          canvas.paste(resized, (182, 182), resized)
           canvas.save("assets/icon_padded.png")
           '
-          flutter pub get
-          find ~/.pub-cache/hosted/pub.dev -name "build.gradle" -exec sed -i 's/jcenter()/mavenCentral()/g' {} +
-          find ~/.pub-cache/hosted/pub.dev -name "build.gradle" -exec sed -i -E 's/compileSdkVersion (3[0-5]|flutter\.compileSdkVersion)/compileSdkVersion 36/g' {} +
-          find ~/.pub-cache/hosted/pub.dev -name "build.gradle" -exec sed -i -E 's/compileSdk[[:space:]]*=*[[:space:]]*(3[0-5]|flutter\.compileSdkVersion)/compileSdk = 36/g' {} +
-          find ~/.pub-cache/hosted/pub.dev -name "build.gradle" -exec sed -i 's/compileSdkVersion 35/compileSdkVersion 36/g' {} +
           dart run flutter_launcher_icons
 
-      - name: Configure Android Permissions, Background Audio & Gradle SDK
+      - name: Configure Android 36 SDK, Background Audio Service & Permissions
         run: |
-          sed -i 's/android:label="[^"]*"/android:label="HSK"/g' android/app/src/main/AndroidManifest.xml
+          sed -i -E 's/compileSdk[[:space:]]*=[[:space:]]*[0-9a-zA-Z_.]+/compileSdk = 36/g' android/app/build.gradle.kts
+          sed -i -E 's/minSdk[[:space:]]*=[[:space:]]*[0-9a-zA-Z_.]+/minSdk = 24/g' android/app/build.gradle.kts
+          sed -i -E 's/targetSdk[[:space:]]*=[[:space:]]*[0-9a-zA-Z_.]+/targetSdk = 34/g' android/app/build.gradle.kts
 
-          python3 -c '
-          m_path = "android/app/src/main/AndroidManifest.xml"
-          with open(m_path, "r") as f:
-              m = f.read()
+          cat << 'EOF' > android/app/src/main/AndroidManifest.xml
+          <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools">
 
-          perms = """
               <uses-permission android:name="android.permission.INTERNET"/>
               <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
               <uses-permission android:name="android.permission.WAKE_LOCK"/>
               <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
               <uses-permission android:name="android.permission.FOREGROUND_SERVICE_MEDIA_PLAYBACK"/>
-          """
+              <uses-permission android:name="android.permission.VIBRATE"/>
 
-          if "android.permission.INTERNET" not in m:
-              m = m.replace("<application", perms + "\n    <application")
+              <queries>
+                  <intent>
+                      <action android:name="android.intent.action.VIEW" />
+                      <data android:scheme="https" />
+                  </intent>
+              </queries>
 
-          # MainActivity-কে AudioServiceActivity-তে রূপান্তর (just_audio_background এর জন্য)
-          m = m.replace("android:name=\".MainActivity\"", "android:name=\"com.ryanheise.audioservice.AudioServiceActivity\"")
+              <application
+                  android:label="HSK"
+                  android:name="${applicationName}"
+                  android:icon="@mipmap/ic_launcher"
+                  android:usesCleartextTraffic="true">
 
-          bg_services = """
+                  <activity
+                      android:name="com.ryanheise.audioservice.AudioServiceActivity"
+                      android:exported="true"
+                      android:launchMode="singleTop"
+                      android:taskAffinity=""
+                      android:theme="@style/LaunchTheme"
+                      android:configChanges="orientation|keyboardHidden|keyboard|screenSize|smallestScreenSize|locale|layoutDirection|fontScale|screenLayout|density|uiMode"
+                      android:hardwareAccelerated="true"
+                      android:windowSoftInputMode="adjustResize">
+                      <meta-data
+                        android:name="io.flutter.embedding.android.NormalTheme"
+                        android:resource="@style/NormalTheme" />
+                      <intent-filter>
+                          <action android:name="android.intent.action.MAIN"/>
+                          <category android:name="android.intent.category.LAUNCHER"/>
+                      </intent-filter>
+                  </activity>
+
                   <service
                       android:name="com.ryanheise.audioservice.AudioService"
                       android:foregroundServiceType="mediaPlayback"
-                      android:exported="true">
+                      android:exported="true"
+                      tools:ignore="Instantiatable">
                       <intent-filter>
                           <action android:name="android.media.browse.MediaBrowserService" />
                       </intent-filter>
                   </service>
+
                   <receiver
                       android:name="com.ryanheise.audioservice.MediaButtonReceiver"
-                      android:exported="true">
+                      android:exported="true"
+                      tools:ignore="Instantiatable">
                       <intent-filter>
                           <action android:name="android.intent.action.MEDIA_BUTTON" />
                       </intent-filter>
                   </receiver>
-          """
 
-          if "com.ryanheise.audioservice.AudioService" not in m:
-              m = m.replace("</application>", bg_services + "\n    </application>")
+                  <meta-data
+                      android:name="flutterEmbedding"
+                      android:value="2" />
+              </application>
+          </manifest>
+          EOF
 
-          with open(m_path, "w") as f:
-              f.write(m)
-
-          b_path = "android/app/build.gradle.kts"
-          with open(b_path, "r") as f:
-              c = f.read()
-
-          c = c.replace("compileSdk = flutter.compileSdkVersion", "compileSdk = 36")
-          c = c.replace("minSdk = flutter.minSdkVersion", "minSdk = 24")
-          c = c.replace("targetSdk = flutter.targetSdkVersion", "targetSdk = 34")
-          c = c.replace("buildTypes {", "buildTypes {\n        getByName(\"release\") {\n            signingConfig = signingConfigs.getByName(\"debug\")\n        }")
-
-          with open(b_path, "w") as f:
-              f.write(c)
-          '
-
-      - name: Build Universal Release APK
+      - name: Build Release APK
         run: flutter build apk --release
 
-      - name: Upload Release APK
+      - name: Upload APK Artifact
         uses: actions/upload-artifact@v4
         with:
           name: HSK-Release-APK
