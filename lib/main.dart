@@ -38,6 +38,8 @@ Future<void> main() async {
       androidNotificationOngoing: false,
       androidStopForegroundOnPause: false,
       androidShowNotificationBadge: true,
+      androidNotificationIcon: 'mipmap/ic_launcher',
+      androidCompactActionIndices: const [0, 1, 2],
       notificationColor: kImperialRed,
     );
   } catch (_) {}
