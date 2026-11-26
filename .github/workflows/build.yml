@@ -57,6 +57,27 @@ jobs:
           sed -i -E 's/minSdk[[:space:]]*=[[:space:]]*[0-9a-zA-Z_.]+/minSdk = 24/g' android/app/build.gradle.kts
           sed -i -E 's/targetSdk[[:space:]]*=[[:space:]]*[0-9a-zA-Z_.]+/targetSdk = 34/g' android/app/build.gradle.kts
 
+          mkdir -p android/app/src/main/res/drawable
+          mkdir -p android/app/src/main/res/raw
+          cat << 'EOF' > android/app/src/main/res/raw/keep.xml
+          <?xml version="1.0" encoding="utf-8"?>
+          <resources xmlns:tools="http://schemas.android.com/tools"
+              tools:keep="@drawable/audio_service_*" />
+          EOF
+
+          cat << 'EOF' > android/app/src/main/res/drawable/audio_service_ic_play.xml
+          <bitmap xmlns:android="http://schemas.android.com/apk/res/android" android:src="@android:drawable/ic_media_play" android:tint="#D32F2F"/>
+          EOF
+          cat << 'EOF' > android/app/src/main/res/drawable/audio_service_ic_pause.xml
+          <bitmap xmlns:android="http://schemas.android.com/apk/res/android" android:src="@android:drawable/ic_media_pause" android:tint="#D32F2F"/>
+          EOF
+          cat << 'EOF' > android/app/src/main/res/drawable/audio_service_ic_skip_previous.xml
+          <bitmap xmlns:android="http://schemas.android.com/apk/res/android" android:src="@android:drawable/ic_media_previous" android:tint="#D32F2F"/>
+          EOF
+          cat << 'EOF' > android/app/src/main/res/drawable/audio_service_ic_skip_next.xml
+          <bitmap xmlns:android="http://schemas.android.com/apk/res/android" android:src="@android:drawable/ic_media_next" android:tint="#D32F2F"/>
+          EOF
+
           cat << 'EOF' > android/app/src/main/AndroidManifest.xml
           <manifest xmlns:android="http://schemas.android.com/apk/res/android"
               xmlns:tools="http://schemas.android.com/tools">
