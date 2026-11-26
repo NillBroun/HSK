@@ -36,7 +36,7 @@ Future<void> main() async {
       androidNotificationChannelId: 'com.ahm.hsk.channel.audio',
       androidNotificationChannelName: 'HSK Study Audio',
       androidNotificationOngoing: false,
-      androidStopForegroundOnPause: false,
+      androidStopForegroundOnPause: true,
     );
   } catch (_) {}
   runApp(const HskApp());
