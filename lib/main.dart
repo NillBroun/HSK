@@ -35,7 +35,10 @@ Future<void> main() async {
     await JustAudioBackground.init(
       androidNotificationChannelId: 'com.ahm.hsk.channel.audio',
       androidNotificationChannelName: 'HSK Study Audio',
-      androidNotificationOngoing: true,
+      androidNotificationOngoing: false,
+      androidStopForegroundOnPause: false,
+      androidShowNotificationBadge: true,
+      notificationColor: kImperialRed,
     );
   } catch (_) {}
   runApp(const HskApp());
@@ -134,19 +137,21 @@ class PinnedVocabSlice {
   });
 }
 
-// --- Dialogue Models (HSK 1 & HSK 2 Dialogues) ---
+// --- Dialogue Models (Supports Both Legacy HSK 1 & New HSK 2 / HSK 3 Schemas) ---
 
 class DialogueNewWord {
   final String hanzi;
   final String pinyin;
   final String pron;
   final String bn;
+  final String en;
 
   const DialogueNewWord({
     required this.hanzi,
     required this.pinyin,
     required this.pron,
     required this.bn,
+    this.en = '',
   });
 
   factory DialogueNewWord.fromJson(Map<String, dynamic> json) {
@@ -155,6 +160,7 @@ class DialogueNewWord {
       pinyin: (json['pinyin'] ?? '').toString(),
       pron: (json['pron'] ?? '').toString(),
       bn: (json['bn'] ?? '').toString(),
+      en: (json['en'] ?? '').toString(),
     );
   }
 }
@@ -165,6 +171,7 @@ class DialogueLine {
   final String pinyin;
   final String pron;
   final String bn;
+  final String en;
   final String wordByWord;
 
   const DialogueLine({
@@ -173,7 +180,8 @@ class DialogueLine {
     required this.pinyin,
     required this.pron,
     required this.bn,
-    required this.wordByWord,
+    this.en = '',
+    this.wordByWord = '',
   });
 
   factory DialogueLine.fromJson(Map<String, dynamic> json) {
@@ -183,6 +191,7 @@ class DialogueLine {
       pinyin: (json['pinyin'] ?? '').toString(),
       pron: (json['pron'] ?? '').toString(),
       bn: (json['bn'] ?? '').toString(),
+      en: (json['en'] ?? '').toString(),
       wordByWord: (json['wordByWord'] ?? '').toString(),
     );
   }
@@ -200,12 +209,21 @@ class DialogueLesson {
   });
 
   factory DialogueLesson.fromJson(Map<String, dynamic> json) {
+    final code = (json['lessonCode'] ?? '').toString().trim();
+    final rawTitle =
+        (json['lessonTitle'] ?? json['title'] ?? '').toString().trim();
+    final combinedTitle =
+        code.isNotEmpty && rawTitle.isNotEmpty ? '$code • $rawTitle' : rawTitle;
+
+    final rawLines =
+        (json['dialogues'] ?? json['lines']) as List<dynamic>? ?? [];
+
     return DialogueLesson(
-      lessonTitle: (json['lessonTitle'] ?? '').toString(),
+      lessonTitle: combinedTitle,
       newWords: (json['newWords'] as List<dynamic>? ?? [])
           .map((e) => DialogueNewWord.fromJson(e as Map<String, dynamic>))
           .toList(),
-      dialogues: (json['dialogues'] as List<dynamic>? ?? [])
+      dialogues: rawLines
           .map((e) => DialogueLine.fromJson(e as Map<String, dynamic>))
           .toList(),
     );
@@ -226,12 +244,29 @@ class DialogueChapter {
   });
 
   factory DialogueChapter.fromJson(Map<String, dynamic> json) {
+    final rawSub = (json['subtitle'] ?? '').toString().trim();
+    final pinyin = (json['pinyin'] ?? '').toString().trim();
+    final pron = (json['pron'] ?? '').toString().trim();
+    final bn = (json['bn'] ?? '').toString().trim();
+    final en = (json['en'] ?? '').toString().trim();
+
+    String computedSubtitle = rawSub;
+    if (computedSubtitle.isEmpty) {
+      final parts = <String>[];
+      if (pinyin.isNotEmpty) {
+        parts.add(pron.isNotEmpty ? '$pinyin ($pron)' : pinyin);
+      }
+      if (bn.isNotEmpty) parts.add(bn);
+      if (en.isNotEmpty) parts.add(en);
+      computedSubtitle = parts.join('\n');
+    }
+
     return DialogueChapter(
       chapter: (json['chapter'] is int)
           ? json['chapter'] as int
           : int.tryParse((json['chapter'] ?? '1').toString()) ?? 1,
       title: (json['title'] ?? '').toString(),
-      subtitle: (json['subtitle'] ?? '').toString(),
+      subtitle: computedSubtitle,
       lessons: (json['lessons'] as List<dynamic>? ?? [])
           .map((e) => DialogueLesson.fromJson(e as Map<String, dynamic>))
           .toList(),
@@ -239,7 +274,7 @@ class DialogueChapter {
   }
 }
 
-// --- Pinyin Chart Models (pinin-chart.json) ---
+// --- Pinyin Chart Models ---
 
 class PinyinToneInfo {
   final String tone;
@@ -676,8 +711,27 @@ class VocabRepository {
   final List<HanziCourseChapter> hanziChapters = [];
   final List<DialogueChapter> hsk1DialogueChapters = [];
   final List<DialogueChapter> hsk2DialogueChapters = [];
+  final List<DialogueChapter> hsk3DialogueChapters = [];
   PinyinChartData? pinyinChart;
   bool _loaded = false;
+
+  Future<List<DialogueChapter>> _loadDialogueAsset(String assetPath) async {
+    try {
+      final raw = await rootBundle.loadString(assetPath);
+      final decoded = jsonDecode(raw);
+      List<dynamic> rawChapters = [];
+      if (decoded is List<dynamic>) {
+        rawChapters = decoded;
+      } else if (decoded is Map<String, dynamic>) {
+        rawChapters = (decoded['chapters'] as List<dynamic>? ?? []);
+      }
+      return rawChapters
+          .map((ch) => DialogueChapter.fromJson(ch as Map<String, dynamic>))
+          .toList();
+    } catch (_) {
+      return [];
+    }
+  }
 
   Future<void> ensureLoaded() async {
     if (_loaded) return;
@@ -686,6 +740,7 @@ class VocabRepository {
     hanziChapters.clear();
     hsk1DialogueChapters.clear();
     hsk2DialogueChapters.clear();
+    hsk3DialogueChapters.clear();
 
     const files = [
       ('assets/vocab/hsk1.json', 'hsk'),
@@ -743,27 +798,12 @@ class VocabRepository {
       }
     } catch (_) {}
 
-    try {
-      final d1Raw =
-          await rootBundle.loadString('assets/vocab/hsk1_dialogues.json');
-      final decoded = jsonDecode(d1Raw) as Map<String, dynamic>;
-      final rawChapters = (decoded['chapters'] as List<dynamic>? ?? []);
-      for (final ch in rawChapters) {
-        hsk1DialogueChapters
-            .add(DialogueChapter.fromJson(ch as Map<String, dynamic>));
-      }
-    } catch (_) {}
-
-    try {
-      final d2Raw =
-          await rootBundle.loadString('assets/vocab/hsk2_dialogues.json');
-      final decoded = jsonDecode(d2Raw) as Map<String, dynamic>;
-      final rawChapters = (decoded['chapters'] as List<dynamic>? ?? []);
-      for (final ch in rawChapters) {
-        hsk2DialogueChapters
-            .add(DialogueChapter.fromJson(ch as Map<String, dynamic>));
-      }
-    } catch (_) {}
+    hsk1DialogueChapters
+        .addAll(await _loadDialogueAsset('assets/vocab/hsk1_dialogues.json'));
+    hsk2DialogueChapters
+        .addAll(await _loadDialogueAsset('assets/vocab/hsk2_dialogues.json'));
+    hsk3DialogueChapters
+        .addAll(await _loadDialogueAsset('assets/vocab/hsk3_dialogues.json'));
 
     for (final path in [
       'assets/vocab/pinin-chart.json',
@@ -886,7 +926,7 @@ Future<bool> showConfirmDeleteDialog(
 }
 
 // ============================================================================
-// 4. GLOBAL BACKGROUND AUDIO SERVICE (LOCK-SCREEN & GLOBAL MINI PLAYER)
+// 4. GLOBAL BACKGROUND AUDIO SERVICE (LOCK-SCREEN & FULL PERSISTENT PLAYER)
 // ============================================================================
 
 class GlobalAudioService extends ChangeNotifier {
@@ -910,10 +950,10 @@ class GlobalAudioService extends ChangeNotifier {
   int shadowingGapSeconds = 0;
   bool _waitingGap = false;
 
-  /// Automatically hides global mini-player when PDF reader or full audio player is open
+  /// Automatically hides global persistent player when PDF reader or full audio player is open
   bool hideGlobalMiniPlayer = false;
 
-  /// Explicitly dismissed by user via Close (×) button on global mini-player
+  /// Explicitly dismissed by user via Close (×) button on global player
   bool isMiniPlayerDismissed = false;
 
   Duration position = Duration.zero;
@@ -973,7 +1013,7 @@ class GlobalAudioService extends ChangeNotifier {
   Future<void> _init() async {
     try {
       final session = await AudioSession.instance;
-      await session.configure(const AudioSessionConfiguration.speech());
+      await session.configure(const AudioSessionConfiguration.music());
     } catch (_) {}
 
     player.positionStream.listen((p) {
@@ -1045,6 +1085,7 @@ class GlobalAudioService extends ChangeNotifier {
             album: '$courseTitle • $currentLessonName',
             title: 'Track ${i + 1} ($clean)',
             artist: 'HSK Study • AHM',
+            playable: true,
           ),
         ),
       );
@@ -1403,7 +1444,7 @@ class AppState extends ChangeNotifier {
 }
 
 // ============================================================================
-// 6. ROOT APPLICATION & GLOBAL FLOATING MINI AUDIO PLAYER
+// 6. ROOT APPLICATION & FULL-SIZE PERSISTENT GLOBAL AUDIO PLAYER
 // ============================================================================
 
 class HskApp extends StatefulWidget {
@@ -1490,6 +1531,31 @@ class GlobalMiniAudioShell extends StatelessWidget {
     required this.child,
   });
 
+  String _fmt(Duration d) {
+    final m = d.inMinutes.remainder(60).toString().padLeft(2, '0');
+    final s = d.inSeconds.remainder(60).toString().padLeft(2, '0');
+    return '$m:$s';
+  }
+
+  void _openFullPlayer() {
+    final audio = GlobalAudioService.instance;
+    final nav = kRootNavigatorKey.currentState;
+    if (nav != null && audio.allLessonNames.isNotEmpty) {
+      nav.push(
+        MaterialPageRoute(
+          builder: (_) => LessonAudioPlayerScreen(
+            courseId: audio.courseId,
+            courseTitle: audio.courseTitle,
+            allLessonNames: audio.allLessonNames,
+            allLessonTracks: audio.allLessonTracks,
+            initialLessonIndex: audio.lessonIndex,
+            appState: appState,
+          ),
+        ),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final audio = GlobalAudioService.instance;
@@ -1504,16 +1570,18 @@ class GlobalMiniAudioShell extends StatelessWidget {
             Expanded(child: child),
             if (showBar)
               Material(
-                elevation: 12,
-                color: isDark ? const Color(0xFF261717) : const Color(0xFFFFEFEF),
+                elevation: 14,
+                color: isDark ? kNightCard : Colors.white,
                 child: SafeArea(
                   top: false,
                   child: Container(
-                    padding: const EdgeInsets.fromLTRB(12, 6, 8, 8),
+                    padding: const EdgeInsets.fromLTRB(12, 8, 12, 10),
                     decoration: BoxDecoration(
+                      borderRadius:
+                          const BorderRadius.vertical(top: Radius.circular(18)),
                       border: Border(
                         top: BorderSide(
-                          color: kImperialRed.withValues(alpha: 0.45),
+                          color: kImperialRed.withValues(alpha: 0.35),
                           width: 1.4,
                         ),
                       ),
@@ -1521,164 +1589,157 @@ class GlobalMiniAudioShell extends StatelessWidget {
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        SizedBox(
-                          height: 12,
-                          child: SliderTheme(
-                            data: SliderTheme.of(context).copyWith(
-                              trackHeight: 2.2,
-                              thumbShape: const RoundSliderThumbShape(
-                                  enabledThumbRadius: 4.5),
-                              overlayShape: SliderComponentShape.noOverlay,
+                        Row(
+                          children: [
+                            InkWell(
+                              borderRadius: BorderRadius.circular(8),
+                              onTap: _openFullPlayer,
+                              child: const Icon(
+                                Icons.headphones_rounded,
+                                color: kImperialRed,
+                                size: 18,
+                              ),
                             ),
-                            child: Slider(
-                              activeColor: kImperialRed,
-                              value: audio.position.inMilliseconds
-                                  .toDouble()
-                                  .clamp(
-                                      0,
-                                      audio.duration.inMilliseconds.toDouble() +
-                                          1),
-                              max: audio.duration.inMilliseconds.toDouble() + 1,
-                              onChanged: (v) => audio.player
-                                  .seek(Duration(milliseconds: v.toInt())),
+                            const SizedBox(width: 8),
+                            Expanded(
+                              child: InkWell(
+                                onTap: _openFullPlayer,
+                                child: Text(
+                                  '${audio.courseTitle} • ${audio.currentLessonName}  •  Track ${audio.trackIndex + 1}/${audio.currentTracks.length} (${audio.currentTrackCleanName})',
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: TextStyle(
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.bold,
+                                    color: isDark
+                                        ? const Color(0xFFEF5350)
+                                        : kImperialRed,
+                                  ),
+                                ),
+                              ),
                             ),
-                          ),
+                            const SizedBox(width: 6),
+                            InkWell(
+                              borderRadius: BorderRadius.circular(12),
+                              onTap: audio.dismissAndStopMiniPlayer,
+                              child: Padding(
+                                padding: const EdgeInsets.all(2),
+                                child: Icon(
+                                  Icons.close_rounded,
+                                  size: 18,
+                                  color:
+                                      isDark ? Colors.white60 : Colors.black54,
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
                         const SizedBox(height: 2),
                         Row(
                           children: [
-                            InkWell(
-                              borderRadius: BorderRadius.circular(10),
-                              onTap: () {
-                                final nav = kRootNavigatorKey.currentState;
-                                if (nav != null &&
-                                    audio.allLessonNames.isNotEmpty) {
-                                  nav.push(
-                                    MaterialPageRoute(
-                                      builder: (_) => LessonAudioPlayerScreen(
-                                        courseId: audio.courseId,
-                                        courseTitle: audio.courseTitle,
-                                        allLessonNames: audio.allLessonNames,
-                                        allLessonTracks: audio.allLessonTracks,
-                                        initialLessonIndex: audio.lessonIndex,
-                                        appState: appState,
-                                      ),
-                                    ),
-                                  );
-                                }
-                              },
-                              child: Container(
-                                padding: const EdgeInsets.all(7),
-                                decoration: BoxDecoration(
-                                  color: kImperialRed.withValues(alpha: 0.14),
-                                  borderRadius: BorderRadius.circular(10),
-                                ),
-                                child: const Icon(
-                                  Icons.headphones_rounded,
-                                  color: kImperialRed,
-                                  size: 20,
+                            Text(_fmt(audio.position),
+                                style: const TextStyle(fontSize: 11)),
+                            Expanded(
+                              child: SizedBox(
+                                height: 22,
+                                child: SliderTheme(
+                                  data: SliderTheme.of(context).copyWith(
+                                    trackHeight: 2.5,
+                                    thumbShape: const RoundSliderThumbShape(
+                                        enabledThumbRadius: 6),
+                                  ),
+                                  child: Slider(
+                                    activeColor: kImperialRed,
+                                    value: audio.position.inMilliseconds
+                                        .toDouble()
+                                        .clamp(
+                                            0,
+                                            audio.duration.inMilliseconds
+                                                    .toDouble() +
+                                                1),
+                                    max: audio.duration.inMilliseconds
+                                            .toDouble() +
+                                        1,
+                                    onChanged: (v) => audio.player
+                                        .seek(Duration(milliseconds: v.toInt())),
+                                  ),
                                 ),
                               ),
                             ),
-                            const SizedBox(width: 9),
-                            Expanded(
-                              child: InkWell(
-                                onTap: () {
-                                  final nav = kRootNavigatorKey.currentState;
-                                  if (nav != null &&
-                                      audio.allLessonNames.isNotEmpty) {
-                                    nav.push(
-                                      MaterialPageRoute(
-                                        builder: (_) => LessonAudioPlayerScreen(
-                                          courseId: audio.courseId,
-                                          courseTitle: audio.courseTitle,
-                                          allLessonNames: audio.allLessonNames,
-                                          allLessonTracks:
-                                              audio.allLessonTracks,
-                                          initialLessonIndex: audio.lessonIndex,
-                                          appState: appState,
-                                        ),
-                                      ),
-                                    );
-                                  }
-                                },
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    Text(
-                                      '${audio.courseTitle} • ${audio.currentLessonName}',
-                                      maxLines: 1,
-                                      overflow: TextOverflow.ellipsis,
-                                      style: TextStyle(
-                                        fontSize: 12.5,
-                                        fontWeight: FontWeight.bold,
-                                        color: isDark
-                                            ? const Color(0xFFEF5350)
-                                            : kImperialRed,
-                                      ),
-                                    ),
-                                    Text(
-                                      'Track ${audio.trackIndex + 1}/${audio.currentTracks.length} (${audio.currentTrackCleanName})',
-                                      maxLines: 1,
-                                      overflow: TextOverflow.ellipsis,
-                                      style: TextStyle(
-                                        fontSize: 11,
-                                        color: isDark
-                                            ? Colors.white70
-                                            : Colors.black87,
-                                      ),
-                                    ),
-                                  ],
+                            Text(_fmt(audio.duration),
+                                style: const TextStyle(fontSize: 11)),
+                          ],
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            TextButton(
+                              style: TextButton.styleFrom(
+                                minimumSize: const Size(42, 30),
+                                padding: EdgeInsets.zero,
+                              ),
+                              onPressed: audio.cycleSpeed,
+                              child: Text(
+                                '${audio.speed}x',
+                                style: const TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 12.5,
+                                  color: kImperialRed,
                                 ),
                               ),
                             ),
                             IconButton(
                               tooltip: '-3s Rewind',
                               visualDensity: VisualDensity.compact,
-                              padding: EdgeInsets.zero,
-                              constraints: const BoxConstraints(
-                                  minWidth: 32, minHeight: 32),
-                              icon: const Icon(Icons.replay_5_rounded, size: 20),
+                              icon: const Icon(Icons.fast_rewind_rounded,
+                                  size: 22),
                               onPressed: () => audio.rewindSeconds(3),
                             ),
                             IconButton(
-                              tooltip: audio.isPlaying ? 'Pause' : 'Play',
                               visualDensity: VisualDensity.compact,
-                              padding: EdgeInsets.zero,
-                              constraints: const BoxConstraints(
-                                  minWidth: 36, minHeight: 36),
-                              icon: Icon(
-                                audio.isPlaying
-                                    ? Icons.pause_circle_filled_rounded
-                                    : Icons.play_circle_filled_rounded,
-                                color: kImperialRed,
-                                size: 32,
+                              icon: const Icon(Icons.skip_previous_rounded,
+                                  size: 26),
+                              onPressed: audio.previousTrack,
+                            ),
+                            FilledButton(
+                              style: FilledButton.styleFrom(
+                                backgroundColor: kImperialRed,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                                minimumSize: const Size(46, 38),
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 14, vertical: 8),
                               ),
                               onPressed: audio.togglePlayPause,
+                              child: Icon(
+                                audio.isPlaying
+                                    ? Icons.pause_rounded
+                                    : Icons.play_arrow_rounded,
+                                size: 24,
+                              ),
                             ),
                             IconButton(
-                              tooltip: 'Next Track',
                               visualDensity: VisualDensity.compact,
-                              padding: EdgeInsets.zero,
-                              constraints: const BoxConstraints(
-                                  minWidth: 32, minHeight: 32),
                               icon: const Icon(Icons.skip_next_rounded,
-                                  size: 21),
+                                  size: 26),
                               onPressed: audio.nextTrack,
                             ),
                             IconButton(
-                              tooltip: 'Close Mini Player',
+                              tooltip: audio.singleTrackLoop
+                                  ? 'Repeat Single Track (Active)'
+                                  : 'Lesson Loop (Tap for Single Repeat)',
                               visualDensity: VisualDensity.compact,
-                              padding: EdgeInsets.zero,
-                              constraints: const BoxConstraints(
-                                  minWidth: 30, minHeight: 30),
                               icon: Icon(
-                                Icons.close_rounded,
-                                size: 19,
-                                color: isDark ? Colors.white60 : Colors.black54,
+                                audio.singleTrackLoop
+                                    ? Icons.repeat_one_rounded
+                                    : Icons.repeat_rounded,
+                                size: 22,
+                                color: audio.singleTrackLoop
+                                    ? kImperialRed
+                                    : Colors.grey,
                               ),
-                              onPressed: audio.dismissAndStopMiniPlayer,
+                              onPressed: audio.toggleSingleTrackLoop,
                             ),
                           ],
                         ),
@@ -1695,7 +1756,7 @@ class GlobalMiniAudioShell extends StatelessWidget {
 }
 
 // ============================================================================
-// 7. HOME SCREEN & DRAWER (WITH DIALOGUES, PINYIN CHART & HANZI WRITING)
+// 7. HOME SCREEN & DRAWER (WITH HSK 1-3 DIALOGUES, PINYIN CHART & HANZI)
 // ============================================================================
 
 class HomeScreen extends StatefulWidget {
@@ -2399,7 +2460,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
                 SizedBox(height: 6),
                 Text(
-                  'Curated by AHM • v1.2.2',
+                  'Curated by AHM • v1.2.3',
                   style: TextStyle(color: Colors.white70, fontSize: 12),
                 ),
               ],
@@ -2471,7 +2532,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   'HSK 2 Dialogues (Ch 1–15)',
                   style: TextStyle(fontWeight: FontWeight.w600),
                 ),
-                subtitle: const Text('New Words + Dialogue + বাংলা উচ্চারণ'),
+                subtitle: const Text('New Words + Dialogue + বাংলা ও ইংরেজি'),
                 onTap: () {
                   Navigator.pop(context);
                   Navigator.push(
@@ -2480,6 +2541,29 @@ class _HomeScreenState extends State<HomeScreen> {
                       builder: (_) => DialogueCourseScreen(
                         levelTitle: 'HSK 2 Dialogues',
                         chapters: repo.hsk2DialogueChapters,
+                        appState: widget.appState,
+                      ),
+                    ),
+                  );
+                },
+              ),
+              ListTile(
+                dense: true,
+                leading: const Icon(Icons.chat_bubble_outline_rounded,
+                    size: 19, color: kImperialRed),
+                title: const Text(
+                  'HSK 3 Dialogues (Ch 1–20)',
+                  style: TextStyle(fontWeight: FontWeight.w600),
+                ),
+                subtitle: const Text('New Words + Dialogue + বাংলা ও ইংরেজি'),
+                onTap: () {
+                  Navigator.pop(context);
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (_) => DialogueCourseScreen(
+                        levelTitle: 'HSK 3 Dialogues',
+                        chapters: repo.hsk3DialogueChapters,
                         appState: widget.appState,
                       ),
                     ),
@@ -2654,7 +2738,7 @@ class _HomeScreenState extends State<HomeScreen> {
 }
 
 // ============================================================================
-// 7B. HSK 1 & HSK 2 DIALOGUES SCREEN
+// 7B. HSK 1, HSK 2 & HSK 3 DIALOGUES SCREEN
 // ============================================================================
 
 class DialogueCourseScreen extends StatefulWidget {
@@ -2735,14 +2819,16 @@ class _DialogueCourseScreenState extends State<DialogueCourseScreen> {
                     color: isDark ? const Color(0xFFEF5350) : kImperialRed,
                   ),
                 ),
-                const SizedBox(height: 2),
-                Text(
-                  chapter.subtitle,
-                  style: TextStyle(
-                    fontSize: 13,
-                    color: isDark ? Colors.white70 : Colors.black87,
+                if (chapter.subtitle.isNotEmpty) ...[
+                  const SizedBox(height: 3),
+                  Text(
+                    chapter.subtitle,
+                    style: TextStyle(
+                      fontSize: 13,
+                      color: isDark ? Colors.white70 : Colors.black87,
+                    ),
                   ),
-                ),
+                ],
               ],
             ),
           ),
@@ -2821,7 +2907,9 @@ class _DialogueCourseScreenState extends State<DialogueCourseScreen> {
                                             ),
                                           ),
                                           child: Text(
-                                            '${nw.hanzi} (${nw.pinyin} • ${nw.pron}) — ${nw.bn}',
+                                            nw.en.isNotEmpty
+                                                ? '${nw.hanzi} (${nw.pinyin} • ${nw.pron}) — ${nw.bn} [${nw.en}]'
+                                                : '${nw.hanzi} (${nw.pinyin} • ${nw.pron}) — ${nw.bn}',
                                             style: const TextStyle(
                                               fontSize: 12.5,
                                               fontWeight: FontWeight.w600,
@@ -2847,17 +2935,23 @@ class _DialogueCourseScreenState extends State<DialogueCourseScreen> {
                             child: Row(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                CircleAvatar(
-                                  radius: 13,
-                                  backgroundColor: d.speaker == 'A'
-                                      ? kImperialRed
-                                      : const Color(0xFF2E7D32),
-                                  foregroundColor: Colors.white,
+                                Container(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 8, vertical: 4),
+                                  decoration: BoxDecoration(
+                                    color: (d.speaker == 'A' ||
+                                            d.speaker == '小丽' ||
+                                            d.speaker == '周太太')
+                                        ? kImperialRed
+                                        : const Color(0xFF2E7D32),
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
                                   child: Text(
                                     d.speaker,
                                     style: const TextStyle(
-                                      fontSize: 12,
+                                      fontSize: 11.5,
                                       fontWeight: FontWeight.bold,
+                                      color: Colors.white,
                                     ),
                                   ),
                                 ),
@@ -2893,6 +2987,18 @@ class _DialogueCourseScreenState extends State<DialogueCourseScreen> {
                                           fontWeight: FontWeight.bold,
                                         ),
                                       ),
+                                      if (d.en.isNotEmpty) ...[
+                                        const SizedBox(height: 2),
+                                        Text(
+                                          d.en,
+                                          style: TextStyle(
+                                            fontSize: 12.5,
+                                            color: isDark
+                                                ? Colors.white70
+                                                : Colors.black87,
+                                          ),
+                                        ),
+                                      ],
                                       if (d.wordByWord.isNotEmpty) ...[
                                         const SizedBox(height: 4),
                                         Text(
@@ -2948,7 +3054,7 @@ class PinyinChartScreen extends StatelessWidget {
           child: Padding(
             padding: EdgeInsets.all(24),
             child: Text(
-              'Please ensure assets/vocab/pinin-chart.json is listed in pubspec.yaml.',
+              'Please ensure assets/vocab/pinyin_chart.json is listed in pubspec.yaml.',
               textAlign: TextAlign.center,
             ),
           ),
@@ -4268,10 +4374,7 @@ class _HanziWritingCourseScreenState extends State<HanziWritingCourseScreen>
   final List<List<Offset>> _strokes = [];
   List<Offset> _currentStroke = [];
 
-  /// Step 1 (false): Watermark trace mode | Step 2 (true): Self-test blank grid
   bool _isSelfTestMode = false;
-
-  /// Step 3: Bold colored reference character revealed behind strokes on Check
   bool _showColoredCheckChar = false;
 
   late AnimationController _flipController;
@@ -4368,7 +4471,6 @@ class _HanziWritingCourseScreenState extends State<HanziWritingCourseScreen>
       ),
       body: Column(
         children: [
-          // Chapter Selector
           SizedBox(
             height: 46,
             child: ListView.separated(
@@ -4397,7 +4499,6 @@ class _HanziWritingCourseScreenState extends State<HanziWritingCourseScreen>
               },
             ),
           ),
-          // Character Strip
           SizedBox(
             height: 52,
             child: ListView.separated(
@@ -4438,7 +4539,6 @@ class _HanziWritingCourseScreenState extends State<HanziWritingCourseScreen>
               },
             ),
           ),
-          // Top Reference Card: Only "মোট স্ট্রোক: Xটি" + Pure Chinese Stroke Boxes
           Container(
             width: double.infinity,
             margin: const EdgeInsets.fromLTRB(12, 6, 12, 6),
@@ -4549,7 +4649,6 @@ class _HanziWritingCourseScreenState extends State<HanziWritingCourseScreen>
               ],
             ),
           ),
-          // 3-Step Interactive Writing Square Grid (Trace -> Flip Self-Test -> Check Colored Overlay)
           Expanded(
             child: Center(
               child: AnimatedBuilder(
@@ -4607,7 +4706,6 @@ class _HanziWritingCourseScreenState extends State<HanziWritingCourseScreen>
                             return Stack(
                               alignment: Alignment.center,
                               children: [
-                                // Step 1: Faint Watermark in Trace Mode (hidden in Self-Test Flip mode)
                                 if (!_isSelfTestMode && !_showColoredCheckChar)
                                   IgnorePointer(
                                     child: Text(
@@ -4622,7 +4720,6 @@ class _HanziWritingCourseScreenState extends State<HanziWritingCourseScreen>
                                       ),
                                     ),
                                   ),
-                                // Step 3: Bold Colored Reference Character on Check
                                 if (_showColoredCheckChar)
                                   IgnorePointer(
                                     child: Text(
@@ -4636,7 +4733,6 @@ class _HanziWritingCourseScreenState extends State<HanziWritingCourseScreen>
                                       ),
                                     ),
                                   ),
-                                // Grid lines + User's Handwritten Strokes
                                 CustomPaint(
                                   painter: _HanziPadPainter(
                                     strokes: _strokes,
@@ -4658,7 +4754,6 @@ class _HanziWritingCourseScreenState extends State<HanziWritingCourseScreen>
               ),
             ),
           ),
-          // Bottom Controls: Undo, Clear, Flip ("নিজে লিখুন" / "দেখে লিখুন"), Check, Next
           Padding(
             padding: const EdgeInsets.fromLTRB(10, 4, 10, 12),
             child: Row(
@@ -5302,7 +5397,7 @@ class CourseAudioFolderScreen extends StatelessWidget {
 }
 
 // ============================================================================
-// 13. PDF READER (AUTO-HIDES GLOBAL MINI PLAYER ON OPEN, RESTORES ON EXIT)
+// 13. PDF READER (TRACK DROPDOWN + REPEAT ONE / LESSON LOOP BUTTON)
 // ============================================================================
 
 class FastPdfReaderScreen extends StatefulWidget {
@@ -5385,81 +5480,6 @@ class _FastPdfReaderScreenState extends State<FastPdfReaderScreen> {
     } else {
       _lessonIdx = _audio.lessonIndex.clamp(0, widget.lessonNames.length - 1);
     }
-  }
-
-  void _openTrackPickerSheet() {
-    if (_tracks.isEmpty) return;
-    showModalBottomSheet(
-      context: context,
-      builder: (ctx) => SafeArea(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(14),
-              child: Text(
-                '${widget.lessonNames[_lessonIdx]} • Select Track',
-                style: const TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 15,
-                  color: kImperialRed,
-                ),
-              ),
-            ),
-            const Divider(height: 1),
-            Flexible(
-              child: ListView.builder(
-                shrinkWrap: true,
-                itemCount: _tracks.length,
-                itemBuilder: (_, i) {
-                  final name = _tracks[i]
-                      .uri
-                      .pathSegments
-                      .last
-                      .replaceAll('.mp3', '')
-                      .replaceAll('.m4a', '');
-                  final active = _audio.courseId == widget.courseId &&
-                      _audio.trackIndex == i;
-                  return ListTile(
-                    leading: Icon(
-                      active
-                          ? Icons.graphic_eq_rounded
-                          : Icons.music_note_rounded,
-                      color: active ? kImperialRed : Colors.grey,
-                    ),
-                    title: Text(
-                      'Track ${i + 1} ($name)',
-                      style: TextStyle(
-                        fontWeight:
-                            active ? FontWeight.bold : FontWeight.normal,
-                        color: active ? kImperialRed : null,
-                      ),
-                    ),
-                    onTap: () {
-                      Navigator.pop(ctx);
-                      if (_audio.courseId != widget.courseId ||
-                          _audio.lessonIndex != _lessonIdx) {
-                        _audio.loadLessonAndPlay(
-                          courseId: widget.courseId,
-                          courseTitle: widget.title,
-                          allLessonNames: widget.lessonNames,
-                          allLessonTracks: widget.lessonTracks,
-                          lessonIndex: _lessonIdx,
-                          initialTrackIndex: i,
-                          autoPlay: true,
-                        );
-                      } else {
-                        _audio.playTrackAt(i);
-                      }
-                    },
-                  );
-                },
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
   }
 
   Future<void> _savePage(int page) async {
@@ -5555,14 +5575,6 @@ class _FastPdfReaderScreenState extends State<FastPdfReaderScreen> {
         final safeTrackIdx = activeTracks.isEmpty
             ? 0
             : _audio.trackIndex.clamp(0, activeTracks.length - 1);
-        final trackLabel = activeTracks.isEmpty
-            ? ''
-            : activeTracks[safeTrackIdx]
-                .uri
-                .pathSegments
-                .last
-                .replaceAll('.mp3', '')
-                .replaceAll('.m4a', '');
 
         return Scaffold(
           appBar: AppBar(
@@ -5690,24 +5702,69 @@ class _FastPdfReaderScreenState extends State<FastPdfReaderScreen> {
                                   },
                                 ),
                                 const SizedBox(width: 8),
-                                Expanded(
-                                  child: InkWell(
-                                    onTap: _openTrackPickerSheet,
-                                    child: Text(
-                                      'Track ${safeTrackIdx + 1}/${activeTracks.length} ($trackLabel)',
-                                      maxLines: 1,
-                                      overflow: TextOverflow.ellipsis,
-                                      textAlign: TextAlign.right,
-                                      style: TextStyle(
-                                        fontSize: 11.5,
-                                        fontWeight: FontWeight.w600,
-                                        color: isDark
-                                            ? Colors.white70
-                                            : Colors.black87,
+                                if (activeTracks.isNotEmpty)
+                                  Expanded(
+                                    child: Align(
+                                      alignment: Alignment.centerRight,
+                                      child: DropdownButton<int>(
+                                        value: safeTrackIdx,
+                                        isDense: true,
+                                        isExpanded: true,
+                                        underline: const SizedBox(),
+                                        alignment: AlignmentDirectional.centerEnd,
+                                        style: TextStyle(
+                                          fontSize: 11.5,
+                                          fontWeight: FontWeight.w600,
+                                          color: isDark
+                                              ? Colors.white70
+                                              : Colors.black87,
+                                        ),
+                                        items: List.generate(
+                                          activeTracks.length,
+                                          (i) {
+                                            final name = activeTracks[i]
+                                                .uri
+                                                .pathSegments
+                                                .last
+                                                .replaceAll('.mp3', '')
+                                                .replaceAll('.m4a', '');
+                                            return DropdownMenuItem(
+                                              value: i,
+                                              alignment:
+                                                  AlignmentDirectional.centerEnd,
+                                              child: Text(
+                                                'Track ${i + 1}/${activeTracks.length} ($name)',
+                                                maxLines: 1,
+                                                overflow: TextOverflow.ellipsis,
+                                              ),
+                                            );
+                                          },
+                                        ),
+                                        onChanged: (v) {
+                                          if (v != null) {
+                                            if (_audio.courseId !=
+                                                    widget.courseId ||
+                                                _audio.lessonIndex !=
+                                                    _lessonIdx) {
+                                              _audio.loadLessonAndPlay(
+                                                courseId: widget.courseId,
+                                                courseTitle: widget.title,
+                                                allLessonNames:
+                                                    widget.lessonNames,
+                                                allLessonTracks:
+                                                    widget.lessonTracks,
+                                                lessonIndex: _lessonIdx,
+                                                initialTrackIndex: v,
+                                                autoPlay: true,
+                                              );
+                                            } else {
+                                              _audio.playTrackAt(v);
+                                            }
+                                          }
+                                        },
                                       ),
                                     ),
                                   ),
-                                ),
                               ],
                             ),
                             SizedBox(
@@ -5790,10 +5847,35 @@ class _FastPdfReaderScreenState extends State<FastPdfReaderScreen> {
                                   onPressed: _audio.nextTrack,
                                 ),
                                 IconButton(
-                                  tooltip: 'Track List',
+                                  tooltip: _audio.singleTrackLoop
+                                      ? 'Repeat One (Current Track)'
+                                      : 'Lesson Loop (All Tracks in Lesson)',
                                   visualDensity: VisualDensity.compact,
-                                  icon: const Icon(Icons.queue_music_rounded),
-                                  onPressed: _openTrackPickerSheet,
+                                  icon: Icon(
+                                    _audio.singleTrackLoop
+                                        ? Icons.repeat_one_rounded
+                                        : Icons.repeat_rounded,
+                                    color: _audio.singleTrackLoop
+                                        ? kImperialRed
+                                        : (isDark
+                                            ? Colors.white70
+                                            : Colors.black87),
+                                  ),
+                                  onPressed: () {
+                                    _audio.toggleSingleTrackLoop();
+                                    ScaffoldMessenger.of(context)
+                                        .clearSnackBars();
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(
+                                        duration: const Duration(seconds: 1),
+                                        content: Text(
+                                          _audio.singleTrackLoop
+                                              ? 'Repeat One: Repeating current track'
+                                              : 'Lesson Loop: Repeating all lesson tracks',
+                                        ),
+                                      ),
+                                    );
+                                  },
                                 ),
                               ],
                             ),
