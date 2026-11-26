@@ -1565,6 +1565,10 @@ class GlobalMiniAudioShell extends StatelessWidget {
       builder: (context, _) {
         final showBar = audio.shouldShowGlobalMiniPlayer;
         final isDark = appState.isDarkMode;
+        final totalMs = audio.duration.inMilliseconds;
+        final posMs = audio.position.inMilliseconds;
+        final progress =
+            totalMs > 0 ? (posMs / totalMs).clamp(0.0, 1.0) : 0.0;
 
         return Column(
           children: [
@@ -1635,51 +1639,83 @@ class GlobalMiniAudioShell extends StatelessWidget {
                             ),
                           ],
                         ),
-                        const SizedBox(height: 2),
+                        const SizedBox(height: 6),
                         Row(
                           children: [
                             Text(_fmt(audio.position),
                                 style: const TextStyle(fontSize: 11)),
+                            const SizedBox(width: 10),
                             Expanded(
-                              child: SizedBox(
-                                height: 22,
-                                child: SliderTheme(
-                                  data: SliderTheme.of(context).copyWith(
-                                    trackHeight: 2.5,
-                                    activeTrackColor: kImperialRed,
-                                    inactiveTrackColor:
-                                        kImperialRed.withValues(alpha: 0.24),
-                                    thumbColor: kImperialRed,
-                                    overlayColor:
-                                        kImperialRed.withValues(alpha: 0.15),
-                                    thumbShape: const RoundSliderThumbShape(
-                                        enabledThumbRadius: 6),
-                                  ),
-                                  child: Slider(
-                                    activeColor: kImperialRed,
-                                    inactiveColor:
-                                        kImperialRed.withValues(alpha: 0.24),
-                                    thumbColor: kImperialRed,
-                                    value: audio.position.inMilliseconds
-                                        .toDouble()
-                                        .clamp(
-                                            0,
-                                            audio.duration.inMilliseconds
-                                                    .toDouble() +
-                                                1),
-                                    max: audio.duration.inMilliseconds
-                                            .toDouble() +
-                                        1,
-                                    onChanged: (v) => audio.player
-                                        .seek(Duration(milliseconds: v.toInt())),
-                                  ),
-                                ),
+                              child: LayoutBuilder(
+                                builder: (context, constraints) {
+                                  final barWidth = constraints.maxWidth;
+                                  void seekAt(double dx) {
+                                    if (totalMs <= 0 || barWidth <= 0) return;
+                                    final ratio =
+                                        (dx / barWidth).clamp(0.0, 1.0);
+                                    audio.player.seek(Duration(
+                                        milliseconds:
+                                            (totalMs * ratio).toInt()));
+                                  }
+
+                                  return GestureDetector(
+                                    behavior: HitTestBehavior.opaque,
+                                    onTapDown: (d) =>
+                                        seekAt(d.localPosition.dx),
+                                    onHorizontalDragUpdate: (d) =>
+                                        seekAt(d.localPosition.dx),
+                                    child: SizedBox(
+                                      height: 20,
+                                      child: Stack(
+                                        alignment: Alignment.centerLeft,
+                                        children: [
+                                          Container(
+                                            height: 3.5,
+                                            width: barWidth,
+                                            decoration: BoxDecoration(
+                                              color: kImperialRed.withValues(
+                                                  alpha: 0.22),
+                                              borderRadius:
+                                                  BorderRadius.circular(4),
+                                            ),
+                                          ),
+                                          Container(
+                                            height: 3.5,
+                                            width: barWidth * progress,
+                                            decoration: BoxDecoration(
+                                              color: kImperialRed,
+                                              borderRadius:
+                                                  BorderRadius.circular(4),
+                                            ),
+                                          ),
+                                          Positioned(
+                                            left: (barWidth * progress - 6)
+                                                .clamp(
+                                                    0.0,
+                                                    (barWidth - 12)
+                                                        .clamp(0.0, barWidth)),
+                                            child: Container(
+                                              width: 12,
+                                              height: 12,
+                                              decoration: const BoxDecoration(
+                                                color: kImperialRed,
+                                                shape: BoxShape.circle,
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  );
+                                },
                               ),
                             ),
+                            const SizedBox(width: 10),
                             Text(_fmt(audio.duration),
                                 style: const TextStyle(fontSize: 11)),
                           ],
                         ),
+                        const SizedBox(height: 2),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
