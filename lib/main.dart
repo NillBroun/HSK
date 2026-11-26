@@ -1647,11 +1647,20 @@ class GlobalMiniAudioShell extends StatelessWidget {
                                 child: SliderTheme(
                                   data: SliderTheme.of(context).copyWith(
                                     trackHeight: 2.5,
+                                    activeTrackColor: kImperialRed,
+                                    inactiveTrackColor:
+                                        kImperialRed.withValues(alpha: 0.24),
+                                    thumbColor: kImperialRed,
+                                    overlayColor:
+                                        kImperialRed.withValues(alpha: 0.15),
                                     thumbShape: const RoundSliderThumbShape(
                                         enabledThumbRadius: 6),
                                   ),
                                   child: Slider(
                                     activeColor: kImperialRed,
+                                    inactiveColor:
+                                        kImperialRed.withValues(alpha: 0.24),
+                                    thumbColor: kImperialRed,
                                     value: audio.position.inMilliseconds
                                         .toDouble()
                                         .clamp(
@@ -5677,6 +5686,8 @@ class _FastPdfReaderScreenState extends State<FastPdfReaderScreen> {
                                   value: _lessonIdx,
                                   isDense: true,
                                   underline: const SizedBox(),
+                                  iconEnabledColor:
+                                      isDark ? Colors.white : kImperialRed,
                                   style: TextStyle(
                                     fontSize: 12.5,
                                     fontWeight: FontWeight.bold,
@@ -5713,13 +5724,15 @@ class _FastPdfReaderScreenState extends State<FastPdfReaderScreen> {
                                         isDense: true,
                                         isExpanded: true,
                                         underline: const SizedBox(),
+                                        iconEnabledColor:
+                                            isDark ? Colors.white : kImperialRed,
                                         alignment: AlignmentDirectional.centerEnd,
                                         style: TextStyle(
-                                          fontSize: 11.5,
-                                          fontWeight: FontWeight.w600,
+                                          fontSize: 12,
+                                          fontWeight: FontWeight.bold,
                                           color: isDark
-                                              ? Colors.white70
-                                              : Colors.black87,
+                                              ? Colors.white
+                                              : kImperialRed,
                                         ),
                                         items: List.generate(
                                           activeTracks.length,
@@ -5863,21 +5876,7 @@ class _FastPdfReaderScreenState extends State<FastPdfReaderScreen> {
                                             ? Colors.white70
                                             : Colors.black87),
                                   ),
-                                  onPressed: () {
-                                    _audio.toggleSingleTrackLoop();
-                                    ScaffoldMessenger.of(context)
-                                        .clearSnackBars();
-                                    ScaffoldMessenger.of(context).showSnackBar(
-                                      SnackBar(
-                                        duration: const Duration(seconds: 1),
-                                        content: Text(
-                                          _audio.singleTrackLoop
-                                              ? 'Repeat One: Repeating current track'
-                                              : 'Lesson Loop: Repeating all lesson tracks',
-                                        ),
-                                      ),
-                                    );
-                                  },
+                                  onPressed: _audio.toggleSingleTrackLoop,
                                 ),
                               ],
                             ),
