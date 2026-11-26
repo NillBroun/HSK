@@ -37,9 +37,6 @@ Future<void> main() async {
       androidNotificationChannelName: 'HSK Study Audio',
       androidNotificationOngoing: false,
       androidStopForegroundOnPause: false,
-      androidShowNotificationBadge: true,
-      androidNotificationIcon: 'mipmap/ic_launcher',
-      notificationColor: kImperialRed,
     );
   } catch (_) {}
   runApp(const HskApp());
