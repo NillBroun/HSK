@@ -12,7 +12,7 @@ import 'package:http/http.dart' as http;
 import 'package:just_audio/just_audio.dart';
 import 'package:just_audio_background/just_audio_background.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:pdfx/pdfx.dart';
+import 'package:pdfrx/pdfrx.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -37,6 +37,8 @@ Future<void> main() async {
       androidNotificationChannelName: 'HSK Study Audio',
       androidNotificationOngoing: false,
       androidStopForegroundOnPause: true,
+      notificationColor: kImperialRed,
+      androidShowNotificationBadge: true,
     );
   } catch (_) {}
   runApp(const HskApp());
@@ -947,6 +949,7 @@ class GlobalAudioService extends ChangeNotifier {
   bool allLessonsContinuous = false;
   int shadowingGapSeconds = 0;
   bool _waitingGap = false;
+  Uri? _cachedArtUri;
 
   /// Automatically hides global persistent player when PDF reader or full audio player is open
   bool hideGlobalMiniPlayer = false;
@@ -964,6 +967,22 @@ class GlobalAudioService extends ChangeNotifier {
     required String type,
     int lessonIndex,
   })? onTrackPlayedCallback;
+
+  Future<Uri?> _getAppArtUri() async {
+    if (_cachedArtUri != null) return _cachedArtUri;
+    try {
+      final dir = await getTemporaryDirectory();
+      final iconFile = File('${dir.path}/hsk_notif_art.png');
+      if (!await iconFile.exists()) {
+        final bytes = await rootBundle.load('assets/icon.png');
+        await iconFile.writeAsBytes(bytes.buffer.asUint8List());
+      }
+      _cachedArtUri = Uri.file(iconFile.path);
+      return _cachedArtUri;
+    } catch (_) {
+      return null;
+    }
+  }
 
   List<File> get currentTracks {
     if (allLessonNames.isEmpty) return [];
@@ -1069,6 +1088,8 @@ class GlobalAudioService extends ChangeNotifier {
     final tracks = currentTracks;
     if (tracks.isEmpty) return;
 
+    final artUri = await _getAppArtUri();
+
     final sources = <AudioSource>[];
     for (int i = 0; i < tracks.length; i++) {
       final f = tracks[i];
@@ -1083,6 +1104,7 @@ class GlobalAudioService extends ChangeNotifier {
             album: '$courseTitle • $currentLessonName',
             title: 'Track ${i + 1} ($clean)',
             artist: 'HSK Study • AHM',
+            artUri: artUri,
             playable: true,
           ),
         ),
