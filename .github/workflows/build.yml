@@ -72,7 +72,7 @@ jobs:
           cat << 'EOF' > android/app/src/main/res/drawable/audio_service_ic_pause.xml
           <bitmap xmlns:android="http://schemas.android.com/apk/res/android" android:src="@android:drawable/ic_media_pause" android:tint="#D32F2F"/>
           EOF
-          cat << 'EOF' > android/app/src/main.res/drawable/audio_service_ic_skip_previous.xml
+          cat << 'EOF' > android/app/src/main/res/drawable/audio_service_ic_skip_previous.xml
           <bitmap xmlns:android="http://schemas.android.com/apk/res/android" android:src="@android:drawable/ic_media_previous" android:tint="#D32F2F"/>
           EOF
           cat << 'EOF' > android/app/src/main/res/drawable/audio_service_ic_skip_next.xml
