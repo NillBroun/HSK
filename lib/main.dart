@@ -2525,7 +2525,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
                 SizedBox(height: 6),
                 Text(
-                  'Curated by AHM • v1.2.3',
+                  'Curated by AHM • v1.2.4',
                   style: TextStyle(color: Colors.white70, fontSize: 12),
                 ),
               ],
@@ -2574,7 +2574,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   'HSK 1 Dialogues (Ch 1–15)',
                   style: TextStyle(fontWeight: FontWeight.w600),
                 ),
-                subtitle: const Text('New Words + Dialogue + বাংলা উচ্চারণ'),
+                subtitle: const Text('New Words + Dialogue + বাংলা ও ইংরেজি'),
                 onTap: () {
                   Navigator.pop(context);
                   Navigator.push(
@@ -2824,6 +2824,32 @@ class DialogueCourseScreen extends StatefulWidget {
 
 class _DialogueCourseScreenState extends State<DialogueCourseScreen> {
   int _selectedChapterIdx = 0;
+  final ScrollController _scrollController = ScrollController();
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }
+
+  void _selectChapter(int index) {
+    if (_selectedChapterIdx == index) {
+      if (_scrollController.hasClients) {
+        _scrollController.animateTo(
+          0,
+          duration: const Duration(milliseconds: 220),
+          curve: Curves.easeOut,
+        );
+      }
+      return;
+    }
+    setState(() {
+      _selectedChapterIdx = index;
+    });
+    if (_scrollController.hasClients) {
+      _scrollController.jumpTo(0);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -2864,45 +2890,60 @@ class _DialogueCourseScreenState extends State<DialogueCourseScreen> {
                 return ChoiceChip(
                   label: Text('অধ্যায় ${c.chapter}'),
                   selected: selected,
-                  onSelected: (_) => setState(() => _selectedChapterIdx = i),
+                  onSelected: (_) => _selectChapter(i),
                 );
               },
             ),
           ),
-          Container(
-            width: double.infinity,
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-            color: isDark ? kNightCard : const Color(0xFFFFEFEF),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  chapter.title,
-                  style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                    color: isDark ? const Color(0xFFEF5350) : kImperialRed,
-                  ),
-                ),
-                if (chapter.subtitle.isNotEmpty) ...[
-                  const SizedBox(height: 3),
-                  Text(
-                    chapter.subtitle,
-                    style: TextStyle(
-                      fontSize: 13,
-                      color: isDark ? Colors.white70 : Colors.black87,
-                    ),
-                  ),
-                ],
-              ],
-            ),
-          ),
           Expanded(
             child: ListView.builder(
-              padding: const EdgeInsets.all(14),
-              itemCount: chapter.lessons.length,
-              itemBuilder: (_, lIdx) {
-                final lesson = chapter.lessons[lIdx];
+              key: ValueKey('chapter_list_${chapter.chapter}'),
+              controller: _scrollController,
+              padding: const EdgeInsets.fromLTRB(14, 6, 14, 24),
+              itemCount: chapter.lessons.length + 1,
+              itemBuilder: (_, index) {
+                if (index == 0) {
+                  return Container(
+                    width: double.infinity,
+                    margin: const EdgeInsets.only(bottom: 14),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 16, vertical: 12),
+                    decoration: BoxDecoration(
+                      color: isDark ? kNightCard : const Color(0xFFFFEFEF),
+                      borderRadius: BorderRadius.circular(14),
+                      border: Border.all(
+                        color: kImperialRed.withValues(alpha: 0.25),
+                      ),
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          chapter.title,
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                            color: isDark
+                                ? const Color(0xFFEF5350)
+                                : kImperialRed,
+                          ),
+                        ),
+                        if (chapter.subtitle.isNotEmpty) ...[
+                          const SizedBox(height: 3),
+                          Text(
+                            chapter.subtitle,
+                            style: TextStyle(
+                              fontSize: 13,
+                              color: isDark ? Colors.white70 : Colors.black87,
+                            ),
+                          ),
+                        ],
+                      ],
+                    ),
+                  );
+                }
+
+                final lesson = chapter.lessons[index - 1];
                 return Container(
                   margin: const EdgeInsets.only(bottom: 16),
                   padding: const EdgeInsets.all(14),
