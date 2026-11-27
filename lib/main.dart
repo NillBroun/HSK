@@ -5462,7 +5462,7 @@ class CourseAudioFolderScreen extends StatelessWidget {
 }
 
 // ============================================================================
-// 13. PDF READER (TRACK DROPDOWN + REPEAT ONE / LESSON LOOP BUTTON)
+// 13. PDF READER (SUPER-FAST PDFRX + TRACK DROPDOWN + PERSISTENT AUDIO BAR)
 // ============================================================================
 
 class FastPdfReaderScreen extends StatefulWidget {
@@ -5488,11 +5488,12 @@ class FastPdfReaderScreen extends StatefulWidget {
 }
 
 class _FastPdfReaderScreenState extends State<FastPdfReaderScreen> {
-  PdfControllerPinch? _pdfController;
+  final PdfViewerController _pdfController = PdfViewerController();
   final GlobalAudioService _audio = GlobalAudioService.instance;
 
   int _currentPage = 1;
   int _totalPages = 0;
+  int _initialPage = 1;
   bool _ready = false;
 
   bool _showAudioBar = true;
@@ -5507,7 +5508,11 @@ class _FastPdfReaderScreenState extends State<FastPdfReaderScreen> {
   @override
   void initState() {
     super.initState();
-    Future.microtask(() => _audio.setHideGlobalMiniPlayer(true));
+    // Hide global mini player ONLY when this PDF has its own built-in lesson audio bar.
+    // For Grammar & Notes PDFs (_hasAudio == false), keep the global audio bar visible!
+    if (_hasAudio) {
+      Future.microtask(() => _audio.setHideGlobalMiniPlayer(true));
+    }
     _initPdf();
     _initMiniAudio();
   }
@@ -5515,20 +5520,12 @@ class _FastPdfReaderScreenState extends State<FastPdfReaderScreen> {
   Future<void> _initPdf() async {
     final prefs = await SharedPreferences.getInstance();
     final saved = prefs.getInt('pdf_page_${widget.courseId}') ?? 1;
-    final docFuture = PdfDocument.openFile(widget.filePath);
-    final doc = await docFuture;
     if (!mounted) return;
     setState(() {
-      _totalPages = doc.pagesCount;
-      final safePage = saved.clamp(1, _totalPages > 0 ? _totalPages : 1);
-      _currentPage = safePage;
-      _pdfController = PdfControllerPinch(
-        document: docFuture,
-        initialPage: safePage,
-      );
+      _initialPage = saved < 1 ? 1 : saved;
+      _currentPage = _initialPage;
       _ready = true;
     });
-    _savePage(_currentPage);
   }
 
   void _initMiniAudio() {
@@ -5611,8 +5608,8 @@ class _FastPdfReaderScreenState extends State<FastPdfReaderScreen> {
             style: FilledButton.styleFrom(backgroundColor: kImperialRed),
             onPressed: () {
               final p = int.tryParse(ctrl.text.trim());
-              if (p != null && p >= 1 && p <= _totalPages) {
-                _pdfController?.jumpToPage(p);
+              if (p != null && p >= 1 && p <= _totalPages && _pdfController.isReady) {
+                _pdfController.goToPage(pageNumber: p);
               }
               Navigator.pop(ctx);
             },
@@ -5625,8 +5622,9 @@ class _FastPdfReaderScreenState extends State<FastPdfReaderScreen> {
 
   @override
   void dispose() {
-    _audio.setHideGlobalMiniPlayer(false);
-    _pdfController?.dispose();
+    if (_hasAudio) {
+      _audio.setHideGlobalMiniPlayer(false);
+    }
     super.dispose();
   }
 
@@ -5698,22 +5696,45 @@ class _FastPdfReaderScreenState extends State<FastPdfReaderScreen> {
                 ),
             ],
           ),
-          body: !_ready || _pdfController == null
+          body: !_ready
               ? const Center(child: CircularProgressIndicator())
               : Column(
                   children: [
                     Expanded(
                       child: Container(
                         color: isDark ? kNightDark : Colors.white,
-                        child: PdfViewPinch(
-                          controller: _pdfController!,
-                          padding: 0,
-                          onPageChanged: (page) {
-                            if (page != _currentPage) {
-                              setState(() => _currentPage = page);
-                              _savePage(page);
-                            }
-                          },
+                        child: PdfViewer.file(
+                          widget.filePath,
+                          controller: _pdfController,
+                          initialPageNumber: _initialPage,
+                          params: PdfViewerParams(
+                            backgroundColor:
+                                isDark ? kNightDark : Colors.white,
+                            pageDropShadow: null,
+                            maxScale: 5.0,
+                            minScale: 1.0,
+                            onViewerReady: (document, controller) {
+                              if (!mounted) return;
+                              final safe = _initialPage.clamp(
+                                1,
+                                document.pages.length,
+                              );
+                              setState(() {
+                                _totalPages = document.pages.length;
+                                _currentPage = safe;
+                              });
+                              if (safe > 1) {
+                                controller.goToPage(pageNumber: safe);
+                              }
+                              _savePage(safe);
+                            },
+                            onPageChanged: (page) {
+                              if (page != null && page != _currentPage) {
+                                setState(() => _currentPage = page);
+                                _savePage(page);
+                              }
+                            },
+                          ),
                         ),
                       ),
                     ),
